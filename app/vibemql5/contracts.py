@@ -1,0 +1,81 @@
+from __future__ import annotations
+
+import hashlib
+
+# One source of truth for result metadata exposed by both the worker and MCP.
+RESULT_SCHEMA_VERSION = "1.4"
+
+MCP_TOOL_NAMES = (
+    "server_info",
+    "health",
+    "diagnose",
+    "runtime_status",
+    "get_continuity",
+    "read_continuity_events",
+    "verify_continuity",
+    "append_continuity_event",
+    "create_continuity_checkpoint",
+    "reconcile_continuity",
+    "list_project_sessions",
+    "get_project_session",
+    "create_project_session",
+    "update_project_session",
+    "resume_project_session",
+    "start_iteration",
+    "get_iteration",
+    "list_iterations",
+    "resume_iteration",
+    "accept_iteration",
+    "reject_iteration",
+    "cancel_iteration",
+    "read_iteration_history",
+    "list_fault_receipts",
+    "list_job_history",
+    "list_workspaces",
+    "list_terminals",
+    "list_eas",
+    "list_presets",
+    "list_parameter_sets",
+    "read_source",
+    "get_source_hash",
+    "create_checkpoint",
+    "list_checkpoints",
+    "diff_checkpoint",
+    "restore_checkpoint",
+    "write_source",
+    "apply_patch",
+    "compile_ea",
+    "import_ex5",
+    "open_ex5_ingress",
+    "import_ex5_authorized_file",
+    "get_ex5_import_receipt",
+    "launch_test",
+    "get_job",
+    "cancel_job",
+    "read_result",
+    "read_compile_diagnostics",
+    "read_tester_events",
+    "read_artifact",
+    "export_file",
+    "capture_runtime_snapshot",
+    "compare_runtime_snapshots",
+    "compare_baseline",
+    "backend_read_file",
+    "backend_get_file_hash",
+    "backend_create_checkpoint",
+    "backend_restore_checkpoint",
+    "backend_apply_patch",
+    "backend_write_file",
+    "backend_import_hotfix",
+    "backend_apply_hotfix_bundle",
+    "backend_run_tests",
+    "backend_restart_runtime",
+    "backend_read_evidence",
+)
+MCP_TOOL_COUNT = 65
+MCP_TOOL_CATALOG_SHA256 = '00d8956200bfc6020cea4c522edda3b6fdd34ca40f97c7fb2175d30ce1aca0e9'
+
+# MetaTrader 5 [Tester] ExecutionMode native bounds.
+EXECUTION_MODE_RANDOM = -1
+EXECUTION_MODE_NO_DELAY = 0
+EXECUTION_MODE_MAX_DELAY_MS = 600_000

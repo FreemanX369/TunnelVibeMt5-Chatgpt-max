@@ -1,0 +1,39 @@
+name: Verify TIP-027 Continuity Core
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  continuity-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Compile changed Python surfaces
+        run: |
+          python -m py_compile \
+            app/vibemql5/core/continuity.py \
+            app/vibemql5/core/facade.py \
+            app/vibemql5/adapters/mcp.py \
+            app/vibemql5/contracts.py \
+            tests/unit/test_tip027_continuity.py
+      - name: Run Continuity Core tests
+        run: python -m pytest -q tests/unit/test_tip027_continuity.py
+      - name: Verify ordered tool catalog
+        run: |
+          python - <<'PY'
+          import hashlib
+          from app.vibemql5.contracts import MCP_TOOL_CATALOG_SHA256, MCP_TOOL_COUNT, MCP_TOOL_NAMES
+          assert MCP_TOOL_COUNT == 65 == len(MCP_TOOL_NAMES)
+          actual = hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest()
+          assert actual == MCP_TOOL_CATALOG_SHA256
+          PY
