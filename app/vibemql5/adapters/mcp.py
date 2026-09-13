@@ -268,11 +268,14 @@ def create_server(root: Path, transport: str = "unknown"):
         checkpoint_id: str | None = None,
         baseline_job_id: str | None = None,
         last_job_id: str | None = None,
+        operation_id: str = "",
+        expected_revision_sha256: str = "",
     ) -> dict[str, Any]:
-        """Append an immutable session revision using expected_revision as a CAS guard."""
+        """Append an immutable session revision with optional operation idempotency and SHA CAS."""
         return _invoke(ctx, "update_project_session", lambda: facade.update_project_session(
             project_id, expected_revision, active_goal, decision_refs, phase,
             checkpoint_id, baseline_job_id, last_job_id,
+            operation_id, expected_revision_sha256,
         ))
 
     @server.tool()
@@ -580,8 +583,9 @@ def create_server(root: Path, transport: str = "unknown"):
         overrides: dict[str, Any] | None = None,
         timeout_seconds: int = 0,
         ea_binary_ref: str = "",
+        operation_id: str = "",
     ) -> dict[str, Any]:
-        """Launch an async MT5-2 test; pass ea_binary_ref for an imported EX5 and no source compile."""
+        """Launch an async MT5-2 test with optional durable operation idempotency."""
         timeout_seconds = int(timeout_seconds)
         if timeout_seconds < 0:
             raise ValueError("timeout_seconds must be 0 (event-driven) or a positive number of seconds")
@@ -597,6 +601,7 @@ def create_server(root: Path, transport: str = "unknown"):
             mock=False,
             test_timeout=timeout_seconds,
             ea_binary_ref=ea_binary_ref,
+            operation_id=operation_id,
         ))
 
     @server.tool()
