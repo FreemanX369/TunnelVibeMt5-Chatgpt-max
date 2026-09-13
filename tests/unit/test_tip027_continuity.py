@@ -298,3 +298,203 @@ def test_tip029_verify_detects_manifest_projection_tamper(tmp_path):
     result = manager.verify("P1")
     assert result["integrity"] == "DRIFT"
     assert "MANIFEST_PROJECTION_MISMATCH:1" in result["issues"]
+
+
+def test_tip030_delegation_lifecycle_requires_parent_verification(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {
+            "delegation": {
+                "id": "DEL-TIP030-1",
+                "assignee": "builder-a",
+                "task": "implement bounded sub-agent lifecycle",
+            }
+        },
+        "tip030-delegation-assigned",
+    )
+    assert head["delegations"]["active"] == [
+        {
+            "id": "DEL-TIP030-1",
+            "assignee": "builder-a",
+            "task": "implement bounded sub-agent lifecycle",
+            "state": "ASSIGNED",
+        }
+    ]
+    assert head["delegations"]["awaiting_parent_verification"] == []
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_STARTED",
+        {"delegation_id": "DEL-TIP030-1", "summary": "builder accepted work"},
+        "tip030-delegation-started",
+        head,
+    )
+    assert head["delegations"]["active"][0]["state"] == "STARTED"
+    assert head["delegations"]["active"][0]["summary"] == "builder accepted work"
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_COMPLETED",
+        {
+            "delegation_id": "DEL-TIP030-1",
+            "report": {"status": "DONE", "checks": ["unit"]},
+        },
+        "tip030-delegation-completed",
+        head,
+    )
+    assert head["delegations"]["active"] == []
+    assert head["delegations"]["awaiting_parent_verification"] == [
+        {
+            "id": "DEL-TIP030-1",
+            "assignee": "builder-a",
+            "task": "implement bounded sub-agent lifecycle",
+            "state": "AWAITING_PARENT_VERIFICATION",
+            "summary": "builder accepted work",
+            "report": {"status": "DONE", "checks": ["unit"]},
+            "report_authority": "PENDING_PARENT_VERIFICATION",
+        }
+    ]
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_PARENT_VERIFIED",
+        {"delegation_id": "DEL-TIP030-1", "verification": {"status": "ACCEPTED"}},
+        "tip030-delegation-parent-verified",
+        head,
+    )
+    assert head["delegations"] == {"active": [], "awaiting_parent_verification": []}
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
+
+
+def test_tip030_delegation_state_transitions_are_guarded(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    with pytest.raises(ValueError, match="CONTINUITY_DELEGATION_NOT_ACTIVE"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_COMPLETED",
+            {"delegation_id": "DEL-MISSING", "report": {"status": "DONE"}},
+            "tip030-complete-missing",
+        )
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {"id": "DEL-TIP030-2", "task": "guard terminal transitions"},
+        "tip030-delegation-assigned-2",
+    )
+    with pytest.raises(
+        ValueError, match="CONTINUITY_DELEGATION_NOT_AWAITING_PARENT_VERIFICATION"
+    ):
+        append_lifecycle(
+            manager,
+            "DELEGATION_PARENT_VERIFIED",
+            {"delegation_id": "DEL-TIP030-2"},
+            "tip030-verify-before-complete",
+            head,
+        )
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_CANCELLED",
+        {"delegation_id": "DEL-TIP030-2", "reason": "superseded by parent"},
+        "tip030-cancel-active",
+        head,
+    )
+    assert head["delegations"] == {"active": [], "awaiting_parent_verification": []}
+    with pytest.raises(ValueError, match="CONTINUITY_DELEGATION_NOT_FOUND"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_CANCELLED",
+            {"delegation_id": "DEL-TIP030-2"},
+            "tip030-cancel-missing",
+            head,
+        )
+
+
+def test_tip030_delegations_survive_unrelated_projection_events(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {"id": "DEL-TIP030-3", "task": "stay visible while workflow changes"},
+        "tip030-delegation-assigned-3",
+    )
+    head = append(
+        manager,
+        operation="tip030-workflow-update",
+        expected_revision=head["manifest_revision"],
+        expected_sha=head["manifest_sha256"],
+        payload={"projection": {"workflow": {"phase": "TIP-030", "state": "BUILD"}}},
+    )
+
+    assert head["delegations"]["active"] == [
+        {
+            "id": "DEL-TIP030-3",
+            "task": "stay visible while workflow changes",
+            "state": "ASSIGNED",
+        }
+    ]
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
+
+
+def test_tip030_delegation_payload_idempotency_and_spoof_rejection(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    first = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {"id": "DEL-TIP030-4", "task": "idempotent delegation append"},
+        "tip030-idempotent-delegation",
+    )
+    retry = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {"id": "DEL-TIP030-4", "task": "idempotent delegation append"},
+        "tip030-idempotent-delegation",
+    )
+    assert retry["manifest_sha256"] == first["manifest_sha256"]
+    assert retry["idempotent_recovered"] is True
+
+    with pytest.raises(ValueError, match="CONTINUITY_OPERATION_CONFLICT"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_ASSIGNED",
+            {"id": "DEL-TIP030-5", "task": "conflicting reuse"},
+            "tip030-idempotent-delegation",
+        )
+
+    with pytest.raises(ValueError, match="CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_ASSIGNED",
+            {
+                "id": "DEL-SPOOF",
+                "projection": {"delegations": {"active": [], "awaiting_parent_verification": []}},
+            },
+            "tip030-delegation-spoof",
+        )
+
+
+def test_tip030_verify_detects_delegation_projection_tamper(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {"id": "DEL-TIP030-6", "task": "detect delegation projection tamper"},
+        "tip030-verify-delegation-projection",
+    )
+    project_dir = tmp_path / "state" / "continuity" / "P1"
+    manifest_path = project_dir / "revisions" / "CM-000001.json"
+    pointer_path = project_dir / "current.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["delegations"]["active"] = []
+    manifest_path.write_bytes(_json_bytes(manifest))
+    manifest_sha = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+    pointer["manifest_sha256"] = manifest_sha
+    pointer_path.write_bytes(_json_bytes(pointer))
+
+    result = manager.verify("P1")
+    assert result["integrity"] == "DRIFT"
+    assert "MANIFEST_PROJECTION_MISMATCH:1" in result["issues"]
