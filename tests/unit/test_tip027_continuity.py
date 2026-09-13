@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -14,6 +15,18 @@ def append(manager, project="P1", operation="op-1", expected_revision=0, expecte
         operation,
         expected_revision,
         expected_sha,
+        {"source": "test", "security_identity": True},
+    )
+
+
+def append_lifecycle(manager, event_type, payload, operation, head=None, project="P1"):
+    return manager.append_event(
+        project,
+        event_type,
+        payload,
+        operation,
+        int(head["manifest_revision"]) if head else 0,
+        head["manifest_sha256"] if head else "",
         {"source": "test", "security_identity": True},
     )
 
@@ -116,3 +129,172 @@ def test_same_reconcile_operation_converges(tmp_path):
     retry = manager.reconcile("P1", "reconcile-1", 1, head["manifest_sha256"])
     assert first["manifest_sha256"] == retry["manifest_sha256"]
     assert retry["idempotent_recovered"] is True
+
+
+def test_tip029_lifecycle_set_events_project_active_state(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    requirement = append_lifecycle(
+        manager,
+        "REQUIREMENT_SET",
+        {"id": "REQ-TIP029-1", "text": "typed lifecycle events are validated"},
+        "tip029-requirement-set",
+    )
+    decision = append_lifecycle(
+        manager,
+        "DECISION_SET",
+        {"decision": {"id": "DEC-TIP029-1", "summary": "use existing continuity store"}},
+        "tip029-decision-set",
+        requirement,
+    )
+    constraint = append_lifecycle(
+        manager,
+        "CONSTRAINT_SET",
+        {"constraint": "NO_BLIND_REPLAY"},
+        "tip029-constraint-set",
+        decision,
+    )
+
+    assert constraint["requirements"]["active"] == [
+        {"id": "REQ-TIP029-1", "text": "typed lifecycle events are validated"}
+    ]
+    assert constraint["decisions"]["active"] == [
+        {"id": "DEC-TIP029-1", "summary": "use existing continuity store", "state": "APPROVED"}
+    ]
+    assert constraint["constraints"]["active"] == ["NO_BLIND_REPLAY"]
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
+
+
+def test_tip029_supersede_and_revoke_are_explicit_not_chronological(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    head = append_lifecycle(
+        manager,
+        "REQUIREMENT_SET",
+        {"id": "REQ-A", "text": "original requirement"},
+        "tip029-req-a",
+    )
+    head = append_lifecycle(
+        manager,
+        "REQUIREMENT_SET",
+        {"id": "REQ-B", "text": "independent later requirement"},
+        "tip029-req-b",
+        head,
+    )
+    assert [item["id"] for item in head["requirements"]["active"]] == ["REQ-A", "REQ-B"]
+
+    head = append_lifecycle(
+        manager,
+        "REQUIREMENT_SUPERSEDED",
+        {
+            "requirement_id": "REQ-A",
+            "replacement": {"id": "REQ-C", "text": "replacement requirement"},
+        },
+        "tip029-req-a-superseded",
+        head,
+    )
+    assert [item["id"] for item in head["requirements"]["active"]] == ["REQ-B", "REQ-C"]
+
+    head = append_lifecycle(
+        manager,
+        "DECISION_SET",
+        {"id": "DEC-A", "summary": "decision to supersede"},
+        "tip029-dec-a",
+        head,
+    )
+    head = append_lifecycle(
+        manager,
+        "DECISION_SET",
+        {"id": "DEC-B", "summary": "independent decision"},
+        "tip029-dec-b",
+        head,
+    )
+    head = append_lifecycle(
+        manager,
+        "DECISION_SUPERSEDED",
+        {
+            "decision_id": "DEC-A",
+            "replacement": {"id": "DEC-C", "summary": "replacement decision"},
+        },
+        "tip029-dec-a-superseded",
+        head,
+    )
+    assert [item["id"] for item in head["decisions"]["active"]] == ["DEC-B", "DEC-C"]
+
+    head = append_lifecycle(
+        manager,
+        "CONSTRAINT_SET",
+        {"constraint": "NO_PHASE1_REAUDIT_UNLESS_AUTHORITY_DRIFT"},
+        "tip029-constraint-phase1",
+        head,
+    )
+    head = append_lifecycle(
+        manager,
+        "CONSTRAINT_REVOKED",
+        {"constraint_id": "NO_PHASE1_REAUDIT_UNLESS_AUTHORITY_DRIFT"},
+        "tip029-constraint-phase1-revoked",
+        head,
+    )
+    assert head["constraints"]["active"] == []
+
+
+def test_tip029_typed_events_reject_projection_spoof_and_missing_id(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    with pytest.raises(ValueError, match="CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION"):
+        append_lifecycle(
+            manager,
+            "DECISION_SET",
+            {"id": "DEC-SPOOF", "projection": {"decisions": {"active": []}}},
+            "tip029-spoof",
+        )
+
+    with pytest.raises(ValueError, match="CONTINUITY_DECISION_ID_INVALID"):
+        append_lifecycle(manager, "DECISION_REVOKED", {"reason": "missing id"}, "tip029-missing-id")
+
+
+def test_tip029_lifecycle_idempotency_and_payload_conflict(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    first = append_lifecycle(
+        manager,
+        "CONSTRAINT_SET",
+        {"constraint": "GITHUB_PERSISTENCE_REQUIRED"},
+        "tip029-idempotent-constraint",
+    )
+    retry = append_lifecycle(
+        manager,
+        "CONSTRAINT_SET",
+        {"constraint": "GITHUB_PERSISTENCE_REQUIRED"},
+        "tip029-idempotent-constraint",
+    )
+    assert retry["manifest_sha256"] == first["manifest_sha256"]
+    assert retry["idempotent_recovered"] is True
+
+    with pytest.raises(ValueError, match="CONTINUITY_OPERATION_CONFLICT"):
+        append_lifecycle(
+            manager,
+            "CONSTRAINT_SET",
+            {"constraint": "NO_EA_TRADING_LOGIC_CHANGE"},
+            "tip029-idempotent-constraint",
+        )
+
+
+def test_tip029_verify_detects_manifest_projection_tamper(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    append_lifecycle(
+        manager,
+        "CONSTRAINT_SET",
+        {"constraint": "CHECKPOINT_CAS_BEFORE_BACKEND_MUTATION"},
+        "tip029-verify-projection",
+    )
+    project_dir = tmp_path / "state" / "continuity" / "P1"
+    manifest_path = project_dir / "revisions" / "CM-000001.json"
+    pointer_path = project_dir / "current.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["constraints"]["active"] = []
+    manifest_path.write_bytes(_json_bytes(manifest))
+    manifest_sha = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+    pointer["manifest_sha256"] = manifest_sha
+    pointer_path.write_bytes(_json_bytes(pointer))
+
+    result = manager.verify("P1")
+    assert result["integrity"] == "DRIFT"
+    assert "MANIFEST_PROJECTION_MISMATCH:1" in result["issues"]

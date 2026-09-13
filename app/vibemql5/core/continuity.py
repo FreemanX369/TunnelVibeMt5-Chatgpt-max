@@ -15,6 +15,16 @@ _PROJECT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 _EVENT_TYPE_RE = re.compile(r"^[A-Z][A-Z0-9_]{0,63}$")
 _OPERATION_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_LIFECYCLE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+_LIFECYCLE_EVENT_TYPES = {
+    "REQUIREMENT_SET",
+    "REQUIREMENT_SUPERSEDED",
+    "DECISION_SET",
+    "DECISION_SUPERSEDED",
+    "DECISION_REVOKED",
+    "CONSTRAINT_SET",
+    "CONSTRAINT_REVOKED",
+}
 _PROJECTION_FIELDS = (
     "project_session_binding",
     "source_binding",
@@ -250,6 +260,223 @@ class ContinuityManager:
             )
 
     @staticmethod
+    def _copy_json(value: Any) -> Any:
+        return json.loads(json.dumps(value, ensure_ascii=False))
+
+    @staticmethod
+    def _lifecycle_id(value: Any, field: str) -> str:
+        item_id = str(value or "").strip()
+        if not _LIFECYCLE_ID_RE.fullmatch(item_id):
+            raise ValueError(f"CONTINUITY_{field.upper()}_INVALID")
+        return item_id
+
+    @staticmethod
+    def _active_list(manifest: dict[str, Any], section: str) -> list[Any]:
+        value = manifest.get(section)
+        active = value.get("active") if isinstance(value, dict) else None
+        if not isinstance(active, list):
+            raise ValueError(f"CONTINUITY_{section.upper()}_ACTIVE_INVALID")
+        return ContinuityManager._copy_json(active)
+
+    @staticmethod
+    def _id_list(value: Any, field: str) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, str):
+            return [ContinuityManager._lifecycle_id(value, field)]
+        if isinstance(value, list):
+            return [ContinuityManager._lifecycle_id(item, field) for item in value]
+        raise ValueError(f"CONTINUITY_{field.upper()}_LIST_INVALID")
+
+    @staticmethod
+    def _event_item(payload: dict[str, Any], key: str, field: str) -> dict[str, Any]:
+        if key in payload:
+            item = payload[key]
+            if not isinstance(item, dict):
+                raise ValueError(f"CONTINUITY_{field.upper()}_OBJECT_REQUIRED")
+            out = ContinuityManager._copy_json(item)
+        else:
+            out = {
+                name: ContinuityManager._copy_json(value)
+                for name, value in payload.items()
+                if name
+                not in {
+                    "reason",
+                    "replacement",
+                    "supersedes",
+                    "superseded_by",
+                }
+            }
+        if not isinstance(out, dict):
+            raise ValueError(f"CONTINUITY_{field.upper()}_OBJECT_REQUIRED")
+        out["id"] = ContinuityManager._lifecycle_id(out.get("id"), field)
+        return out
+
+    @staticmethod
+    def _target_id(payload: dict[str, Any], aliases: tuple[str, ...], field: str) -> str:
+        for alias in aliases:
+            if alias in payload:
+                return ContinuityManager._lifecycle_id(payload[alias], field)
+        return ContinuityManager._lifecycle_id(payload.get("id"), field)
+
+    @staticmethod
+    def _upsert_by_id(active: list[Any], item: dict[str, Any], field: str) -> list[Any]:
+        item_id = ContinuityManager._lifecycle_id(item.get("id"), field)
+        item["id"] = item_id
+        return [
+            entry
+            for entry in active
+            if not (isinstance(entry, dict) and str(entry.get("id")) == item_id)
+        ] + [item]
+
+    @staticmethod
+    def _remove_by_ids(active: list[Any], ids: list[str]) -> list[Any]:
+        remove = set(ids)
+        return [
+            entry
+            for entry in active
+            if not (isinstance(entry, dict) and str(entry.get("id")) in remove)
+        ]
+
+    @staticmethod
+    def _constraint_item(payload: dict[str, Any]) -> str | dict[str, Any]:
+        if "constraint" in payload:
+            raw = payload["constraint"]
+        elif set(payload).issubset({"id", "reason", "supersedes"}):
+            raw = payload.get("id")
+        else:
+            raw = {
+                name: ContinuityManager._copy_json(value)
+                for name, value in payload.items()
+                if name not in {"reason", "supersedes"}
+            }
+        if isinstance(raw, str):
+            return ContinuityManager._lifecycle_id(raw, "constraint_id")
+        if isinstance(raw, dict):
+            out = ContinuityManager._copy_json(raw)
+            out["id"] = ContinuityManager._lifecycle_id(out.get("id"), "constraint_id")
+            return out
+        raise ValueError("CONTINUITY_CONSTRAINT_OBJECT_REQUIRED")
+
+    @staticmethod
+    def _constraint_key(item: Any) -> str:
+        if isinstance(item, str):
+            return ContinuityManager._lifecycle_id(item, "constraint_id")
+        if isinstance(item, dict):
+            return ContinuityManager._lifecycle_id(item.get("id"), "constraint_id")
+        raise ValueError("CONTINUITY_CONSTRAINT_ACTIVE_INVALID")
+
+    @staticmethod
+    def _upsert_constraint(active: list[Any], item: str | dict[str, Any]) -> list[Any]:
+        key = ContinuityManager._constraint_key(item)
+        return [entry for entry in active if ContinuityManager._constraint_key(entry) != key] + [item]
+
+    @staticmethod
+    def _remove_constraints(active: list[Any], ids: list[str]) -> list[Any]:
+        remove = set(ids)
+        return [entry for entry in active if ContinuityManager._constraint_key(entry) not in remove]
+
+    @staticmethod
+    def _lifecycle_projection(
+        event_type: str,
+        payload: dict[str, Any],
+        manifest: dict[str, Any],
+    ) -> dict[str, Any]:
+        if not isinstance(payload, dict):
+            raise ValueError("CONTINUITY_TYPED_EVENT_PAYLOAD_OBJECT_REQUIRED")
+        if "projection" in payload:
+            raise ValueError("CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION")
+
+        if event_type == "REQUIREMENT_SET":
+            active = ContinuityManager._active_list(manifest, "requirements")
+            item = ContinuityManager._event_item(payload, "requirement", "requirement_id")
+            active = ContinuityManager._remove_by_ids(
+                active,
+                ContinuityManager._id_list(payload.get("supersedes"), "requirement_id")
+                + ContinuityManager._id_list(item.get("supersedes"), "requirement_id"),
+            )
+            return {"requirements": {"active": ContinuityManager._upsert_by_id(active, item, "requirement_id")}}
+
+        if event_type == "REQUIREMENT_SUPERSEDED":
+            active = ContinuityManager._active_list(manifest, "requirements")
+            target = ContinuityManager._target_id(
+                payload, ("requirement_id", "superseded_requirement_id"), "requirement_id"
+            )
+            active = ContinuityManager._remove_by_ids(active, [target])
+            if "replacement" in payload:
+                replacement = payload["replacement"]
+                if not isinstance(replacement, dict):
+                    raise ValueError("CONTINUITY_REQUIREMENT_REPLACEMENT_OBJECT_REQUIRED")
+                item = ContinuityManager._copy_json(replacement)
+                item["id"] = ContinuityManager._lifecycle_id(item.get("id"), "requirement_id")
+                active = ContinuityManager._upsert_by_id(active, item, "requirement_id")
+            return {"requirements": {"active": active}}
+
+        if event_type == "DECISION_SET":
+            active = ContinuityManager._active_list(manifest, "decisions")
+            item = ContinuityManager._event_item(payload, "decision", "decision_id")
+            item["state"] = str(item.get("state") or "APPROVED").strip().upper()
+            active = ContinuityManager._remove_by_ids(
+                active,
+                ContinuityManager._id_list(payload.get("supersedes"), "decision_id")
+                + ContinuityManager._id_list(item.get("supersedes"), "decision_id"),
+            )
+            return {"decisions": {"active": ContinuityManager._upsert_by_id(active, item, "decision_id")}}
+
+        if event_type == "DECISION_SUPERSEDED":
+            active = ContinuityManager._active_list(manifest, "decisions")
+            target = ContinuityManager._target_id(
+                payload, ("decision_id", "superseded_decision_id"), "decision_id"
+            )
+            active = ContinuityManager._remove_by_ids(active, [target])
+            if "replacement" in payload:
+                replacement = payload["replacement"]
+                if not isinstance(replacement, dict):
+                    raise ValueError("CONTINUITY_DECISION_REPLACEMENT_OBJECT_REQUIRED")
+                item = ContinuityManager._copy_json(replacement)
+                item["id"] = ContinuityManager._lifecycle_id(item.get("id"), "decision_id")
+                item["state"] = str(item.get("state") or "APPROVED").strip().upper()
+                active = ContinuityManager._upsert_by_id(active, item, "decision_id")
+            return {"decisions": {"active": active}}
+
+        if event_type == "DECISION_REVOKED":
+            active = ContinuityManager._active_list(manifest, "decisions")
+            target = ContinuityManager._target_id(payload, ("decision_id",), "decision_id")
+            return {"decisions": {"active": ContinuityManager._remove_by_ids(active, [target])}}
+
+        if event_type == "CONSTRAINT_SET":
+            active = ContinuityManager._active_list(manifest, "constraints")
+            active = ContinuityManager._remove_constraints(
+                active, ContinuityManager._id_list(payload.get("supersedes"), "constraint_id")
+            )
+            return {
+                "constraints": {
+                    "active": ContinuityManager._upsert_constraint(
+                        active, ContinuityManager._constraint_item(payload)
+                    )
+                }
+            }
+
+        if event_type == "CONSTRAINT_REVOKED":
+            active = ContinuityManager._active_list(manifest, "constraints")
+            target = ContinuityManager._target_id(payload, ("constraint_id",), "constraint_id")
+            return {"constraints": {"active": ContinuityManager._remove_constraints(active, [target])}}
+
+        raise ValueError(f"CONTINUITY_UNSUPPORTED_TYPED_EVENT: {event_type}")
+
+    @staticmethod
+    def _validate_lifecycle_payload(event_type: str, payload: dict[str, Any]) -> None:
+        ContinuityManager._lifecycle_projection(
+            event_type,
+            payload,
+            {
+                "requirements": {"active": []},
+                "decisions": {"active": []},
+                "constraints": {"active": []},
+            },
+        )
+
+    @staticmethod
     def _new_manifest(
         project_id: str,
         previous: dict[str, Any] | None,
@@ -280,9 +507,13 @@ class ContinuityManager:
         if previous:
             for key in _PROJECTION_FIELDS:
                 manifest[key] = previous.get(key)
-        projection = event["payload"].get("projection")
-        if projection is None:
-            projection = event["payload"]
+        event_type = str(event["event_type"])
+        if event_type in _LIFECYCLE_EVENT_TYPES:
+            projection = ContinuityManager._lifecycle_projection(event_type, event["payload"], manifest)
+        else:
+            projection = event["payload"].get("projection")
+            if projection is None:
+                projection = event["payload"]
         if isinstance(projection, dict):
             for key in _PROJECTION_FIELDS:
                 if key in projection:
@@ -405,6 +636,8 @@ class ContinuityManager:
             raise ValueError("payload must be an object")
         if len(_json_bytes(payload)) > 1024 * 1024:
             raise ValueError("CONTINUITY_PAYLOAD_TOO_LARGE")
+        if kind in _LIFECYCLE_EVENT_TYPES:
+            self._validate_lifecycle_payload(kind, payload)
         operation = self._operation_id(operation_id)
         body = {"project_id": pid, "event_type": kind, "payload": payload}
         request_sha = self._request_hash("append_event", body)
@@ -439,6 +672,17 @@ class ContinuityManager:
             current = self._load_current_optional(pid)
             self._assert_cas(current, int(expected_manifest_revision), expected_sha)
             previous, previous_manifest_sha = current or (None, "")
+            if kind in _LIFECYCLE_EVENT_TYPES:
+                self._lifecycle_projection(
+                    kind,
+                    payload,
+                    previous
+                    or {
+                        "requirements": {"active": []},
+                        "decisions": {"active": []},
+                        "constraints": {"active": []},
+                    },
+                )
             next_seq = int(previous["event_head"]["seq"]) + 1 if previous else 1
             if len(events) != next_seq - 1:
                 raise ValueError("CONTINUITY_HEAD_EVENT_DRIFT: reconcile required")
@@ -545,9 +789,18 @@ class ContinuityManager:
             issues: list[str] = []
             if len(events) != len(manifests):
                 issues.append("MANIFEST_EVENT_COUNT_DRIFT")
-            for index, ((event, event_sha), (manifest, _)) in enumerate(zip(events, manifests), start=1):
+            previous_manifest: dict[str, Any] | None = None
+            previous_manifest_sha = ""
+            for index, ((event, event_sha), (manifest, manifest_sha)) in enumerate(
+                zip(events, manifests), start=1
+            ):
                 if manifest.get("event_head") != {"seq": index, "sha256": event_sha}:
                     issues.append(f"MANIFEST_EVENT_HEAD_MISMATCH:{index}")
+                expected = self._new_manifest(pid, previous_manifest, previous_manifest_sha, event, event_sha)
+                if manifest != expected:
+                    issues.append(f"MANIFEST_PROJECTION_MISMATCH:{index}")
+                previous_manifest = manifest
+                previous_manifest_sha = manifest_sha
             if not current and events:
                 issues.append("CURRENT_POINTER_MISSING")
             elif current and manifests and current[1] != manifests[-1][1]:
