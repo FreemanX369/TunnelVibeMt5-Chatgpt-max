@@ -24,6 +24,12 @@ _LIFECYCLE_EVENT_TYPES = {
     "DECISION_REVOKED",
     "CONSTRAINT_SET",
     "CONSTRAINT_REVOKED",
+    "DELEGATION_ASSIGNED",
+    "DELEGATION_STARTED",
+    "DELEGATION_BLOCKED",
+    "DELEGATION_COMPLETED",
+    "DELEGATION_PARENT_VERIFIED",
+    "DELEGATION_CANCELLED",
 }
 _PROJECTION_FIELDS = (
     "project_session_binding",
@@ -32,6 +38,7 @@ _PROJECTION_FIELDS = (
     "requirements",
     "decisions",
     "constraints",
+    "delegations",
     "evidence_refs",
     "recovery",
     "runtime_authority",
@@ -377,6 +384,155 @@ class ContinuityManager:
         return [entry for entry in active if ContinuityManager._constraint_key(entry) not in remove]
 
     @staticmethod
+    def _delegation_lists(manifest: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        value = manifest.get("delegations")
+        if not isinstance(value, dict):
+            raise ValueError("CONTINUITY_DELEGATIONS_INVALID")
+        active = value.get("active")
+        awaiting = value.get("awaiting_parent_verification")
+        if not isinstance(active, list) or not isinstance(awaiting, list):
+            raise ValueError("CONTINUITY_DELEGATIONS_LISTS_INVALID")
+        for entry in active + awaiting:
+            if not isinstance(entry, dict):
+                raise ValueError("CONTINUITY_DELEGATION_ENTRY_INVALID")
+            ContinuityManager._lifecycle_id(entry.get("id"), "delegation_id")
+        return ContinuityManager._copy_json(active), ContinuityManager._copy_json(awaiting)
+
+    @staticmethod
+    def _delegation_item(payload: dict[str, Any]) -> dict[str, Any]:
+        if "delegation" in payload:
+            item = payload["delegation"]
+            if not isinstance(item, dict):
+                raise ValueError("CONTINUITY_DELEGATION_OBJECT_REQUIRED")
+            out = ContinuityManager._copy_json(item)
+        else:
+            out = {
+                name: ContinuityManager._copy_json(value)
+                for name, value in payload.items()
+                if name
+                not in {
+                    "reason",
+                    "supersedes",
+                    "delegation_id",
+                }
+            }
+            if "delegation_id" in payload and "id" not in out:
+                out["id"] = payload["delegation_id"]
+        if not isinstance(out, dict):
+            raise ValueError("CONTINUITY_DELEGATION_OBJECT_REQUIRED")
+        out["id"] = ContinuityManager._lifecycle_id(out.get("id"), "delegation_id")
+        out["state"] = str(out.get("state") or "ASSIGNED").strip().upper()
+        return out
+
+    @staticmethod
+    def _find_delegation(entries: list[dict[str, Any]], delegation_id: str) -> dict[str, Any] | None:
+        for entry in entries:
+            if str(entry.get("id")) == delegation_id:
+                return ContinuityManager._copy_json(entry)
+        return None
+
+    @staticmethod
+    def _delegation_target(payload: dict[str, Any]) -> str:
+        return ContinuityManager._target_id(payload, ("delegation_id",), "delegation_id")
+
+    @staticmethod
+    def _delegation_update(entry: dict[str, Any], payload: dict[str, Any], state: str) -> dict[str, Any]:
+        out = ContinuityManager._copy_json(entry)
+        out["state"] = state
+        for key in ("summary", "report", "result", "blocker", "verification"):
+            if key in payload:
+                out[key] = ContinuityManager._copy_json(payload[key])
+        return out
+
+    @staticmethod
+    def _delegation_projection(
+        event_type: str,
+        payload: dict[str, Any],
+        manifest: dict[str, Any],
+    ) -> dict[str, Any]:
+        active, awaiting = ContinuityManager._delegation_lists(manifest)
+
+        if event_type == "DELEGATION_ASSIGNED":
+            item = ContinuityManager._delegation_item(payload)
+            remove_ids = (
+                [item["id"]]
+                + ContinuityManager._id_list(payload.get("supersedes"), "delegation_id")
+                + ContinuityManager._id_list(item.get("supersedes"), "delegation_id")
+            )
+            active = ContinuityManager._remove_by_ids(active, remove_ids)
+            awaiting = ContinuityManager._remove_by_ids(awaiting, remove_ids)
+            active = ContinuityManager._upsert_by_id(active, item, "delegation_id")
+            return {"delegations": {"active": active, "awaiting_parent_verification": awaiting}}
+
+        if event_type in {"DELEGATION_STARTED", "DELEGATION_BLOCKED"}:
+            target = ContinuityManager._delegation_target(payload)
+            existing = ContinuityManager._find_delegation(active, target)
+            if existing is None:
+                raise ValueError("CONTINUITY_DELEGATION_NOT_ACTIVE")
+            state = "STARTED" if event_type == "DELEGATION_STARTED" else "BLOCKED"
+            active = ContinuityManager._upsert_by_id(
+                ContinuityManager._remove_by_ids(active, [target]),
+                ContinuityManager._delegation_update(existing, payload, state),
+                "delegation_id",
+            )
+            return {"delegations": {"active": active, "awaiting_parent_verification": awaiting}}
+
+        if event_type == "DELEGATION_COMPLETED":
+            target = ContinuityManager._delegation_target(payload)
+            existing = ContinuityManager._find_delegation(active, target)
+            if existing is None:
+                raise ValueError("CONTINUITY_DELEGATION_NOT_ACTIVE")
+            item = ContinuityManager._delegation_update(
+                existing, payload, "AWAITING_PARENT_VERIFICATION"
+            )
+            item["report_authority"] = "PENDING_PARENT_VERIFICATION"
+            active = ContinuityManager._remove_by_ids(active, [target])
+            awaiting = ContinuityManager._upsert_by_id(
+                ContinuityManager._remove_by_ids(awaiting, [target]),
+                item,
+                "delegation_id",
+            )
+            return {"delegations": {"active": active, "awaiting_parent_verification": awaiting}}
+
+        if event_type == "DELEGATION_PARENT_VERIFIED":
+            target = ContinuityManager._delegation_target(payload)
+            existing = ContinuityManager._find_delegation(awaiting, target)
+            if existing is None:
+                raise ValueError("CONTINUITY_DELEGATION_NOT_AWAITING_PARENT_VERIFICATION")
+            awaiting = ContinuityManager._remove_by_ids(awaiting, [target])
+            return {"delegations": {"active": active, "awaiting_parent_verification": awaiting}}
+
+        if event_type == "DELEGATION_CANCELLED":
+            target = ContinuityManager._delegation_target(payload)
+            if (
+                ContinuityManager._find_delegation(active, target) is None
+                and ContinuityManager._find_delegation(awaiting, target) is None
+            ):
+                raise ValueError("CONTINUITY_DELEGATION_NOT_FOUND")
+            active = ContinuityManager._remove_by_ids(active, [target])
+            awaiting = ContinuityManager._remove_by_ids(awaiting, [target])
+            return {"delegations": {"active": active, "awaiting_parent_verification": awaiting}}
+
+        raise ValueError(f"CONTINUITY_UNSUPPORTED_TYPED_EVENT: {event_type}")
+
+    @staticmethod
+    def _validate_delegation_payload(event_type: str, payload: dict[str, Any]) -> None:
+        if event_type == "DELEGATION_ASSIGNED":
+            ContinuityManager._delegation_item(payload)
+            ContinuityManager._id_list(payload.get("supersedes"), "delegation_id")
+            return
+        if event_type in {
+            "DELEGATION_STARTED",
+            "DELEGATION_BLOCKED",
+            "DELEGATION_COMPLETED",
+            "DELEGATION_PARENT_VERIFIED",
+            "DELEGATION_CANCELLED",
+        }:
+            ContinuityManager._delegation_target(payload)
+            return
+        raise ValueError(f"CONTINUITY_UNSUPPORTED_TYPED_EVENT: {event_type}")
+
+    @staticmethod
     def _lifecycle_projection(
         event_type: str,
         payload: dict[str, Any],
@@ -386,6 +542,9 @@ class ContinuityManager:
             raise ValueError("CONTINUITY_TYPED_EVENT_PAYLOAD_OBJECT_REQUIRED")
         if "projection" in payload:
             raise ValueError("CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION")
+
+        if event_type.startswith("DELEGATION_"):
+            return ContinuityManager._delegation_projection(event_type, payload, manifest)
 
         if event_type == "REQUIREMENT_SET":
             active = ContinuityManager._active_list(manifest, "requirements")
@@ -466,6 +625,13 @@ class ContinuityManager:
 
     @staticmethod
     def _validate_lifecycle_payload(event_type: str, payload: dict[str, Any]) -> None:
+        if not isinstance(payload, dict):
+            raise ValueError("CONTINUITY_TYPED_EVENT_PAYLOAD_OBJECT_REQUIRED")
+        if "projection" in payload:
+            raise ValueError("CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION")
+        if event_type.startswith("DELEGATION_"):
+            ContinuityManager._validate_delegation_payload(event_type, payload)
+            return
         ContinuityManager._lifecycle_projection(
             event_type,
             payload,
@@ -473,6 +639,7 @@ class ContinuityManager:
                 "requirements": {"active": []},
                 "decisions": {"active": []},
                 "constraints": {"active": []},
+                "delegations": {"active": [], "awaiting_parent_verification": []},
             },
         )
 
@@ -681,6 +848,7 @@ class ContinuityManager:
                         "requirements": {"active": []},
                         "decisions": {"active": []},
                         "constraints": {"active": []},
+                        "delegations": {"active": [], "awaiting_parent_verification": []},
                     },
                 )
             next_seq = int(previous["event_head"]["seq"]) + 1 if previous else 1
