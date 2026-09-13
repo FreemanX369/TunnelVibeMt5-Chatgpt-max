@@ -1,0 +1,59 @@
+name: Verify TIP-028 Idempotent Bindings
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  idempotent-bindings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile TIP-028 surfaces
+        run: |
+          python -m py_compile \
+            app/vibemql5/core/project_sessions.py \
+            app/vibemql5/core/facade.py \
+            app/vibemql5/adapters/mcp.py \
+            tests/unit/test_tip028_idempotent_bindings.py
+      - name: Verify binding contract
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          def parameters(path, name):
+              tree = ast.parse(Path(path).read_text(encoding="utf-8"))
+              matches = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == name]
+              assert len(matches) == 1, (path, name, len(matches))
+              node = matches[0]
+              return [arg.arg for arg in (*node.args.posonlyargs, *node.args.args, *node.args.kwonlyargs)]
+
+          assert {"operation_id", "expected_revision_sha256"} <= set(
+              parameters("app/vibemql5/core/project_sessions.py", "update")
+          )
+          assert {"operation_id", "expected_revision_sha256"} <= set(
+              parameters("app/vibemql5/core/facade.py", "update_project_session")
+          )
+          assert "operation_id" in parameters("app/vibemql5/core/facade.py", "launch_test")
+          assert {"operation_id", "expected_revision_sha256"} <= set(
+              parameters("app/vibemql5/adapters/mcp.py", "update_project_session")
+          )
+          assert "operation_id" in parameters("app/vibemql5/adapters/mcp.py", "launch_test")
+
+          project = Path("app/vibemql5/core/project_sessions.py").read_text(encoding="utf-8")
+          facade = Path("app/vibemql5/core/facade.py").read_text(encoding="utf-8")
+          mcp = Path("app/vibemql5/adapters/mcp.py").read_text(encoding="utf-8")
+          assert "session_update_request_sha256" in project
+          assert "same operation_id has a different request" in project
+          assert "operation_id=operation_id" in facade
+          assert "expected_revision_sha256=expected_revision_sha256" in facade
+          assert "operation_id=operation_id" in mcp
+          PY

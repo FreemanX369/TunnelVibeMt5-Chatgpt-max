@@ -132,9 +132,18 @@ class ToolFacade:
             out = self.project_sessions.create(project_id, workspace, ea, active_goal, decision_refs or [], phase, checkpoint_id, baseline_job_id, last_job_id)
             self.concurrency.note_project_actor(project_id)
             return out
-    def update_project_session(self, project_id, expected_revision, active_goal=None, decision_refs=None, phase=None, checkpoint_id=None, baseline_job_id=None, last_job_id=None):
+    def update_project_session(
+        self, project_id, expected_revision, active_goal=None, decision_refs=None,
+        phase=None, checkpoint_id=None, baseline_job_id=None, last_job_id=None,
+        operation_id="", expected_revision_sha256="",
+    ):
         with self.concurrency.mutation("update_project_session", project_id=project_id):
-            out = self.project_sessions.update(project_id, expected_revision, active_goal=active_goal, decision_refs=decision_refs, phase=phase, checkpoint_id=checkpoint_id, baseline_job_id=baseline_job_id, last_job_id=last_job_id)
+            out = self.project_sessions.update(
+                project_id, expected_revision,
+                active_goal=active_goal, decision_refs=decision_refs, phase=phase,
+                checkpoint_id=checkpoint_id, baseline_job_id=baseline_job_id, last_job_id=last_job_id,
+                operation_id=operation_id, expected_revision_sha256=expected_revision_sha256,
+            )
             self.concurrency.note_project_actor(project_id)
             return out
     def resume_project_session(self, project_id): return self.project_sessions.resume(project_id)
@@ -309,7 +318,7 @@ class ToolFacade:
                 source="WINDOWS_NATIVE_QUALIFICATION_FILE", mutation_operation_id=lease.operation_id,
             )
 
-    def launch_test(self, workspace, ea, terminal=None, preset='smoke', set_file=None, overrides=None, mock=False, test_timeout=0, ea_binary_ref=''):
+    def launch_test(self, workspace, ea, terminal=None, preset='smoke', set_file=None, overrides=None, mock=False, test_timeout=0, ea_binary_ref='', operation_id=''):
         self._require_mt5_capable_runtime()
         # TUN-01 boundary validation: invalid overrides/date/delay fail before a
         # job id, lock, compile artifact, terminal handoff, or MT5 process exists.
@@ -324,7 +333,7 @@ class ToolFacade:
         return self.jobs.launch_test({"workspace":workspace,"ea":ea,"terminal":fixed,"preset":preset,"set_file":set_file,
                                       "overrides":overrides or {},"mock":bool(mock),"test_timeout":int(test_timeout),
                                       "ea_binary_ref":binary_ref or None,
-                                      "orchestration_actor":actor})
+                                      "orchestration_actor":actor}, operation_id=operation_id)
     def get_job(self, job_id, wait_seconds=0, after_event_seq=-1):
         return self.jobs.get_job(job_id, wait_seconds=wait_seconds, after_event_seq=after_event_seq)
     def cancel_job(self, job_id):
