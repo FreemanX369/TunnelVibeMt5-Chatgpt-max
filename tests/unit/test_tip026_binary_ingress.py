@@ -12,6 +12,7 @@ import pytest
 from vibemql5.contracts import MCP_TOOL_CATALOG_SHA256, MCP_TOOL_COUNT, MCP_TOOL_NAMES
 from vibemql5.core.binary_ingress import BinaryIngressManager, EX5_IMPORT_MAX_BYTES, _safe_relative_ex5, _trusted_download_host
 from vibemql5.core.facade import ToolFacade
+from vibemql5.core.provenance import load_bridge_provenance, producer_identity, validate_state_provenance
 from vibemql5.core.jobs import JobStore
 from vibemql5.worker import run_job
 
@@ -56,10 +57,72 @@ def _ex5(tmp_path: Path, name: str, payload: bytes) -> Path:
     return p
 
 
+def _write_build_provenance(
+    root: Path,
+    count: int = 59,
+    catalog_sha256: str = "0" * 64,
+) -> None:
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    (root / "config" / "build-provenance.json").write_text(json.dumps({
+        "schema_version": "1.0",
+        "bridge_name": "VibeMQL5 Bridge",
+        "bridge_version": "0.2.32",
+        "bridge_build": "TIP-026R3",
+        "result_schema": "1.4",
+        "mcp_tool_count": count,
+        "mcp_tool_catalog_sha256": catalog_sha256,
+    }), encoding="utf-8")
+
+
+def _producer_state(root: Path, component: str = "watchdog") -> tuple[Path, dict]:
+    producer_path = root / f"{component}.ps1"
+    producer_path.write_text("Write-Output 'ok'\n", encoding="utf-8")
+    producer = producer_identity(producer_path, component)
+    return producer_path, {
+        "schema_version": "1.0",
+        "bridge_build": "TIP-026R3",
+        "bridge_version": "0.2.32",
+        **producer,
+    }
+
+
 def test_tip026_catalog_is_43_and_contains_import_ex5():
     assert MCP_TOOL_COUNT == 65
     assert "import_ex5" in MCP_TOOL_NAMES
     assert MCP_TOOL_CATALOG_SHA256 == "00d8956200bfc6020cea4c522edda3b6fdd34ca40f97c7fb2175d30ce1aca0e9"
+
+
+def test_tip031_bridge_provenance_catalog_comes_from_contract(tmp_path: Path):
+    root = _root(tmp_path)
+    _write_build_provenance(root)
+    provenance = load_bridge_provenance(root)
+    assert provenance["mcp_tool_count"] == MCP_TOOL_COUNT == 65
+    assert provenance["mcp_tool_catalog_sha256"] == MCP_TOOL_CATALOG_SHA256
+    assert provenance["mcp_tool_catalog_source"] == "contracts.py"
+
+
+def test_tip031_state_provenance_rejects_stale_catalog_metadata(tmp_path: Path):
+    root = _root(tmp_path)
+    _write_build_provenance(root)
+    producer_path, state = _producer_state(root)
+    state["mcp_tool_count"] = 59
+    state["mcp_tool_catalog_sha256"] = "0" * 64
+    result = validate_state_provenance(root, state, producer_path, "watchdog")
+    assert result["fresh"] is False
+    assert "MCP_TOOL_COUNT_STALE" in result["reasons"]
+    assert "MCP_TOOL_CATALOG_SHA_STALE" in result["reasons"]
+    assert result["expected_catalog"]["mcp_tool_count"] == MCP_TOOL_COUNT
+
+
+def test_tip031_state_provenance_accepts_contract_catalog_metadata(tmp_path: Path):
+    root = _root(tmp_path)
+    _write_build_provenance(root)
+    producer_path, state = _producer_state(root, "tunnel-supervisor")
+    state["mcp_tool_count"] = MCP_TOOL_COUNT
+    state["mcp_tool_catalog_sha256"] = MCP_TOOL_CATALOG_SHA256
+    result = validate_state_provenance(root, state, producer_path, "tunnel-supervisor")
+    assert result["fresh"] is True
+    assert result["reasons"] == []
 
 
 def test_tip026_import_exact_hash_and_idempotent_reuse(tmp_path: Path):

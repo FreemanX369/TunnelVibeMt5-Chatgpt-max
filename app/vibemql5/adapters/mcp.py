@@ -35,6 +35,8 @@ def _runtime_provenance(root: Path | None = None) -> dict[str, Any]:
         "bridge_build": canonical["bridge_build"],
         "bridge_version": canonical["bridge_version"],
         "provenance_schema": canonical["schema_version"],
+        "mcp_tool_count": canonical["mcp_tool_count"],
+        "mcp_tool_catalog_sha256": canonical["mcp_tool_catalog_sha256"],
         "pid": os.getpid(),
         "runtime_mode": os.environ.get("VIBEMQL5_RUNTIME_MODE", "manual"),
         "supervisor_generation": os.environ.get("VIBEMQL5_SUPERVISOR_GENERATION", ""),
