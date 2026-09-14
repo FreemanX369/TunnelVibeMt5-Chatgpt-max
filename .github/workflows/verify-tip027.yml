@@ -26,6 +26,7 @@ jobs:
             app/vibemql5/core/provenance.py \
             app/vibemql5/adapters/mcp.py \
             app/vibemql5/contracts.py \
+            tests/unit/test_tip015_provenance.py \
             tests/unit/test_tip026_binary_ingress.py \
             tests/unit/test_tip027_continuity.py
       - name: Run Continuity Core tests
