@@ -47,6 +47,10 @@ jobs:
               parameters("app/vibemql5/adapters/mcp.py", "update_project_session")
           )
           assert "operation_id" in parameters("app/vibemql5/adapters/mcp.py", "launch_test")
+          assert {"operation_id", "expected_revision_sha256"} <= set(
+              parameters("app/vibemql5/adapters/mcp.py", "update_project_session_v2")
+          )
+          assert "operation_id" in parameters("app/vibemql5/adapters/mcp.py", "launch_test_v2")
 
           project = Path("app/vibemql5/core/project_sessions.py").read_text(encoding="utf-8")
           facade = Path("app/vibemql5/core/facade.py").read_text(encoding="utf-8")
