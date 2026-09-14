@@ -74,7 +74,7 @@ class _Ctx:
 
 
 def test_tip024_identity_and_tool_catalog_are_preserved():
-    assert vibemql5.__version__ == "0.2.32"
+    assert vibemql5.__version__ == "0.2.33"
     assert MCP_TOOL_COUNT == 67
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
     assert hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest() == EXPECTED_CATALOG
@@ -292,7 +292,7 @@ def test_tip024_mcp_registers_same_42_tools_and_context_is_invisible_contract(mo
     assert set(server.tools) == set(MCP_TOOL_NAMES)
     assert len(server.tools) == 67
     info = server.tools["server_info"]()
-    assert info["version"] == "0.2.32"
+    assert info["version"] == "0.2.33"
     assert info["bridge_build"] == "TIP-025"
     assert info["multi_client_concurrency_schema"] == "1.0"
     assert info["multi_client_mode"] == "SERIALIZED_SHARED_VPS"
