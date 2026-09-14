@@ -281,6 +281,27 @@ def create_server(root: Path, transport: str = "unknown"):
         ))
 
     @server.tool()
+    def update_project_session_v2(
+        ctx: Context,
+        project_id: str,
+        expected_revision: str,
+        operation_id: str,
+        expected_revision_sha256: str,
+        active_goal: str | None = None,
+        decision_refs: list[str] | None = None,
+        phase: str | None = None,
+        checkpoint_id: str | None = None,
+        baseline_job_id: str | None = None,
+        last_job_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Append a session revision with required operation idempotency and SHA CAS."""
+        return _invoke(ctx, "update_project_session_v2", lambda: facade.update_project_session(
+            project_id, expected_revision, active_goal, decision_refs, phase,
+            checkpoint_id, baseline_job_id, last_job_id,
+            operation_id, expected_revision_sha256,
+        ))
+
+    @server.tool()
     def resume_project_session(project_id: str) -> dict[str, Any]:
         """Validate source/checkpoint/job references before continuing a prior project session."""
         return facade.resume_project_session(project_id)
@@ -602,6 +623,25 @@ def create_server(root: Path, transport: str = "unknown"):
             overrides=overrides or {},
             mock=False,
             test_timeout=timeout_seconds,
+            ea_binary_ref=ea_binary_ref,
+            operation_id=operation_id,
+        ))
+
+    @server.tool()
+    def launch_test_v2(
+        ctx: Context,
+        workspace: str,
+        ea: str,
+        operation_id: str,
+        preset: str = "smoke",
+        set_file: str = "",
+        overrides: dict[str, Any] | None = None,
+        timeout_seconds: int = 0,
+        ea_binary_ref: str = "",
+    ) -> dict[str, Any]:
+        """Launch an async MT5-2 test with a required idempotency operation id."""
+        return _invoke(ctx, "launch_test_v2", lambda: facade.launch_test(
+            workspace, ea, preset, set_file, overrides or {}, timeout_seconds,
             ea_binary_ref=ea_binary_ref,
             operation_id=operation_id,
         ))
