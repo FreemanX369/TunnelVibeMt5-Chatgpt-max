@@ -20,6 +20,7 @@ MCP_TOOL_NAMES = (
     "get_project_session",
     "create_project_session",
     "update_project_session",
+    "update_project_session_v2",
     "resume_project_session",
     "start_iteration",
     "get_iteration",
@@ -50,6 +51,7 @@ MCP_TOOL_NAMES = (
     "import_ex5_authorized_file",
     "get_ex5_import_receipt",
     "launch_test",
+    "launch_test_v2",
     "get_job",
     "cancel_job",
     "read_result",
@@ -72,8 +74,8 @@ MCP_TOOL_NAMES = (
     "backend_restart_runtime",
     "backend_read_evidence",
 )
-MCP_TOOL_COUNT = 65
-MCP_TOOL_CATALOG_SHA256 = '00d8956200bfc6020cea4c522edda3b6fdd34ca40f97c7fb2175d30ce1aca0e9'
+MCP_TOOL_COUNT = 67
+MCP_TOOL_CATALOG_SHA256 = '835e5dfb8b86649bfafdc616a440f108a78389404e062bd76ba430865025d7fe'
 
 # MetaTrader 5 [Tester] ExecutionMode native bounds.
 EXECUTION_MODE_RANDOM = -1
