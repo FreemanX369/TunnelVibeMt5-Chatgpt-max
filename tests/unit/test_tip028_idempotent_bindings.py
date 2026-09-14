@@ -223,3 +223,24 @@ def test_tip028_mcp_exposes_optional_binding_parameters(monkeypatch, tmp_path: P
     assert update["expected_revision_sha256"].default == ""
     assert launch["operation_id"].default == ""
     assert len(server.tools) == 65
+
+
+def test_tip032_project_session_resume_detects_source_drift(tmp_path: Path):
+    root = _root(tmp_path)
+    manager = ProjectSessionManager(root)
+    created = manager.create(
+        "TIP032",
+        "demo",
+        "Experts/DemoEA.mq5",
+        active_goal="full qualification",
+        phase="VERIFY",
+    )
+
+    source_path = root / "workspaces" / "demo" / "Experts" / "DemoEA.mq5"
+    source_path.write_bytes(b"#property strict\r\nvoid OnTick(){/*drift*/}\r\n")
+
+    resumed = manager.resume("TIP032")
+    assert resumed["resume_safe"] is False
+    assert "SOURCE_CHANGED_SINCE_SESSION_REVISION" in resumed["stale_reasons"]
+    assert resumed["source"]["match_session_revision"] is False
+    assert resumed["session"]["source_sha256"] == created["source_sha256"]
