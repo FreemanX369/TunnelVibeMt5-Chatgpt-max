@@ -8,10 +8,13 @@ import shutil
 import subprocess
 import tempfile
 import time
+import urllib.error
+import urllib.request
 import zipfile
 from pathlib import Path, PureWindowsPath
 from typing import Any, Iterable
 
+from ..core.jobs import _exclusive_file_lock
 from .models import FileMeta, Receipt, new_id, sha256_file, write_json_atomic
 
 class BackendAdminError(RuntimeError):
@@ -32,6 +35,27 @@ class BackendAdmin:
         "runtime_forensics",
         "tip026",
         "baseline_aware",
+    }
+
+    TUNNEL_INSTANCES = {
+        "A": {
+            "config": "ops/windows/vibemql5.windows.json",
+            "profile": "vibemql5-vps",
+            "secret": "secrets/tunnel-runtime-key.dpapi",
+            "health_port": 8080,
+            "task": "VibeMQL5-OpenAI-Tunnel",
+            "watchdog": "VibeMQL5-Watchdog",
+            "background": "VibeMQL5-OpenAI-Tunnel-Background",
+        },
+        "B": {
+            "config": "ops/windows/vibemql5.windows.b.json",
+            "profile": "vibemql5-vps-b",
+            "secret": "secrets/tunnel-runtime-key-b.dpapi",
+            "health_port": 8081,
+            "task": "VibeMQL5-OpenAI-Tunnel-B",
+            "watchdog": "VibeMQL5-Watchdog-B",
+            "background": "VibeMQL5-OpenAI-Tunnel-Background-B",
+        },
     }
 
     def __init__(self, root: Path):
@@ -55,12 +79,265 @@ class BackendAdmin:
         self.inbox_root = self.root / "maintenance" / "inbox"
         self.receipt_root = self.root / "evidence" / "runtime" / "backend-admin"
         self.python = self.root / ".venv" / "Scripts" / "python.exe"
+        self.tunnel_admin_lock = self.root / "state" / "concurrency" / "tunnel-admin.lock"
         self._ensure_dirs()
 
     def _ensure_dirs(self) -> None:
         self.backup_root.mkdir(parents=True, exist_ok=True)
         self.inbox_root.mkdir(parents=True, exist_ok=True)
         self.receipt_root.mkdir(parents=True, exist_ok=True)
+
+    def _tunnel_spec(self, instance: str) -> tuple[str, dict[str, Any]]:
+        key = str(instance or "").strip().upper()
+        if key not in self.TUNNEL_INSTANCES:
+            raise BackendAdminError("TUNNEL_INSTANCE_NOT_ALLOWED")
+        return key, dict(self.TUNNEL_INSTANCES[key])
+
+    def _tunnel_profile_path(self, profile: str) -> Path:
+        appdata = Path(os.environ.get("APPDATA") or (Path.home() / "AppData" / "Roaming"))
+        return appdata / "tunnel-client" / f"{profile}.yaml"
+
+    def _prepare_tunnel_b_config(self) -> Path:
+        _, spec = self._tunnel_spec("B")
+        target = self.root / spec["config"]
+        if target.is_file():
+            current = json.loads(target.read_text(encoding="utf-8"))
+            expected = {
+                "profile": spec["profile"],
+                "secretFile": str(self.root / spec["secret"]),
+                "healthUrl": f"http://127.0.0.1:{spec['health_port']}/healthz",
+                "readyUrl": f"http://127.0.0.1:{spec['health_port']}/readyz",
+                "task": spec["task"],
+                "watchdog": spec["watchdog"],
+            }
+            observed = {
+                "profile": str(current.get("tunnel", {}).get("profile") or ""),
+                "secretFile": str(current.get("tunnel", {}).get("secretFile") or ""),
+                "healthUrl": str(current.get("supervisor", {}).get("healthUrl") or ""),
+                "readyUrl": str(current.get("supervisor", {}).get("readyUrl") or ""),
+                "task": str(current.get("tasks", {}).get("tunnelTaskName") or ""),
+                "watchdog": str(current.get("tasks", {}).get("watchdogTaskName") or ""),
+            }
+            if observed != expected:
+                raise BackendAdminError("TUNNEL_B_CONFIG_DRIFT")
+            return target
+
+        base_path = self.root / self.TUNNEL_INSTANCES["A"]["config"]
+        if not base_path.is_file():
+            raise BackendAdminError("TUNNEL_A_CONFIG_MISSING")
+        config = json.loads(base_path.read_text(encoding="utf-8"))
+        config["tunnel"]["profile"] = spec["profile"]
+        config["tunnel"]["arguments"] = ["run", "--profile", spec["profile"]]
+        config["tunnel"]["secretFile"] = str(self.root / spec["secret"])
+        config["tasks"]["tunnelTaskName"] = spec["task"]
+        config["tasks"]["watchdogTaskName"] = spec["watchdog"]
+        config["tasks"]["backgroundTunnelTaskName"] = spec["background"]
+        config["tasks"]["enableBootTunnel"] = False
+        config["logs"]["supervisorLog"] = str(self.root / "logs" / "tunnel-supervisor-b.log")
+        config["supervisor"]["healthUrl"] = f"http://127.0.0.1:{spec['health_port']}/healthz"
+        config["supervisor"]["readyUrl"] = f"http://127.0.0.1:{spec['health_port']}/readyz"
+        config["supervisor"]["stateFile"] = str(self.root / "state" / "tunnel-supervisor-b.json")
+        config["supervisor"]["watchdogStateFile"] = str(self.root / "state" / "tunnel-watchdog-b.json")
+        self._atomic_bytes(target, (json.dumps(config, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
+        return target
+
+    def _run_ps(self, script: str, timeout: int = 60) -> subprocess.CompletedProcess[str]:
+        return self._run([
+            "powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+            "-Command", script,
+        ], timeout=timeout)
+
+    @staticmethod
+    def _safe_task_name(name: str) -> str:
+        value = str(name or "")
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+", value):
+            raise BackendAdminError("TUNNEL_TASK_NAME_INVALID")
+        return value
+
+    def _profile_pids(self, profile: str) -> list[int]:
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+", profile):
+            raise BackendAdminError("TUNNEL_PROFILE_INVALID")
+        exe = str(self.root / "tunnel" / "tunnel-client.exe").replace("'", "''")
+        profile_ps = profile.replace("'", "''")
+        script = (
+            f"$exe=[IO.Path]::GetFullPath('{exe}');$profile='{profile_ps}';"
+            "$pattern='--profile(?:\\s+|=)\"?'+[regex]::Escape($profile)+'\"?(?:\\s|$)';"
+            "@(Get-CimInstance Win32_Process -Filter \"Name='tunnel-client.exe'\" -ErrorAction SilentlyContinue|"
+            "Where-Object{$_.ExecutablePath -and ([IO.Path]::GetFullPath([string]$_.ExecutablePath) -ieq $exe) -and $_.CommandLine -and $_.CommandLine -match $pattern}|"
+            "ForEach-Object{[string]$_.ProcessId}) -join \"`n\""
+        )
+        cp = self._run_ps(script, timeout=20)
+        if cp.returncode != 0:
+            raise BackendAdminError("TUNNEL_PROCESS_QUERY_FAILED")
+        out = []
+        for line in cp.stdout.splitlines():
+            line = line.strip()
+            if line.isdigit():
+                out.append(int(line))
+        return out
+
+    def _task_state(self, task_name: str) -> str:
+        name = self._safe_task_name(task_name)
+        script = (
+            f"$t=Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue;"
+            "if($null -eq $t){'MISSING'}else{[string]$t.State}"
+        )
+        cp = self._run_ps(script, timeout=20)
+        return cp.stdout.strip() if cp.returncode == 0 and cp.stdout.strip() else "UNKNOWN"
+
+    @staticmethod
+    def _http_status(url: str) -> int:
+        try:
+            with urllib.request.urlopen(url, timeout=2) as response:
+                return int(response.status)
+        except urllib.error.HTTPError as exc:
+            return int(exc.code)
+        except Exception:
+            return 0
+
+    def _tunnel_status_one(self, instance: str) -> dict[str, Any]:
+        key, spec = self._tunnel_spec(instance)
+        config_path = self.root / spec["config"]
+        profile_path = self._tunnel_profile_path(spec["profile"])
+        secret_path = self.root / spec["secret"]
+        port = int(spec["health_port"])
+        pids = self._profile_pids(spec["profile"])
+        return {
+            "instance": key,
+            "profile": spec["profile"],
+            "config_path": str(config_path),
+            "config_exists": config_path.is_file(),
+            "profile_path": str(profile_path),
+            "profile_exists": profile_path.is_file(),
+            "secret_present": secret_path.is_file() and secret_path.stat().st_size > 0,
+            "health_port": port,
+            "healthz_status": self._http_status(f"http://127.0.0.1:{port}/healthz"),
+            "readyz_status": self._http_status(f"http://127.0.0.1:{port}/readyz"),
+            "pids": pids,
+            "process_count": len(pids),
+            "tasks": {
+                "interactive": {"name": spec["task"], "state": self._task_state(spec["task"])},
+                "watchdog": {"name": spec["watchdog"], "state": self._task_state(spec["watchdog"])},
+                "background": {"name": spec["background"], "state": self._task_state(spec["background"])},
+            },
+        }
+
+    def tunnel_admin_status(self, instance: str = "all") -> dict[str, Any]:
+        value = str(instance or "all").strip().upper()
+        keys = ["A", "B"] if value == "ALL" else [self._tunnel_spec(value)[0]]
+        items = [self._tunnel_status_one(key) for key in keys]
+        return {
+            "status": "PASS",
+            "schema_version": "1.0",
+            "mode": "ALLOWLISTED_MULTI_TUNNEL_ADMIN",
+            "instances": items,
+            "generic_shell_exposed": False,
+        }
+
+    def _task_command(self, action: str, names: list[str]) -> None:
+        if action not in {"Start", "Stop", "Enable", "Disable"}:
+            raise BackendAdminError("TUNNEL_TASK_ACTION_INVALID")
+        safe = [self._safe_task_name(x) for x in names]
+        body = ";".join(
+            f"{action}-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue"
+            for name in safe
+        )
+        cp = self._run_ps(body, timeout=30)
+        if cp.returncode != 0:
+            raise BackendAdminError(f"TUNNEL_TASK_{action.upper()}_FAILED")
+
+    def _kill_profile_processes(self, profile: str) -> list[int]:
+        pids = self._profile_pids(profile)
+        stopped = []
+        for pid in pids:
+            cp = self._run(["taskkill.exe", "/PID", str(pid), "/T", "/F"], timeout=20)
+            if cp.returncode == 0 or not self._profile_pids(profile):
+                stopped.append(pid)
+        return stopped
+
+    def _wait_instance_ready(self, instance: str, seconds: int = 45) -> dict[str, Any]:
+        deadline = time.monotonic() + max(5, min(int(seconds), 60))
+        last = self._tunnel_status_one(instance)
+        while time.monotonic() < deadline:
+            if last["healthz_status"] == 200 and last["readyz_status"] == 200 and last["process_count"] == 1:
+                return last
+            time.sleep(1)
+            last = self._tunnel_status_one(instance)
+        raise BackendAdminError("TUNNEL_INSTANCE_READINESS_TIMEOUT")
+
+    def tunnel_admin_install_autostart(self, instance: str = "B") -> dict[str, Any]:
+        key, spec = self._tunnel_spec(instance)
+        if key != "B":
+            raise BackendAdminError("AUTOSTART_INSTALL_CURRENTLY_ALLOWED_FOR_B_ONLY")
+        with _exclusive_file_lock(self.tunnel_admin_lock, timeout_seconds=30.0):
+            config_path = self._prepare_tunnel_b_config()
+            if not self._tunnel_profile_path(spec["profile"]).is_file():
+                raise BackendAdminError("TUNNEL_PROFILE_MISSING")
+            secret = self.root / spec["secret"]
+            if not secret.is_file() or secret.stat().st_size <= 0:
+                raise BackendAdminError("TUNNEL_SECRET_MISSING")
+            installer = self.root / "ops" / "windows" / "Install-VibeMQL5ScheduledTasks.ps1"
+            cp = self._run([
+                "powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+                "-File", str(installer), "-ConfigPath", str(config_path), "-InteractiveLogon",
+            ], timeout=90)
+            if cp.returncode != 0:
+                raise BackendAdminError("TUNNEL_AUTOSTART_INSTALL_FAILED:" + cp.stderr[-500:])
+            self._task_command("Stop", [spec["task"], spec["background"]])
+            time.sleep(1)
+            stopped = self._kill_profile_processes(spec["profile"])
+            self._task_command("Enable", [spec["task"], spec["watchdog"]])
+            self._task_command("Start", [spec["task"], spec["watchdog"]])
+            ready = self._wait_instance_ready(key, 45)
+            return self._receipt("tunnel_admin_install_autostart", "PASS", {
+                "instance": key,
+                "config_path": str(config_path),
+                "stopped_manual_pids": stopped,
+                "ready": ready,
+                "boot_mode": "INTERACTIVE_LOGON",
+            })
+
+    def tunnel_admin_start(self, instance: str) -> dict[str, Any]:
+        key, spec = self._tunnel_spec(instance)
+        with _exclusive_file_lock(self.tunnel_admin_lock, timeout_seconds=30.0):
+            if self._task_state(spec["task"]) == "MISSING":
+                raise BackendAdminError("TUNNEL_AUTOSTART_TASK_MISSING")
+            self._task_command("Enable", [spec["task"], spec["watchdog"]])
+            if not self._profile_pids(spec["profile"]):
+                self._task_command("Start", [spec["task"]])
+            self._task_command("Start", [spec["watchdog"]])
+            ready = self._wait_instance_ready(key, 45)
+            return self._receipt("tunnel_admin_start", "PASS", {"instance": key, "ready": ready})
+
+    def tunnel_admin_stop(self, instance: str, confirm: bool = False) -> dict[str, Any]:
+        key, spec = self._tunnel_spec(instance)
+        if not bool(confirm):
+            raise BackendAdminError("TUNNEL_STOP_CONFIRM_REQUIRED")
+        with _exclusive_file_lock(self.tunnel_admin_lock, timeout_seconds=30.0):
+            self._task_command("Stop", [spec["watchdog"], spec["task"], spec["background"]])
+            self._task_command("Disable", [spec["watchdog"], spec["task"], spec["background"]])
+            time.sleep(1)
+            stopped = self._kill_profile_processes(spec["profile"])
+            return self._receipt("tunnel_admin_stop", "PASS", {
+                "instance": key, "stopped_pids": stopped, "status": self._tunnel_status_one(key),
+            })
+
+    def tunnel_admin_restart(self, instance: str, confirm: bool = False) -> dict[str, Any]:
+        key, spec = self._tunnel_spec(instance)
+        if not bool(confirm):
+            raise BackendAdminError("TUNNEL_RESTART_CONFIRM_REQUIRED")
+        with _exclusive_file_lock(self.tunnel_admin_lock, timeout_seconds=30.0):
+            if self._task_state(spec["task"]) == "MISSING":
+                raise BackendAdminError("TUNNEL_AUTOSTART_TASK_MISSING")
+            self._task_command("Stop", [spec["task"], spec["background"]])
+            time.sleep(1)
+            stopped = self._kill_profile_processes(spec["profile"])
+            self._task_command("Enable", [spec["task"], spec["watchdog"]])
+            self._task_command("Start", [spec["task"], spec["watchdog"]])
+            ready = self._wait_instance_ready(key, 45)
+            return self._receipt("tunnel_admin_restart", "PASS", {
+                "instance": key, "stopped_pids": stopped, "ready": ready,
+            })
 
     @staticmethod
     def _casefold_path(path: Path) -> str:
@@ -179,22 +456,65 @@ class BackendAdmin:
             raise BackendAdminError("CHECKPOINT_MANIFEST_MISSING")
         return d, json.loads(mf.read_text(encoding="utf-8"))
 
-    def restore_checkpoint(self, checkpoint_id: str, paths: list[str] | None = None) -> dict[str, Any]:
+    def restore_checkpoint(
+        self,
+        checkpoint_id: str,
+        paths: list[str] | None = None,
+        expected_current_sha256_by_path: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
         d, manifest = self._load_checkpoint(checkpoint_id)
+        if not isinstance(expected_current_sha256_by_path, dict):
+            raise BackendAdminError("RESTORE_EXPECTED_HASHES_REQUIRED")
+
         wanted = None
         if paths:
             wanted = {str(self.resolve_allowed(x, mutable=True, must_exist=False)) for x in paths}
-        restored = []
+
+        expected: dict[str, str] = {}
+        for raw_path, raw_sha in expected_current_sha256_by_path.items():
+            target = self.resolve_allowed(raw_path, mutable=True, must_exist=False)
+            key = str(target)
+            value = str(raw_sha or "").strip().lower()
+            if value and not re.fullmatch(r"[0-9a-f]{64}", value):
+                raise BackendAdminError("RESTORE_EXPECTED_HASH_INVALID")
+            if key in expected and expected[key] != value:
+                raise BackendAdminError("RESTORE_EXPECTED_HASH_CONFLICT")
+            expected[key] = value
+
+        candidates: list[tuple[Path, Path, str, str]] = []
         for entry in manifest["files"]:
             target = self.resolve_allowed(entry["path"], mutable=True, must_exist=False)
-            if wanted is not None and str(target) not in wanted:
+            key = str(target)
+            if wanted is not None and key not in wanted:
                 continue
             src = d / entry["relative_path"]
-            if not src.is_file() or sha256_file(src) != entry["sha256"]:
+            candidates.append((src, target, str(entry["sha256"]).lower(), key))
+
+        selected = {key for _, _, _, key in candidates}
+        if wanted is not None and selected != wanted:
+            raise BackendAdminError("CHECKPOINT_DOES_NOT_COVER_FILE")
+        if not selected:
+            raise BackendAdminError("CHECKPOINT_RESTORE_PATHS_REQUIRED")
+        if set(expected) != selected:
+            raise BackendAdminError("RESTORE_EXPECTED_HASH_TARGET_MISMATCH")
+
+        # Preflight every source and target before the first write. A stale target
+        # therefore cannot produce a partially restored multi-file checkpoint.
+        before: dict[str, str] = {}
+        for src, target, checkpoint_sha, key in candidates:
+            if not src.is_file() or sha256_file(src).lower() != checkpoint_sha:
                 raise BackendAdminError("CHECKPOINT_FILE_INTEGRITY_FAILED")
+            current = sha256_file(target).lower() if target.is_file() else ""
+            if current != expected[key]:
+                raise BackendAdminError(f"CAS_MISMATCH:{key}:{current or 'MISSING'}")
+            before[key] = current
+
+        restored = []
+        for src, target, _, key in candidates:
             self._atomic_copy(src, target)
             restored.append({
-                "path": str(target),
+                "path": key,
+                "sha256_before": before[key],
                 "sha256": sha256_file(target),
                 "bytes": target.stat().st_size,
             })
@@ -410,7 +730,18 @@ class BackendAdmin:
                     "tests": tests,
                 })
             except Exception:
-                self.restore_checkpoint(cid)
+                # The outer backend mutation request owns the serialized mutation
+                # lease. Roll back only files whose exact post-write hash we hold.
+                rollback_expected = {
+                    item["payload"]["path"]: item["payload"]["sha256_after"]
+                    for item in applied
+                }
+                if rollback_expected:
+                    self.restore_checkpoint(
+                        cid,
+                        paths=list(rollback_expected),
+                        expected_current_sha256_by_path=rollback_expected,
+                    )
                 raise
 
     def _run(self, argv: list[str], timeout: int = 180) -> subprocess.CompletedProcess[str]:

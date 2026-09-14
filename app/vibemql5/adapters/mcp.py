@@ -737,7 +737,10 @@ def create_server(root: Path, transport: str = "unknown"):
         profile: str = "private",
         label: str = "",
     ) -> dict[str, Any]:
-        """Capture runtime evidence for the exact running MT5-2 tester job; PID is server-resolved only."""
+        """Capture a running MT5-2 job launched with an imported EX5 ea_binary_ref (BIN authority).
+
+        Source-compiled jobs are unsupported; PID is server-resolved only.
+        """
         return _invoke(ctx, "capture_runtime_snapshot", lambda: facade.capture_runtime_snapshot(job_id, profile, label))
 
     @server.tool()

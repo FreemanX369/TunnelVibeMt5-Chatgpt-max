@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VibeMQL5 Windows deployment config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "installRoot",
+    "pythonExe",
+    "mcp",
+    "tunnel",
+    "tasks",
+    "logs",
+    "supervisor"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "installRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "pythonExe": {
+      "type": "string",
+      "minLength": 3
+    },
+    "mcp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transport",
+        "module",
+        "arguments"
+      ],
+      "properties": {
+        "transport": {
+          "enum": [
+            "stdio",
+            "http"
+          ]
+        },
+        "module": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "debugHttpUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "tunnel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executable",
+        "profile",
+        "arguments",
+        "secretFile",
+        "controlPlaneHost"
+      ],
+      "properties": {
+        "executable": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "secretFile": {
+          "type": "string"
+        },
+        "controlPlaneHost": {
+          "type": "string"
+        },
+        "restartDelaySeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxRestartDelaySeconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tunnelTaskName",
+        "watchdogTaskName"
+      ],
+      "properties": {
+        "tunnelTaskName": {
+          "type": "string"
+        },
+        "watchdogTaskName": {
+          "type": "string"
+        },
+        "runAtStartup": {
+          "type": "boolean"
+        },
+        "watchdogIntervalMinutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "backgroundTunnelTaskName": {
+          "type": "string"
+        },
+        "enableBootTunnel": {
+          "type": "boolean"
+        },
+        "interactiveUser": {
+          "type": "string"
+        },
+        "watchdogRestartCooldownSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "watchdogMaxRestartsPerHour": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "heartbeatStaleSeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "startGraceSeconds": {
+          "type": "integer",
+          "minimum": 5
+        }
+      }
+    },
+    "logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "directory",
+        "supervisorLog"
+      ],
+      "properties": {
+        "directory": {
+          "type": "string"
+        },
+        "supervisorLog": {
+          "type": "string"
+        }
+      }
+    },
+    "supervisor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "healthUrl",
+        "readyUrl",
+        "stateFile",
+        "watchdogStateFile",
+        "heartbeatSeconds",
+        "healthPollSeconds",
+        "heartbeatStaleSeconds",
+        "startGraceSeconds",
+        "stableResetSeconds",
+        "maxRestartsPerHour",
+        "circuitBreakSeconds",
+        "watchdogRestartCooldownSeconds",
+        "resilienceStateFile"
+      ],
+      "properties": {
+        "healthUrl": {
+          "type": "string"
+        },
+        "readyUrl": {
+          "type": "string"
+        },
+        "stateFile": {
+          "type": "string"
+        },
+        "watchdogStateFile": {
+          "type": "string"
+        },
+        "heartbeatSeconds": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "healthPollSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "heartbeatStaleSeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "startGraceSeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "stableResetSeconds": {
+          "type": "integer",
+          "minimum": 30
+        },
+        "maxRestartsPerHour": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "circuitBreakSeconds": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "watchdogRestartCooldownSeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "resilienceStateFile": {
+          "type": "string"
+        },
+        "failureInjectionTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 600
+        },
+        "networkIsolationSeconds": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 180
+        },
+        "networkRecoveryTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 600
+        }
+      }
+    }
+  }
+}

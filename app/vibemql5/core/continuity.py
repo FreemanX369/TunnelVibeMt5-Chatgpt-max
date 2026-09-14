@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .provenance import load_bridge_provenance
+
 
 _PROJECT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 _EVENT_TYPE_RE = re.compile(r"^[A-Z][A-Z0-9_]{0,63}$")
@@ -516,6 +518,99 @@ class ContinuityManager:
         raise ValueError(f"CONTINUITY_UNSUPPORTED_TYPED_EVENT: {event_type}")
 
     @staticmethod
+    def _validate_delegation_transition(
+        event_type: str, payload: dict[str, Any], manifest: dict[str, Any]
+    ) -> None:
+        active, awaiting = ContinuityManager._delegation_lists(manifest)
+        if event_type == "DELEGATION_ASSIGNED":
+            raw = payload.get("delegation", payload)
+            if isinstance(raw, dict) and "state" in raw:
+                raise ValueError("CONTINUITY_DELEGATION_STATE_SERVER_OWNED")
+            item = ContinuityManager._delegation_item(payload)
+            if ContinuityManager._find_delegation(active + awaiting, item["id"]) is not None:
+                raise ValueError("CONTINUITY_DELEGATION_ALREADY_EXISTS")
+            return
+        target = ContinuityManager._delegation_target(payload)
+        current = ContinuityManager._find_delegation(active, target)
+        waiting = ContinuityManager._find_delegation(awaiting, target)
+        if current is None and waiting is None:
+            # Preserve the established public error taxonomy from projection
+            # validation for unknown delegation ids.
+            return
+        state = str((current or waiting or {}).get("state") or "")
+        allowed = {
+            "DELEGATION_STARTED": {"ASSIGNED", "BLOCKED"},
+            "DELEGATION_BLOCKED": {"STARTED"},
+            "DELEGATION_COMPLETED": {"STARTED"},
+            "DELEGATION_PARENT_VERIFIED": {"AWAITING_PARENT_VERIFICATION"},
+            "DELEGATION_CANCELLED": {"ASSIGNED", "STARTED", "BLOCKED", "AWAITING_PARENT_VERIFICATION"},
+        }
+        if state not in allowed.get(event_type, set()):
+            raise ValueError(f"CONTINUITY_DELEGATION_ILLEGAL_TRANSITION:{state or 'MISSING'}->{event_type}")
+
+    @staticmethod
+    def _delegation_semantic_issues(events: list[tuple[dict[str, Any], str]]) -> list[str]:
+        states: dict[str, str] = {}
+        issues: list[str] = []
+        for event, _ in events:
+            kind = str(event.get("event_type") or "")
+            if not kind.startswith("DELEGATION_"):
+                continue
+            payload = event.get("payload") or {}
+            try:
+                if kind == "DELEGATION_ASSIGNED":
+                    raw = payload.get("delegation", payload)
+                    item = ContinuityManager._delegation_item(payload)
+                    target = item["id"]
+                    if isinstance(raw, dict) and "state" in raw:
+                        issues.append(f"DELEGATION_STATE_INJECTION:{event['event_id']}:{target}")
+                    if target in states:
+                        issues.append(f"DELEGATION_DUPLICATE_ASSIGNMENT:{event['event_id']}:{target}")
+                    states[target] = "ASSIGNED"
+                    continue
+                target = ContinuityManager._delegation_target(payload)
+                state = states.get(target, "MISSING")
+                allowed = {
+                    "DELEGATION_STARTED": {"ASSIGNED", "BLOCKED"},
+                    "DELEGATION_BLOCKED": {"STARTED"},
+                    "DELEGATION_COMPLETED": {"STARTED"},
+                    "DELEGATION_PARENT_VERIFIED": {"AWAITING_PARENT_VERIFICATION"},
+                    "DELEGATION_CANCELLED": {"ASSIGNED", "STARTED", "BLOCKED", "AWAITING_PARENT_VERIFICATION"},
+                }
+                if state not in allowed.get(kind, set()):
+                    issues.append(f"DELEGATION_ILLEGAL_TRANSITION:{event['event_id']}:{state}->{kind}")
+                if kind == "DELEGATION_STARTED": states[target] = "STARTED"
+                elif kind == "DELEGATION_BLOCKED": states[target] = "BLOCKED"
+                elif kind == "DELEGATION_COMPLETED": states[target] = "AWAITING_PARENT_VERIFICATION"
+                elif kind in {"DELEGATION_PARENT_VERIFIED", "DELEGATION_CANCELLED"}: states.pop(target, None)
+            except Exception as exc:
+                issues.append(f"DELEGATION_SEMANTIC_ERROR:{event.get('event_id')}:{exc}")
+        return issues
+
+    def _authority_freshness(self, manifest: dict[str, Any] | None) -> tuple[str, list[str]]:
+        stored = (manifest or {}).get("runtime_authority")
+        if not isinstance(stored, dict) or not stored:
+            return "NOT_APPLICABLE", []
+        try:
+            live = load_bridge_provenance(self.root)
+            current = {
+                "bridge_version": str(live.get("bridge_version") or ""),
+                "bridge_build": str(live.get("bridge_build") or ""),
+                "tool_count": int(live.get("mcp_tool_count") or 0),
+                "catalog_sha256": str(live.get("mcp_tool_catalog_sha256") or ""),
+                "mcp_module_sha256": _sha256((self.root / "app" / "vibemql5" / "adapters" / "mcp.py").read_bytes()),
+                "continuity_module_sha256": _sha256((self.root / "app" / "vibemql5" / "core" / "continuity.py").read_bytes()),
+            }
+        except Exception as exc:
+            return "UNKNOWN", [f"RUNTIME_AUTHORITY_UNKNOWN:{type(exc).__name__}"]
+        issues = [
+            f"RUNTIME_AUTHORITY_DRIFT:{key}"
+            for key, value in current.items()
+            if key in stored and stored.get(key) != value
+        ]
+        return ("DRIFT", issues) if issues else ("CURRENT", [])
+
+    @staticmethod
     def _validate_delegation_payload(event_type: str, payload: dict[str, Any]) -> None:
         if event_type == "DELEGATION_ASSIGNED":
             ContinuityManager._delegation_item(payload)
@@ -840,17 +935,15 @@ class ContinuityManager:
             self._assert_cas(current, int(expected_manifest_revision), expected_sha)
             previous, previous_manifest_sha = current or (None, "")
             if kind in _LIFECYCLE_EVENT_TYPES:
-                self._lifecycle_projection(
-                    kind,
-                    payload,
-                    previous
-                    or {
-                        "requirements": {"active": []},
-                        "decisions": {"active": []},
-                        "constraints": {"active": []},
-                        "delegations": {"active": [], "awaiting_parent_verification": []},
-                    },
-                )
+                lifecycle_manifest = previous or {
+                    "requirements": {"active": []},
+                    "decisions": {"active": []},
+                    "constraints": {"active": []},
+                    "delegations": {"active": [], "awaiting_parent_verification": []},
+                }
+                if kind.startswith("DELEGATION_"):
+                    self._validate_delegation_transition(kind, payload, lifecycle_manifest)
+                self._lifecycle_projection(kind, payload, lifecycle_manifest)
             next_seq = int(previous["event_head"]["seq"]) + 1 if previous else 1
             if len(events) != next_seq - 1:
                 raise ValueError("CONTINUITY_HEAD_EVENT_DRIFT: reconcile required")
@@ -980,14 +1073,21 @@ class ContinuityManager:
             ]
             if missing_operations:
                 issues.append("OPERATION_INDEX_INCOMPLETE")
+            semantic_issues = self._delegation_semantic_issues(events)
+            authority_freshness, authority_issues = self._authority_freshness(current[0] if current else None)
             integrity = "VERIFIED" if not issues else "DRIFT"
-            actions = [] if not issues else ["call reconcile_continuity with exact current head CAS"]
+            semantic_integrity = "VERIFIED" if not semantic_issues else "INVALID"
+            resume_safe = not issues and not semantic_issues and authority_freshness not in {"DRIFT", "UNKNOWN"}
+            all_issues = issues + semantic_issues + authority_issues
+            actions = [] if not all_issues else ["review semantic and runtime authority issues before resume"]
             after = sorted(str(path.relative_to(project_dir)) for path in project_dir.rglob("*") if path.is_file())
             return {
                 "schema_version": self.schema_version,
                 "project_id": pid,
                 "integrity": integrity,
-                "resume_safe": not issues,
+                "semantic_integrity": semantic_integrity,
+                "authority_freshness": authority_freshness,
+                "resume_safe": resume_safe,
                 "manifest_chain": {
                     "count": len(manifests),
                     "head": manifests[-1][0]["manifest_id"] if manifests else None,
@@ -1002,7 +1102,7 @@ class ContinuityManager:
                     "complete": not missing_operations,
                     "missing_operation_ids": missing_operations,
                 },
-                "issues": issues,
+                "issues": all_issues,
                 "recommended_recovery_actions": actions,
                 "read_only_proof": {"files_before": before, "files_after": after, "unchanged": before == after},
             }

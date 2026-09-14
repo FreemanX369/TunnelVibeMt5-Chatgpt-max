@@ -376,6 +376,14 @@ class ProjectSessionManager:
                     "updated_at_utc": current["updated_at_utc"],
                     "integrity": "VERIFIED",
                 })
+            except FileNotFoundError as exc:
+                out.append({
+                    "project_id": child.name,
+                    "state": "ORPHANED",
+                    "integrity": "ORPHANED",
+                    "resume_safe": False,
+                    "error": str(exc),
+                })
             except Exception as exc:
                 out.append({"project_id": child.name, "integrity": "INVALID", "error": str(exc)})
         return out

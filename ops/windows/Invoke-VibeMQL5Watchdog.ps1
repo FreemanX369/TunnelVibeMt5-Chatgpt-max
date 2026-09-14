@@ -10,7 +10,14 @@ $ErrorActionPreference = "Stop"
 function Write-AtomicJson { param([string]$Path,[object]$Value) Write-VibeAtomicJson -Path $Path -Value $Value -Depth 10 }
 function Read-JsonSafe { param([string]$Path) try { if(Test-Path -LiteralPath $Path){ return Get-Content -LiteralPath $Path -Raw -Encoding UTF8|ConvertFrom-Json } } catch{}; return $null }
 function Get-HttpStatus { param([string]$Url) try { return [int](Invoke-WebRequest -UseBasicParsing -Uri $Url -TimeoutSec 2).StatusCode } catch { return 0 } }
-function Get-ExactTunnelProcess { param([string]$Executable) $expected=[IO.Path]::GetFullPath($Executable); @(Get-CimInstance Win32_Process -Filter "Name='tunnel-client.exe'" -ErrorAction SilentlyContinue|Where-Object{$_.ExecutablePath -and ([IO.Path]::GetFullPath([string]$_.ExecutablePath) -ieq $expected)}) }
+function Get-ExactTunnelProcess {
+    param([string]$Executable,[string]$Profile)
+    $expected=[IO.Path]::GetFullPath($Executable)
+    $pattern='--profile(?:\s+|=)"?'+[regex]::Escape($Profile)+'"?(?:\s|$)'
+    @(Get-CimInstance Win32_Process -Filter "Name='tunnel-client.exe'" -ErrorAction SilentlyContinue|Where-Object{
+        $_.ExecutablePath -and ([IO.Path]::GetFullPath([string]$_.ExecutablePath) -ieq $expected) -and $_.CommandLine -and $_.CommandLine -match $pattern
+    })
+}
 function Test-InteractiveUserSession {
     param([string]$UserId)
     if (-not $UserId) { return $false }
@@ -30,7 +37,7 @@ $super=Read-JsonSafe -Path $config.supervisor.stateFile
 $previous=Read-JsonSafe -Path $config.supervisor.watchdogStateFile
 $health=Get-HttpStatus -Url $config.supervisor.healthUrl
 $ready=Get-HttpStatus -Url $config.supervisor.readyUrl
-$exact=@(Get-ExactTunnelProcess -Executable $config.tunnel.executable)
+$exact=@(Get-ExactTunnelProcess -Executable $config.tunnel.executable -Profile ([string]$config.tunnel.profile))
 $heartbeatFresh=$false
 if($super -and $super.last_heartbeat_utc){ try{$heartbeatFresh=(([DateTime]::UtcNow-[datetime]::Parse([string]$super.last_heartbeat_utc)).TotalSeconds -lt [int]$config.supervisor.heartbeatStaleSeconds)}catch{} }
 $interactiveAvailable=Test-InteractiveUserSession -UserId ([string]$config.tasks.interactiveUser)

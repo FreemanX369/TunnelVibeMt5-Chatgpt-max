@@ -15,8 +15,8 @@ OPS = ROOT / "ops" / "windows"
 def test_tip013_version_and_runtime_provenance(monkeypatch):
     monkeypatch.setenv("VIBEMQL5_RUNTIME_MODE", "interactive")
     p = _runtime_provenance()
-    assert vibemql5.__version__ == "0.2.33"
-    assert p["bridge_build"] == "TIP-032R1"
+    assert vibemql5.__version__ == "0.2.34"
+    assert p["bridge_build"] == "TIP-033RC1"
     assert p["workspace_module_sha256"]
     assert p["mcp_module_sha256"]
 
