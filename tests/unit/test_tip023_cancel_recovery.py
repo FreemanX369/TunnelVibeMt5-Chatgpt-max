@@ -291,4 +291,4 @@ def test_tip023_exact_build_identity_and_tool_count():
     assert provenance["bridge_version"] == "0.2.32"
     assert provenance["bridge_build"] == "TIP-026R3"
     assert provenance["mcp_tool_count"] == 59
-    assert MCP_TOOL_COUNT == 65
+    assert MCP_TOOL_COUNT == 67
