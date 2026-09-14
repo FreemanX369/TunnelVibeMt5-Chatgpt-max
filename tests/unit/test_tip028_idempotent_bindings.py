@@ -264,3 +264,48 @@ def test_tip032_project_session_resume_detects_source_drift(tmp_path: Path):
     assert "SOURCE_CHANGED_SINCE_SESSION_REVISION" in resumed["stale_reasons"]
     assert resumed["source"]["match_session_revision"] is False
     assert resumed["session"]["source_sha256"] == created["source_sha256"]
+
+
+def test_tip033_launch_test_v2_executes_registered_wrapper_with_exact_binding(monkeypatch, tmp_path: Path):
+    from vibemql5.adapters.mcp import create_server
+    from vibemql5.core.facade import ToolFacade
+
+    server = create_server(_root(tmp_path), transport="stdio")
+    calls = []
+
+    def fake_launch(self, workspace, ea, terminal=None, preset="smoke", set_file=None,
+                    overrides=None, mock=False, test_timeout=0, ea_binary_ref="", operation_id=""):
+        calls.append({
+            "workspace": workspace, "ea": ea, "terminal": terminal, "preset": preset,
+            "set_file": set_file, "overrides": overrides, "mock": mock,
+            "test_timeout": test_timeout, "ea_binary_ref": ea_binary_ref,
+            "operation_id": operation_id,
+        })
+        return {"job_id": "BT-STUB", "state": "QUEUED"}
+
+    monkeypatch.setattr(ToolFacade, "launch_test", fake_launch)
+    supplied = {
+        "preset": "validation", "set_file": "Sets/custom.set",
+        "overrides": {"symbol": "EURUSD", "period": "M15"},
+        "timeout_seconds": 123, "ea_binary_ref": "BIN-regression",
+    }
+    result = server._tool_manager._tools["launch_test_v2"].fn(
+        ctx=None, workspace="demo", ea="Experts/DemoEA.mq5",
+        operation_id="TIP033-V2", **supplied,
+    )
+    assert result["job_id"] == "BT-STUB"
+    assert calls[-1] == {
+        "workspace": "demo", "ea": "Experts/DemoEA.mq5", "terminal": "MT5-2",
+        "preset": "validation", "set_file": "Sets/custom.set",
+        "overrides": {"symbol": "EURUSD", "period": "M15"}, "mock": False,
+        "test_timeout": 123, "ea_binary_ref": "BIN-regression",
+        "operation_id": "TIP033-V2",
+    }
+    for timeout in (-1, 86401):
+        before = len(calls)
+        with pytest.raises(ValueError, match="timeout_seconds"):
+            server._tool_manager._tools["launch_test_v2"].fn(
+                ctx=None, workspace="demo", ea="Experts/DemoEA.mq5",
+                operation_id="TIP033-INVALID", timeout_seconds=timeout,
+            )
+        assert len(calls) == before
