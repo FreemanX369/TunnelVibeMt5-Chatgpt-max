@@ -64,4 +64,4 @@ The stored session authority predates TIP-033RC1, so the drift is expected and m
 
 ## Connector exposure gate
 
-The running server advertises all 72 tools, including five `tunnel_admin_*` tools. The current ChatGPT connector schema exposes the prior 66 model-visible tools and therefore cannot invoke those five tools in this already-open connection. Source/runtime registration is present and unit-qualified; release acceptance still requires reconnecting/refreshing the connector after promotion and confirming all 71 model-visible tools.
+The running server advertises all 72 tools, including five `tunnel_admin_*` tools. The current ChatGPT connector schema exposes the prior 66 model-visible tools and therefore cannot invoke those five tools in this already-open connection. It also retains the older `backend_restore_checkpoint(checkpoint_id, paths)` schema instead of the new required `expected_current_sha256_by_path` CAS map. Source/runtime registration is present and unit-qualified; release acceptance still requires reconnecting/refreshing the connector after promotion, confirming all 71 model-visible tools, and confirming the updated restore schema.
