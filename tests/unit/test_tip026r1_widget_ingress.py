@@ -18,7 +18,7 @@ from vibemql5.core.binary_ingress import BinaryIngressManager, _validate_downloa
 from vibemql5.core.jobs import JobStore
 from vibemql5.worker import run_job
 
-EXPECTED_CATALOG = "00d8956200bfc6020cea4c522edda3b6fdd34ca40f97c7fb2175d30ce1aca0e9"
+EXPECTED_CATALOG = "835e5dfb8b86649bfafdc616a440f108a78389404e062bd76ba430865025d7fe"
 
 
 def _root(tmp_path: Path) -> Path:
@@ -72,12 +72,12 @@ def _fake_download(manager: BinaryIngressManager, payload: bytes, file_name: str
 
 def test_tip026r1_identity_and_ordered_catalog():
     assert __version__ == "0.2.32"
-    assert MCP_TOOL_COUNT == 65
+    assert MCP_TOOL_COUNT == 67
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
-    assert MCP_TOOL_NAMES[39:44] == (
+    assert MCP_TOOL_NAMES[40:45] == (
         "import_ex5", "open_ex5_ingress", "import_ex5_authorized_file", "get_ex5_import_receipt", "launch_test"
     )
-    assert len(set(MCP_TOOL_NAMES)) == 65
+    assert len(set(MCP_TOOL_NAMES)) == 67
 
 
 def test_tip026r1_widget_authorized_import_reuses_same_immutable_ref_and_records_truthful_source(tmp_path: Path, monkeypatch):
@@ -192,7 +192,7 @@ def test_tip026r1_mcp_surface_widget_resource_visibility_and_direct_fileparam_ba
     root = _root(tmp_path)
     server = adapter.create_server(root, transport="stdio")
 
-    assert len(server.tools) == 65
+    assert len(server.tools) == 67
     assert set(server.tools) == set(MCP_TOOL_NAMES)
     assert server.tool_meta["import_ex5"]["meta"] == {"openai/fileParams": ["file"]}
 
@@ -220,10 +220,10 @@ def test_tip026r1_mcp_surface_widget_resource_visibility_and_direct_fileparam_ba
     assert 'host.callTool("import_ex5_authorized_file"' in html
 
     info = server.tools["server_info"]()
-    assert info["tool_count"] == 65
+    assert info["tool_count"] == 67
     assert info["tool_visibility"] == {
-        "server_catalog_count": 65,
-        "model_visible_expected_count": 64,
+        "server_catalog_count": 67,
+        "model_visible_expected_count": 66,
         "app_only_tools": ["import_ex5_authorized_file"],
     }
     assert info["binary_ingress_transport"] == "openai/fileParams"

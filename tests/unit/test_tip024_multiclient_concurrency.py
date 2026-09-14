@@ -22,7 +22,7 @@ from vibemql5.core.concurrency import (
 from vibemql5.core.facade import ToolFacade
 from vibemql5.worker import acquire_lock as worker_acquire_lock
 
-EXPECTED_CATALOG = "00d8956200bfc6020cea4c522edda3b6fdd34ca40f97c7fb2175d30ce1aca0e9"
+EXPECTED_CATALOG = "835e5dfb8b86649bfafdc616a440f108a78389404e062bd76ba430865025d7fe"
 
 
 def _root(tmp_path: Path) -> Path:
@@ -75,7 +75,7 @@ class _Ctx:
 
 def test_tip024_identity_and_tool_catalog_are_preserved():
     assert vibemql5.__version__ == "0.2.32"
-    assert MCP_TOOL_COUNT == 65
+    assert MCP_TOOL_COUNT == 67
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
     assert hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest() == EXPECTED_CATALOG
 
@@ -290,7 +290,7 @@ def test_tip024_mcp_registers_same_42_tools_and_context_is_invisible_contract(mo
     root = _root(tmp_path)
     server = create_server(root, transport="stdio")
     assert set(server.tools) == set(MCP_TOOL_NAMES)
-    assert len(server.tools) == 65
+    assert len(server.tools) == 67
     info = server.tools["server_info"]()
     assert info["version"] == "0.2.32"
     assert info["bridge_build"] == "TIP-025"

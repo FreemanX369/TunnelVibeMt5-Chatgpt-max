@@ -222,8 +222,28 @@ def test_tip028_mcp_exposes_optional_binding_parameters(monkeypatch, tmp_path: P
     assert update["operation_id"].default == ""
     assert update["expected_revision_sha256"].default == ""
     assert launch["operation_id"].default == ""
-    assert len(server.tools) == 65
+    assert len(server.tools) == 67
 
+
+
+def test_tip032_mcp_sdk_publishes_binding_parameters(tmp_path: Path):
+    from vibemql5.adapters.mcp import create_server
+
+    server = create_server(_root(tmp_path), transport="stdio")
+    tools = server._tool_manager._tools
+    update_schema = tools["update_project_session"].parameters
+    launch_schema = tools["launch_test"].parameters
+    update_v2_schema = tools["update_project_session_v2"].parameters
+    launch_v2_schema = tools["launch_test_v2"].parameters
+
+    assert {"operation_id", "expected_revision_sha256"} <= set(
+        update_schema["properties"]
+    )
+    assert "operation_id" in launch_schema["properties"]
+    assert {"operation_id", "expected_revision_sha256"} <= set(
+        update_v2_schema["required"]
+    )
+    assert "operation_id" in launch_v2_schema["required"]
 
 def test_tip032_project_session_resume_detects_source_drift(tmp_path: Path):
     root = _root(tmp_path)
