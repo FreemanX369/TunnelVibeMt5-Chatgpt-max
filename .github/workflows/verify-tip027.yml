@@ -23,8 +23,10 @@ jobs:
           python -m py_compile \
             app/vibemql5/core/continuity.py \
             app/vibemql5/core/facade.py \
+            app/vibemql5/core/provenance.py \
             app/vibemql5/adapters/mcp.py \
             app/vibemql5/contracts.py \
+            tests/unit/test_tip026_binary_ingress.py \
             tests/unit/test_tip027_continuity.py
       - name: Run Continuity Core tests
         run: python -m pytest -q tests/unit/test_tip027_continuity.py
@@ -32,8 +34,22 @@ jobs:
         run: |
           python - <<'PY'
           import hashlib
+          from pathlib import Path
           from app.vibemql5.contracts import MCP_TOOL_CATALOG_SHA256, MCP_TOOL_COUNT, MCP_TOOL_NAMES
           assert MCP_TOOL_COUNT == 65 == len(MCP_TOOL_NAMES)
           actual = hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest()
           assert actual == MCP_TOOL_CATALOG_SHA256
+          provenance = Path("app/vibemql5/core/provenance.py").read_text(encoding="utf-8")
+          assert "MCP_TOOL_COUNT" in provenance
+          assert "MCP_TOOL_CATALOG_SHA256" in provenance
+          assert "MCP_TOOL_COUNT_STALE" in provenance
+          assert "MCP_TOOL_CATALOG_SHA_STALE" in provenance
+          for path in (
+              "ops/windows/VibeMQL5.Provenance.ps1",
+              "ops/windows/Start-VibeMQL5TunnelSupervisor.ps1",
+              "ops/windows/Invoke-VibeMQL5Watchdog.ps1",
+          ):
+              text = Path(path).read_text(encoding="utf-8")
+              assert "mcp_tool_count" in text, path
+              assert "mcp_tool_catalog_sha256" in text, path
           PY
