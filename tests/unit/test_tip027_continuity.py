@@ -498,3 +498,131 @@ def test_tip030_verify_detects_delegation_projection_tamper(tmp_path):
     result = manager.verify("P1")
     assert result["integrity"] == "DRIFT"
     assert "MANIFEST_PROJECTION_MISMATCH:1" in result["issues"]
+
+
+def test_tip032_append_retry_recovers_side_effect_when_pointer_and_operation_lag(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    first = append(manager)
+    payload = {"projection": {"workflow": {"phase": "TIP-032", "state": "QUALIFY"}}}
+    second = append(
+        manager,
+        operation="tip032-side-effect-before-index",
+        expected_revision=1,
+        expected_sha=first["manifest_sha256"],
+        payload=payload,
+    )
+
+    project_dir = tmp_path / "state" / "continuity" / "P1"
+    manager._operation_path("P1", "tip032-side-effect-before-index").unlink()
+    manifest1 = json.loads((project_dir / "revisions" / "CM-000001.json").read_text(encoding="utf-8"))
+    stale_pointer = {
+        "schema_version": manager.schema_version,
+        "project_id": "P1",
+        "manifest_id": "CM-000001",
+        "manifest_revision": 1,
+        "manifest_sha256": first["manifest_sha256"],
+        "updated_at_utc": manifest1["updated_at_utc"],
+    }
+    (project_dir / "current.json").write_bytes(_json_bytes(stale_pointer))
+
+    retry = append(
+        manager,
+        operation="tip032-side-effect-before-index",
+        expected_revision=1,
+        expected_sha=first["manifest_sha256"],
+        payload=payload,
+    )
+
+    assert retry["manifest_sha256"] == second["manifest_sha256"]
+    assert retry["idempotent_recovered"] is True
+    assert manager.get("P1")["manifest_sha256"] == second["manifest_sha256"]
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
+
+    with pytest.raises(ValueError, match="CONTINUITY_OPERATION_CONFLICT"):
+        append(
+            manager,
+            operation="tip032-side-effect-before-index",
+            expected_revision=2,
+            expected_sha=second["manifest_sha256"],
+            payload={"projection": {"workflow": {"phase": "TIP-032", "state": "DIFFERENT"}}},
+        )
+
+
+def test_tip032_stale_cas_conflict_preserves_current_head(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    first = append(manager)
+    second = append(
+        manager,
+        operation="tip032-winning-client",
+        expected_revision=1,
+        expected_sha=first["manifest_sha256"],
+        payload={"projection": {"workflow": {"phase": "TIP-032", "state": "CLIENT_A"}}},
+    )
+
+    with pytest.raises(ValueError, match="CONTINUITY_CAS_CONFLICT"):
+        append(
+            manager,
+            operation="tip032-stale-client",
+            expected_revision=1,
+            expected_sha=first["manifest_sha256"],
+            payload={"projection": {"workflow": {"phase": "TIP-032", "state": "CLIENT_B"}}},
+        )
+
+    head = manager.get("P1")
+    assert head["manifest_sha256"] == second["manifest_sha256"]
+    assert head["workflow"] == {"phase": "TIP-032", "state": "CLIENT_A"}
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
+
+
+def test_tip032_nested_delegation_child_completion_does_not_orphan_parent(tmp_path):
+    manager = ContinuityManager(tmp_path)
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {
+            "id": "DEL-TIP032-PARENT",
+            "task": "qualify parent orchestration",
+            "capability": "continuity",
+        },
+        "tip032-parent-assigned",
+    )
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_ASSIGNED",
+        {
+            "id": "DEL-TIP032-CHILD",
+            "parent_id": "DEL-TIP032-PARENT",
+            "task": "qualify child worker evidence",
+            "capability": "runtime-acceptance",
+        },
+        "tip032-child-assigned",
+        head,
+    )
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_COMPLETED",
+        {
+            "delegation_id": "DEL-TIP032-CHILD",
+            "report": {"status": "DONE", "evidence": ["unit"]},
+        },
+        "tip032-child-completed",
+        head,
+    )
+
+    assert [item["id"] for item in head["delegations"]["active"]] == ["DEL-TIP032-PARENT"]
+    awaiting = head["delegations"]["awaiting_parent_verification"]
+    assert awaiting[0]["id"] == "DEL-TIP032-CHILD"
+    assert awaiting[0]["parent_id"] == "DEL-TIP032-PARENT"
+    assert awaiting[0]["report_authority"] == "PENDING_PARENT_VERIFICATION"
+
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_PARENT_VERIFIED",
+        {"delegation_id": "DEL-TIP032-CHILD", "verification": {"status": "ACCEPTED"}},
+        "tip032-child-parent-verified",
+        head,
+    )
+    assert [item["id"] for item in head["delegations"]["active"]] == ["DEL-TIP032-PARENT"]
+    assert head["delegations"]["awaiting_parent_verification"] == []
+    assert manager.verify("P1")["integrity"] == "VERIFIED"
