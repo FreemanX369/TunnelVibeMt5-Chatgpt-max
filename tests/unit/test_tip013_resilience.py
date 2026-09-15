@@ -119,6 +119,18 @@ def test_tip034e_multi_client_scope_is_profile_bound():
     assert "vibemql5\\.windows\\.b\\.json" not in restart
 
 
+def test_tip035_restart_uses_scheduled_task_as_single_interactive_owner():
+    restart = (ROOT / "scripts" / "backend-admin-restart.ps1").read_text(encoding="utf-8")
+    assert "$interactiveConfig.tasks.tunnelTaskName" in restart
+    assert "Get-ScheduledTask -TaskName $interactiveTaskName" in restart
+    assert "Stop-ScheduledTask -TaskName $interactiveTaskName" in restart
+    assert "Start-ScheduledTask -TaskName $interactiveTaskName" in restart
+    assert restart.count("Start-Process powershell.exe") == 1
+    assert "interactive_start_method" in restart
+    assert '"scheduled_task"' in restart
+    assert "VibeMQL5-OpenAI-Tunnel" not in restart
+
+
 def test_tip034e_current_runtime_certification_is_build_bound(tmp_path: Path, monkeypatch):
     root = tmp_path / "VibeMQL5"
     (root / "config").mkdir(parents=True)

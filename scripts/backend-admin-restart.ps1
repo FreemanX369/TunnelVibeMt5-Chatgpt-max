@@ -109,6 +109,22 @@ try {
         }
     }
 
+    $interactiveConfigPath = Join-Path $Root "ops\windows\vibemql5.windows.json"
+    $interactiveTaskName = ""
+    if($wanted -contains "interactive_tunnel") {
+        if(-not (Test-Path -LiteralPath $interactiveConfigPath -PathType Leaf)) {
+            throw "INTERACTIVE_CONFIG_MISSING:$interactiveConfigPath"
+        }
+        $interactiveConfig = Get-Content -LiteralPath $interactiveConfigPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $interactiveTaskName = [string]$interactiveConfig.tasks.tunnelTaskName
+        if([string]::IsNullOrWhiteSpace($interactiveTaskName)) {
+            throw "INTERACTIVE_TASK_NAME_MISSING"
+        }
+        Get-ScheduledTask -TaskName $interactiveTaskName -ErrorAction Stop | Out-Null
+        Stop-ScheduledTask -TaskName $interactiveTaskName -ErrorAction SilentlyContinue
+        Start-Sleep -Milliseconds 500
+    }
+
     $rows = @(Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,CommandLine)
     $protected = New-ProtectedPidSet $rows
 
@@ -146,11 +162,7 @@ try {
     }
 
     if($wanted -contains "interactive_tunnel") {
-        Start-Process powershell.exe -ArgumentList @(
-            '-NoProfile','-ExecutionPolicy','Bypass','-File',
-            "$Root\ops\windows\Start-VibeMQL5InteractiveEntry.ps1",
-            '-ConfigPath',"$Root\ops\windows\vibemql5.windows.json"
-        ) -WindowStyle Hidden
+        Start-ScheduledTask -TaskName $interactiveTaskName -ErrorAction Stop
     }
 
     $deadline = (Get-Date).AddSeconds([Math]::Max(5,[Math]::Min($WaitReadySeconds,60)))
@@ -171,6 +183,8 @@ try {
         stopped_pids = @($stopped | Sort-Object -Unique)
         http_target_pids = @($httpTargets | ForEach-Object { [int]$_.ProcessId })
         interactive_target_pids = @($interactiveTargets | ForEach-Object { [int]$_.ProcessId })
+        interactive_task_name = $interactiveTaskName
+        interactive_start_method = if($wanted -contains "interactive_tunnel") { "scheduled_task" } else { "not_requested" }
         protected_pid_count = [int]$protected.Count
     }
 } catch {
