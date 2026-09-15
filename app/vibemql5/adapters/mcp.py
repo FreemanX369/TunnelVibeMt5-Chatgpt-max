@@ -640,11 +640,17 @@ def create_server(root: Path, transport: str = "unknown"):
         ea_binary_ref: str = "",
     ) -> dict[str, Any]:
         """Launch an async MT5-2 test with a required idempotency operation id."""
-        return _invoke(ctx, "launch_test_v2", lambda: facade.launch_test(
-            workspace, ea, preset, set_file, overrides or {}, timeout_seconds,
+        return launch_test(
+            ctx=ctx,
+            workspace=workspace,
+            ea=ea,
+            preset=preset,
+            set_file=set_file,
+            overrides=overrides,
+            timeout_seconds=timeout_seconds,
             ea_binary_ref=ea_binary_ref,
             operation_id=operation_id,
-        ))
+        )
 
     @server.tool()
     def get_job(job_id: str, wait_seconds: float = 0, after_event_seq: int = -1) -> dict[str, Any]:
@@ -731,7 +737,10 @@ def create_server(root: Path, transport: str = "unknown"):
         profile: str = "private",
         label: str = "",
     ) -> dict[str, Any]:
-        """Capture runtime evidence for the exact running MT5-2 tester job; PID is server-resolved only."""
+        """Capture a running MT5-2 job launched with an imported EX5 ea_binary_ref (BIN authority).
+
+        Source-compiled jobs are unsupported; PID is server-resolved only.
+        """
         return _invoke(ctx, "capture_runtime_snapshot", lambda: facade.capture_runtime_snapshot(job_id, profile, label))
 
     @server.tool()

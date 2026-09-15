@@ -384,8 +384,17 @@ def test_tip030_delegation_state_transitions_are_guarded(tmp_path):
         {"id": "DEL-TIP030-2", "task": "guard terminal transitions"},
         "tip030-delegation-assigned-2",
     )
+    with pytest.raises(ValueError, match="CONTINUITY_DELEGATION_ILLEGAL_TRANSITION"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_COMPLETED",
+            {"delegation_id": "DEL-TIP030-2", "report": {"status": "DONE"}},
+            "tip030-complete-before-start",
+            head,
+        )
+
     with pytest.raises(
-        ValueError, match="CONTINUITY_DELEGATION_NOT_AWAITING_PARENT_VERIFICATION"
+        ValueError, match="CONTINUITY_DELEGATION_ILLEGAL_TRANSITION"
     ):
         append_lifecycle(
             manager,
@@ -462,6 +471,15 @@ def test_tip030_delegation_payload_idempotency_and_spoof_rejection(tmp_path):
             "DELEGATION_ASSIGNED",
             {"id": "DEL-TIP030-5", "task": "conflicting reuse"},
             "tip030-idempotent-delegation",
+        )
+
+    with pytest.raises(ValueError, match="CONTINUITY_DELEGATION_STATE_SERVER_OWNED"):
+        append_lifecycle(
+            manager,
+            "DELEGATION_ASSIGNED",
+            {"id": "DEL-STATE-INJECT", "task": "reject caller state", "state": "COMPLETED"},
+            "tip030-delegation-state-injection",
+            first,
         )
 
     with pytest.raises(ValueError, match="CONTINUITY_TYPED_EVENT_REJECTS_PROJECTION"):
@@ -599,6 +617,13 @@ def test_tip032_nested_delegation_child_completion_does_not_orphan_parent(tmp_pa
         head,
     )
 
+    head = append_lifecycle(
+        manager,
+        "DELEGATION_STARTED",
+        {"delegation_id": "DEL-TIP032-CHILD", "summary": "child accepted work"},
+        "tip032-child-started",
+        head,
+    )
     head = append_lifecycle(
         manager,
         "DELEGATION_COMPLETED",

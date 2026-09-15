@@ -13,7 +13,7 @@ from vibemql5.contracts import MCP_TOOL_CATALOG_SHA256, MCP_TOOL_COUNT, MCP_TOOL
 from vibemql5.core.artifacts import ArtifactManager, BUILD_INPUT_MANIFEST_NAME, BUILD_OUTPUT_MANIFEST_NAME
 from vibemql5.core.file_export import FileExportManager
 
-EXPECTED_CATALOG = "835e5dfb8b86649bfafdc616a440f108a78389404e062bd76ba430865025d7fe"
+EXPECTED_CATALOG = "c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670"
 
 
 def _root(tmp_path: Path) -> tuple[Path, Path, bytes, bytes]:
@@ -46,8 +46,8 @@ def _make_passed_job(root: Path, job_id: str, workspace: str = "BD", ea: str = "
 
 
 def test_tip025_identity_keeps_42_tool_catalog_and_schema():
-    assert vibemql5.__version__ == "0.2.33"
-    assert MCP_TOOL_COUNT == 67
+    assert vibemql5.__version__ == "0.2.34"
+    assert MCP_TOOL_COUNT == 72
     assert MCP_TOOL_NAMES.count("export_file") == 1
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
 

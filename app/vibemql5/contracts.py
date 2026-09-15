@@ -4,6 +4,7 @@ import hashlib
 
 # One source of truth for result metadata exposed by both the worker and MCP.
 RESULT_SCHEMA_VERSION = "1.4"
+TUNNEL_ADMIN_SCHEMA_VERSION = "1.0"
 
 MCP_TOOL_NAMES = (
     "server_info",
@@ -73,9 +74,14 @@ MCP_TOOL_NAMES = (
     "backend_run_tests",
     "backend_restart_runtime",
     "backend_read_evidence",
+    "tunnel_admin_status",
+    "tunnel_admin_install_autostart",
+    "tunnel_admin_start",
+    "tunnel_admin_stop",
+    "tunnel_admin_restart",
 )
-MCP_TOOL_COUNT = 67
-MCP_TOOL_CATALOG_SHA256 = '835e5dfb8b86649bfafdc616a440f108a78389404e062bd76ba430865025d7fe'
+MCP_TOOL_COUNT = 72
+MCP_TOOL_CATALOG_SHA256 = 'c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670'
 
 # MetaTrader 5 [Tester] ExecutionMode native bounds.
 EXECUTION_MODE_RANDOM = -1

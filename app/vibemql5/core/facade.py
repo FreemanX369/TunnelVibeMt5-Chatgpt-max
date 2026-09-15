@@ -205,7 +205,7 @@ class ToolFacade:
 
     def list_workspaces(self): return self.ws.list_workspaces()
     def list_eas(self, workspace): return self.ws.list_eas(workspace)
-    def list_terminals(self): return [x.to_dict() for x in self.inv.list()]
+    def list_terminals(self): return self.inv.describe()
     def list_presets(self): return sorted(p.stem for p in (self.root/'config'/'presets').glob('*.json'))
     def list_parameter_sets(self, workspace): return self.ws.list_parameter_sets(workspace)
     def read_source(self, workspace, path):
