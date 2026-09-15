@@ -11,6 +11,7 @@ import time
 import urllib.error
 import urllib.request
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path, PureWindowsPath
 from typing import Any, Iterable
 
@@ -35,6 +36,7 @@ class BackendAdmin:
         "runtime_forensics",
         "tip026",
         "baseline_aware",
+        "tip033_soak",
     }
 
     TUNNEL_INSTANCES = {
@@ -367,12 +369,10 @@ class BackendAdmin:
         p = Path(raw)
         if not p.is_absolute():
             p = self.root / p
-        # strict=False permits new files while still normalizing traversal.
         p = p.resolve(strict=False)
         roots = self.mutable_roots if mutable else self.allowed_roots
         if not self._under(p, roots):
             raise BackendAdminError("PATH_OUTSIDE_ALLOWLIST")
-        # Parent symlink/junction escapes are caught by resolved path comparison.
         if must_exist and not p.exists():
             raise BackendAdminError("FILE_NOT_FOUND")
         if p.exists() and p.is_dir():
@@ -498,8 +498,6 @@ class BackendAdmin:
         if set(expected) != selected:
             raise BackendAdminError("RESTORE_EXPECTED_HASH_TARGET_MISMATCH")
 
-        # Preflight every source and target before the first write. A stale target
-        # therefore cannot produce a partially restored multi-file checkpoint.
         before: dict[str, str] = {}
         for src, target, checkpoint_sha, key in candidates:
             if not src.is_file() or sha256_file(src).lower() != checkpoint_sha:
@@ -587,7 +585,6 @@ class BackendAdmin:
 
     @staticmethod
     def _apply_unified_patch_single_file(original: str, patch: str) -> str:
-        # Minimal deterministic unified-diff applicator; exact context required.
         src = original.splitlines(keepends=True)
         lines = patch.splitlines(keepends=True)
         hunks = []
@@ -675,7 +672,6 @@ class BackendAdmin:
                 raise BackendAdminError("HOTFIX_ZIP_TRAVERSAL")
             if info.is_dir():
                 continue
-            # Unix symlink type.
             mode = (info.external_attr >> 16) & 0o170000
             if mode == 0o120000:
                 raise BackendAdminError("HOTFIX_ZIP_SYMLINK_FORBIDDEN")
@@ -730,8 +726,6 @@ class BackendAdmin:
                     "tests": tests,
                 })
             except Exception:
-                # The outer backend mutation request owns the serialized mutation
-                # lease. Roll back only files whose exact post-write hash we hold.
                 rollback_expected = {
                     item["payload"]["path"]: item["payload"]["sha256_after"]
                     for item in applied
@@ -763,8 +757,55 @@ class BackendAdmin:
             cp = self._run([py, "-m", "pytest", "-q", "-k", "runtime_forensics", str(self.root/"tests")], timeout=300)
         elif suite == "tip026":
             cp = self._run([py, "-m", "pytest", "-q", "-k", "tip026", str(self.root/"tests")], timeout=300)
+        elif suite == "tip033_soak":
+            provenance_path = self.root / "config" / "build-provenance.json"
+            if not provenance_path.is_file():
+                raise BackendAdminError("TIP033_SOAK_PROVENANCE_MISSING")
+            provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+            bridge_build = str(provenance.get("bridge_build") or "").strip()
+            if not bridge_build:
+                raise BackendAdminError("TIP033_SOAK_BRIDGE_BUILD_MISSING")
+            config_path = self.root / "ops" / "windows" / "vibemql5.windows.json"
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            raw_state = str((config.get("supervisor") or {}).get("resilienceStateFile") or "").strip()
+            if not raw_state:
+                raise BackendAdminError("TIP033_SOAK_STATE_PATH_MISSING")
+            state_path = Path(raw_state)
+            if not state_path.is_absolute():
+                state_path = self.root / state_path
+            if state_path.is_file():
+                try:
+                    current = json.loads(state_path.read_text(encoding="utf-8-sig"))
+                    updated = str(current.get("updated_at_utc") or "").strip()
+                    if current.get("last_status") == "RUNNING" and str(current.get("bridge_build") or "") == bridge_build and updated:
+                        stamp = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                        if stamp.tzinfo is None:
+                            stamp = stamp.replace(tzinfo=timezone.utc)
+                        age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
+                        if age < 90:
+                            return {"status":"STARTED","suite":suite,"recovered":True,"bridge_build":bridge_build,"state_path":str(state_path)}
+                except Exception:
+                    pass
+            script = self.root / "ops" / "windows" / "Invoke-TIP013Soak.ps1"
+            if not script.is_file():
+                raise BackendAdminError("TIP033_SOAK_SCRIPT_MISSING")
+            rid = new_id("SOAK")
+            stdout_path = self.receipt_root / f"{rid}.stdout.log"
+            stderr_path = self.receipt_root / f"{rid}.stderr.log"
+            args = [
+                "powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+                "-File", str(script), "-ConfigPath", str(config_path),
+                "-DurationMinutes", "60", "-SampleSeconds", "30", "-MaxConsecutiveBad", "0",
+                "-BridgeBuild", bridge_build, "-CertifyCurrentRuntime",
+            ]
+            flags = (0x00000200 | 0x08000000) if os.name == "nt" else 0
+            out = stdout_path.open("ab", buffering=0); err = stderr_path.open("ab", buffering=0)
+            try:
+                proc = subprocess.Popen(args, cwd=str(self.root), close_fds=True, creationflags=flags, stdin=subprocess.DEVNULL, stdout=out, stderr=err)
+            finally:
+                out.close(); err.close()
+            return {"status":"STARTED","suite":suite,"recovered":False,"bridge_build":bridge_build,"controller_pid":proc.pid,"state_path":str(state_path),"stdout":str(stdout_path),"stderr":str(stderr_path)}
         else:
-            # Standalone baseline-aware gate uses an on-disk approved baseline list.
             baseline = self.receipt_root / "approved-unit-failures.json"
             baseline_state = "PRESENT" if baseline.is_file() else "MISSING"
             expected = set(json.loads(baseline.read_text(encoding="utf-8"))) if baseline.is_file() else set()
@@ -854,10 +895,6 @@ class BackendAdmin:
                 out.close()
                 err.close()
 
-        # Windows:
-        # CREATE_BREAKAWAY_FROM_JOB | CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
-        # Breakaway prevents the restart controller from being killed with the
-        # MCP process tree it is responsible for restarting.
         if os.name == "nt":
             preferred_flags = 0x01000000 | 0x00000200 | 0x08000000
             fallback_flags = 0x00000200 | 0x08000000

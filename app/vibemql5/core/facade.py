@@ -81,10 +81,18 @@ class ToolFacade:
             )
         resilience = read_json(self.root/'state'/'tip013-resilience.json')
         if resilience.get("status") not in {"MISSING", "INVALID"}:
+            provenance = read_json(self.root/'config'/'build-provenance.json')
+            current_build = str(provenance.get("bridge_build") or "")
+            certified = bool(
+                resilience.get("current_runtime_certification")
+                and resilience.get("last_status") == "PASS"
+                and current_build
+                and str(resilience.get("bridge_build") or "") == current_build
+            )
             resilience = {
                 **resilience,
-                "evidence_role": "HISTORICAL_QUALIFICATION",
-                "current_runtime_certification": False,
+                "evidence_role": "CURRENT_RUNTIME_CERTIFICATION" if certified else "HISTORICAL_QUALIFICATION",
+                "current_runtime_certification": certified,
             }
         return {
             "runtime_mode": os.environ.get("VIBEMQL5_RUNTIME_MODE","manual"),
