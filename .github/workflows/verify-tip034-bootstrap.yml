@@ -1,0 +1,30 @@
+name: Verify TIP-034 Bootstrap Completeness
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fresh-checkout:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic bootstrap dependencies
+        run: python -m pip install -e ".[test]"
+      - name: Fresh import
+        run: python -c "import vibemql5.adapters.mcp; print('IMPORT_PASS')"
+      - name: Verify tool catalog authority
+        run: python -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==72; assert len(MCP_TOOL_NAMES)==72; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==71; assert MCP_TOOL_CATALOG_SHA256=='c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670'; print('CATALOG_PASS')"
+      - name: Compile Python tree
+        run: python -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"
+      - name: Full unit suite
+        run: python -m pytest tests/unit -q
+      - name: Secret and runtime-state boundary
+        run: python -c "import pathlib,re; bad=[]; forbidden={'secrets','runs','state','backups','logs'}; suffixes={'.dpapi','.ex5'}; [bad.append(str(p)) for p in pathlib.Path('.').rglob('*') if p.is_file() and (any(part.lower() in forbidden for part in p.parts) or p.suffix.lower() in suffixes)]; assert not bad,bad; print('BOUNDARY_PASS')"
