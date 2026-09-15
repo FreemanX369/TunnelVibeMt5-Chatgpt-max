@@ -103,8 +103,41 @@ def test_soak_monitor_is_bounded_and_persists_evidence():
     s = (OPS / "Invoke-TIP013Soak.ps1").read_text(encoding="utf-8")
     assert "DurationMinutes" in s and "SampleSeconds" in s
     assert "MaxConsecutiveBad" in s
+    assert "BridgeBuild" in s and "CertifyCurrentRuntime" in s
+    assert "current_runtime_certification" in s
+    assert "TIP013_SOAK_CURRENT_CERT_REQUIRES_ZERO_BAD_TOLERANCE" in s
     assert "heartbeatStaleSeconds" in s
     assert "TIP013_SOAK=PASS" in s
+
+
+def test_tip034e_current_runtime_certification_is_build_bound(tmp_path: Path, monkeypatch):
+    root = tmp_path / "VibeMQL5"
+    (root / "config").mkdir(parents=True)
+    (root / "state").mkdir(parents=True)
+    (root / "config" / "settings.json").write_text(json.dumps({"terminal_policy": {"alias": "MT5-2"}}), encoding="utf-8")
+    (root / "config" / "terminals.json").write_text(json.dumps({"terminals": []}), encoding="utf-8")
+    (root / "config" / "build-provenance.json").write_text(json.dumps({"bridge_build": "TIP-033RC1"}), encoding="utf-8")
+    state_path = root / "state" / "tip013-resilience.json"
+    state_path.write_text(json.dumps({"bridge_build": "TIP-033RC1", "last_status": "PASS", "current_runtime_certification": True}), encoding="utf-8")
+    monkeypatch.setenv("VIBEMQL5_RUNTIME_MODE", "interactive")
+    out = ToolFacade(root).runtime_status()["resilience"]
+    assert out["current_runtime_certification"] is True
+    assert out["evidence_role"] == "CURRENT_RUNTIME_CERTIFICATION"
+
+    state_path.write_text(json.dumps({"bridge_build": "TIP-013", "last_status": "PASS", "current_runtime_certification": True}), encoding="utf-8")
+    out = ToolFacade(root).runtime_status()["resilience"]
+    assert out["current_runtime_certification"] is False
+    assert out["evidence_role"] == "HISTORICAL_QUALIFICATION"
+
+
+def test_tip034e_backend_exposes_only_fixed_soak_suite():
+    core = (ROOT / "app" / "vibemql5" / "backend_admin" / "core.py").read_text(encoding="utf-8")
+    assert '"tip033_soak"' in core
+    assert "Invoke-TIP013Soak.ps1" in core
+    assert '"-DurationMinutes", "60"' in core
+    assert '"-SampleSeconds", "30"' in core
+    assert '"-MaxConsecutiveBad", "0"' in core
+    assert '"-CertifyCurrentRuntime"' in core
 
 
 def test_tip013f_legacy_state_migration_oracle_keeps_last_result():
