@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vibemql5"
+version = "0.2.34"
+description = "VibeMQL5 fixed-terminal MT5 strategy tester bridge"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp==2.1.1"]
+test = ["mcp==2.1.1", "pytest==9.1.1"]
+
+[tool.setuptools]
+package-dir = {"" = "app"}
+
+[tool.setuptools.packages.find]
+where = ["app"]
