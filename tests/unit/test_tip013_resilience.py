@@ -110,6 +110,15 @@ def test_soak_monitor_is_bounded_and_persists_evidence():
     assert "TIP013_SOAK=PASS" in s
 
 
+def test_tip034e_multi_client_scope_is_profile_bound():
+    soak = (OPS / "Invoke-TIP013Soak.ps1").read_text(encoding="utf-8")
+    restart = (ROOT / "scripts" / "backend-admin-restart.ps1").read_text(encoding="utf-8")
+    assert "$config.tunnel.profile" in soak
+    assert "CommandLine" in soak and "--profile" in soak
+    assert "vibemql5\\.windows\\.json" in restart
+    assert "vibemql5\\.windows\\.b\\.json" not in restart
+
+
 def test_tip034e_current_runtime_certification_is_build_bound(tmp_path: Path, monkeypatch):
     root = tmp_path / "VibeMQL5"
     (root / "config").mkdir(parents=True)
