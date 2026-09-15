@@ -19,7 +19,7 @@ def test_tip012_version_and_runtime_provenance(monkeypatch):
     monkeypatch.setenv("VIBEMQL5_SUPERVISOR_SESSION_ID", "2")
     p = _runtime_provenance()
     assert vibemql5.__version__ == "0.2.34"
-    assert p["bridge_build"] == "TIP-033RC1"
+    assert p["bridge_build"] == "TIP-033"
     assert p["runtime_mode"] == "interactive"
     assert p["supervisor_generation"] == "gen-123"
     assert p["supervisor_session_id"] == "2"

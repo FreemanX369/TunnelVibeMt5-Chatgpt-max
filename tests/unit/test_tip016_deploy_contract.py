@@ -14,7 +14,7 @@ PROVENANCE = (ROOT / "config" / "build-provenance.json").read_text(encoding="utf
 def test_tip016_version_build_and_tool_count():
     assert "__version__ = '0.2.34'" in (ROOT / "app" / "vibemql5" / "__init__.py").read_text(encoding="utf-8")
     assert '"bridge_version": "0.2.34"' in PROVENANCE
-    assert '"bridge_build": "TIP-033RC1"' in PROVENANCE
+    assert '"bridge_build": "TIP-033"' in PROVENANCE
     assert '"mcp_tool_count": 72' in PROVENANCE
     assert "len(REQUIRED_TOOLS)==41" in APPLY
     assert "len(REQUIRED_TOOLS)==41" in TEST
