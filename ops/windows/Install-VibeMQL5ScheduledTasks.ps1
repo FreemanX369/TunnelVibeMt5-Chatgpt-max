@@ -13,17 +13,36 @@ $config=Get-Content -LiteralPath $configPathResolved -Raw -Encoding UTF8|Convert
 $pwsh=(Get-Command powershell.exe).Source
 $userId=if($env:USERDOMAIN){"{0}\{1}" -f $env:USERDOMAIN,$env:USERNAME}else{$env:USERNAME}
 
+$interactiveEntry=Join-Path $PSScriptRoot "Start-VibeMQL5InteractiveEntry.ps1"
+$supervisor=Join-Path $PSScriptRoot "Start-VibeMQL5TunnelSupervisor.ps1"
+$watchdog=Join-Path $PSScriptRoot "Invoke-VibeMQL5Watchdog.ps1"
+foreach($required in @($interactiveEntry,$supervisor,$watchdog)){
+    if(-not(Test-Path -LiteralPath $required -PathType Leaf)){throw "TIP034_BOOTSTRAP_PREREQUISITE_MISSING: $required"}
+}
+
+$action="persist non-secret deployment metadata and register VibeMQL5 scheduled tasks"
+if(-not $PSCmdlet.ShouldProcess($configPathResolved,$action)){
+    Write-Host 'TIP034_BOOTSTRAP_DRY_RUN=PASS'
+    Write-Host "INSTALL_ROOT=$($config.installRoot)"
+    Write-Host "PYTHON_EXE=$($config.pythonExe)"
+    Write-Host "TUNNEL_EXECUTABLE=$($config.tunnel.executable)"
+    Write-Host "TUNNEL_PROFILE=$($config.tunnel.profile)"
+    Write-Host "SECRET_FILE_REFERENCE=$($config.tunnel.secretFile)"
+    Write-Host 'SECRET_PROVISIONING=EXTERNAL_REQUIRED'
+    Write-Host "INTERACTIVE_TASK=$($config.tasks.tunnelTaskName)"
+    Write-Host "WATCHDOG_TASK=$($config.tasks.watchdogTaskName)"
+    Write-Host "BACKGROUND_TASK=$($config.tasks.backgroundTunnelTaskName)"
+    Write-Host "ENABLE_BOOT_TUNNEL=$([bool]$EnableBootTunnel)"
+    return
+}
+
 # Persist only non-secret deployment mode metadata.
 $config.tasks.interactiveUser=$userId
 $config.tasks.enableBootTunnel=[bool]$EnableBootTunnel
 $utf8=New-Object System.Text.UTF8Encoding($false)
 [IO.File]::WriteAllText($configPathResolved,($config|ConvertTo-Json -Depth 10),$utf8)
 
-$interactiveEntry=Join-Path $PSScriptRoot "Start-VibeMQL5InteractiveEntry.ps1"
-$supervisor=Join-Path $PSScriptRoot "Start-VibeMQL5TunnelSupervisor.ps1"
-$watchdog=Join-Path $PSScriptRoot "Invoke-VibeMQL5Watchdog.ps1"
 $settings=New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -StartWhenAvailable
-
 $intAction=New-ScheduledTaskAction -Execute $pwsh -Argument ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`" -ConfigPath `"{1}`"" -f $interactiveEntry,$configPathResolved) -WorkingDirectory $PSScriptRoot
 $intTrigger=New-ScheduledTaskTrigger -AtLogOn -User $userId
 $intPrincipal=New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Highest

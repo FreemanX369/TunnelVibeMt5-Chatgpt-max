@@ -1,61 +1,52 @@
 {
-    "$schema":  "./vibemql5.windows.schema.json",
-    "installRoot":  "C:\\VibeMQL5",
-    "pythonExe":  "C:\\VibeMQL5\\.venv\\Scripts\\python.exe",
-    "mcp":  {
-                "transport":  "stdio",
-                "module":  "vibemql5.adapters.mcp",
-                "arguments":  [
-                                  "--root",
-                                  "C:\\VibeMQL5",
-                                  "--transport",
-                                  "stdio"
-                              ],
-                "debugHttpUrl":  "http://127.0.0.1:8765/mcp"
-            },
-    "tunnel":  {
-                   "executable":  "C:\\VibeMQL5\\tunnel\\tunnel-client.exe",
-                   "profile":  "vibemql5-vps",
-                   "arguments":  [
-                                     "run",
-                                     "--profile",
-                                     "vibemql5-vps"
-                                 ],
-                   "secretFile":  "C:\\VibeMQL5\\secrets\\tunnel-runtime-key.dpapi",
-                   "controlPlaneHost":  "api.openai.com",
-                   "restartDelaySeconds":  5,
-                   "maxRestartDelaySeconds":  120,
-                   "heartbeatSeconds":  60
-               },
-    "tasks":  {
-                  "tunnelTaskName":  "VibeMQL5-OpenAI-Tunnel",
-                  "watchdogTaskName":  "VibeMQL5-Watchdog",
-                  "runAtStartup":  true,
-                  "watchdogIntervalMinutes":  2,
-                  "backgroundTunnelTaskName":  "VibeMQL5-OpenAI-Tunnel-Background",
-                  "enableBootTunnel":  true,
-                  "interactiveUser":  "WIN-3ANO9VRO5VO\\Administrator"
-              },
-    "logs":  {
-                 "directory":  "C:\\VibeMQL5\\logs",
-                 "supervisorLog":  "C:\\VibeMQL5\\logs\\tunnel-supervisor.log"
-             },
-    "supervisor":  {
-                       "healthUrl":  "http://127.0.0.1:8080/healthz",
-                       "readyUrl":  "http://127.0.0.1:8080/readyz",
-                       "stateFile":  "C:\\VibeMQL5\\state\\tunnel-supervisor.json",
-                       "watchdogStateFile":  "C:\\VibeMQL5\\state\\tunnel-watchdog.json",
-                       "heartbeatSeconds":  10,
-                       "healthPollSeconds":  5,
-                       "heartbeatStaleSeconds":  45,
-                       "startGraceSeconds":  45,
-                       "stableResetSeconds":  120,
-                       "maxRestartsPerHour":  5,
-                       "circuitBreakSeconds":  300,
-                       "watchdogRestartCooldownSeconds":  60,
-                       "resilienceStateFile":  "C:\\VibeMQL5\\state\\tip013-resilience.json",
-                       "failureInjectionTimeoutSeconds":  90,
-                       "networkIsolationSeconds":  40,
-                       "networkRecoveryTimeoutSeconds":  120
-                   }
+  "$schema": "./vibemql5.windows.schema.json",
+  "installRoot": "C:\\VibeMQL5",
+  "pythonExe": "C:\\VibeMQL5\\.venv\\Scripts\\python.exe",
+  "mcp": {
+    "transport": "stdio",
+    "module": "vibemql5.adapters.mcp",
+    "arguments": ["--root", "C:\\VibeMQL5", "--transport", "stdio"],
+    "debugHttpUrl": "http://127.0.0.1:8765/mcp"
+  },
+  "tunnel": {
+    "executable": "C:\\VibeMQL5\\tunnel\\tunnel-client.exe",
+    "profile": "vibemql5-vps",
+    "arguments": ["run", "--profile", "vibemql5-vps"],
+    "secretFile": "C:\\VibeMQL5\\secrets\\tunnel-runtime-key.dpapi",
+    "controlPlaneHost": "api.openai.com",
+    "restartDelaySeconds": 5,
+    "maxRestartDelaySeconds": 120,
+    "heartbeatSeconds": 60
+  },
+  "tasks": {
+    "tunnelTaskName": "VibeMQL5-OpenAI-Tunnel",
+    "watchdogTaskName": "VibeMQL5-Watchdog",
+    "runAtStartup": true,
+    "watchdogIntervalMinutes": 2,
+    "backgroundTunnelTaskName": "VibeMQL5-OpenAI-Tunnel-Background",
+    "enableBootTunnel": true,
+    "interactiveUser": ""
+  },
+  "logs": {
+    "directory": "C:\\VibeMQL5\\logs",
+    "supervisorLog": "C:\\VibeMQL5\\logs\\tunnel-supervisor.log"
+  },
+  "supervisor": {
+    "healthUrl": "http://127.0.0.1:8080/healthz",
+    "readyUrl": "http://127.0.0.1:8080/readyz",
+    "stateFile": "C:\\VibeMQL5\\state\\tunnel-supervisor.json",
+    "watchdogStateFile": "C:\\VibeMQL5\\state\\tunnel-watchdog.json",
+    "heartbeatSeconds": 10,
+    "healthPollSeconds": 5,
+    "heartbeatStaleSeconds": 45,
+    "startGraceSeconds": 45,
+    "stableResetSeconds": 120,
+    "maxRestartsPerHour": 5,
+    "circuitBreakSeconds": 300,
+    "watchdogRestartCooldownSeconds": 60,
+    "resilienceStateFile": "C:\\VibeMQL5\\state\\tip013-resilience.json",
+    "failureInjectionTimeoutSeconds": 90,
+    "networkIsolationSeconds": 40,
+    "networkRecoveryTimeoutSeconds": 120
+  }
 }
