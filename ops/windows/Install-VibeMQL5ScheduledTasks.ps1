@@ -1,6 +1,6 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
- [string]$ConfigPath = "$PSScriptRoot\vibemql5.windows.json",
+ [string]$ConfigPath,
  [PSCredential]$Credential,
  [switch]$EnableBootTunnel,
  [switch]$InteractiveLogon,
@@ -8,6 +8,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+if([string]::IsNullOrWhiteSpace($ConfigPath)){$ConfigPath=Join-Path $PSScriptRoot "vibemql5.windows.json"}
 $configPathResolved=(Resolve-Path -LiteralPath $ConfigPath).Path
 $config=Get-Content -LiteralPath $configPathResolved -Raw -Encoding UTF8|ConvertFrom-Json
 $pwsh=(Get-Command powershell.exe).Source
