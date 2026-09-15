@@ -9,6 +9,10 @@ description = "VibeMQL5 fixed-terminal MT5 strategy tester bridge"
 requires-python = ">=3.12,<3.13"
 dependencies = []
 
+[project.scripts]
+mql5-retro-init = "vibemql5.adapters.retro_cli:retro_init_main"
+vkmql-check = "vibemql5.adapters.retro_cli:vkmql_check_main"
+
 [project.optional-dependencies]
 mcp = ["mcp==2.1.1"]
 test = ["mcp==2.1.1", "pytest==9.1.1"]
