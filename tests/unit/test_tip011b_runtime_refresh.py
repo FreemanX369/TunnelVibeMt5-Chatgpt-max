@@ -9,7 +9,7 @@ from vibemql5.core.workspace import WorkspaceManager
 
 def test_runtime_provenance_hashes_loaded_modules():
     p = _runtime_provenance()
-    assert p["bridge_build"] == "TIP-033RC1"
+    assert p["bridge_build"] == "TIP-033"
     assert p["bridge_version"] == "0.2.34"
     assert isinstance(p["pid"], int) and p["pid"] > 0
     for path_key, sha_key in (

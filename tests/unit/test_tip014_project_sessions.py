@@ -43,7 +43,7 @@ def _job(root: Path, state="PASSED") -> str:
 def test_tip014_version_and_runtime_provenance():
     assert vibemql5.__version__ == "0.2.34"
     p = _runtime_provenance()
-    assert p["bridge_build"] == "TIP-033RC1"
+    assert p["bridge_build"] == "TIP-033"
     assert p["bridge_version"] == "0.2.34"
 
 
@@ -142,7 +142,7 @@ def test_mcp_exposes_tip014_session_tools(monkeypatch, tmp_path: Path):
     info = server.tools["server_info"]()
     assert info["version"] == "0.2.34"
     assert info["project_session_schema"] == "1.0"
-    assert info["runtime_provenance"]["bridge_build"] == "TIP-033RC1"
+    assert info["runtime_provenance"]["bridge_build"] == "TIP-033"
 
 
 def test_current_restart_is_state_preserving_and_terminal_safe():

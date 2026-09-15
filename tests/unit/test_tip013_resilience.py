@@ -16,7 +16,7 @@ def test_tip013_version_and_runtime_provenance(monkeypatch):
     monkeypatch.setenv("VIBEMQL5_RUNTIME_MODE", "interactive")
     p = _runtime_provenance()
     assert vibemql5.__version__ == "0.2.34"
-    assert p["bridge_build"] == "TIP-033RC1"
+    assert p["bridge_build"] == "TIP-033"
     assert p["workspace_module_sha256"]
     assert p["mcp_module_sha256"]
 
@@ -125,9 +125,9 @@ def test_tip034e_current_runtime_certification_is_build_bound(tmp_path: Path, mo
     (root / "state").mkdir(parents=True)
     (root / "config" / "settings.json").write_text(json.dumps({"terminal_policy": {"alias": "MT5-2"}}), encoding="utf-8")
     (root / "config" / "terminals.json").write_text(json.dumps({"terminals": []}), encoding="utf-8")
-    (root / "config" / "build-provenance.json").write_text(json.dumps({"bridge_build": "TIP-033RC1"}), encoding="utf-8")
+    (root / "config" / "build-provenance.json").write_text(json.dumps({"bridge_build": "TIP-033"}), encoding="utf-8")
     state_path = root / "state" / "tip013-resilience.json"
-    state_path.write_text(json.dumps({"bridge_build": "TIP-033RC1", "last_status": "PASS", "current_runtime_certification": True}), encoding="utf-8")
+    state_path.write_text(json.dumps({"bridge_build": "TIP-033", "last_status": "PASS", "current_runtime_certification": True}), encoding="utf-8")
     monkeypatch.setenv("VIBEMQL5_RUNTIME_MODE", "interactive")
     out = ToolFacade(root).runtime_status()["resilience"]
     assert out["current_runtime_certification"] is True
