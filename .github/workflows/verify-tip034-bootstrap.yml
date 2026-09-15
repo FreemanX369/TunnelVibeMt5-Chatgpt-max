@@ -27,4 +27,4 @@ jobs:
       - name: Full unit suite
         run: python -m pytest tests/unit -q
       - name: Secret and runtime-state boundary
-        run: python -c "import pathlib,re; bad=[]; forbidden={'secrets','runs','state','backups','logs'}; suffixes={'.dpapi','.ex5'}; [bad.append(str(p)) for p in pathlib.Path('.').rglob('*') if p.is_file() and (any(part.lower() in forbidden for part in p.parts) or p.suffix.lower() in suffixes)]; assert not bad,bad; print('BOUNDARY_PASS')"
+        run: python -c "import pathlib,subprocess; bad=[]; forbidden={'secrets','runs','state','backups','logs'}; suffixes={'.dpapi','.ex5'}; files=[pathlib.PurePosixPath(x) for x in subprocess.check_output(['git','ls-files'],text=True).splitlines()]; [bad.append(str(p)) for p in files if any(part.lower() in forbidden for part in p.parts) or p.suffix.lower() in suffixes]; assert not bad,bad; print('BOUNDARY_PASS')"
