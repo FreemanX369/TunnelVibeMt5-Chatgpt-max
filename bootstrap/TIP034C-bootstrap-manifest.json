@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "tip": "TIP-034C",
+  "purpose": "Repository bootstrap completeness classification",
+  "tracked": [
+    {"path": ".github/workflows/", "reason": "fresh-checkout verification authority"},
+    {"path": "app/vibemql5/", "reason": "non-secret runtime source and import closure"},
+    {"path": "ops/windows/*.ps1", "reason": "Windows supervisor, watchdog, qualification and install contracts"},
+    {"path": "ops/windows/vibemql5.windows.schema.json", "reason": "Windows config schema"},
+    {"path": "pyproject.toml", "reason": "package/direct dependency authority"},
+    {"path": "requirements-bootstrap.lock", "reason": "Windows Python 3.12 transitive dependency constraints"},
+    {"path": "tests/unit/", "reason": "clean-checkout behavioral/contract verification"},
+    {"path": "README.md", "reason": "repository entry documentation"},
+    {"path": "docs/bootstrap/", "reason": "new-VPS bootstrap/runbook authority"},
+    {"path": ".gitignore", "reason": "secret/runtime-state exclusion policy"}
+  ],
+  "template": [
+    {"path": "ops/windows/vibemql5.windows.json", "reason": "sanitized deploy config; installer fills interactiveUser locally; secretFile is reference only"}
+  ],
+  "external": [
+    {"path": "tunnel/tunnel-client.exe", "reason": "externally provisioned tunnel client binary"},
+    {"path": "tunnel profile vibemql5-vps or approved instance profile", "reason": "externally authorized connection profile"},
+    {"path": "secrets/tunnel-runtime-key.dpapi", "reason": "machine-bound secret provisioned outside Git"},
+    {"path": "MetaTrader 5 installation and registered terminals", "reason": "external native prerequisite; fixed execution terminal remains MT5-2"},
+    {"path": "MT5 account credentials and AutoTrading state", "reason": "external operator/runtime authority; never repository content"},
+    {"path": "optional Windows credential for boot tunnel task", "reason": "stored by Windows Task Scheduler, never Git"}
+  ],
+  "exclude": [
+    "secrets/**",
+    "*.dpapi",
+    "runs/**",
+    "state/**",
+    "backups/**",
+    "logs/**",
+    "workspaces/**",
+    "*.ex5",
+    "*.dmp",
+    "private-regions.bin",
+    "page-hashes.jsonl",
+    "regions.jsonl",
+    "live account/credential/token material"
+  ],
+  "runtime_identity": {
+    "version": "0.2.34",
+    "bridge_build": "TIP-033RC1",
+    "fixed_terminal": "MT5-2",
+    "configured_build_is_not_authority": true,
+    "native_observed_build_policy": "latest completed native result wins"
+  }
+}

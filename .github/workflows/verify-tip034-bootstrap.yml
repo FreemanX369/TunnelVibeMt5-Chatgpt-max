@@ -1,0 +1,42 @@
+name: Verify TIP-034 Bootstrap Completeness
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fresh-checkout:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic bootstrap dependencies
+        run: python -m pip install -c requirements-bootstrap.lock -e ".[test]"
+      - name: Fresh import
+        run: python -c "import vibemql5.adapters.mcp; print('IMPORT_PASS')"
+      - name: Verify tool catalog authority
+        run: python -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==72; assert len(MCP_TOOL_NAMES)==72; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==71; assert MCP_TOOL_CATALOG_SHA256=='c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670'; print('CATALOG_PASS')"
+      - name: Compile Python tree
+        run: python -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"
+      - name: Full unit suite
+        run: python -m pytest tests/unit -q
+      - name: Verify sanitized Windows config
+        run: python -c "import json,pathlib; p=pathlib.Path('ops/windows/vibemql5.windows.json'); c=json.loads(p.read_text(encoding='utf-8')); assert c['tasks']['interactiveUser']==''; assert c['tunnel']['secretFile'].lower().endswith('.dpapi'); print('CONFIG_TEMPLATE_PASS')"
+      - name: Windows bootstrap dry-run
+        shell: pwsh
+        run: |
+          $output = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\ops\windows\Install-VibeMQL5ScheduledTasks.ps1 -WhatIf 2>&1 | Out-String
+          Write-Host $output
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ($output -notmatch 'TIP034_BOOTSTRAP_DRY_RUN=PASS') { throw 'TIP034_DRY_RUN_MARKER_MISSING' }
+          if ($output -notmatch 'SECRET_PROVISIONING=EXTERNAL_REQUIRED') { throw 'TIP034_SECRET_BOUNDARY_MARKER_MISSING' }
+      - name: Verify bootstrap manifest and runbook
+        run: python -c "import json,pathlib; m=pathlib.Path('bootstrap/TIP034C-bootstrap-manifest.json'); r=pathlib.Path('docs/bootstrap/WINDOWS-VPS-BOOTSTRAP.md'); data=json.loads(m.read_text(encoding='utf-8')); assert data['tip']=='TIP-034C'; assert data['external'] and data['exclude']; assert r.is_file() and r.stat().st_size>0; print('BOOTSTRAP_DOCS_PASS')"
+      - name: Secret and runtime-state boundary
+        run: python -c "import pathlib,subprocess; bad=[]; forbidden={'secrets','runs','state','backups','logs'}; suffixes={'.dpapi','.ex5'}; files=[pathlib.PurePosixPath(x) for x in subprocess.check_output(['git','ls-files'],text=True).splitlines()]; [bad.append(str(p)) for p in files if any(part.lower() in forbidden for part in p.parts) or p.suffix.lower() in suffixes]; assert not bad,bad; print('BOUNDARY_PASS')"
