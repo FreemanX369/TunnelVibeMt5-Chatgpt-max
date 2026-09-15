@@ -122,7 +122,8 @@ try {
     }
     if($wanted -contains "interactive_tunnel") {
         $interactiveTargets = @($rows | Where-Object {
-            $_.CommandLine -and $_.CommandLine -match 'Start-VibeMQL5InteractiveEntry\.ps1' -and [int]$_.ProcessId -ne [int]$PID
+            $_.CommandLine -and $_.CommandLine -match 'Start-VibeMQL5InteractiveEntry\.ps1' -and
+            $_.CommandLine -match 'vibemql5\.windows\.json' -and [int]$_.ProcessId -ne [int]$PID
         })
     }
 
