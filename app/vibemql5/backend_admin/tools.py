@@ -1,10 +1,10 @@
 from __future__ import annotations
 from pathlib import Path
 from typing import Any
-from .core import BackendAdmin, BackendAdminError
+from .multitunnel import MultiTunnelBackendAdmin
 
 def register_backend_admin_tools(mcp, root: str | Path):
-    admin = BackendAdmin(Path(root))
+    admin = MultiTunnelBackendAdmin(Path(root))
 
     def expose(name):
         return mcp.tool(name=name)
