@@ -25,7 +25,7 @@ TIP-036 adds the allowlisted instance:
 - health/ready port: `8082`
 - interactive task: `VibeMQL5-OpenAI-Tunnel-C`
 - watchdog task: `VibeMQL5-Watchdog-C`
-- optional background task: `VibeMQL5-OpenAI-Tunnel-Background-C`
+- background task (enabled for certified A/B/C boot parity): `VibeMQL5-OpenAI-Tunnel-Background-C`
 
 The generated C config is derived from the canonical A Windows config while assigning C-specific profile, secret reference, task names, log/state paths, and health port.
 
@@ -151,6 +151,34 @@ Keep the security statement separate:
 `authenticated_account_identity = false`
 
 The backend does not use A/B/C labels as authentication identities; OpenAI workspace/tunnel authorization remains the access-control boundary.
+
+## Certified live acceptance — 2026-09-23
+
+All four gates passed on the certified VPS with Bridge `0.2.34 / TIP-033`,
+`72 server / 71 model-visible` tools, shared backend, and fixed `MT5-2`.
+A, B, and C are operational peers with equivalent VibeMQL5 tool capability.
+Each workspace uses its own OpenAI tunnel authorization and client profile;
+backend `authenticated_account_identity=false` remains unchanged.
+
+| Gate | Live evidence |
+| --- | --- |
+| 1 — read-only | Business C exposed the expected tool surface and READY backend; A/B/C each had one tunnel process and health/ready 200/200. |
+| 2 — guarded write | C patched and restored `demo/Experts/DemoEA.mq5` using checkpoint `CP-20260923-131540-1B1C44D9BD64`; source returned to SHA-256 `a80e47af086a210825a32f26faa681fc12932a8b99d57540aec6eafa38d3b66c` (2026 bytes). |
+| 3 — native and replay | C job `BT-20260923-134405-6E6273` passed on MT5-2, no fallback, compile 0 errors/0 warnings, normal tester finish, cleanup/reconnect PASS; identical replay recovered the same job without spawning another. The raw MetaEditor `process_exit_code=1` remains in the receipt alongside compile PASSED and immutable EX5 output; it is not a general rule that exit code 1 means success. |
+| 4 — shared concurrency | Overlapping B → C → A jobs `BT-20260923-140624-BCF201`, `BT-20260923-140629-9DF4C4`, and `BT-20260923-140643-75AA2B` passed with serial native leases. B's guarded comment patch produced SHA-256 `0b27f54b08abdddf0520a85652f5703dc2b586edf13fdd75b0e9ddd8b1cb51c3`; A's stale restore was rejected without changing it; C's CAS restore receipt matched the baseline. Restarting C alone preserved the A/B PIDs. |
+
+Cold boot was observed while Windows remained at its sign-in screen:
+A/B/C background tasks were Running, interactive tasks Ready, each tunnel had
+one process and health/ready 200/200, and B/C chats directly called
+`server_info` and `health` in background mode. After Administrator sign-in,
+all three handed off to interactive tasks with one process per instance and
+health/ready 200/200. The final backend was READY with queue=0,
+active_job=null, native_lock=null, mutation_lock=null; DemoEA was byte-exact
+at the baseline hash above. No MT5 account, credentials, or AutoTrading change.
+
+Repository CI for the TIP-036 code candidate passed TIP-027, TIP-028, and
+TIP-034 workflows; the certified VPS unit suite passed 405 tests. Detailed
+receipts and exact commit CI are linked in PR #16.
 
 ## Rollback
 
