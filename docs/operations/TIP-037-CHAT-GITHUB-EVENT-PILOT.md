@@ -1,6 +1,6 @@
 # TIP-037 — Existing Chat GitHub Event Pilot
 
-Status: draft PoC. This branch is a test carrier, not a production rollout.
+Status: historical PoC runbook, merged into `main` on 2026-09-23. GitHub event wakeup remains BLOCKED; the merge is not a cross-account acceptance.
 
 ## Goal
 
@@ -80,6 +80,21 @@ No security-grade ChatGPT account identity exists in current MCP request metadat
 ## Gate 3: symmetric A/B/C (only after Gate 2 PASS)
 
 Set up one dedicated PR and one event-triggered task in the original ordinary Chat conversation of each recipient. Validate all six directed paths: A→B, A→C, B→A, B→C, C→A, C→B; then validate one request to both other peers, duplicate comment handling, combined events, and receipt return to the originator. Keep native MT5 and source-mutation serialization unchanged.
+
+## Post-merge checkpoint and ordinary-Chat receiver gate — 2026-09-23
+
+PR #17 (this historical runbook) and PR #18 (read-only A/B/C poll diagnostics) are merged into `main`. The tunnel diagnostic code was deployed and passed 407 VPS unit tests. After a simultaneous DNS poll outage, A/B/C recovered; all three local instances had one process and 200/200 health/ready. These checks do not establish that any ChatGPT account can wake or authenticate another account's chat.
+
+From the coordinator's currently connected chat, `get_continuity(project_id="TIP037-CHAT-B-PROBE-20260923")` returned the unchanged `CM-000001` manifest at revision 1, SHA-256 `4bf7b6885b9610dd5871bc1c2c513ef6ad3408272b31ef38f4a4b21de3152a94`. The only active delegation is `TIP037-B-READ-20260923-01` for recipient label B in `ASSIGNED`. `verify_continuity` returned `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, and one event. Thus B's earlier scheduled safety-check rejection produced no continuity writes. This is a read through the coordinator's connector, not an independently authenticated account-B result.
+
+Next, run these **read-only** receiver checks inside the existing ordinary Chat conversations of B and C, each with its own installed TunnelVibemq5 connector:
+
+1. Call `get_continuity(project_id="TIP037-CHAT-B-PROBE-20260923")` and `verify_continuity` with the same project ID. Report the exact tool result, integrity, revision, SHA and delegation state. C is only testing visibility of the shared manifest; C must not claim or complete B's assignment.
+2. In B, if both direct calls pass and the live manifest still addresses B in `ASSIGNED`, run the already scoped B handoff with one `DELEGATION_STARTED`, then `server_info` and `health`, then one `DELEGATION_COMPLETED`. Each write must use the revision and SHA from the **immediately preceding** read/receipt plus a stable, distinct operation ID. Report both receipts in B's original chat. If any guard fails, stop without a substitute write.
+3. Re-read and verify the manifest from the coordinator connector. Accept the handoff only if the two B receipts appear with valid CAS and the resulting delegation awaits parent verification. Because the current MCP transport has no authenticated ChatGPT account identity, the `recipient` or `origin` labels alone cannot prove which ChatGPT login wrote an event.
+4. Only after direct B handoff works, create a fresh one-time receiver task **in B's original ordinary Chat** for a new assignment. First test `get_continuity` alone: the earlier scheduled run was blocked by platform safety checks before the Bridge received the call. If it is blocked again, retain the error and do not schedule recurrent polling or claim automatic handoff. Repeat the same receiver gate for A and C before attempting six directed routes.
+
+Event-triggered GitHub tasks currently require ChatGPT Work; a task created in a Work chat does not prove that a B/C **ordinary Chat** can receive the event. Ordinary-Chat timer tasks have independently returned to B's same chat once, but a time-based task does not wake on demand. No coordinator in one account can create a scheduled task inside another account's existing chat using this connector. Keep a timer-based pilot separate from GitHub Gate 1 and document the measured delivery delay before selecting it.
 
 ## References
 
