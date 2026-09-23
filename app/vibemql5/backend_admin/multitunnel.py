@@ -77,6 +77,8 @@ class MultiTunnelBackendAdmin(BackendAdmin):
         value = str(instance or "all").strip().upper()
         keys = list(self.TUNNEL_INSTANCES) if value == "ALL" else [self._tunnel_spec(value)[0]]
         items = [self._tunnel_status_one(key) for key in keys]
+        for key, item in zip(keys, items):
+            item["poll_diagnostics"] = self._poll_diagnostics_one(key)
         return {
             "status": "PASS",
             "schema_version": "1.0",

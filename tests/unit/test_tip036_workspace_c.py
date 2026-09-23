@@ -78,6 +78,7 @@ def test_tip036_c_config_is_derived_from_a_without_secret_material(tmp_path):
 def test_tip036_status_all_includes_a_b_c(tmp_path, monkeypatch):
     admin = MultiTunnelBackendAdmin(_root(tmp_path))
     monkeypatch.setattr(admin, "_tunnel_status_one", lambda key: {"instance": key})
+    monkeypatch.setattr(admin, "_poll_diagnostics_one", lambda _key: {"status": "PASS"})
     status = admin.tunnel_admin_status("all")
     assert [item["instance"] for item in status["instances"]] == ["A", "B", "C"]
     assert status["generic_shell_exposed"] is False
