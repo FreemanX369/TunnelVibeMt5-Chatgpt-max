@@ -69,6 +69,28 @@ Expected result:
 - `http://127.0.0.1:8082/readyz = 200`;
 - A and B remain untouched.
 
+## Credential-backed boot parity for B/C
+
+The certified VPS now uses `enableBootTunnel=true` for A, B, and C. Each
+instance has its own interactive, watchdog, and background Scheduled Task.
+The background task starts under the same Windows Administrator identity
+using Task Scheduler password logon, which can read that user's machine-bound
+DPAPI secret before an interactive sign-in.
+
+For B/C, run the existing `Install-VibeMQL5ScheduledTasks.ps1` with the
+instance-specific `-ConfigPath`, `-EnableBootTunnel`, and a `PSCredential`
+entered directly in an interactive Administrator PowerShell session. Keep the
+Windows password out of ChatGPT and the repository. Verify the config flag,
+background task `Password` logon type, and A/B/C health/ready after each
+install. Task registration alone does not certify an actual pre-logon boot;
+that needs a separately controlled restart observation.
+
+The MCP `tunnel_admin_install_autostart` tool is for initial
+interactive-only provisioning. If `enableBootTunnel=true` is already set,
+it refuses before running the noninteractive installer, preserving the
+credential-backed task and config. Repair/re-register a boot-enabled task
+from the interactive Windows session using the installer above.
+
 ## Acceptance sequence
 
 ### Gate 1 — read-only
