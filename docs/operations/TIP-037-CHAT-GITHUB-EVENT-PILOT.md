@@ -32,6 +32,15 @@ Account B completed read-only preflight: GitHub repository read access and `pull
 
 Next diagnostic is in **account B on ChatGPT web**, in its existing Chat: inspect Scheduled for the GitHub PR-event option. If B is a managed workspace, check the workspace's Allow event-triggered scheduled tasks permission. A connected GitHub app and `pull=true` alone do not establish scheduled-event availability. If the event option remains unavailable, stop the event pilot for B. A time-based poll is a separate experiment and must not be substituted for this gate without an explicit change of scope.
 
+## Separate one-time timer probe in B's existing Chat
+
+This is a different experiment from GitHub Gate 1 and does not claim that PR events work. It tests the previously requested scheduled-task mechanism without creating a recurring poll.
+
+1. In account B's original ordinary Chat conversation, create a **one-time** scheduled task five minutes from now, returning to **this chat**.
+2. The saved prompt calls only `TunnelVibemq5.server_info` and `TunnelVibemq5.health`, and reports version/build, MT5-2, health and the actual run timestamp. It makes no writes.
+3. Verify that the task ID exists and the completed result appears in the same B chat with the plugin calls executed. If creation is unavailable or the destination is standalone, record BLOCKED.
+4. Only after this capability is demonstrated, run a separate cross-account A/C→B continuity-assignment test; do not enable recurring polling before its cadence and empty-run behavior are reviewed.
+
 ## Gate 2: durable handoff (only after Gate 1 PASS)
 
 Use the existing continuity `DELEGATION_ASSIGNED`, `DELEGATION_STARTED`, and `DELEGATION_COMPLETED` lifecycle with project-level CAS and stable operation IDs. Keep complete briefs and evidence on the VPS. A GitHub PR comment carries only the delegation ID; the event task reads the inbox and processes every pending delegation addressed to its receiver. Completion is written to backend continuity and verified by the originator before it is treated as accepted.
