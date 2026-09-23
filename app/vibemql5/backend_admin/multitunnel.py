@@ -92,6 +92,8 @@ class MultiTunnelBackendAdmin(BackendAdmin):
 
         with _exclusive_file_lock(self.tunnel_admin_lock, timeout_seconds=30.0):
             config_path = self._prepare_secondary_tunnel_config(key)
+            if json.loads(config_path.read_text(encoding="utf-8")).get("tasks", {}).get("enableBootTunnel"):
+                raise BackendAdminError("BOOT_TUNNEL_REQUIRES_INTERACTIVE_CREDENTIAL_INSTALL")
             if not self._tunnel_profile_path(spec["profile"]).is_file():
                 raise BackendAdminError("TUNNEL_PROFILE_MISSING")
             secret = self.root / spec["secret"]
