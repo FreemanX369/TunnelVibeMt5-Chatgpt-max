@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import http.client
 import json
 import os
 import re
@@ -197,6 +198,98 @@ class BackendAdmin:
         except Exception:
             return 0
 
+    @staticmethod
+    def _poll_error_kind(error: str, status_code: Any) -> str:
+        if type(status_code) is int and 100 <= status_code <= 599:
+            return f"HTTP_{status_code}"
+        value = str(error or "").lower()
+        if "awaiting headers" in value:
+            return "AWAITING_HEADERS_TIMEOUT"
+        if "proxy" in value:
+            return "PROXY"
+        if "no such host" in value or "name resolution" in value:
+            return "DNS"
+        if "tls" in value or "certificate" in value:
+            return "TLS"
+        if "connection reset" in value:
+            return "CONNECTION_RESET"
+        if "connection refused" in value:
+            return "CONNECTION_REFUSED"
+        if "timeout" in value or "deadline exceeded" in value:
+            return "TIMEOUT"
+        return "OTHER"
+
+    def _poll_diagnostics_one(self, instance: str) -> dict[str, Any]:
+        """Summarize bounded loopback poll logs without returning URLs or log text."""
+        _, spec = self._tunnel_spec(instance)
+        port = int(spec["health_port"])
+        connection = http.client.HTTPConnection("127.0.0.1", port, timeout=4)
+        try:
+            connection.request("GET", "/api/logs?limit=5000")
+            response = connection.getresponse()
+            if response.status != 200:
+                return {"status": "UNAVAILABLE", "reason_code": f"LOGS_HTTP_{response.status}"}
+            raw = response.read(4 * 1024 * 1024 + 1)
+            if len(raw) > 4 * 1024 * 1024:
+                return {"status": "UNAVAILABLE", "reason_code": "LOGS_TOO_LARGE"}
+            events = json.loads(raw).get("events")
+            if not isinstance(events, list):
+                return {"status": "UNAVAILABLE", "reason_code": "LOGS_INVALID_RESPONSE"}
+        except (OSError, http.client.HTTPException, ValueError, AttributeError):
+            return {"status": "UNAVAILABLE", "reason_code": "LOGS_UNREACHABLE_OR_INVALID"}
+        finally:
+            connection.close()
+
+        episodes: list[dict[str, Any]] = []
+        active: dict[str, Any] | None = None
+        failures = 0
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            message = event.get("message")
+            stamp = event.get("time")
+            stamp = stamp[:64] if isinstance(stamp, str) else None
+            if message in {"poll failed; backing off", "poll timed out; backing off"}:
+                attrs = event.get("attrs")
+                attrs = attrs if isinstance(attrs, dict) else {}
+                kind = self._poll_error_kind(attrs.get("error"), attrs.get("status_code"))
+                if active is None:
+                    active = {
+                        "first_failure_at": stamp,
+                        "first_error_kind": kind,
+                        "failure_count": 0,
+                        "recovered_at": None,
+                    }
+                active["failure_count"] += 1
+                active["last_failure_at"] = stamp
+                active["last_error_kind"] = kind
+                for name in ("poll_timeout_ms", "poll_deadline_ms", "retry_in_ms"):
+                    value = attrs.get(name)
+                    if type(value) is int and 0 <= value <= 600_000:
+                        active[name] = value
+                failures += 1
+            elif message == "poller recovered; polling operational" and active is not None:
+                active["recovered_at"] = stamp
+                episodes.append(active)
+                active = None
+        if active is not None:
+            episodes.append(active)
+
+        def timestamp(event: Any) -> str | None:
+            value = event.get("time") if isinstance(event, dict) else None
+            return value[:64] if isinstance(value, str) else None
+
+        return {
+            "status": "PASS",
+            "schema_version": "1.0",
+            "events_retained": len(events),
+            "oldest_event_at": timestamp(events[0]) if events else None,
+            "newest_event_at": timestamp(events[-1]) if events else None,
+            "poll_failures_retained": failures,
+            "episodes_retained": len(episodes),
+            "episodes": episodes[-32:],
+        }
+
     def _tunnel_status_one(self, instance: str) -> dict[str, Any]:
         key, spec = self._tunnel_spec(instance)
         config_path = self.root / spec["config"]
@@ -369,10 +462,12 @@ class BackendAdmin:
         p = Path(raw)
         if not p.is_absolute():
             p = self.root / p
+        # strict=False permits new files while still normalizing traversal.
         p = p.resolve(strict=False)
         roots = self.mutable_roots if mutable else self.allowed_roots
         if not self._under(p, roots):
             raise BackendAdminError("PATH_OUTSIDE_ALLOWLIST")
+        # Parent symlink/junction escapes are caught by resolved path comparison.
         if must_exist and not p.exists():
             raise BackendAdminError("FILE_NOT_FOUND")
         if p.exists() and p.is_dir():
@@ -498,6 +593,8 @@ class BackendAdmin:
         if set(expected) != selected:
             raise BackendAdminError("RESTORE_EXPECTED_HASH_TARGET_MISMATCH")
 
+        # Preflight every source and target before the first write. A stale target
+        # therefore cannot produce a partially restored multi-file checkpoint.
         before: dict[str, str] = {}
         for src, target, checkpoint_sha, key in candidates:
             if not src.is_file() or sha256_file(src).lower() != checkpoint_sha:
@@ -585,6 +682,7 @@ class BackendAdmin:
 
     @staticmethod
     def _apply_unified_patch_single_file(original: str, patch: str) -> str:
+        # Minimal deterministic unified-diff applicator; exact context required.
         src = original.splitlines(keepends=True)
         lines = patch.splitlines(keepends=True)
         hunks = []
@@ -672,6 +770,7 @@ class BackendAdmin:
                 raise BackendAdminError("HOTFIX_ZIP_TRAVERSAL")
             if info.is_dir():
                 continue
+            # Unix symlink type.
             mode = (info.external_attr >> 16) & 0o170000
             if mode == 0o120000:
                 raise BackendAdminError("HOTFIX_ZIP_SYMLINK_FORBIDDEN")
@@ -726,6 +825,8 @@ class BackendAdmin:
                     "tests": tests,
                 })
             except Exception:
+                # The outer backend mutation request owns the serialized mutation
+                # lease. Roll back only files whose exact post-write hash we hold.
                 rollback_expected = {
                     item["payload"]["path"]: item["payload"]["sha256_after"]
                     for item in applied
@@ -806,6 +907,7 @@ class BackendAdmin:
                 out.close(); err.close()
             return {"status":"STARTED","suite":suite,"recovered":False,"bridge_build":bridge_build,"controller_pid":proc.pid,"state_path":str(state_path),"stdout":str(stdout_path),"stderr":str(stderr_path)}
         else:
+            # Standalone baseline-aware gate uses an on-disk approved baseline list.
             baseline = self.receipt_root / "approved-unit-failures.json"
             baseline_state = "PRESENT" if baseline.is_file() else "MISSING"
             expected = set(json.loads(baseline.read_text(encoding="utf-8"))) if baseline.is_file() else set()
@@ -895,6 +997,10 @@ class BackendAdmin:
                 out.close()
                 err.close()
 
+        # Windows:
+        # CREATE_BREAKAWAY_FROM_JOB | CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
+        # Breakaway prevents the restart controller from being killed with the
+        # MCP process tree it is responsible for restarting.
         if os.name == "nt":
             preferred_flags = 0x01000000 | 0x00000200 | 0x08000000
             fallback_flags = 0x00000200 | 0x08000000
