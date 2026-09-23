@@ -26,6 +26,12 @@ Prove that a GitHub pull-request conversation comment can trigger a scheduled ta
 
 Gate 1 PASS requires the run to be triggered by the comment, use the connected TunnelVibemq5 tool, and return to the original ordinary Chat conversation of B. If the account does not offer the trigger, the run starts standalone, plugin access fails, or no run occurs, record the exact observed condition as BLOCKED. Do not infer delivery speed from a single run.
 
+## Gate 1 diagnostic checkpoint — 2026-09-23
+
+Account B completed read-only preflight: GitHub repository read access and `pull=true` were verified; `TunnelVibemq5.server_info` reported Bridge 0.2.34 / TIP-033 on MT5-2. The ordinary Chat B automation interface did not expose the `discover_webhook_schema` / GitHub webhook trigger capability needed to create the PR #17 comment task. No task ID was returned; no task was enabled; no destination chat was registered. PR #17 has no probe comments. Gate 1 is **BLOCKED at event-task creation**, so latency and same-chat return have not been measured.
+
+Next diagnostic is in **account B on ChatGPT web**, in its existing Chat: inspect Scheduled for the GitHub PR-event option. If B is a managed workspace, check the workspace's Allow event-triggered scheduled tasks permission. A connected GitHub app and `pull=true` alone do not establish scheduled-event availability. If the event option remains unavailable, stop the event pilot for B. A time-based poll is a separate experiment and must not be substituted for this gate without an explicit change of scope.
+
 ## Gate 2: durable handoff (only after Gate 1 PASS)
 
 Use the existing continuity `DELEGATION_ASSIGNED`, `DELEGATION_STARTED`, and `DELEGATION_COMPLETED` lifecycle with project-level CAS and stable operation IDs. Keep complete briefs and evidence on the VPS. A GitHub PR comment carries only the delegation ID; the event task reads the inbox and processes every pending delegation addressed to its receiver. Completion is written to backend continuity and verified by the originator before it is treated as accepted.
