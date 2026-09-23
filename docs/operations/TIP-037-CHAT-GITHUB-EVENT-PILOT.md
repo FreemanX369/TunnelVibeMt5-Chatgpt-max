@@ -96,6 +96,18 @@ Next, run these **read-only** receiver checks inside the existing ordinary Chat 
 
 Event-triggered GitHub tasks currently require ChatGPT Work; a task created in a Work chat does not prove that a B/C **ordinary Chat** can receive the event. Ordinary-Chat timer tasks have independently returned to B's same chat once, but a time-based task does not wake on demand. No coordinator in one account can create a scheduled task inside another account's existing chat using this connector. Keep a timer-based pilot separate from GitHub Gate 1 and document the measured delivery delay before selecting it.
 
+### Ordinary-Chat read checkpoint and B direct CAS gate
+
+The user reports that B's **direct ordinary Chat** call to `get_continuity` succeeded: revision 1, the same SHA above, `recipient=B`, and `state=ASSIGNED`. B's `verify_continuity` also returned verified integrity, `resume_safe=true`, no issues, and unchanged read-only proof. In the other reported receiver chat (presumed C from the order of the report), `get_continuity` was blocked by OpenAI safety checks, while `verify_continuity` succeeded against `CM-000001` with the same SHA and no mutation. The exact reason for the platform block is unknown. These are user-reported results; the coordinator cannot independently authenticate which ChatGPT account originated a tunnel request.
+
+The coordinator re-read the project after these reports: revision 1, identical SHA, B assignment still `ASSIGNED`, no start/completion event; Bridge health READY, queue 0 and no active job. B may now perform the **direct** handoff in its own original ordinary Chat, with no scheduled task or GitHub action:
+
+1. Re-read and verify the manifest immediately before writing. Require `VERIFIED`, `resume_safe=true`, delegation ID `TIP037-B-READ-20260923-01`, `recipient=B`, `state=ASSIGNED`. Use the live revision and SHA from that read, not a pasted stale checkpoint.
+2. Append `DELEGATION_STARTED` with payload `{"delegation_id":"TIP037-B-READ-20260923-01","summary":"B direct Chat accepted read-only health probe"}` and operation ID `TIP037/DIRECT/B/START/20260923/01`. Require its receipt to advance the manifest and show `STARTED`; stop on tool block, CAS failure or unexpected state.
+3. Call only `server_info` and `health`; require a normal response before completing. Do not run an MT5 test or change source, tunnel, account or AutoTrading.
+4. Append `DELEGATION_COMPLETED` with payload `{"delegation_id":"TIP037-B-READ-20260923-01","report":{"status":"DONE","checks":["server_info","health"]}}` and operation ID `TIP037/DIRECT/B/COMPLETE/20260923/01`. Use the new manifest revision and SHA from the STARTED receipt. Require `AWAITING_PARENT_VERIFICATION`; otherwise report BLOCKED with the exact error and leave the observed state for coordinator inspection.
+5. Return both receipts to the original B Chat. The coordinator then performs a fresh read/verify; only after matching receipts will it write `DELEGATION_PARENT_VERIFIED` using a fresh CAS. This proves a durable direct Chat handoff with reported B provenance; it does not yet prove automatic wakeup or security-grade account identity.
+
 ## References
 
 - https://learn.chatgpt.com/docs/automations
