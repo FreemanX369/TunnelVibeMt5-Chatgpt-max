@@ -38,8 +38,12 @@ This is a different experiment from GitHub Gate 1 and does not claim that PR eve
 
 1. In account B's original ordinary Chat conversation, create a **one-time** scheduled task five minutes from now, returning to **this chat**.
 2. The saved prompt calls only `TunnelVibemq5.server_info` and `TunnelVibemq5.health`, and reports version/build, MT5-2, health and the actual run timestamp. It makes no writes.
-3. Verify that the task ID exists and the completed result appears in the same B chat with the plugin calls executed. If creation is unavailable or the destination is standalone, record BLOCKED.
+3. Verify that the task is enabled and visible in B's task list. Record an internal task ID only if the UI exposes one. Confirm the completed result appears in the same B chat with the plugin calls executed. If creation is unavailable or the destination is standalone, record BLOCKED.
 4. Only after this capability is demonstrated, run a separate cross-account A/C→B continuity-assignment test; do not enable recurring polling before its cadence and empty-run behavior are reviewed.
+
+## One-time timer checkpoint — creation on 2026-09-23
+
+Account B reports that it created and enabled the one-time task in its existing Chat. The planned run is **2026-09-23 17:08:23 UTC+7 (10:08:23 UTC)**. Its saved instruction uses only `TunnelVibemq5.server_info` and `TunnelVibemq5.health` and returns the result to that same conversation; no GitHub event, VPS, tunnel, or MT5 mutation is involved. The product response did not disclose an internal `task_id`, so its absence is not a failure condition. Backend read-only health at this checkpoint was READY with an empty queue and no active job or locks. **Status: SCHEDULED / RUN PENDING.** A successful completed B answer with tool outputs and same-chat placement is still required to pass this separate timer probe. GitHub Gate 1 remains **BLOCKED** and no PR marker has been posted.
 
 ## Gate 2: durable handoff (only after Gate 1 PASS)
 
