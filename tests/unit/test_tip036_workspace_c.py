@@ -122,6 +122,26 @@ def test_tip036_c_autostart_reuses_certified_installer(tmp_path, monkeypatch):
     assert "vibemql5.windows.c.json" in " ".join(str(x) for x in argv)
 
 
+
+def test_tip036_credential_backed_boot_install_requires_interactive_operator(tmp_path, monkeypatch):
+    admin = MultiTunnelBackendAdmin(_root(tmp_path))
+    path = admin._prepare_secondary_tunnel_config("C")
+    config = json.loads(path.read_text(encoding="utf-8"))
+    config["tasks"]["enableBootTunnel"] = True
+    path.write_text(json.dumps(config), encoding="utf-8")
+    before = path.read_bytes()
+
+    monkeypatch.setattr(
+        admin, "_run",
+        lambda *_args, **_kwargs: pytest.fail("noninteractive installer must not run"),
+    )
+    with pytest.raises(
+        BackendAdminError, match="BOOT_TUNNEL_REQUIRES_INTERACTIVE_CREDENTIAL_INSTALL"
+    ):
+        admin.tunnel_admin_install_autostart("C")
+    assert path.read_bytes() == before
+
+
 def test_tip036_primary_a_cannot_be_reinstalled_through_secondary_onboarding(tmp_path):
     admin = MultiTunnelBackendAdmin(_root(tmp_path))
     with pytest.raises(BackendAdminError, match="AUTOSTART_INSTALL_SECONDARY_ONLY"):
