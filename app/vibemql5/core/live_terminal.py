@@ -129,7 +129,9 @@ class LiveTerminal:
                 "count": len(items), "charts": items,
                 "attached_ea_count": None, "attached_ea_status": "UNKNOWN: Win32 does not expose EA attachment"}
 
-    def capture(self, chart_id: int) -> tuple[dict[str, Any], bytes]:
+    def capture(self, chart_id: int, aspect_ratio: str = "16:9") -> tuple[dict[str, Any], bytes]:
+        if aspect_ratio not in {"16:9", "native"}:
+            raise ValueError("LIVE_CHART_ASPECT_RATIO_INVALID")
         if isinstance(chart_id, bool) or not isinstance(chart_id, int) or chart_id <= 0:
             raise ValueError("CHART_ID_REQUIRED: use a chart_id returned by list_live_charts")
         charts = self.charts()["charts"]
@@ -141,7 +143,7 @@ class LiveTerminal:
             raise RuntimeError("LIVE_CHART_NOT_VISIBLE")
         if item.get("renderable") is False and (item.get("width") != 0 or item.get("height") != 0):
             raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
-        payload = self.gui.capture_chart(self.terminal.terminal_path, chart_id)
+        payload = self.gui.capture_chart(self.terminal.terminal_path, chart_id, aspect_ratio)
         if next((chart for chart in self.gui.list_charts(self.terminal.terminal_path)
                  if chart["chart_id"] == chart_id), None) != item:
             raise RuntimeError("LIVE_CHART_CHANGED_DURING_CAPTURE")
@@ -150,10 +152,14 @@ class LiveTerminal:
         width, height = struct.unpack(">II", payload[16:24])
         if not (32 <= width <= 2560 and 32 <= height <= 1600 and width * height <= 3_000_000):
             raise RuntimeError("LIVE_CHART_INVALID_PNG_DIMENSIONS")
-        if item.get("renderable") is not False and (width, height) != (item["width"], item["height"]):
+        if aspect_ratio == "16:9" and (width, height) != (960, 540):
+            raise RuntimeError("LIVE_CHART_16_9_SIZE_UNVERIFIED")
+        if aspect_ratio == "native" and item.get("renderable") is not False and (width, height) != (item["width"], item["height"]):
             raise RuntimeError("LIVE_CHART_CAPTURE_SIZE_MISMATCH")
         return {"alias": self.alias, "chart": item, "mime_type": "image/png", "bytes": len(payload),
                 "image_width": width, "image_height": height,
+                "aspect_ratio": aspect_ratio,
+                "resized_temporarily": aspect_ratio == "16:9" and (item["width"], item["height"]) != (960, 540),
                 "restored_temporarily": item.get("renderable") is False}, payload
 
     def logs(self, source: str = "journal", limit: int = 100) -> dict[str, Any]:

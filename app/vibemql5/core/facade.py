@@ -233,8 +233,8 @@ class ToolFacade:
     def list_live_charts(self):
         return self._observe_live("live_chart_inventory", lambda live: live.charts())
 
-    def capture_live_chart(self, chart_id):
-        return self._observe_live("live_chart_capture", lambda live: live.capture(chart_id))
+    def capture_live_chart(self, chart_id, aspect_ratio="16:9"):
+        return self._observe_live("live_chart_capture", lambda live: live.capture(chart_id, aspect_ratio))
 
     def read_terminal_journal(self, source="journal", limit=100):
         return self._observe_live("live_terminal_logs", lambda live: live.logs(source, limit))
