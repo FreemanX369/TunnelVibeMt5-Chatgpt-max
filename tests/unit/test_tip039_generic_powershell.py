@@ -129,6 +129,7 @@ def test_tip039_shell_executes_powershell_and_cmd_on_windows(tmp_path):
     assert "TIP039_CMD_OK" in result["payload"]["stdout"]
     assert result["payload"]["audit_status"] == "COMPLETE"
 
+
 def test_tip039_shell_bounds_script_timeout_and_output(tmp_path, monkeypatch):
     admin = BackendAdmin(tmp_path)
     with pytest.raises(BackendAdminError, match="POWERSHELL_SCRIPT_TOO_LARGE"):
