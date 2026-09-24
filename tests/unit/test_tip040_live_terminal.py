@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import ctypes
 import struct
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,7 +10,7 @@ import pytest
 
 from vibemql5.core.facade import ToolFacade
 from vibemql5.core.live_terminal import LiveTerminal
-from vibemql5.core.live_terminal_windows import _png_rgb
+from vibemql5.core.live_terminal_windows import WindowsCharts, _png_rgb
 
 
 class Inventory:
@@ -79,6 +80,25 @@ class GUI:
     def capture_chart(self, path, chart_id):
         self.captures.append(chart_id)
         return _png_rgb(32, 32, bytes([0, 1, 2, 0]) * 1024)
+
+
+def test_win32_child_enumeration_ignores_unused_return_value(tmp_path, monkeypatch):
+    monkeypatch.setattr(ctypes, "WINFUNCTYPE", ctypes.CFUNCTYPE, raising=False)
+    terminal_exe = str(tmp_path / "MT5-2" / "terminal64.exe")
+    gui = WindowsCharts.__new__(WindowsCharts)
+    gui.user = SimpleNamespace(
+        EnumWindows=lambda callback, _data: callback(100, 0),
+        EnumChildWindows=lambda _parent, callback, _data: (callback(200, 0), 0)[1],
+        IsWindowVisible=lambda _hwnd: True,
+    )
+    gui._path_for_hwnd = lambda _hwnd: terminal_exe
+    gui._title = lambda _hwnd: "XAUUSDm,M1"
+    gui._size = lambda _hwnd: (1600, 900)
+    assert gui.list_charts(terminal_exe) == [{
+        "chart_id": 200, "symbol": "XAUUSDm", "timeframe": "M1", "visible": True,
+        "width": 1600, "height": 900, "expert": {"attached": None, "status": "UNKNOWN"},
+        "indicators": {"status": "UNKNOWN"},
+    }]
 
 
 def test_account_reads_only_exact_running_terminal_and_converts_ping(tmp_path):

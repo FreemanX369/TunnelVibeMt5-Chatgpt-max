@@ -145,8 +145,9 @@ class WindowsCharts:
             return True
 
         for main in mains:
-            if not self.user.EnumChildWindows(main, child_cb, 0):
-                raise RuntimeError("MT5_CHART_ENUMERATION_FAILED")
+            # Microsoft documents the EnumChildWindows BOOL return as unused.
+            # A zero result does not prove enumeration failed; trust only validated callbacks.
+            self.user.EnumChildWindows(main, child_cb, 0)
         if not charts:
             raise RuntimeError("LIVE_CHART_WINDOWS_NOT_VERIFIABLE")
         return sorted(charts.values(), key=lambda item: item["chart_id"])
