@@ -22,7 +22,7 @@ from vibemql5.core.concurrency import (
 from vibemql5.core.facade import ToolFacade
 from vibemql5.worker import acquire_lock as worker_acquire_lock
 
-EXPECTED_CATALOG = "633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5"
+EXPECTED_CATALOG = "a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106"
 
 
 def _root(tmp_path: Path) -> Path:
@@ -74,8 +74,8 @@ class _Ctx:
 
 
 def test_tip024_identity_and_tool_catalog_are_preserved():
-    assert vibemql5.__version__ == "0.2.35"
-    assert MCP_TOOL_COUNT == 73
+    assert vibemql5.__version__ == "0.2.36"
+    assert MCP_TOOL_COUNT == 79
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
     assert hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest() == EXPECTED_CATALOG
 
@@ -290,9 +290,9 @@ def test_tip024_mcp_registers_catalog_and_context_is_invisible_contract(monkeypa
     root = _root(tmp_path)
     server = create_server(root, transport="stdio")
     assert set(server.tools) == set(MCP_TOOL_NAMES)
-    assert len(server.tools) == 73
+    assert len(server.tools) == 79
     info = server.tools["server_info"]()
-    assert info["version"] == "0.2.35"
+    assert info["version"] == "0.2.36"
     assert info["bridge_build"] == "TIP-025"
     assert info["generic_shell_exposed"] is True
     assert info["multi_client_concurrency_schema"] == "1.0"

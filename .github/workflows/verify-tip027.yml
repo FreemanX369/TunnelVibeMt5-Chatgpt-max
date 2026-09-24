@@ -37,7 +37,7 @@ jobs:
           import hashlib
           from pathlib import Path
           from app.vibemql5.contracts import MCP_TOOL_CATALOG_SHA256, MCP_TOOL_COUNT, MCP_TOOL_NAMES
-          assert MCP_TOOL_COUNT == 73 == len(MCP_TOOL_NAMES)
+          assert MCP_TOOL_COUNT == 79 == len(MCP_TOOL_NAMES)
           actual = hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest()
           assert actual == MCP_TOOL_CATALOG_SHA256
           provenance = Path("app/vibemql5/core/provenance.py").read_text(encoding="utf-8")

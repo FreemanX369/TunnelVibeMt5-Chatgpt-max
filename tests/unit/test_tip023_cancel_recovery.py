@@ -287,8 +287,8 @@ def test_tip023_exact_build_identity_and_tool_count():
     from vibemql5.contracts import MCP_TOOL_COUNT
     root = Path(__file__).parents[2]
     provenance = json.loads((root / "config" / "build-provenance.json").read_text(encoding="utf-8"))
-    assert __version__ == "0.2.35"
-    assert provenance["bridge_version"] == "0.2.35"
-    assert provenance["bridge_build"] == "TIP-039"
-    assert provenance["mcp_tool_count"] == 73
-    assert MCP_TOOL_COUNT == 73
+    assert __version__ == "0.2.36"
+    assert provenance["bridge_version"] == "0.2.36"
+    assert provenance["bridge_build"] == "TIP-040"
+    assert provenance["mcp_tool_count"] == 79
+    assert MCP_TOOL_COUNT == 79

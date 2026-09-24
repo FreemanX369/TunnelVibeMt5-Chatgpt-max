@@ -21,6 +21,7 @@ from .live_readiness import LiveReadinessManager
 from .tester_config import normalize_tester_request
 from .file_export import FileExportManager
 from .binary_ingress import BinaryIngressManager
+from .live_terminal import LiveTerminal
 from .concurrency import ConcurrencyManager, current_actor
 from ..runtime_forensics.service import RuntimeForensicsManager
 
@@ -216,6 +217,42 @@ class ToolFacade:
     def list_terminals(self): return self.inv.describe()
     def list_presets(self): return sorted(p.stem for p in (self.root/'config'/'presets').glob('*.json'))
     def list_parameter_sets(self, workspace): return self.ws.list_parameter_sets(workspace)
+
+    def _observe_live(self, operation, fn):
+        self._require_mt5_capable_runtime()
+        with self.concurrency.native_execution(f"LIVE-{uuid.uuid4().hex[:16].upper()}",
+                                               kind=operation, wait_seconds=2):
+            return fn(LiveTerminal(self.inv, self._fixed_terminal()))
+
+    def get_terminal_live_state(self):
+        return self._observe_live("live_terminal_state", lambda live: live.state())
+
+    def get_account_snapshot(self):
+        return self._observe_live("live_account_snapshot", lambda live: live.state())
+
+    def list_live_charts(self):
+        return self._observe_live("live_chart_inventory", lambda live: live.charts())
+
+    def capture_live_chart(self, chart_id):
+        return self._observe_live("live_chart_capture", lambda live: live.capture(chart_id))
+
+    def read_terminal_journal(self, source="journal", limit=100):
+        return self._observe_live("live_terminal_logs", lambda live: live.logs(source, limit))
+
+    def inspect_terminal(self, include_logs=False):
+        def read(live):
+            result = {"state": live.state(), "ea_files": live.ea_files()}
+            try:
+                result["charts"] = live.charts()
+            except RuntimeError as exc:
+                # Account state remains useful when GUI session has no verified chart windows.
+                result["charts"] = {"status": "UNAVAILABLE", "reason": str(exc), "count": None,
+                                    "attached_ea_count": None}
+            if include_logs:
+                result["journal"] = live.logs("journal", 100)
+                result["experts"] = live.logs("experts", 100)
+            return result
+        return self._observe_live("live_terminal_inspection", read)
     def read_source(self, workspace, path):
         content=self.ws.read_text(workspace,path)
         meta=self.revisions.source_hash(workspace,path)
