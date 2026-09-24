@@ -79,9 +79,10 @@ MCP_TOOL_NAMES = (
     "tunnel_admin_start",
     "tunnel_admin_stop",
     "tunnel_admin_restart",
+    "backend_run_powershell",
 )
-MCP_TOOL_COUNT = 72
-MCP_TOOL_CATALOG_SHA256 = 'c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670'
+MCP_TOOL_COUNT = 73
+MCP_TOOL_CATALOG_SHA256 = '633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5'
 
 # MetaTrader 5 [Tester] ExecutionMode native bounds.
 EXECUTION_MODE_RANDOM = -1

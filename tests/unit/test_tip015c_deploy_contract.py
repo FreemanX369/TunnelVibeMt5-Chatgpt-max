@@ -8,7 +8,7 @@ PYPROJECT = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
 
 
 def test_tip015c_version_tools_and_console_entrypoints():
-    assert "__version__ = '0.2.34'" in (ROOT / "app" / "vibemql5" / "__init__.py").read_text(encoding="utf-8")
+    assert "__version__ = '0.2.35'" in (ROOT / "app" / "vibemql5" / "__init__.py").read_text(encoding="utf-8")
     assert 'mql5-retro-init = "vibemql5.adapters.retro_cli:retro_init_main"' in PYPROJECT
     assert 'vkmql-check = "vibemql5.adapters.retro_cli:vkmql_check_main"' in PYPROJECT
     assert "len(REQUIRED_TOOLS)==41" in APPLY

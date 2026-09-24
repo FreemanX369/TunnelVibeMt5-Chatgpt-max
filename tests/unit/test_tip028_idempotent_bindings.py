@@ -222,7 +222,7 @@ def test_tip028_mcp_exposes_optional_binding_parameters(monkeypatch, tmp_path: P
     assert update["operation_id"].default == ""
     assert update["expected_revision_sha256"].default == ""
     assert launch["operation_id"].default == ""
-    assert len(server.tools) == 72
+    assert len(server.tools) == 73
 
     # Execute the registered wrapper: schema/signature presence alone misses
     # positional argument shifts between the adapter and facade.

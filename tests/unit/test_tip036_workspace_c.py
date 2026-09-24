@@ -81,7 +81,7 @@ def test_tip036_status_all_includes_a_b_c(tmp_path, monkeypatch):
     monkeypatch.setattr(admin, "_poll_diagnostics_one", lambda _key: {"status": "PASS"})
     status = admin.tunnel_admin_status("all")
     assert [item["instance"] for item in status["instances"]] == ["A", "B", "C"]
-    assert status["generic_shell_exposed"] is False
+    assert status["generic_shell_exposed"] is True
 
 
 def test_tip036_c_autostart_reuses_certified_installer(tmp_path, monkeypatch):

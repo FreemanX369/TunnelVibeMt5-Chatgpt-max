@@ -88,6 +88,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "Existing-source mutations are fail-closed: read_source/get_source_hash, create_checkpoint, then pass exact expected_sha256 and checkpoint_id to write_source/apply_patch; restore_checkpoint requires expected_current_sha256. "
             "All direct native compiles and Strategy Tester jobs share one FIFO MT5 execution lease. Compile source-driven EAs before launching tests. For a user-supplied compiled EX5, prefer import_ex5 when ChatGPT fileParams binding works. If host attachment binding is unavailable, call open_ex5_ingress so the user can upload/select the EX5 in the ChatGPT widget; the widget calls app-only import_ex5_authorized_file and returns the same immutable ea_binary_ref. Pass that ref to launch_test; imported binaries must not be recompiled. Tests are asynchronous: launch_test returns a job_id; "
             "use bounded get_job long-polling and then read_result. Restore the checkpoint when acceptance fails. "
+            "backend_run_powershell executes caller-supplied PowerShell as the Bridge Windows identity, requires confirm=true, and shares the same serialized mutation/native locks. It is not sandboxed, cannot identify the ChatGPT account, and must not be used to print secrets or credentials. "
             "For user-requested downloads, call export_file only on scoped VibeMQL5 artifacts; never request arbitrary filesystem paths."
         ),
     )
@@ -114,6 +115,7 @@ def create_server(root: Path, transport: str = "unknown"):
                 "model_visible_expected_count": MCP_TOOL_COUNT - 1,
                 "app_only_tools": ["import_ex5_authorized_file"],
             },
+            "generic_shell_exposed": True,
             "root": str(root),
             "transport": transport,
             "fixed_terminal": facade._fixed_terminal(),
@@ -144,6 +146,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "multi_client_concurrency_schema": "1.0",
             "multi_client_mode": "SERIALIZED_SHARED_VPS",
             "authenticated_client_identity": False,
+            "generic_shell_exposed": True,
             "startup_cancel_recovery": startup_cancel_recovery,
             "runtime_provenance": _runtime_provenance(root),
         }
@@ -778,6 +781,27 @@ def create_server(root: Path, transport: str = "unknown"):
 
     # TIP026_BACKEND_ADMIN_BOOTSTRAP_V3
     _backend_admin = register_backend_admin_tools(server, r"C:\VibeMQL5")
+
+    @server.tool(annotations=ToolAnnotations(
+        title="Run PowerShell command",
+        read_only_hint=False,
+        destructive_hint=True,
+        idempotent_hint=False,
+        open_world_hint=True,
+    ))
+    def backend_run_powershell(
+        ctx: Context,
+        script: str,
+        confirm: bool = False,
+        timeout_seconds: int = 60,
+    ) -> dict[str, Any]:
+        """Run unrestricted PowerShell as the Bridge Windows identity; pass confirm=true each time."""
+        return _invoke(
+            ctx,
+            "backend_run_powershell",
+            lambda: _backend_admin.run_powershell(script, confirm, timeout_seconds),
+        )
+
     return server
 
 
