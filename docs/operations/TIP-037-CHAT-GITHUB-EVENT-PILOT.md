@@ -174,6 +174,21 @@ The next step belongs entirely in **A's original ordinary Chat**: read and verif
 
 The validated directed peer routes so far are C→B (manual) and B→C (scheduled receiver manually set up by C). A→B, A→C, B→A and C→A still need origin and receiver operations from the named **ordinary Chats**; an A-routed Work connection does not substitute for A ordinary-Chat origination. No on-demand ping or authenticated ChatGPT account identity has been established.
 
+### A ordinary-Chat receiver verified; prepare A-originated peer fan-out
+
+The user reported that A's **original ordinary Chat** passed the new project's guards, appended STARTED (`EV-00000002`, operation `TIP037/ORDINARY/A/START/20260924/01`, revision 2, SHA `d34de2e362d6dce4ead700dd0b907c09b358cd27146a1b52ca74b9cd0a9ffc8a`), called only `server_info` (Bridge 0.2.34 / TIP-033, MT5-2) and `health` (READY, queue 0, no active job), and appended COMPLETED (`EV-00000003`, operation `TIP037/ORDINARY/A/COMPLETE/20260924/01`, revision 3, SHA `391baf3b70780396d107ab2ed32151c0dfe6a0ef6d89dab6d472d7caee141402`). The user reports both receipts appeared in the same A Chat. The coordinator independently read the three-event chain, matched the two operation IDs and DONE report, and found integrity and semantic integrity VERIFIED, `resume_safe=true`, no issues, operations complete and read-only proof unchanged. The read-only calls themselves are established by A's in-chat report; Bridge events do not authenticate the ChatGPT login.
+
+The coordinator then used revision-3 CAS to append `DELEGATION_PARENT_VERIFIED`, `EV-00000004`, operation `TIP037/ORDINARY/A/PARENT/VERIFY/20260924/01`, with `authenticated_chatgpt_identity=false`. The final manifest is revision 4, SHA `e73f464fd8ae73e9ffe8d45fe5c930900be1fd8d0b67cab39850735184a70f7c`, integrity and semantic integrity VERIFIED, `resume_safe=true`, no issues and no active/awaiting delegations. **A ordinary-Chat receiver: PASS on user-reported same-chat execution and verified durable receipts.** A fresh tunnel-admin check found one process and 200/200 health/ready for A/B/C; Bridge READY, queue 0 and no active job.
+
+Next test whether A can **originate** two separate read-only handoffs from its *original ordinary Chat*. A must create one `DELEGATION_ASSIGNED` per new project using initial revision 0 / empty SHA and these stable IDs; the coordinator must not write A's assignments on A's behalf:
+
+| Destination | Project | Delegation | Assignment operation |
+| --- | --- | --- | --- |
+| B | `TIP037-PEER-A-TO-B-20260924` | `TIP037-A-TO-B-20260924-01` | `TIP037/PEER/A/ASSIGN/B/20260924/01` |
+| C | `TIP037-PEER-A-TO-C-20260924` | `TIP037-A-TO-C-20260924-01` | `TIP037/PEER/A/ASSIGN/C/20260924/01` |
+
+Each assignment should allow only continuity read/verify/append plus `server_info` and `health`, prohibit source, native test and tunnel changes, and carry a user-reported origin label `A_CHAT_USER_REPORTED` (not authenticated identity). Independently verify both assignments before asking B and C to perform their own guarded read-only STARTED/COMPLETED CAS receipts in their **respective original ordinary Chats**. A then reads/verifies each completed report and writes one parent verification per project. This tests a manual one-to-two fan-out. It does not wake B/C chats automatically; scheduling or events would need a separately enabled receiver mechanism in each chat. B→A and C→A remain pending.
+
 ## References
 
 - https://learn.chatgpt.com/docs/automations
