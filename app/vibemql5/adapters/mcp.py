@@ -91,8 +91,14 @@ def create_server(root: Path, transport: str = "unknown"):
             "For user-requested downloads, call export_file only on scoped VibeMQL5 artifacts; never request arbitrary filesystem paths."
         ),
     )
+    read_only_local = ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    )
 
-    @server.tool()
+    @server.tool(annotations=read_only_local)
     def server_info() -> dict[str, Any]:
         """Return adapter version, root, active MCP transport and fixed tester terminal."""
         canonical = load_bridge_provenance(root)
@@ -142,7 +148,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "runtime_provenance": _runtime_provenance(root),
         }
 
-    @server.tool()
+    @server.tool(annotations=read_only_local)
     def health() -> dict[str, Any]:
         """Fast operational health check: resources, queue and MT5 inventory count."""
         return facade.health()
@@ -157,12 +163,12 @@ def create_server(root: Path, transport: str = "unknown"):
         """Read supervisor/watchdog recovery state without exposing credentials."""
         return facade.runtime_status()
 
-    @server.tool()
+    @server.tool(annotations=read_only_local)
     def get_continuity(project_id: str) -> dict[str, Any]:
         """Read the current integrity-verified Continuity Manifest."""
         return facade.get_continuity(project_id)
 
-    @server.tool()
+    @server.tool(annotations=read_only_local)
     def read_continuity_events(
         project_id: str,
         after_seq: int = 0,
@@ -171,12 +177,20 @@ def create_server(root: Path, transport: str = "unknown"):
         """Read immutable SHA-linked continuity events without changing state."""
         return facade.read_continuity_events(project_id, after_seq, limit)
 
-    @server.tool()
+    @server.tool(annotations=read_only_local)
     def verify_continuity(project_id: str) -> dict[str, Any]:
         """Verify continuity chains, heads and operation indexes without mutation."""
         return facade.verify_continuity(project_id)
 
-    @server.tool()
+    @server.tool(
+        annotations=ToolAnnotations(
+            title="Append audited continuity event",
+            read_only_hint=False,
+            destructive_hint=True,
+            idempotent_hint=True,
+            open_world_hint=False,
+        )
+    )
     def append_continuity_event(
         ctx: Context,
         project_id: str,

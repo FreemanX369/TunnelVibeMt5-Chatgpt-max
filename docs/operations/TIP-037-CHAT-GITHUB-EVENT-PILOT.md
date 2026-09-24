@@ -208,6 +208,14 @@ Independent coordinator reads after these reports found both projects **unchange
 
 Keep the same two projects and operation IDs. A receiver may make a single controlled retry in its **own original ordinary Chat**, starting from a fresh read/verify guard and using the same STARTED operation and payload with the live CAS head. If the same tool block recurs, preserve the exact error and timestamp for supported platform troubleshooting; do not vary payloads to bypass checks, create replacement projects, omit a guard, or let the coordinator write a receiver event. A's two existing assignments remain available for a later valid receiver attempt. Neither this manual handoff nor the prior one-shot timer establishes on-demand waking of B/C chats.
 
+### TIP-037 tool metadata correction — staged, not yet live
+
+The receiver failures occurred at different ChatGPT safety checks: B's `verify_continuity` (a read) and C's `append_continuity_event` (a write). The backend remained healthy and both projects retained only their assignment events. The MCP adapter previously registered continuity reads without `readOnlyHint`; ChatGPT developer-mode documentation says a tool lacking that hint is treated as a write. The code change in this checkpoint marks `server_info`, `health`, `get_continuity`, `read_continuity_events` and `verify_continuity` as read-only, non-destructive, idempotent and scoped to the private instance. It explicitly marks `append_continuity_event` as a write with an irreversible audit record, idempotent operation ID and bounded private scope. It does not alter the tool names/count, backend reducer, CAS, login attribution or account privileges.
+
+Verification gate: run the MCP registration/annotation unit test and existing full unit suite in CI, deploy the exact reviewed code using the existing authorized VPS promotion flow, then refresh each affected ChatGPT plugin installation so the tool descriptors update. Inspect the tool descriptor/confirmation behavior in B and C before retrying either original assignment. B still requires a successful *B-chat* `verify_continuity` guard; C still requires its write action to be permitted after any normal confirmation. The metadata correction improves accuracy of the declared effects, but **does not guarantee** ChatGPT's safety layer will permit a write. If either exact call remains blocked, preserve its prompt, expanded tool-call JSON, error and timestamp and escalate through supported plugin troubleshooting. Do not mark these routes PASS, skip a guard, change event payloads to evade checks or use a hidden write path.
+
+Official references: https://developers.openai.com/plugins/build/mcp-server ; https://developers.openai.com/api/docs/guides/developer-mode ; https://developers.openai.com/plugins/deploy/troubleshooting .
+
 ## References
 
 - https://learn.chatgpt.com/docs/automations
