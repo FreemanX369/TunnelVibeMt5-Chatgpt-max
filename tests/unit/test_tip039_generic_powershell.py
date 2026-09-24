@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import io
 import json
+import os
 import subprocess
 
 import pytest
@@ -96,7 +97,7 @@ def test_tip039_shell_uses_encoded_command_scrubs_env_and_audits_metadata(tmp_pa
     assert "Console]::In.ReadToEnd()" in bootstrap
     assert script not in bootstrap
     payload = bytes(captured["process"].stdin.data).decode("ascii")
-    assert base64.b64decode(payload).decode("utf-16le").endswith(script)
+    assert base64.b64decode(payload).decode("utf-16le").endswith("\n" + script)
     assert captured["process"].stdin.closed is True
     assert captured["cwd"] == str(tmp_path.resolve())
     assert "CONTROL_PLANE_API_KEY" not in captured["env"]
@@ -110,6 +111,23 @@ def test_tip039_shell_uses_encoded_command_scrubs_env_and_audits_metadata(tmp_pa
     assert "sk-secret-fixture" not in audit
     assert list((tmp_path / "evidence" / "runtime" / "backend-admin").glob("*.json")) == []
 
+
+@pytest.mark.skipif(os.name != "nt", reason="requires Windows PowerShell")
+def test_tip039_shell_executes_powershell_and_cmd_on_windows(tmp_path):
+    admin = BackendAdmin(tmp_path)
+    script = (
+        "$version = $PSVersionTable.PSVersion.ToString()\n"
+        "Write-Output \"TIP039_PS_OK:$version\"\n"
+        "cmd.exe /c echo TIP039_CMD_OK"
+    )
+
+    result = admin.run_powershell(script, confirm=True, timeout_seconds=30)
+
+    assert result["status"] == "PASS", result["payload"]
+    assert result["payload"]["process_exit_code"] == 0
+    assert "TIP039_PS_OK:" in result["payload"]["stdout"]
+    assert "TIP039_CMD_OK" in result["payload"]["stdout"]
+    assert result["payload"]["audit_status"] == "COMPLETE"
 
 def test_tip039_shell_bounds_script_timeout_and_output(tmp_path, monkeypatch):
     admin = BackendAdmin(tmp_path)
