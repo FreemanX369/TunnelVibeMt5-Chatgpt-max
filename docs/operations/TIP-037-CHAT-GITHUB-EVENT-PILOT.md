@@ -2,7 +2,7 @@
 
 Status: historical PoC runbook, merged into `main` on 2026-09-23. GitHub event wakeup remains BLOCKED; the merge is not a cross-account acceptance.
 
-Latest manual handoff checkpoint (2026-09-24): all six directed A/B/C read-only handoffs have four-event chains and empty active/awaiting lists in the shared backend; see the six-route checkpoint below. Execution in the original ordinary Chats is user-reported. Automatic peer wakeup and authenticated ChatGPT account identity remain unproven.
+Latest manual handoff checkpoint (2026-09-24): all six directed A/B/C read-only handoffs and one C→{A,B} shared-project probe have verified event chains and empty active/awaiting lists; see the checkpoints below. Execution in the original ordinary Chats is user-reported. Automatic peer wakeup and authenticated ChatGPT account identity remain unproven.
 
 ## Goal
 
@@ -273,6 +273,12 @@ Subsequently, B and C each reported assigning a read-only probe to A from their 
 B→A parent receipt: `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/B/PARENT/VERIFY/A/20260924/01`, event-head SHA `a08a20ccaef34c3c7c884874febc6d2c4b024dcc426a20f75272f58e2dd71a6f`. C→A parent receipt: `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/C/PARENT/VERIFY/A/20260924/01`, event-head SHA `8d55054af0244da2c9cc27e8a184bcf5d1bee87257b4d806ea09cb00e21fab6a`. Each parent event accepts DONE and references `EV-00000002=DELEGATION_STARTED` and `EV-00000003=DELEGATION_COMPLETED` for the exact delegation, with `authenticated_chatgpt_identity=false`.
 
 For all six projects the final backend read returned `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, four events, operations complete, `issues=[]`, `read_only_proof.unchanged=true` and no active or awaiting delegation. **Six manually mediated durable read-only routes: PASS** on user-reported ordinary Chat execution and independently verified continuity receipts. This does not demonstrate an automatic ping to either other Chat, a request to both recipients at once, a GitHub comment-triggered run, or security-grade A/B/C login attribution. The GitHub event wakeup gate remains BLOCKED. Preserve the observed tool-safety rejections; isolated one-tool calls worked in these runs, but their success does not establish why earlier calls were blocked.
+
+### C→{A,B} shared-project handoff checkpoint — 2026-09-24
+
+In C's reported original ordinary Chat, two sequential CAS writes assigned A and B within **one** project, `TIP037-FANOUT-C-TO-AB-20260924`. A and B each reported reading and verifying the shared project in their own ordinary Chats; each then reported `server_info` and `health` success between STARTED and COMPLETED. Writes were serialized against one manifest head: assignments `EV-00000001/02`, A STARTED/COMPLETED `EV-00000003/04`, B STARTED/COMPLETED `EV-00000005/06`, and C parent verifications for A/B `EV-00000007/08`. Both COMPLETED reports record `{"status":"DONE","checks":["server_info","health"]}`. C's parent events reference the respective STARTED/COMPLETED pair and explicitly set `authenticated_chatgpt_identity=false`.
+
+The coordinator independently read all eight event payloads and verified the final `CM-000008` manifest: revision `8`, SHA-256 `8c5e1ac9e807bcf0cff46bf739216206418d73e20a21ab0ddf8cf01eab223a61`, event-head SHA-256 `2b03c0f981fd2c680c024fe287efc9b4ba12c15aa43357a7f21014084122fee5`. `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, operations complete, `issues=[]`, read-only proof unchanged, `active=[]` and `awaiting_parent_verification=[]`. **Manual shared-project two-recipient handoff: PASS** for durable serialized routing and parent acceptance. The two assignments were separate CAS writes and both receiver Chats were opened manually; this does not establish atomic fanout, parallel execution, automatic delivery to a sleeping Chat, or authenticated account identity. GitHub comment wakeup remains BLOCKED. Duplicate-event handling and combined-event delivery have not been tested.
 
 Official references: https://developers.openai.com/plugins/build/mcp-server ; https://developers.openai.com/api/docs/guides/developer-mode ; https://developers.openai.com/plugins/deploy/troubleshooting .
 
