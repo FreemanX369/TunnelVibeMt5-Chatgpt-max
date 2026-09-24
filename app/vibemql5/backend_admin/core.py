@@ -920,7 +920,7 @@ class BackendAdmin:
     def _execute_powershell(self, script: str, timeout_seconds: int) -> dict[str, Any]:
         wrapped_script = (
             "[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); "
-            "$OutputEncoding = [Console]::OutputEncoding;`n" + script
+            "$OutputEncoding = [Console]::OutputEncoding;\n" + script
         )
         script_payload = base64.b64encode(wrapped_script.encode("utf-16le")).decode("ascii")
         bootstrap = (
