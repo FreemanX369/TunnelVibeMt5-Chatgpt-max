@@ -10,9 +10,9 @@ OPS=ROOT/'ops'/'windows'
 
 def test_canonical_bridge_provenance_is_single_source():
     p=load_bridge_provenance(ROOT)
-    assert p['bridge_version'] == '0.2.34'
-    assert p['bridge_build'] == 'TIP-033'
-    assert p['mcp_tool_count'] == MCP_TOOL_COUNT == 72
+    assert p['bridge_version'] == '0.2.35'
+    assert p['bridge_build'] == 'TIP-039'
+    assert p['mcp_tool_count'] == MCP_TOOL_COUNT == 73
     assert p['mcp_tool_catalog_sha256'] == MCP_TOOL_CATALOG_SHA256
     assert p['mcp_tool_catalog_source'] == 'contracts.py'
     mcp=(ROOT/'app'/'vibemql5'/'adapters'/'mcp.py').read_text(encoding='utf-8')

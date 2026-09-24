@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import io
 import http.client
 import json
@@ -8,6 +10,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -16,11 +19,57 @@ from datetime import datetime, timezone
 from pathlib import Path, PureWindowsPath
 from typing import Any, Iterable
 
+from ..core.concurrency import ConcurrencyManager, current_actor
 from ..core.jobs import _exclusive_file_lock
 from .models import FileMeta, Receipt, new_id, sha256_file, write_json_atomic
 
 class BackendAdminError(RuntimeError):
     pass
+
+
+_SHELL_ENV_SECRET = re.compile(r"(?i)(?:API[_-]?KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL)")
+_SHELL_OUTPUT_REDACTIONS = (
+    re.compile(r"\bsk-[A-Za-z0-9_-]{10,}\b"),
+    re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]{12,}"),
+    re.compile(
+        r'''(?i)\b(?:control_plane_)?(?:api[_-]?key|access[_-]?token|refresh[_-]?token|password|secret)'''
+        r'''\s*[:=]\s*(?:"[^"]*"|'[^']*'|[^\s,;]+)'''
+    ),
+    re.compile(
+        r"(?s)-----BEGIN ([A-Z0-9 ]*PRIVATE KEY)-----.*?-----END \1-----"
+    ),
+)
+
+
+def _redact_shell_output(value: str) -> tuple[str, int]:
+    redactions = 0
+    result = str(value or "")
+    for pattern in _SHELL_OUTPUT_REDACTIONS:
+        result, count = pattern.subn("[REDACTED]", result)
+        redactions += count
+    return result, redactions
+
+
+def _capture_bounded_stream(stream, limit: int, result: dict[str, Any]) -> None:
+    captured = bytearray()
+    total = 0
+    try:
+        while True:
+            chunk = stream.read(8192)
+            if not chunk:
+                break
+            total += len(chunk)
+            remaining = limit - len(captured)
+            if remaining > 0:
+                captured.extend(chunk[:remaining])
+    finally:
+        try:
+            stream.close()
+        except OSError:
+            pass
+    result["data"] = bytes(captured)
+    result["total_bytes"] = total
+    result["truncated"] = total > len(captured)
 
 class BackendAdmin:
     ALLOWED_EXTENSIONS = {
@@ -30,6 +79,9 @@ class BackendAdmin:
     HOTFIX_EXTENSIONS = {".zip", ".json", ".patch", ".diff", ".py", ".ps1"}
     MAX_FILE_BYTES = 16 * 1024 * 1024
     MAX_HOTFIX_BYTES = 16 * 1024 * 1024
+    MAX_POWERSHELL_SCRIPT_CHARS = 32_768
+    MAX_POWERSHELL_TIMEOUT_SECONDS = 300
+    MAX_POWERSHELL_OUTPUT_BYTES = 32_768
 
     TEST_SUITES = {
         "py_compile",
@@ -63,6 +115,7 @@ class BackendAdmin:
 
     def __init__(self, root: Path):
         self.root = root.resolve()
+        self.concurrency = ConcurrencyManager(self.root)
         self.allowed_roots = [
             self.root / "app" / "vibemql5",
             self.root / "tests",
@@ -326,7 +379,7 @@ class BackendAdmin:
             "schema_version": "1.0",
             "mode": "ALLOWLISTED_MULTI_TUNNEL_ADMIN",
             "instances": items,
-            "generic_shell_exposed": False,
+            "generic_shell_exposed": True,
         }
 
     def _task_command(self, action: str, names: list[str]) -> None:
@@ -844,6 +897,244 @@ class BackendAdmin:
             argv, cwd=str(self.root), capture_output=True, text=True,
             timeout=timeout, check=False
         )
+
+    def _append_powershell_audit(self, record: dict[str, Any]) -> None:
+        path = self.root / "state" / "powershell-audit.jsonl"
+        lock_path = self.root / "state" / "concurrency" / "powershell-audit.lock"
+        line = json.dumps(record, sort_keys=True, ensure_ascii=False, separators=(",", ":")) + "\n"
+        with _exclusive_file_lock(lock_path, timeout_seconds=5.0):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a", encoding="utf-8", newline="\n") as stream:
+                stream.write(line)
+                stream.flush()
+                os.fsync(stream.fileno())
+
+    @staticmethod
+    def _shell_child_environment() -> dict[str, str]:
+        return {
+            key: value
+            for key, value in os.environ.items()
+            if not _SHELL_ENV_SECRET.search(key)
+        }
+
+    def _execute_powershell(self, script: str, timeout_seconds: int) -> dict[str, Any]:
+        wrapped_script = (
+            "[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); "
+            "$OutputEncoding = [Console]::OutputEncoding;`n" + script
+        )
+        script_payload = base64.b64encode(wrapped_script.encode("utf-16le")).decode("ascii")
+        bootstrap = (
+            "$payload=[Console]::In.ReadToEnd();"
+            "$scriptText=[Text.Encoding]::Unicode.GetString([Convert]::FromBase64String($payload));"
+            "$ErrorActionPreference='Stop';"
+            "try { Invoke-Expression -Command $scriptText; "
+            "if ($null -ne $global:LASTEXITCODE) { exit [int]$global:LASTEXITCODE }; exit 0 } "
+            "catch { [Console]::Error.WriteLine($_.ToString()); exit 1 }"
+        )
+        encoded_bootstrap = base64.b64encode(bootstrap.encode("utf-16le")).decode("ascii")
+        env = self._shell_child_environment()
+        argv = [
+            "powershell.exe", "-NoLogo", "-NoProfile", "-NonInteractive",
+            "-EncodedCommand", encoded_bootstrap,
+        ]
+        started = time.monotonic()
+        try:
+            process = subprocess.Popen(
+                argv,
+                cwd=str(self.root),
+                env=env,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0),
+            )
+        except OSError:
+            return {
+                "status": "FAILED",
+                "reason_code": "POWERSHELL_START_FAILED",
+                "process_exit_code": None,
+                "stdout": "",
+                "stderr": "",
+                "stdout_bytes": 0,
+                "stderr_bytes": 0,
+                "output_truncated": False,
+                "output_redactions": 0,
+                "duration_ms": round((time.monotonic() - started) * 1000),
+            }
+
+        stdout_capture: dict[str, Any] = {}
+        stderr_capture: dict[str, Any] = {}
+        readers = [
+            threading.Thread(
+                target=_capture_bounded_stream,
+                args=(process.stdout, self.MAX_POWERSHELL_OUTPUT_BYTES, stdout_capture),
+                daemon=True,
+            ),
+            threading.Thread(
+                target=_capture_bounded_stream,
+                args=(process.stderr, self.MAX_POWERSHELL_OUTPUT_BYTES, stderr_capture),
+                daemon=True,
+            ),
+        ]
+        for reader in readers:
+            reader.start()
+
+        input_failed = False
+        try:
+            process.stdin.write(script_payload.encode("ascii"))
+            process.stdin.close()
+        except (BrokenPipeError, OSError):
+            input_failed = True
+            try:
+                process.stdin.close()
+            except OSError:
+                pass
+
+        timed_out = False
+        try:
+            process.wait(timeout=timeout_seconds)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            if os.name == "nt":
+                try:
+                    subprocess.run(
+                        ["taskkill.exe", "/PID", str(process.pid), "/T", "/F"],
+                        stdin=subprocess.DEVNULL,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        env=env,
+                        timeout=10,
+                        check=False,
+                    )
+                except (OSError, subprocess.TimeoutExpired):
+                    pass
+            try:
+                process.kill()
+            except OSError:
+                pass
+            try:
+                process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                pass
+        for reader in readers:
+            reader.join(timeout=10)
+
+        stdout_raw = stdout_capture.get("data", b"").decode("utf-8", errors="replace")
+        stderr_raw = stderr_capture.get("data", b"").decode("utf-8", errors="replace")
+        stdout, stdout_redactions = _redact_shell_output(stdout_raw)
+        stderr, stderr_redactions = _redact_shell_output(stderr_raw)
+        exit_code = process.returncode
+        reason_code = (
+            "POWERSHELL_TIMEOUT" if timed_out
+            else "POWERSHELL_INPUT_FAILED" if input_failed
+            else None
+        )
+        return {
+            "status": "TIMEOUT" if timed_out else ("FAILED" if input_failed or exit_code != 0 else "PASS"),
+            "reason_code": reason_code,
+            "process_exit_code": exit_code,
+            "stdout": stdout,
+            "stderr": stderr,
+            "stdout_bytes": int(stdout_capture.get("total_bytes", 0)),
+            "stderr_bytes": int(stderr_capture.get("total_bytes", 0)),
+            "output_truncated": bool(
+                stdout_capture.get("truncated") or stderr_capture.get("truncated")
+            ),
+            "output_redactions": stdout_redactions + stderr_redactions,
+            "duration_ms": round((time.monotonic() - started) * 1000),
+        }
+
+    def run_powershell(
+        self,
+        script: str,
+        confirm: bool = False,
+        timeout_seconds: int = 60,
+    ) -> dict[str, Any]:
+        operation_id = new_id("PSHELL")
+        if confirm is not True:
+            return {
+                "operation_id": operation_id,
+                "operation": "backend_run_powershell",
+                "status": "BLOCKED",
+                "payload": {"reason_code": "EXPLICIT_CONFIRMATION_REQUIRED"},
+            }
+        if not isinstance(script, str) or not script.strip():
+            raise BackendAdminError("POWERSHELL_SCRIPT_REQUIRED")
+        if len(script) > self.MAX_POWERSHELL_SCRIPT_CHARS:
+            raise BackendAdminError("POWERSHELL_SCRIPT_TOO_LARGE")
+        if type(timeout_seconds) is not int or not 1 <= timeout_seconds <= self.MAX_POWERSHELL_TIMEOUT_SECONDS:
+            raise BackendAdminError("POWERSHELL_TIMEOUT_OUT_OF_RANGE")
+
+        script_sha256 = hashlib.sha256(script.encode("utf-8")).hexdigest()
+        actor = current_actor()
+        audit_base = {
+            "schema_version": "1.0",
+            "operation_id": operation_id,
+            "command_sha256": script_sha256,
+            "timeout_seconds": timeout_seconds,
+            "client_key": actor.get("client_key", ""),
+            "attribution_strength": actor.get("attribution_strength", "LOCAL_ONLY"),
+            "security_identity": False,
+        }
+        started_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+        with self.concurrency.mutation(
+            "backend_run_powershell", resource=script_sha256, wait_seconds=30.0
+        ):
+            with self.concurrency.native_execution(
+                operation_id, kind="generic_powershell", wait_seconds=30.0
+            ):
+                self._append_powershell_audit({
+                    **audit_base, "event": "STARTED", "at_utc": started_at,
+                })
+                try:
+                    result = self._execute_powershell(script, timeout_seconds)
+                except Exception:
+                    result = {
+                        "status": "FAILED",
+                        "reason_code": "POWERSHELL_EXECUTION_FAILED",
+                        "process_exit_code": None,
+                        "stdout": "",
+                        "stderr": "",
+                        "stdout_bytes": 0,
+                        "stderr_bytes": 0,
+                        "output_truncated": False,
+                        "output_redactions": 0,
+                        "duration_ms": 0,
+                    }
+                finished_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+                final_audit_ok = True
+                try:
+                    self._append_powershell_audit({
+                        **audit_base,
+                        "event": "FINISHED",
+                        "at_utc": finished_at,
+                        "status": result["status"],
+                        "process_exit_code": result["process_exit_code"],
+                        "stdout_bytes": result["stdout_bytes"],
+                        "stderr_bytes": result["stderr_bytes"],
+                        "output_truncated": result["output_truncated"],
+                    })
+                except Exception:
+                    final_audit_ok = False
+
+        powershell_status = result["status"]
+        result.update({
+            "powershell_status": powershell_status,
+            "status": powershell_status if final_audit_ok else "AUDIT_INCOMPLETE",
+            "reason_code": result.get("reason_code") or (
+                None if final_audit_ok else "POWERSHELL_FINAL_AUDIT_FAILED"
+            ),
+            "command_sha256": script_sha256,
+            "started_at_utc": started_at,
+            "finished_at_utc": finished_at,
+            "audit_status": "COMPLETE" if final_audit_ok else "FINAL_RECORD_FAILED",
+        })
+        return {
+            "operation_id": operation_id,
+            "operation": "backend_run_powershell",
+            "status": result["status"],
+            "payload": result,
+        }
 
     def run_tests(self, suite: str) -> dict[str, Any]:
         if suite not in self.TEST_SUITES:

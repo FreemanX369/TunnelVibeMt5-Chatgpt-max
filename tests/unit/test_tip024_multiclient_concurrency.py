@@ -22,7 +22,7 @@ from vibemql5.core.concurrency import (
 from vibemql5.core.facade import ToolFacade
 from vibemql5.worker import acquire_lock as worker_acquire_lock
 
-EXPECTED_CATALOG = "c3457dce5ad2e1e4461f49786a01278f45e10e411c301c447a6905b7f3eef670"
+EXPECTED_CATALOG = "633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5"
 
 
 def _root(tmp_path: Path) -> Path:
@@ -74,8 +74,8 @@ class _Ctx:
 
 
 def test_tip024_identity_and_tool_catalog_are_preserved():
-    assert vibemql5.__version__ == "0.2.34"
-    assert MCP_TOOL_COUNT == 72
+    assert vibemql5.__version__ == "0.2.35"
+    assert MCP_TOOL_COUNT == 73
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
     assert hashlib.sha256(("\n".join(MCP_TOOL_NAMES) + "\n").encode()).hexdigest() == EXPECTED_CATALOG
 
@@ -251,7 +251,7 @@ def test_tip024_health_and_diagnose_publish_concurrency_contract(tmp_path: Path)
     assert diag["concurrency"]["mode"] == "MULTI_CLIENT_SERIALIZED"
 
 
-def test_tip024_mcp_registers_same_42_tools_and_context_is_invisible_contract(monkeypatch, tmp_path: Path):
+def test_tip024_mcp_registers_catalog_and_context_is_invisible_contract(monkeypatch, tmp_path: Path):
     class FakeContext:
         pass
 
@@ -290,13 +290,17 @@ def test_tip024_mcp_registers_same_42_tools_and_context_is_invisible_contract(mo
     root = _root(tmp_path)
     server = create_server(root, transport="stdio")
     assert set(server.tools) == set(MCP_TOOL_NAMES)
-    assert len(server.tools) == 72
+    assert len(server.tools) == 73
     info = server.tools["server_info"]()
-    assert info["version"] == "0.2.34"
+    assert info["version"] == "0.2.35"
     assert info["bridge_build"] == "TIP-025"
+    assert info["generic_shell_exposed"] is True
     assert info["multi_client_concurrency_schema"] == "1.0"
     assert info["multi_client_mode"] == "SERIALIZED_SHARED_VPS"
     assert info["authenticated_client_identity"] is False
+    blocked = server.tools["backend_run_powershell"](FakeContext(), "Get-Date")
+    assert blocked["status"] == "BLOCKED"
+    assert blocked["payload"]["reason_code"] == "EXPLICIT_CONFIRMATION_REQUIRED"
     for name in ("write_source", "apply_patch", "compile_ea", "launch_test", "cancel_job"):
         sig = inspect.signature(server.tools[name])
         assert "ctx" in sig.parameters

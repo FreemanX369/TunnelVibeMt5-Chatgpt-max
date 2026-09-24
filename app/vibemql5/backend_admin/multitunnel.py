@@ -84,7 +84,7 @@ class MultiTunnelBackendAdmin(BackendAdmin):
             "schema_version": "1.0",
             "mode": "ALLOWLISTED_MULTI_TUNNEL_ADMIN",
             "instances": items,
-            "generic_shell_exposed": False,
+            "generic_shell_exposed": True,
         }
 
     def tunnel_admin_install_autostart(self, instance: str = "B") -> dict[str, Any]:
