@@ -186,6 +186,24 @@ def _install_fake_mcp(monkeypatch):
     return FakeMCPServer
 
 
+def test_tip037_continuity_tool_annotations_match_side_effects(monkeypatch, tmp_path: Path):
+    _install_fake_mcp(monkeypatch)
+    from vibemql5.adapters import mcp as adapter
+
+    server = adapter.create_server(_root(tmp_path), transport="stdio")
+    for name in ("server_info", "health", "get_continuity", "read_continuity_events", "verify_continuity"):
+        annotations = server.tool_meta[name]["annotations"]
+        assert annotations.read_only_hint is True
+        assert annotations.destructive_hint is False
+        assert annotations.open_world_hint is False
+
+    append = server.tool_meta["append_continuity_event"]["annotations"]
+    assert append.read_only_hint is False
+    assert append.destructive_hint is True
+    assert append.idempotent_hint is True
+    assert append.open_world_hint is False
+
+
 def test_tip026r1_mcp_surface_widget_resource_visibility_and_direct_fileparam_backward_compat(monkeypatch, tmp_path: Path):
     _install_fake_mcp(monkeypatch)
     from vibemql5.adapters import mcp as adapter
