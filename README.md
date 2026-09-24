@@ -39,3 +39,4 @@ This repository starts intentionally minimal. Additional files/directories are a
 ## Latest release candidate
 
 See [TIP-040 live MT5-2 observations](docs/releases/TIP-040.md) for the on-demand account, chart, screenshot and log tool contracts and their runtime acceptance gate.
+See [TIP-041 default 16:9 chart capture](docs/releases/TIP-041.md) for the new screenshot parameter, 960×540 output, rollback checks and `native` option.

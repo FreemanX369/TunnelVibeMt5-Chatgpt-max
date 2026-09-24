@@ -77,9 +77,10 @@ class GUI:
     def list_charts(self, path):
         return self.items
 
-    def capture_chart(self, path, chart_id):
-        self.captures.append(chart_id)
-        return _png_rgb(32, 32, bytes([0, 1, 2, 0]) * 1024)
+    def capture_chart(self, path, chart_id, aspect_ratio="16:9"):
+        self.captures.append((chart_id, aspect_ratio))
+        width, height = (960, 540) if aspect_ratio == "16:9" else (32, 32)
+        return _png_rgb(width, height, bytes([0, 1, 2, 0]) * (width * height))
 
 
 def test_win32_child_enumeration_ignores_unused_return_value(tmp_path, monkeypatch):
@@ -129,9 +130,9 @@ def test_four_zero_client_charts_counted_under_verified_mdi(tmp_path, monkeypatc
     assert len(charts) == 4
     assert [item["symbol"] for item in charts] == ["XAUUSD247m", "XAUUSDm", "BTCUSDm", "XAUUSDm"]
     assert all(item["visible"] and not item["renderable"] and item["width"] == 0 for item in charts)
-    monkeypatch.setattr(gui, "capture_chart", lambda _path, _chart_id: _png_rgb(320, 200, bytes([0, 1, 2, 0]) * 64000))
+    monkeypatch.setattr(gui, "capture_chart", lambda _path, _chart_id, _ratio: _png_rgb(320, 200, bytes([0, 1, 2, 0]) * 64000))
     live = LiveTerminal(Inventory(tmp_path), "MT5-2", gui=gui)
-    meta, png = live.capture(201)
+    meta, png = live.capture(201, "native")
     assert meta["restored_temporarily"] is True
     assert (meta["chart"]["width"], meta["chart"]["height"]) == (0, 0)
     assert (meta["image_width"], meta["image_height"]) == (320, 200)
@@ -216,10 +217,17 @@ def test_chart_capture_uses_unique_hwnd_and_does_not_infer_ea(tmp_path):
         live.capture(999)
     assert gui.captures == []
     meta, png = live.capture(27)
-    assert gui.captures == [27]
+    assert gui.captures == [(27, "16:9")]
     assert meta["mime_type"] == "image/png"
     assert png[:8] == b"\x89PNG\r\n\x1a\n"
-    assert struct.unpack(">II", png[16:24]) == (32, 32)
+    assert struct.unpack(">II", png[16:24]) == (960, 540)
+    assert (meta["aspect_ratio"], meta["resized_temporarily"]) == ("16:9", True)
+    native, original = live.capture(27, "native")
+    assert (native["aspect_ratio"], native["resized_temporarily"]) == ("native", False)
+    assert struct.unpack(">II", original[16:24]) == (32, 32)
+    with pytest.raises(ValueError, match="LIVE_CHART_ASPECT_RATIO_INVALID"):
+        live.capture(27, "4:3")
+    assert gui.captures == [(27, "16:9"), (27, "native")]
 
 
 def test_log_tail_is_bounded_and_redacted(tmp_path):
@@ -295,16 +303,24 @@ def test_mcp_capture_returns_image_content_without_encoded_text(tmp_path, monkey
     (tmp_path / "config" / "terminals.json").write_text(json.dumps({"terminals": []}), encoding="utf-8")
     png = _png_rgb(32, 32, bytes([0, 1, 2, 0]) * 1024)
     monkeypatch.setattr(ToolFacade, "reconcile_cancelled_jobs", lambda self, **_kw: {})
-    monkeypatch.setattr(ToolFacade, "capture_live_chart", lambda self, chart_id: (
+    ratios = []
+    def fake_capture(_self, chart_id, aspect_ratio):
+        ratios.append(aspect_ratio)
+        return (
         {"alias": "MT5-2", "chart": {"chart_id": chart_id}, "mime_type": "image/png", "bytes": len(png)}, png
-    ))
+        )
+    monkeypatch.setattr(ToolFacade, "capture_live_chart", fake_capture)
     server = create_server(tmp_path, transport="stdio")
-    annotations = server._tool_manager._tools["capture_live_chart"].annotations
+    capture_tool = server._tool_manager._tools["capture_live_chart"]
+    annotations = capture_tool.annotations
     assert annotations.read_only_hint is False
     assert annotations.destructive_hint is False
     assert annotations.idempotent_hint is True
-    response = server._tool_manager._tools["capture_live_chart"].fn(ctx=object(), chart_id=27)
+    assert capture_tool.parameters["properties"]["aspect_ratio"]["default"] == "16:9"
+    response = capture_tool.fn(ctx=object(), chart_id=27)
     assert response.content[1].type == "image"
     assert response.content[1].mime_type == "image/png"
     assert response.structured_content["chart"]["chart_id"] == 27
     assert all("iVBOR" not in item.text for item in response.content if item.type == "text")
+    capture_tool.fn(ctx=object(), chart_id=27, aspect_ratio="native")
+    assert ratios == ["16:9", "native"]

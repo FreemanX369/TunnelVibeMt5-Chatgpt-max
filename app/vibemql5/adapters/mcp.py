@@ -179,10 +179,10 @@ def create_server(root: Path, transport: str = "unknown"):
         return _invoke(ctx, "list_live_charts", facade.list_live_charts)
 
     @server.tool(annotations=reversible_chart_capture)
-    def capture_live_chart(ctx: Context, chart_id: int) -> CallToolResult:
-        """Capture one MT5-2 chart PNG; a minimized chart is briefly restored and re-minimized."""
+    def capture_live_chart(ctx: Context, chart_id: int, aspect_ratio: str = "16:9") -> CallToolResult:
+        """Capture one MT5-2 chart as 960x540 PNG by default; native keeps original size."""
         from mcp.types import ImageContent
-        meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id))
+        meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id, aspect_ratio))
         return CallToolResult(
             content=[TextContent(type="text", text=json.dumps(meta, sort_keys=True, separators=(",", ":"))),
                      ImageContent(type="image", data=base64.b64encode(png).decode("ascii"), mime_type="image/png")],

@@ -72,6 +72,8 @@ class WindowsCharts:
         self.user.GetParent.argtypes = [wintypes.HWND]
         self.user.GetParent.restype = wintypes.HWND
         self.user.GetWindowPlacement.argtypes = [wintypes.HWND, ctypes.POINTER(_WindowPlacement)]
+        self.user.SetWindowPlacement.argtypes = [wintypes.HWND, ctypes.POINTER(_WindowPlacement)]
+        self.user.SetWindowPlacement.restype = wintypes.BOOL
         self.user.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
         self.user.IsWindowVisible.argtypes = [wintypes.HWND]
         self.user.IsIconic.argtypes = [wintypes.HWND]
@@ -184,12 +186,20 @@ class WindowsCharts:
                            "indicators": {"status": "UNKNOWN"}})
         return sorted(charts, key=lambda item: item["chart_id"])
 
-    def capture_chart(self, terminal_exe: str, chart_id: int) -> bytes:
+    def capture_chart(self, terminal_exe: str, chart_id: int, aspect_ratio: str = "16:9") -> bytes:
         """Run PrintWindow in a disposable process; terminate it after five seconds."""
+        if aspect_ratio not in {"16:9", "native"}:
+            raise ValueError("LIVE_CHART_ASPECT_RATIO_INVALID")
         charts = self.list_charts(terminal_exe)
         selected = next((chart for chart in charts if chart["chart_id"] == chart_id), None)
         if selected is None or not selected["visible"]:
             raise RuntimeError("LIVE_CHART_NOT_FOUND_OR_VISIBLE")
+        if aspect_ratio == "16:9":
+            if selected["renderable"] and (selected["width"], selected["height"]) == (960, 540):
+                return self._capture_process(terminal_exe, chart_id)
+            if not selected["renderable"] and (selected["width"] or selected["height"]):
+                raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
+            return self._temporarily_resize_capture(terminal_exe, chart_id, charts)
         if selected["renderable"]:
             return self._capture_process(terminal_exe, chart_id)
         if selected["width"] or selected["height"]:
@@ -209,12 +219,26 @@ class WindowsCharts:
         return done.stdout
 
     def _placement(self, hwnd: int) -> tuple[int, tuple[int, ...]]:
+        placement = self._placement_state(hwnd)
+        rect = placement.rcNormalPosition
+        return int(placement.showCmd), (rect.left, rect.top, rect.right, rect.bottom)
+
+    def _placement_state(self, hwnd: int) -> _WindowPlacement:
         placement = _WindowPlacement()
         placement.length = ctypes.sizeof(placement)
         if not self.user.GetWindowPlacement(hwnd, ctypes.byref(placement)):
             raise RuntimeError("LIVE_CHART_PLACEMENT_UNAVAILABLE")
-        rect = placement.rcNormalPosition
-        return int(placement.showCmd), (rect.left, rect.top, rect.right, rect.bottom)
+        return placement
+
+    def _set_placement(self, hwnd: int, placement: _WindowPlacement) -> None:
+        if not self.user.SetWindowPlacement(hwnd, ctypes.byref(placement)):
+            raise RuntimeError("LIVE_CHART_PLACEMENT_CHANGE_FAILED")
+
+    def _placement_details(self, hwnd: int) -> tuple[int, ...]:
+        state = self._placement_state(hwnd)
+        return (state.flags, state.ptMinPosition.x, state.ptMinPosition.y,
+                state.ptMaxPosition.x, state.ptMaxPosition.y,
+                state.rcDevice.left, state.rcDevice.top, state.rcDevice.right, state.rcDevice.bottom)
 
     def _send_bounded(self, hwnd: int, message: int, wparam: int = 0) -> int:
         result = ctypes.c_size_t()
@@ -301,14 +325,84 @@ class WindowsCharts:
             if self._send_bounded(mdi, 0x0229) != active:
                 raise RuntimeError("LIVE_CHART_ACTIVE_SELECTION_CHANGED")
 
+    def _temporarily_resize_capture(self, terminal_exe: str, chart_id: int, charts: list[dict]) -> bytes:
+        """Capture a 960x540 client area and restore all MDI placement and selection state."""
+        ids = {item["chart_id"] for item in charts}
+        if len(ids) != len(charts) or chart_id not in ids:
+            raise RuntimeError("LIVE_CHART_IDENTITIES_UNAVAILABLE")
+        mdi = self._bound_mdi(terminal_exe, ids)
+        before = {hwnd: self._placement(hwnd) for hwnd in ids}
+        details = {hwnd: self._placement_details(hwnd) for hwnd in ids}
+        states = {hwnd: self._placement_state(hwnd) for hwnd in ids}
+        iconic = {hwnd: bool(self.user.IsIconic(hwnd)) for hwnd in ids}
+        selected = next(item for item in charts if item["chart_id"] == chart_id)
+        if (iconic[chart_id] and (before[chart_id][0] != 2 or selected["width"] or selected["height"])):
+            raise RuntimeError("LIVE_CHART_RESIZE_PRECONDITION_FAILED")
+        if not iconic[chart_id] and (before[chart_id][0] not in (1, 3) or not selected["renderable"]):
+            raise RuntimeError("LIVE_CHART_RESIZE_PRECONDITION_FAILED")
+        mdi_width, mdi_height = self._size(mdi)
+        if mdi_width < 972 or mdi_height < 575:
+            raise RuntimeError("LIVE_CHART_MDI_TOO_SMALL_FOR_16_9")
+        active = self._send_bounded(mdi, 0x0229)  # WM_MDIGETACTIVE
+        if active not in ids:
+            raise RuntimeError("LIVE_CHART_ACTIVE_WINDOW_UNVERIFIED")
+        original = states[chart_id]
+        if self._placement(chart_id) != before[chart_id] or self._placement_details(chart_id) != details[chart_id]:
+            raise RuntimeError("LIVE_CHART_PLACEMENT_CHANGED_BEFORE_CAPTURE")
+        modified = _WindowPlacement.from_buffer_copy(original)
+        rect = modified.rcNormalPosition
+        left = max(0, min(rect.left, mdi_width - 972))
+        top = max(0, min(rect.top, mdi_height - 575))
+        rect.left, rect.top, rect.right, rect.bottom = left, top, left + 972, top + 575
+        if original.showCmd == 3:  # A maximized child must be normal during the capture.
+            modified.showCmd = 1
+        try:
+            self._set_placement(chart_id, modified)
+            if iconic[chart_id]:
+                self._send_bounded(mdi, 0x0223, chart_id)  # WM_MDIRESTORE
+            deadline = time.monotonic() + 2
+            while True:
+                current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
+                if (current and current["renderable"] and not self.user.IsIconic(chart_id)
+                        and (current["width"], current["height"]) == (960, 540)):
+                    return self._capture_process(terminal_exe, chart_id)
+                if time.monotonic() >= deadline:
+                    raise RuntimeError("LIVE_CHART_16_9_SIZE_UNVERIFIED")
+                time.sleep(0.05)
+        finally:
+            # SetWindowPlacement may change a chart even when it reports failure.
+            self._set_placement(chart_id, original)
+            if iconic[chart_id] and not self.user.IsIconic(chart_id):
+                if not self.user.ShowWindowAsync(chart_id, 6):  # SW_MINIMIZE
+                    self._send_bounded(chart_id, 0x0112, 0xF020)
+                self._set_placement(chart_id, original)
+            self._verify_restored_layout(terminal_exe, mdi, ids, before, iconic, details)
+            if self._send_bounded(mdi, 0x0229) != active:
+                try:
+                    self._send_bounded(mdi, 0x0222, active)  # WM_MDIACTIVATE
+                finally:
+                    # Activation can restore a minimized child on some MT5 builds.
+                    self._set_placement(chart_id, original)
+                    if iconic[active] and not self.user.IsIconic(active):
+                        if not self.user.ShowWindowAsync(active, 6):
+                            raise RuntimeError("LIVE_CHART_ROLLBACK_REQUEST_FAILED")
+                        self._set_placement(active, states[active])
+                    self._verify_restored_layout(terminal_exe, mdi, ids, before, iconic, details)
+            if self._send_bounded(mdi, 0x0229) != active:
+                raise RuntimeError("LIVE_CHART_ACTIVE_SELECTION_CHANGED")
+
     def _verify_restored_layout(self, terminal_exe: str, mdi: int, ids: set[int],
-                                before: dict[int, tuple[int, tuple[int, ...]]]) -> None:
+                                before: dict[int, tuple[int, tuple[int, ...]]],
+                                iconic: dict[int, bool] | None = None,
+                                details: dict[int, tuple[int, ...]] | None = None) -> None:
+        iconic = iconic or {hwnd: True for hwnd in ids}
         deadline = time.monotonic() + 3
         while True:
             if (self._bound_mdi(terminal_exe, ids) == mdi
                     and {item["chart_id"]: self._placement(item["chart_id"])
                          for item in self.list_charts(terminal_exe)} == before
-                    and all(self.user.IsIconic(hwnd) for hwnd in ids)):
+                    and all(bool(self.user.IsIconic(hwnd)) == iconic[hwnd] for hwnd in ids)
+                    and (details is None or {hwnd: self._placement_details(hwnd) for hwnd in ids} == details)):
                 return
             if time.monotonic() >= deadline:
                 raise RuntimeError("LIVE_CHART_ROLLBACK_LAYOUT_CHANGED")
