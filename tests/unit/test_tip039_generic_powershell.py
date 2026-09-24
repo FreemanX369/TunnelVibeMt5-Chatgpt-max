@@ -145,7 +145,11 @@ def test_tip039_shell_timeout_kills_process_and_reports_structured_failure(tmp_p
 
     process.wait = wait
     monkeypatch.setattr(core.subprocess, "Popen", lambda *_args, **_kwargs: process)
-    monkeypatch.setattr(core.os, "name", "posix")
+    monkeypatch.setattr(
+        core.subprocess,
+        "run",
+        lambda argv, **_kwargs: subprocess.CompletedProcess(argv, 0),
+    )
 
     result = admin.run_powershell("Start-Sleep 20", confirm=True, timeout_seconds=1)
 
