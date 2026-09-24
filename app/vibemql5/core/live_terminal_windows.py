@@ -7,6 +7,7 @@ import re
 import struct
 import subprocess
 import sys
+import time
 import zlib
 from ctypes import wintypes
 from pathlib import Path
@@ -49,6 +50,12 @@ class _BitmapInfo(ctypes.Structure):
     _fields_ = [("bmiHeader", _BitmapInfoHeader), ("bmiColors", wintypes.DWORD * 1)]
 
 
+class _WindowPlacement(ctypes.Structure):
+    _fields_ = [("length", wintypes.UINT), ("flags", wintypes.UINT), ("showCmd", wintypes.UINT),
+                ("ptMinPosition", wintypes.POINT), ("ptMaxPosition", wintypes.POINT),
+                ("rcNormalPosition", wintypes.RECT), ("rcDevice", wintypes.RECT)]
+
+
 class WindowsCharts:
     def __init__(self) -> None:
         if os.name != "nt":
@@ -61,8 +68,18 @@ class WindowsCharts:
         self.user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
         self.user.GetWindowTextLengthW.argtypes = [wintypes.HWND]
         self.user.GetWindowTextW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+        self.user.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+        self.user.GetParent.argtypes = [wintypes.HWND]
+        self.user.GetParent.restype = wintypes.HWND
+        self.user.GetWindowPlacement.argtypes = [wintypes.HWND, ctypes.POINTER(_WindowPlacement)]
         self.user.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
         self.user.IsWindowVisible.argtypes = [wintypes.HWND]
+        self.user.IsIconic.argtypes = [wintypes.HWND]
+        self.user.SendMessageTimeoutW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM,
+                                                  wintypes.UINT, wintypes.UINT, ctypes.POINTER(ctypes.c_size_t)]
+        self.user.SendMessageTimeoutW.restype = wintypes.BOOL
+        self.user.ShowWindowAsync.argtypes = [wintypes.HWND, ctypes.c_int]
+        self.user.ShowWindowAsync.restype = wintypes.BOOL
         self.user.GetDC.argtypes = [wintypes.HWND]
         self.user.GetDC.restype = wintypes.HDC
         self.user.ReleaseDC.argtypes = [wintypes.HWND, wintypes.HDC]
@@ -112,6 +129,10 @@ class WindowsCharts:
             return (0, 0)
         return (rect.right - rect.left, rect.bottom - rect.top)
 
+    def _class(self, hwnd: int) -> str:
+        buffer = ctypes.create_unicode_buffer(128)
+        return buffer.value if self.user.GetClassNameW(hwnd, buffer, len(buffer)) else ""
+
     def list_charts(self, terminal_exe: str) -> list[dict]:
         callback = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
         mains: list[int] = []
@@ -127,33 +148,55 @@ class WindowsCharts:
             raise RuntimeError("MT5_WINDOWS_ENUMERATION_FAILED")
         if not mains:
             raise RuntimeError("MT5_WINDOW_NOT_FOUND_IN_INTERACTIVE_SESSION")
-        charts: dict[int, dict] = {}
+        children: list[int] = []
 
         @callback
         def child_cb(hwnd, _data):
-            if not (match := _CHART_TITLE.match(self._title(hwnd))):
-                return True
             if (self._path_for_hwnd(hwnd) or "").replace("/", "\\").casefold() != target:
                 return True
-            width, height = self._size(hwnd)
-            if width < 32 or height < 32:
-                return True
-            charts[hwnd] = {"chart_id": hwnd, "symbol": match.group(1), "timeframe": match.group(2),
-                            "visible": bool(self.user.IsWindowVisible(hwnd)), "width": width, "height": height,
-                            "expert": {"attached": None, "status": "UNKNOWN"},
-                            "indicators": {"status": "UNKNOWN"}}
+            children.append(hwnd)
             return True
 
         for main in mains:
             # Microsoft documents the EnumChildWindows BOOL return as unused.
             # A zero result does not prove enumeration failed; trust only validated callbacks.
             self.user.EnumChildWindows(main, child_cb, 0)
-        if not charts:
+        main_visible = [hwnd for hwnd in mains if self.user.IsWindowVisible(hwnd)
+                        and self._size(hwnd)[0] >= 200 and self._size(hwnd)[1] >= 150]
+        mdi = [hwnd for hwnd in children if self._class(hwnd) == "MDIClient"
+               and self.user.IsWindowVisible(hwnd) and self._size(hwnd)[0] >= 200
+               and self._size(hwnd)[1] >= 150]
+        if (len(main_visible) != 1 or self._class(main_visible[0]) != "MetaQuotes::MetaTrader::5.00"
+                or len(mdi) != 1):
             raise RuntimeError("LIVE_CHART_WINDOWS_NOT_VERIFIABLE")
-        return sorted(charts.values(), key=lambda item: item["chart_id"])
+        direct = [hwnd for hwnd in children if self.user.GetParent(hwnd) == mdi[0]]
+        charts = []
+        for hwnd in direct:
+            if not (match := _CHART_TITLE.match(self._title(hwnd))):
+                raise RuntimeError("LIVE_CHART_WINDOWS_NOT_VERIFIABLE")
+            width, height = self._size(hwnd)
+            visible = bool(self.user.IsWindowVisible(hwnd))
+            charts.append({"chart_id": hwnd, "symbol": match.group(1), "timeframe": match.group(2),
+                           "visible": visible, "width": width, "height": height,
+                           "renderable": visible and width >= 32 and height >= 32
+                           and width <= 2560 and height <= 1600 and width * height <= 3_000_000,
+                           "expert": {"attached": None, "status": "UNKNOWN"},
+                           "indicators": {"status": "UNKNOWN"}})
+        return sorted(charts, key=lambda item: item["chart_id"])
 
     def capture_chart(self, terminal_exe: str, chart_id: int) -> bytes:
         """Run PrintWindow in a disposable process; terminate it after five seconds."""
+        charts = self.list_charts(terminal_exe)
+        selected = next((chart for chart in charts if chart["chart_id"] == chart_id), None)
+        if selected is None or not selected["visible"]:
+            raise RuntimeError("LIVE_CHART_NOT_FOUND_OR_VISIBLE")
+        if selected["renderable"]:
+            return self._capture_process(terminal_exe, chart_id)
+        if selected["width"] or selected["height"]:
+            raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
+        return self._temporarily_restore_capture(terminal_exe, chart_id, charts)
+
+    def _capture_process(self, terminal_exe: str, chart_id: int) -> bytes:
         try:
             done = subprocess.run(
                 [sys.executable, "-m", "vibemql5.core.live_terminal_windows", terminal_exe, str(chart_id)],
@@ -165,9 +208,115 @@ class WindowsCharts:
             raise RuntimeError("LIVE_CHART_CAPTURE_FAILED")
         return done.stdout
 
+    def _placement(self, hwnd: int) -> tuple[int, tuple[int, ...]]:
+        placement = _WindowPlacement()
+        placement.length = ctypes.sizeof(placement)
+        if not self.user.GetWindowPlacement(hwnd, ctypes.byref(placement)):
+            raise RuntimeError("LIVE_CHART_PLACEMENT_UNAVAILABLE")
+        rect = placement.rcNormalPosition
+        return int(placement.showCmd), (rect.left, rect.top, rect.right, rect.bottom)
+
+    def _send_bounded(self, hwnd: int, message: int, wparam: int = 0) -> int:
+        result = ctypes.c_size_t()
+        if not self.user.SendMessageTimeoutW(hwnd, message, wparam, 0, 0x0002 | 0x0020, 2000,
+                                              ctypes.byref(result)):
+            raise RuntimeError("LIVE_CHART_WINDOW_MESSAGE_TIMEOUT")
+        return result.value  # WM_MDIRESTORE returns zero on success; the API BOOL is authoritative.
+
+    def _bound_mdi(self, terminal_exe: str, chart_ids: set[int]) -> int:
+        """Confirm one visible MT5 MDI client and exactly the requested chart identities."""
+        callback = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+        target = str(Path(terminal_exe)).replace("/", "\\").rstrip("\\").casefold()
+        owned = lambda hwnd: (self._path_for_hwnd(hwnd) or "").replace("/", "\\").casefold() == target
+        mains: list[int] = []
+
+        @callback
+        def main_cb(hwnd, _data):
+            if owned(hwnd) and self._class(hwnd) == "MetaQuotes::MetaTrader::5.00" and self.user.IsWindowVisible(hwnd):
+                mains.append(hwnd)
+            return True
+
+        self.user.EnumWindows(main_cb, 0)
+        if len(mains) != 1:
+            raise RuntimeError("LIVE_CHART_MAIN_NOT_UNIQUE")
+        children: list[int] = []
+
+        @callback
+        def child_cb(hwnd, _data):
+            if owned(hwnd):
+                children.append(hwnd)
+            return True
+
+        self.user.EnumChildWindows(mains[0], child_cb, 0)  # Return value is unused by Win32.
+        mdi = [hwnd for hwnd in children if self._class(hwnd) == "MDIClient" and self.user.IsWindowVisible(hwnd)
+               and self._size(hwnd)[0] >= 200 and self._size(hwnd)[1] >= 150]
+        if len(mdi) != 1 or {hwnd for hwnd in children if self.user.GetParent(hwnd) == mdi[0]} != chart_ids:
+            raise RuntimeError("LIVE_CHART_MDI_BINDING_CHANGED")
+        return mdi[0]
+
+    def _temporarily_restore_capture(self, terminal_exe: str, chart_id: int, charts: list[dict]) -> bytes:
+        """Restore only the selected exact-process minimized chart, then verify full rollback."""
+        ids = {item["chart_id"] for item in charts}
+        if len(ids) != len(charts) or chart_id not in ids:
+            raise RuntimeError("LIVE_CHART_IDENTITIES_UNAVAILABLE")
+        mdi = self._bound_mdi(terminal_exe, ids)
+        before = {hwnd: self._placement(hwnd) for hwnd in ids}
+        if any(before[hwnd][0] != 2 or not self.user.IsIconic(hwnd) for hwnd in ids):
+            raise RuntimeError("LIVE_CHART_RESTORE_PRECONDITION_FAILED")
+        left, top, right, bottom = before[chart_id][1]
+        width, height = right - left, bottom - top
+        if not (64 <= width <= 2560 and 64 <= height <= 1600 and width * height <= 3_000_000):
+            raise RuntimeError("LIVE_CHART_NO_SAFE_RESTORE_SIZE")
+        active = self._send_bounded(mdi, 0x0229)  # WM_MDIGETACTIVE; read only.
+        if active not in ids:
+            raise RuntimeError("LIVE_CHART_ACTIVE_WINDOW_UNVERIFIED")
+        try:
+            self._send_bounded(mdi, 0x0223, chart_id)  # WM_MDIRESTORE sent to the bound MDI client.
+            deadline = time.monotonic() + 2
+            while True:
+                current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
+                if current and current["renderable"] and not self.user.IsIconic(chart_id):
+                    return self._capture_process(terminal_exe, chart_id)
+                if time.monotonic() >= deadline:
+                    raise RuntimeError("LIVE_CHART_RESTORE_NOT_RENDERABLE")
+                time.sleep(0.05)
+        finally:
+            # The window message can time out after MT5 has processed it. Always try rollback.
+            if not self.user.ShowWindowAsync(chart_id, 6):  # SW_MINIMIZE
+                try:
+                    self._send_bounded(chart_id, 0x0112, 0xF020)  # WM_SYSCOMMAND / SC_MINIMIZE
+                except RuntimeError as exc:
+                    raise RuntimeError("LIVE_CHART_ROLLBACK_REQUEST_FAILED") from exc
+            self._verify_restored_layout(terminal_exe, mdi, ids, before)
+            if self._send_bounded(mdi, 0x0229) != active:
+                try:
+                    self._send_bounded(mdi, 0x0222, active)  # WM_MDIACTIVATE original exact child.
+                finally:
+                    # Activation should leave minimized windows untouched. If MT5 restores
+                    # one, still undo that change before reporting a rollback failure.
+                    for hwnd in ids:
+                        if not self.user.IsIconic(hwnd) and not self.user.ShowWindowAsync(hwnd, 6):
+                            raise RuntimeError("LIVE_CHART_ROLLBACK_REQUEST_FAILED")
+                    self._verify_restored_layout(terminal_exe, mdi, ids, before)
+            if self._send_bounded(mdi, 0x0229) != active:
+                raise RuntimeError("LIVE_CHART_ACTIVE_SELECTION_CHANGED")
+
+    def _verify_restored_layout(self, terminal_exe: str, mdi: int, ids: set[int],
+                                before: dict[int, tuple[int, tuple[int, ...]]]) -> None:
+        deadline = time.monotonic() + 3
+        while True:
+            if (self._bound_mdi(terminal_exe, ids) == mdi
+                    and {item["chart_id"]: self._placement(item["chart_id"])
+                         for item in self.list_charts(terminal_exe)} == before
+                    and all(self.user.IsIconic(hwnd) for hwnd in ids)):
+                return
+            if time.monotonic() >= deadline:
+                raise RuntimeError("LIVE_CHART_ROLLBACK_LAYOUT_CHANGED")
+            time.sleep(0.05)
+
     def _capture_local(self, terminal_exe: str, chart_id: int) -> bytes:
         before = next((c for c in self.list_charts(terminal_exe) if c["chart_id"] == chart_id), None)
-        if not before or not before["visible"]:
+        if not before or not before["visible"] or not before["renderable"]:
             raise RuntimeError("LIVE_CHART_NOT_FOUND_OR_VISIBLE")
         width, height = before["width"], before["height"]
         if width > 2560 or height > 1600 or width * height > 3_000_000:

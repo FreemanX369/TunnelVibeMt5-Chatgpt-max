@@ -88,17 +88,82 @@ def test_win32_child_enumeration_ignores_unused_return_value(tmp_path, monkeypat
     gui = WindowsCharts.__new__(WindowsCharts)
     gui.user = SimpleNamespace(
         EnumWindows=lambda callback, _data: callback(100, 0),
-        EnumChildWindows=lambda _parent, callback, _data: (callback(200, 0), 0)[1],
+        EnumChildWindows=lambda _parent, callback, _data: (callback(200, 0), callback(201, 0), 0)[2],
         IsWindowVisible=lambda _hwnd: True,
+        GetParent=lambda hwnd: 200 if hwnd == 201 else 100,
     )
     gui._path_for_hwnd = lambda _hwnd: terminal_exe
-    gui._title = lambda _hwnd: "XAUUSDm,M1"
+    gui._title = lambda hwnd: "XAUUSDm,M1" if hwnd == 201 else ""
     gui._size = lambda _hwnd: (1600, 900)
+    gui._class = lambda hwnd: {100: "MetaQuotes::MetaTrader::5.00", 200: "MDIClient",
+                              201: "AfxFrameOrView140su"}[hwnd]
     assert gui.list_charts(terminal_exe) == [{
-        "chart_id": 200, "symbol": "XAUUSDm", "timeframe": "M1", "visible": True,
-        "width": 1600, "height": 900, "expert": {"attached": None, "status": "UNKNOWN"},
+        "chart_id": 201, "symbol": "XAUUSDm", "timeframe": "M1", "visible": True,
+        "width": 1600, "height": 900, "renderable": True,
+        "expert": {"attached": None, "status": "UNKNOWN"},
         "indicators": {"status": "UNKNOWN"},
     }]
+
+
+def test_four_zero_client_charts_counted_under_verified_mdi(tmp_path, monkeypatch):
+    monkeypatch.setattr(ctypes, "WINFUNCTYPE", ctypes.CFUNCTYPE, raising=False)
+    terminal_exe = str(tmp_path / "MT5-2" / "terminal64.exe")
+    gui = WindowsCharts.__new__(WindowsCharts)
+    def children(_parent, callback, _data):
+        for hwnd in [200, 201, 202, 203, 204]:
+            callback(hwnd, 0)
+        return 0
+    gui.user = SimpleNamespace(
+        EnumWindows=lambda callback, _data: callback(100, 0),
+        EnumChildWindows=children,
+        IsWindowVisible=lambda _hwnd: True,
+        GetParent=lambda hwnd: 200 if hwnd >= 201 else 100,
+    )
+    gui._path_for_hwnd = lambda _hwnd: terminal_exe
+    gui._title = lambda hwnd: {201: "XAUUSD247m,M1", 202: "XAUUSDm,M1",
+                              203: "BTCUSDm,M1", 204: "XAUUSDm,M1"}.get(hwnd, "")
+    gui._size = lambda hwnd: (0, 0) if hwnd >= 201 else (1075, 900)
+    gui._class = lambda hwnd: "MDIClient" if hwnd == 200 else (
+        "MetaQuotes::MetaTrader::5.00" if hwnd == 100 else "AfxFrameOrView140su")
+    charts = gui.list_charts(terminal_exe)
+    assert len(charts) == 4
+    assert [item["symbol"] for item in charts] == ["XAUUSD247m", "XAUUSDm", "BTCUSDm", "XAUUSDm"]
+    assert all(item["visible"] and not item["renderable"] and item["width"] == 0 for item in charts)
+    monkeypatch.setattr(gui, "capture_chart", lambda _path, _chart_id: _png_rgb(320, 200, bytes([0, 1, 2, 0]) * 64000))
+    live = LiveTerminal(Inventory(tmp_path), "MT5-2", gui=gui)
+    meta, png = live.capture(201)
+    assert meta["restored_temporarily"] is True
+    assert (meta["chart"]["width"], meta["chart"]["height"]) == (0, 0)
+    assert (meta["image_width"], meta["image_height"]) == (320, 200)
+    assert png.startswith(b"\x89PNG\r\n\x1a\n")
+
+
+@pytest.mark.parametrize("unknown_chart_size", [None, (800, 600), (20, 15)])
+def test_empty_mdi_is_zero_only_without_any_direct_child(tmp_path, monkeypatch, unknown_chart_size):
+    monkeypatch.setattr(ctypes, "WINFUNCTYPE", ctypes.CFUNCTYPE, raising=False)
+    terminal_exe = str(tmp_path / "MT5-2" / "terminal64.exe")
+    gui = WindowsCharts.__new__(WindowsCharts)
+    def children(_parent, callback, _data):
+        callback(200, 0)  # Verified MDIClient.
+        if unknown_chart_size:
+            callback(201, 0)  # Child with no reliable symbol/timeframe title.
+        return 0
+    gui.user = SimpleNamespace(
+        EnumWindows=lambda callback, _data: callback(100, 0),
+        EnumChildWindows=children,
+        IsWindowVisible=lambda _hwnd: True,
+        GetParent=lambda hwnd: 200 if hwnd == 201 else 100,
+    )
+    gui._path_for_hwnd = lambda _hwnd: terminal_exe
+    gui._title = lambda _hwnd: ""
+    gui._size = lambda hwnd: unknown_chart_size if hwnd == 201 else (1075, 800)
+    gui._class = lambda hwnd: {100: "MetaQuotes::MetaTrader::5.00", 200: "MDIClient",
+                              201: "AfxFrameOrView140su"}[hwnd]
+    if unknown_chart_size:
+        with pytest.raises(RuntimeError, match="LIVE_CHART_WINDOWS_NOT_VERIFIABLE"):
+            gui.list_charts(terminal_exe)
+    else:
+        assert gui.list_charts(terminal_exe) == []
 
 
 def test_account_reads_only_exact_running_terminal_and_converts_ping(tmp_path):
@@ -234,6 +299,10 @@ def test_mcp_capture_returns_image_content_without_encoded_text(tmp_path, monkey
         {"alias": "MT5-2", "chart": {"chart_id": chart_id}, "mime_type": "image/png", "bytes": len(png)}, png
     ))
     server = create_server(tmp_path, transport="stdio")
+    annotations = server._tool_manager._tools["capture_live_chart"].annotations
+    assert annotations.read_only_hint is False
+    assert annotations.destructive_hint is False
+    assert annotations.idempotent_hint is True
     response = server._tool_manager._tools["capture_live_chart"].fn(ctx=object(), chart_id=27)
     assert response.content[1].type == "image"
     assert response.content[1].mime_type == "image/png"

@@ -99,6 +99,12 @@ def create_server(root: Path, transport: str = "unknown"):
         idempotent_hint=True,
         open_world_hint=False,
     )
+    reversible_chart_capture = ToolAnnotations(
+        read_only_hint=False,  # A minimized MT5 chart is temporarily restored, then minimized again.
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    )
 
     @server.tool(annotations=read_only_local)
     def server_info() -> dict[str, Any]:
@@ -172,9 +178,9 @@ def create_server(root: Path, transport: str = "unknown"):
         """Enumerate chart windows owned by the exact fixed MT5-2 process; EA/indicator UNKNOWN."""
         return _invoke(ctx, "list_live_charts", facade.list_live_charts)
 
-    @server.tool(annotations=read_only_local)
+    @server.tool(annotations=reversible_chart_capture)
     def capture_live_chart(ctx: Context, chart_id: int) -> CallToolResult:
-        """Capture one visible chart client area as PNG; chart_id comes from list_live_charts."""
+        """Capture one MT5-2 chart PNG; a minimized chart is briefly restored and re-minimized."""
         from mcp.types import ImageContent
         meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id))
         return CallToolResult(

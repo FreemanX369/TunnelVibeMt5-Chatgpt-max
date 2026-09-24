@@ -5,6 +5,7 @@ import importlib
 import math
 import os
 import re
+import struct
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -138,13 +139,22 @@ class LiveTerminal:
         item = matches[0]
         if not item["visible"]:
             raise RuntimeError("LIVE_CHART_NOT_VISIBLE")
+        if item.get("renderable") is False and (item.get("width") != 0 or item.get("height") != 0):
+            raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
         payload = self.gui.capture_chart(self.terminal.terminal_path, chart_id)
         if next((chart for chart in self.gui.list_charts(self.terminal.terminal_path)
                  if chart["chart_id"] == chart_id), None) != item:
             raise RuntimeError("LIVE_CHART_CHANGED_DURING_CAPTURE")
-        if not payload.startswith(b"\x89PNG\r\n\x1a\n") or len(payload) > 8_000_000:
+        if not payload.startswith(b"\x89PNG\r\n\x1a\n") or len(payload) > 8_000_000 or len(payload) < 24:
             raise RuntimeError("LIVE_CHART_INVALID_PNG")
-        return {"alias": self.alias, "chart": item, "mime_type": "image/png", "bytes": len(payload)}, payload
+        width, height = struct.unpack(">II", payload[16:24])
+        if not (32 <= width <= 2560 and 32 <= height <= 1600 and width * height <= 3_000_000):
+            raise RuntimeError("LIVE_CHART_INVALID_PNG_DIMENSIONS")
+        if item.get("renderable") is not False and (width, height) != (item["width"], item["height"]):
+            raise RuntimeError("LIVE_CHART_CAPTURE_SIZE_MISMATCH")
+        return {"alias": self.alias, "chart": item, "mime_type": "image/png", "bytes": len(payload),
+                "image_width": width, "image_height": height,
+                "restored_temporarily": item.get("renderable") is False}, payload
 
     def logs(self, source: str = "journal", limit: int = 100) -> dict[str, Any]:
         if source not in {"journal", "experts"}:
