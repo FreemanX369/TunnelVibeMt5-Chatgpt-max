@@ -2,6 +2,8 @@
 
 Status: historical PoC runbook, merged into `main` on 2026-09-23. GitHub event wakeup remains BLOCKED; the merge is not a cross-account acceptance.
 
+Latest manual handoff checkpoint (2026-09-24): A's ordinary Chat reports completing A→B and A→C parent verification. Independent backend reads verify both four-event chains and empty active/awaiting lists; see the final checkpoint below. Automatic peer wakeup and authenticated ChatGPT account identity remain unproven.
+
 ## Goal
 
 Prove that a GitHub pull-request conversation comment can trigger a scheduled task **inside the existing ordinary Chat conversation** of ChatGPT account B, and that the run can call the existing TunnelVibemq5 MCP connection. A, B, and C are intended to be symmetric peers; B is only the first receiver tested.
@@ -241,6 +243,19 @@ In A's **original ordinary Chat**, independently reread and verify *each* projec
 A's original ordinary Chat reports a successful B parent receipt: `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/A/PARENT/VERIFY/B/20260924/01`, verification `ACCEPTED` with receipt events 2 and 3 and `authenticated_chatgpt_identity=false`. Independent `get_continuity`, `verify_continuity` and event reads confirm revision 4, manifest SHA `c004751be5b389aee4c8ea3ed8fda88edb80017146c46a8858353dc5dce146b8`, event-head SHA `14ea9dcc2c583d76a6a1edce2ab685891b4a5c148d82d93dc289838602579b27`, integrity and semantic integrity VERIFIED, `resume_safe=true`, issues `[]`, unchanged read-only proof and no active/awaiting B delegations. **A→B manual durable handoff: PASS.**
 
 The user reports A's attempted C parent sequence was blocked by ChatGPT's tool safety checks before any parent event receipt. Independent reads confirm C is unchanged at revision 3, SHA `7b53007baccca14562352f87c81139418f3c530daec8995572be509eae52a682`, with C still `AWAITING_PARENT_VERIFICATION`, report DONE, integrity and semantic integrity VERIFIED, `resume_safe=true`, issues `[]` and event head `EV-00000003`. The pasted C request contained the literal placeholder `"[DELEGATION]"`; the reported error occurred at tool invocation before a write, so that placeholder is **not proven to be the cause**, but must not appear in any future parent payload. Isolate A's first read as a standalone `get_continuity(project_id="TIP037-PEER-A-TO-C-20260924")` in A's original ordinary Chat; proceed to standalone verify and event reads only if it succeeds. The exact C parent payload is `{"delegation_id":"TIP037-A-TO-C-20260924-01","verification":{"status":"ACCEPTED","receipt_events":["EV-00000002","EV-00000003"],"authenticated_chatgpt_identity":false}}`, operation `TIP037/PEER/A/PARENT/VERIFY/C/20260924/01`, with fresh CAS. **A→C parent gate: pending; 0 parent receipts.**
+
+### Final A→B/C parent checkpoint — both durable handoffs complete
+
+A's original ordinary Chat reported standalone `get_continuity`, `verify_continuity` and `read_continuity_events` for C, followed by exactly one CAS write. Its C receipt is `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/A/PARENT/VERIFY/C/20260924/01`, revision 4, manifest SHA `f4cc09fee58ba541a2b4743c8937f044bb54919d16c651701e108cea69094043`, event-head SHA `7fb38b3c296b090bd687dafbc291f00f730c85c9bb9bcefa611a4e534a7862e5`, `idempotent_recovered=false`. The event accepts C's DONE report by referencing `EV-00000002` and `EV-00000003` with `authenticated_chatgpt_identity=false`.
+
+The coordinator independently reread each project's manifest, verified its chains and read all four events after the C receipt:
+
+| Route | Final manifest revision / SHA | Event-head SHA | Delegations |
+| --- | --- | --- | --- |
+| A→B | `4` / `c004751be5b389aee4c8ea3ed8fda88edb80017146c46a8858353dc5dce146b8` | `14ea9dcc2c583d76a6a1edce2ab685891b4a5c148d82d93dc289838602579b27` | `active=[]`, `awaiting_parent_verification=[]` |
+| A→C | `4` / `f4cc09fee58ba541a2b4743c8937f044bb54919d16c651701e108cea69094043` | `7fb38b3c296b090bd687dafbc291f00f730c85c9bb9bcefa611a4e534a7862e5` | `active=[]`, `awaiting_parent_verification=[]` |
+
+For both projects, `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, operations complete, `issues=[]` and `read_only_proof.unchanged=true`. Each chain contains exactly one ASSIGNED, STARTED, COMPLETED and PARENT_VERIFIED event with the expected fixed operation IDs, delegation ID and DONE report. **A→B and A→C manual durable handoffs: PASS** based on user-reported ordinary Chat execution and independently verified backend receipts. MCP provenance is `REQUEST_WORKSTREAM_ONLY` with `security_identity=false`; these receipts do not authenticate which ChatGPT account invoked the tools. The separate GitHub comment wakeup gate remains BLOCKED. Manual A→B/C handoffs did not wake the recipients' chats; B→A and C→A ordinary-Chat origin/receiver routes have not been tested in this checkpoint.
 
 Official references: https://developers.openai.com/plugins/build/mcp-server ; https://developers.openai.com/api/docs/guides/developer-mode ; https://developers.openai.com/plugins/deploy/troubleshooting .
 
