@@ -241,8 +241,8 @@ def test_d021r03_event_stream_and_bounded_long_poll(tmp_path):
 
 def test_tun08_tun09_schema_and_tool_catalog_single_source_of_truth():
     assert RESULT_SCHEMA_VERSION == "1.4"
-    assert MCP_TOOL_COUNT == 73 == len(MCP_TOOL_NAMES)
-    assert len(set(MCP_TOOL_NAMES)) == 73
+    assert MCP_TOOL_COUNT == 79 == len(MCP_TOOL_NAMES)
+    assert len(set(MCP_TOOL_NAMES)) == 79
     for required in (
         "read_iteration_history", "list_fault_receipts", "list_job_history",
         "export_file", "backend_run_powershell",

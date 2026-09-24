@@ -18,7 +18,7 @@ from vibemql5.core.binary_ingress import BinaryIngressManager, _validate_downloa
 from vibemql5.core.jobs import JobStore
 from vibemql5.worker import run_job
 
-EXPECTED_CATALOG = "633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5"
+EXPECTED_CATALOG = "a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106"
 
 
 def _root(tmp_path: Path) -> Path:
@@ -71,13 +71,14 @@ def _fake_download(manager: BinaryIngressManager, payload: bytes, file_name: str
 
 
 def test_tip026r1_identity_and_ordered_catalog():
-    assert __version__ == "0.2.35"
-    assert MCP_TOOL_COUNT == 73
+    assert __version__ == "0.2.36"
+    assert MCP_TOOL_COUNT == 79
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
-    assert MCP_TOOL_NAMES[40:45] == (
+    start = MCP_TOOL_NAMES.index("import_ex5")
+    assert MCP_TOOL_NAMES[start:start + 5] == (
         "import_ex5", "open_ex5_ingress", "import_ex5_authorized_file", "get_ex5_import_receipt", "launch_test"
     )
-    assert len(set(MCP_TOOL_NAMES)) == 73
+    assert len(set(MCP_TOOL_NAMES)) == 79
 
 
 def test_tip026r1_widget_authorized_import_reuses_same_immutable_ref_and_records_truthful_source(tmp_path: Path, monkeypatch):
@@ -210,7 +211,7 @@ def test_tip026r1_mcp_surface_widget_resource_visibility_and_direct_fileparam_ba
     root = _root(tmp_path)
     server = adapter.create_server(root, transport="stdio")
 
-    assert len(server.tools) == 73
+    assert len(server.tools) == 79
     assert set(server.tools) == set(MCP_TOOL_NAMES)
     assert server.tool_meta["import_ex5"]["meta"] == {"openai/fileParams": ["file"]}
 
@@ -238,10 +239,10 @@ def test_tip026r1_mcp_surface_widget_resource_visibility_and_direct_fileparam_ba
     assert 'host.callTool("import_ex5_authorized_file"' in html
 
     info = server.tools["server_info"]()
-    assert info["tool_count"] == 73
+    assert info["tool_count"] == 79
     assert info["tool_visibility"] == {
-        "server_catalog_count": 73,
-        "model_visible_expected_count": 72,
+        "server_catalog_count": 79,
+        "model_visible_expected_count": 78,
         "app_only_tools": ["import_ex5_authorized_file"],
     }
     assert info["generic_shell_exposed"] is True

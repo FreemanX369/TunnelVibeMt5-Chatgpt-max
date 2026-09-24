@@ -21,7 +21,7 @@ jobs:
       - name: Fresh import
         run: python -c "import vibemql5.adapters.mcp; print('IMPORT_PASS')"
       - name: Verify tool catalog authority
-        run: python -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==73; assert len(MCP_TOOL_NAMES)==73; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==72; assert MCP_TOOL_CATALOG_SHA256=='633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5'; print('CATALOG_PASS')"
+        run: python -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==79; assert len(MCP_TOOL_NAMES)==79; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==78; assert MCP_TOOL_CATALOG_SHA256=='a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106'; print('CATALOG_PASS')"
       - name: Compile Python tree
         run: python -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"
       - name: Full unit suite

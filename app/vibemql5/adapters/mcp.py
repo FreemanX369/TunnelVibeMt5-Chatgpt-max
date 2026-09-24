@@ -9,6 +9,7 @@ from __future__ import annotations
 from vibemql5.backend_admin import register_backend_admin_tools
 
 import argparse
+import base64
 import json
 import os
 from pathlib import Path
@@ -98,6 +99,12 @@ def create_server(root: Path, transport: str = "unknown"):
         idempotent_hint=True,
         open_world_hint=False,
     )
+    reversible_chart_capture = ToolAnnotations(
+        read_only_hint=False,  # A minimized MT5 chart is temporarily restored, then minimized again.
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    )
 
     @server.tool(annotations=read_only_local)
     def server_info() -> dict[str, Any]:
@@ -155,6 +162,42 @@ def create_server(root: Path, transport: str = "unknown"):
     def health() -> dict[str, Any]:
         """Fast operational health check: resources, queue and MT5 inventory count."""
         return facade.health()
+
+    @server.tool(annotations=read_only_local)
+    def get_terminal_live_state(ctx: Context) -> dict[str, Any]:
+        """Read account, connection and ping from the running fixed MT5-2 terminal on request."""
+        return _invoke(ctx, "get_terminal_live_state", facade.get_terminal_live_state)
+
+    @server.tool(annotations=read_only_local)
+    def get_account_snapshot(ctx: Context) -> dict[str, Any]:
+        """Read live Balance/Equity/Free Margin/Leverage and trade state; no trading calls."""
+        return _invoke(ctx, "get_account_snapshot", facade.get_account_snapshot)
+
+    @server.tool(annotations=read_only_local)
+    def list_live_charts(ctx: Context) -> dict[str, Any]:
+        """Enumerate chart windows owned by the exact fixed MT5-2 process; EA/indicator UNKNOWN."""
+        return _invoke(ctx, "list_live_charts", facade.list_live_charts)
+
+    @server.tool(annotations=reversible_chart_capture)
+    def capture_live_chart(ctx: Context, chart_id: int) -> CallToolResult:
+        """Capture one MT5-2 chart PNG; a minimized chart is briefly restored and re-minimized."""
+        from mcp.types import ImageContent
+        meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id))
+        return CallToolResult(
+            content=[TextContent(type="text", text=json.dumps(meta, sort_keys=True, separators=(",", ":"))),
+                     ImageContent(type="image", data=base64.b64encode(png).decode("ascii"), mime_type="image/png")],
+            structured_content=meta,
+        )
+
+    @server.tool(annotations=read_only_local)
+    def read_terminal_journal(ctx: Context, source: str = "journal", limit: int = 100) -> dict[str, Any]:
+        """Read bounded sanitized tail of MT5 Journal or Experts log; source=journal|experts."""
+        return _invoke(ctx, "read_terminal_journal", lambda: facade.read_terminal_journal(source, limit))
+
+    @server.tool(annotations=read_only_local)
+    def inspect_terminal(ctx: Context, include_logs: bool = False) -> dict[str, Any]:
+        """One on-demand account/network/chart observation; optionally include bounded logs."""
+        return _invoke(ctx, "inspect_terminal", lambda: facade.inspect_terminal(include_logs))
 
     @server.tool()
     def diagnose() -> dict[str, Any]:

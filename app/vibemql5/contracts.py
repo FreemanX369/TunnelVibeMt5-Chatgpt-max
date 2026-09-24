@@ -9,6 +9,12 @@ TUNNEL_ADMIN_SCHEMA_VERSION = "1.0"
 MCP_TOOL_NAMES = (
     "server_info",
     "health",
+    "get_terminal_live_state",
+    "get_account_snapshot",
+    "list_live_charts",
+    "capture_live_chart",
+    "read_terminal_journal",
+    "inspect_terminal",
     "diagnose",
     "runtime_status",
     "get_continuity",
@@ -81,8 +87,8 @@ MCP_TOOL_NAMES = (
     "tunnel_admin_restart",
     "backend_run_powershell",
 )
-MCP_TOOL_COUNT = 73
-MCP_TOOL_CATALOG_SHA256 = '633fe7a4a98591d45c0891dc2bb7f3eb9f168311437a349611eebc221ac0fac5'
+MCP_TOOL_COUNT = 79
+MCP_TOOL_CATALOG_SHA256 = 'a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106'
 
 # MetaTrader 5 [Tester] ExecutionMode native bounds.
 EXECUTION_MODE_RANDOM = -1
