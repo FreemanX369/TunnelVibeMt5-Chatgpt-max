@@ -2,7 +2,7 @@
 
 Status: historical PoC runbook, merged into `main` on 2026-09-23. GitHub event wakeup remains BLOCKED; the merge is not a cross-account acceptance.
 
-Latest manual handoff checkpoint (2026-09-24): A's ordinary Chat reports completing A→B and A→C parent verification. Independent backend reads verify both four-event chains and empty active/awaiting lists; see the final checkpoint below. Automatic peer wakeup and authenticated ChatGPT account identity remain unproven.
+Latest manual handoff checkpoint (2026-09-24): all six directed A/B/C read-only handoffs have four-event chains and empty active/awaiting lists in the shared backend; see the six-route checkpoint below. Execution in the original ordinary Chats is user-reported. Automatic peer wakeup and authenticated ChatGPT account identity remain unproven.
 
 ## Goal
 
@@ -256,6 +256,23 @@ The coordinator independently reread each project's manifest, verified its chain
 | A→C | `4` / `f4cc09fee58ba541a2b4743c8937f044bb54919d16c651701e108cea69094043` | `7fb38b3c296b090bd687dafbc291f00f730c85c9bb9bcefa611a4e534a7862e5` | `active=[]`, `awaiting_parent_verification=[]` |
 
 For both projects, `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, operations complete, `issues=[]` and `read_only_proof.unchanged=true`. Each chain contains exactly one ASSIGNED, STARTED, COMPLETED and PARENT_VERIFIED event with the expected fixed operation IDs, delegation ID and DONE report. **A→B and A→C manual durable handoffs: PASS** based on user-reported ordinary Chat execution and independently verified backend receipts. MCP provenance is `REQUEST_WORKSTREAM_ONLY` with `security_identity=false`; these receipts do not authenticate which ChatGPT account invoked the tools. The separate GitHub comment wakeup gate remains BLOCKED. Manual A→B/C handoffs did not wake the recipients' chats; B→A and C→A ordinary-Chat origin/receiver routes have not been tested in this checkpoint.
+
+### Six-route manual handoff checkpoint — 2026-09-24
+
+Subsequently, B and C each reported assigning a read-only probe to A from their original ordinary Chats. A reported independently reading and verifying each assignment, writing STARTED with CAS, calling only `server_info` and `health`, and writing COMPLETED with CAS. B and C each reported reading and verifying the respective DONE receipt in their own original ordinary Chat before writing one PARENT_VERIFIED event with CAS. The coordinator independently read the manifests, verification results and event chains for B→A and C→A; the backend proves the recorded events and reports, not the account identity or the actual execution of the reported health checks.
+
+| Route | Project | Final revision / manifest SHA-256 | Final delegation lists |
+| --- | --- | --- | --- |
+| A→B | `TIP037-PEER-A-TO-B-20260924` | `4` / `c004751be5b389aee4c8ea3ed8fda88edb80017146c46a8858353dc5dce146b8` | empty / empty |
+| A→C | `TIP037-PEER-A-TO-C-20260924` | `4` / `f4cc09fee58ba541a2b4743c8937f044bb54919d16c651701e108cea69094043` | empty / empty |
+| B→A | `TIP037-PEER-B-TO-A-20260924` | `4` / `fffaec92160b2ba58ec78db9fe8239f660a3a2e2523ad0d7f287ac0d5543e3ef` | empty / empty |
+| B→C | `TIP037-PEER-B-TO-C-20260923` | `4` / `d7cbfbaa35eebf2e9b84b121c7b420538224deb7c215fdd9231469480cc88b9b` | empty / empty |
+| C→A | `TIP037-PEER-C-TO-A-20260924` | `4` / `2cb312b3b3db657a641a7939918707d4fb2926fe5abed5863ed745e2427ab398` | empty / empty |
+| C→B | `TIP037-PEER-C-TO-B-20260923` | `4` / `44cea7700520463161667ce92777b565f9937a948c01c0c8cae923464b9d0ac3` | empty / empty |
+
+B→A parent receipt: `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/B/PARENT/VERIFY/A/20260924/01`, event-head SHA `a08a20ccaef34c3c7c884874febc6d2c4b024dcc426a20f75272f58e2dd71a6f`. C→A parent receipt: `EV-00000004=DELEGATION_PARENT_VERIFIED`, operation `TIP037/PEER/C/PARENT/VERIFY/A/20260924/01`, event-head SHA `8d55054af0244da2c9cc27e8a184bcf5d1bee87257b4d806ea09cb00e21fab6a`. Each parent event accepts DONE and references `EV-00000002=DELEGATION_STARTED` and `EV-00000003=DELEGATION_COMPLETED` for the exact delegation, with `authenticated_chatgpt_identity=false`.
+
+For all six projects the final backend read returned `integrity=VERIFIED`, `semantic_integrity=VERIFIED`, `resume_safe=true`, four events, operations complete, `issues=[]`, `read_only_proof.unchanged=true` and no active or awaiting delegation. **Six manually mediated durable read-only routes: PASS** on user-reported ordinary Chat execution and independently verified continuity receipts. This does not demonstrate an automatic ping to either other Chat, a request to both recipients at once, a GitHub comment-triggered run, or security-grade A/B/C login attribution. The GitHub event wakeup gate remains BLOCKED. Preserve the observed tool-safety rejections; isolated one-tool calls worked in these runs, but their success does not establish why earlier calls were blocked.
 
 Official references: https://developers.openai.com/plugins/build/mcp-server ; https://developers.openai.com/api/docs/guides/developer-mode ; https://developers.openai.com/plugins/deploy/troubleshooting .
 
