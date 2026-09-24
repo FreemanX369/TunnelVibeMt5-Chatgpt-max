@@ -189,6 +189,17 @@ Next test whether A can **originate** two separate read-only handoffs from its *
 
 Each assignment should allow only continuity read/verify/append plus `server_info` and `health`, prohibit source, native test and tunnel changes, and carry a user-reported origin label `A_CHAT_USER_REPORTED` (not authenticated identity). Independently verify both assignments before asking B and C to perform their own guarded read-only STARTED/COMPLETED CAS receipts in their **respective original ordinary Chats**. A then reads/verifies each completed report and writes one parent verification per project. This tests a manual one-to-two fan-out. It does not wake B/C chats automatically; scheduling or events would need a separately enabled receiver mechanism in each chat. B→A and C→A remain pending.
 
+### A to B/C manual fan-out — assignments independently verified
+
+A reports writing exactly two assignments in its original ordinary Chat, one per project. Independent coordinator `get_continuity`, `verify_continuity` and event reads confirm both projects have exactly one `DELEGATION_ASSIGNED`, the expected operation and recipient, integrity and semantic integrity VERIFIED, `resume_safe=true`, complete operation indexes, no issues and unchanged read-only proof:
+
+| Route | Project | Delegation state | Revision 1 manifest SHA | Event-head SHA |
+| --- | --- | --- | --- | --- |
+| A→B | `TIP037-PEER-A-TO-B-20260924` | `TIP037-A-TO-B-20260924-01`: `ASSIGNED`, recipient B | `c768be8d58bbc1852340955dc36ed57441a9d3833305ec6bf60020250d4c6dff` | `6859d0df59b127d91f8bf0634277b352a79421a02c7277cc0a1d2ba9b6ad7a26` |
+| A→C | `TIP037-PEER-A-TO-C-20260924` | `TIP037-A-TO-C-20260924-01`: `ASSIGNED`, recipient C | `c47e93e60db5df3c9ebf44e515e03858d61cf3a4c19eaecc7cb728c63fde43b1` | `79b8878d628625567eb2ed74500c7a9af8f64b58ac7983d04c4947999153a82e` |
+
+**Receiver gate:** B and C must each work in their *own original ordinary Chat*, reread and verify only the project addressed to them, require their delegation in `ASSIGNED`, append `DELEGATION_STARTED` with fresh CAS, call only `server_info` and `health`, and append `DELEGATION_COMPLETED` with fresh CAS and report `{"status":"DONE","checks":["server_info","health"]}`. Stable receiver operation IDs: B `TIP037/PEER/A-TO-B/B/START/20260924/01` and `TIP037/PEER/A-TO-B/B/COMPLETE/20260924/01`; C `TIP037/PEER/A-TO-C/C/START/20260924/01` and `TIP037/PEER/A-TO-C/C/COMPLETE/20260924/01`. No receiver event has been observed yet. If any guard, tool or CAS fails, stop without a replacement write. The coordinator independently verifies receipts but does not accept them for A; A's original Chat must parent-verify the B and C reports in their respective projects with live CAS after both receiver gates succeed. Actor provenance has `security_identity=false`, so account attribution comes from user-reported chats, not from authenticated backend identity.
+
 ## References
 
 - https://learn.chatgpt.com/docs/automations
