@@ -26,6 +26,12 @@ In B's original ordinary Chat, confirm read-only GitHub PR access and `TunnelVib
 
 The coordinator posts exactly one marker comment **after** B's task is enabled and its destination has been checked. PASS requires a GitHub event run using B's connected Tunnel tool and a result returned in B's **same ordinary Chat**; a task in the coordinator's Work chat is insufficient. If GitHub event creation is unavailable in B, record BLOCKED with the actual UI/tool error and retain the PR without posting a comment. After B passes, prepare distinct recipient PRs for A and C and verify independent wakeups; only then attach durable continuity assignments, CAS, duplicate handling and all six directed routes. This gate does not authenticate the user's ChatGPT login.
 
+## Gate 1 restart outcome — B ordinary Chat BLOCKED (2026-09-24)
+
+B reported successful read-only GitHub access to open draft PR #42 and a successful `TunnelVibemq5.server_info` response (Bridge 0.2.34 / TIP-033, MT5-2). B's ordinary Chat runtime did **not** expose `discover_webhook_schema`, and its available automation-creation API had no `triggers` field. It therefore could not register a GitHub PR-comment event task in that chat. This is a receiving-chat capability gate, not a GitHub repository permission or VPS tunnel failure. These observations come from B's report; the coordinator cannot inspect B's tool registry or authenticate the reporting ChatGPT account through MCP.
+
+No B event task or task ID exists for this attempt. The coordinator independently inspected PR #42: it remains open/draft with zero comments. No wake marker was posted, and no VPS/tunnel/MT5 or continuity mutation is claimed. The event wake gate remains **BLOCKED**; the successful one-shot time task and manual continuity handoffs are separate evidence and cannot substitute for an on-demand GitHub event. Retain PR #42 as a draft diagnostic channel. The next gate is actual event-trigger availability in B's original chat, as documented for eligible plans and workspace settings at https://learn.chatgpt.com/docs/automations; only if B can create an event task there should a marker be posted. Do not infer from the coordinator's Work-mode schema that B has this capability.
+
 ## Gate 1: B chat wakeup
 
 1. Create this draft PR and record its repository, number, and URL.
