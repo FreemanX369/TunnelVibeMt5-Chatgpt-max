@@ -10,8 +10,8 @@ OPS=ROOT/'ops'/'windows'
 
 def test_canonical_bridge_provenance_is_single_source():
     p=load_bridge_provenance(ROOT)
-    assert p['bridge_version'] == '0.2.38'
-    assert p['bridge_build'] == 'TIP-042'
+    assert p['bridge_version'] == '0.2.39'
+    assert p['bridge_build'] == 'TIP-043'
     assert p['mcp_tool_count'] == MCP_TOOL_COUNT == 79
     assert p['mcp_tool_catalog_sha256'] == MCP_TOOL_CATALOG_SHA256
     assert p['mcp_tool_catalog_source'] == 'contracts.py'

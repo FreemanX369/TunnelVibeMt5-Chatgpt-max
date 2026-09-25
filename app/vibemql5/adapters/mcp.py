@@ -23,6 +23,7 @@ from ..core.concurrency import actor_from_mcp_context, actor_scope
 from ..core import workspace as workspace_module
 from ..core.provenance import load_bridge_provenance, sha256_file
 from .ex5_widget import EX5_INGRESS_WIDGET_HTML, EX5_INGRESS_WIDGET_SCHEMA_VERSION, EX5_INGRESS_WIDGET_URI
+from .live_chart_widget import LIVE_CHART_WIDGET_HTML, LIVE_CHART_WIDGET_SCHEMA_VERSION, LIVE_CHART_WIDGET_URI
 
 
 def _runtime_provenance(root: Path | None = None) -> dict[str, Any]:
@@ -90,6 +91,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "All direct native compiles and Strategy Tester jobs share one FIFO MT5 execution lease. Compile source-driven EAs before launching tests. For a user-supplied compiled EX5, prefer import_ex5 when ChatGPT fileParams binding works. If host attachment binding is unavailable, call open_ex5_ingress so the user can upload/select the EX5 in the ChatGPT widget; the widget calls app-only import_ex5_authorized_file and returns the same immutable ea_binary_ref. Pass that ref to launch_test; imported binaries must not be recompiled. Tests are asynchronous: launch_test returns a job_id; "
             "use bounded get_job long-polling and then read_result. Restore the checkpoint when acceptance fails. "
             "backend_run_powershell executes caller-supplied PowerShell as the Bridge Windows identity, requires confirm=true, and shares the same serialized mutation/native locks. It is not sandboxed, cannot identify the ChatGPT account, and must not be used to print secrets or credentials. "
+            "capture_live_chart returns image/png and an inline viewer. When the user wants a native downloadable chat file and the host supports local artifacts, save the exact returned ImageContent bytes as a PNG and embed/link that artifact in the final answer; the MCP image block alone does not prove final chat visibility. "
             "For user-requested downloads, call export_file only on scoped VibeMQL5 artifacts; never request arbitrary filesystem paths."
         ),
     )
@@ -145,6 +147,9 @@ def create_server(root: Path, transport: str = "unknown"):
             "binary_ingress_widget_source": "CHATGPT_WIDGET_FILE_IMPORT",
             "binary_ingress_receipt_schema": "1.0",
             "binary_ingress_receipt_resolver": "get_ex5_import_receipt",
+            "live_chart_widget_schema": LIVE_CHART_WIDGET_SCHEMA_VERSION,
+            "live_chart_widget_uri": LIVE_CHART_WIDGET_URI,
+            "live_chart_widget_render_tool": "capture_live_chart",
             "runtime_capture_schema": "1.0",
             "runtime_capture_transport": "job-bound/pss-proof+bounded-live-stream",
             "runtime_capture_profiles": ["private"],
@@ -178,9 +183,22 @@ def create_server(root: Path, transport: str = "unknown"):
         """Enumerate chart windows owned by the exact fixed MT5-2 process; EA/indicator UNKNOWN."""
         return _invoke(ctx, "list_live_charts", facade.list_live_charts)
 
-    @server.tool(annotations=reversible_chart_capture)
+    @server.resource(LIVE_CHART_WIDGET_URI, mime_type="text/html;profile=mcp-app")
+    def live_chart_widget_resource() -> str:
+        """Render the captured PNG inside the chat with a direct PNG download link."""
+        return LIVE_CHART_WIDGET_HTML
+
+    @server.tool(
+        meta={
+            "ui": {"resourceUri": LIVE_CHART_WIDGET_URI, "visibility": ["model", "app"]},
+            "openai/outputTemplate": LIVE_CHART_WIDGET_URI,
+            "openai/toolInvocation/invoking": "Capturing MT5-2 chart",
+            "openai/toolInvocation/invoked": "Chart captured",
+        },
+        annotations=reversible_chart_capture,
+    )
     def capture_live_chart(ctx: Context, chart_id: int, aspect_ratio: str = "16:9") -> CallToolResult:
-        """Capture one MT5-2 chart as 960x540 PNG by default; native keeps original size."""
+        """Capture one MT5-2 chart as 960x540 PNG by default; show it in chat with a PNG download."""
         from mcp.types import ImageContent
         meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id, aspect_ratio))
         return CallToolResult(
