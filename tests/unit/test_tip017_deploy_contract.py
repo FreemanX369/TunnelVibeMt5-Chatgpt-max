@@ -11,8 +11,8 @@ PROV = (ROOT / "config" / "build-provenance.json").read_text(encoding="utf-8")
 
 
 def test_tip017_version_build_tool_count_and_commands():
-    assert '"bridge_version": "0.2.37"' in PROV
-    assert '"bridge_build": "TIP-041"' in PROV
+    assert '"bridge_version": "0.2.38"' in PROV
+    assert '"bridge_build": "TIP-042"' in PROV
     assert '"mcp_tool_count": 79' in PROV
     for command in ("check-all", "attest", "ship"):
         assert f's.add_parser("{command}")' in CLI

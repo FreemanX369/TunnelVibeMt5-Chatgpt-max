@@ -46,7 +46,7 @@ def _make_passed_job(root: Path, job_id: str, workspace: str = "BD", ea: str = "
 
 
 def test_tip025_identity_keeps_42_tool_catalog_and_schema():
-    assert vibemql5.__version__ == "0.2.37"
+    assert vibemql5.__version__ == "0.2.38"
     assert MCP_TOOL_COUNT == 79
     assert MCP_TOOL_NAMES.count("export_file") == 1
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG

@@ -187,7 +187,7 @@ class WindowsCharts:
         return sorted(charts, key=lambda item: item["chart_id"])
 
     def capture_chart(self, terminal_exe: str, chart_id: int, aspect_ratio: str = "16:9") -> bytes:
-        """Run PrintWindow in a disposable process; terminate it after five seconds."""
+        """Run PrintWindow in a disposable process with a bounded render timeout."""
         if aspect_ratio not in {"16:9", "native"}:
             raise ValueError("LIVE_CHART_ASPECT_RATIO_INVALID")
         charts = self.list_charts(terminal_exe)
@@ -210,7 +210,7 @@ class WindowsCharts:
         try:
             done = subprocess.run(
                 [sys.executable, "-m", "vibemql5.core.live_terminal_windows", terminal_exe, str(chart_id)],
-                capture_output=True, check=False, timeout=5,
+                capture_output=True, check=False, timeout=8,
             )
         except subprocess.TimeoutExpired as exc:
             raise RuntimeError("LIVE_CHART_CAPTURE_TIMEOUT") from exc

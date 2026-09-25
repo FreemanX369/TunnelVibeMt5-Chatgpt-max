@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import ctypes
 import struct
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -228,6 +229,28 @@ def test_chart_capture_uses_unique_hwnd_and_does_not_infer_ea(tmp_path):
     with pytest.raises(ValueError, match="LIVE_CHART_ASPECT_RATIO_INVALID"):
         live.capture(27, "4:3")
     assert gui.captures == [(27, "16:9"), (27, "native")]
+
+
+def test_capture_process_allows_slow_render_but_still_times_out(monkeypatch):
+    gui = WindowsCharts.__new__(WindowsCharts)
+    png = _png_rgb(32, 32, bytes([0, 1, 2, 0]) * 1024)
+
+    def slow_render(command, *, capture_output, check, timeout):
+        assert command[-1] == "67328" and capture_output and not check
+        if timeout < 6:
+            raise subprocess.TimeoutExpired(command, timeout)
+        assert timeout <= 10
+        return SimpleNamespace(returncode=0, stdout=png)
+
+    monkeypatch.setattr("vibemql5.core.live_terminal_windows.subprocess.run", slow_render)
+    assert gui._capture_process("C:\\MT5-2\\terminal64.exe", 67328) == png
+
+    def hung_render(command, *, capture_output, check, timeout):
+        raise subprocess.TimeoutExpired(command, timeout)
+
+    monkeypatch.setattr("vibemql5.core.live_terminal_windows.subprocess.run", hung_render)
+    with pytest.raises(RuntimeError, match="LIVE_CHART_CAPTURE_TIMEOUT"):
+        gui._capture_process("C:\\MT5-2\\terminal64.exe", 67328)
 
 
 def test_log_tail_is_bounded_and_redacted(tmp_path):
