@@ -4,6 +4,7 @@ from __future__ import annotations
 import ctypes
 import os
 import struct
+from ctypes import wintypes
 from types import SimpleNamespace
 
 import pytest
@@ -12,7 +13,7 @@ from vibemql5.config import default_root
 from vibemql5.core.concurrency import ConcurrencyManager
 from vibemql5.core.inventory import TerminalInventory
 from vibemql5.core.live_terminal import LiveTerminal
-from vibemql5.core.live_terminal_windows import WindowsCharts, _WindowPlacement, _png_rgb
+from vibemql5.core.live_terminal_windows import WindowsCharts, _GuiThreadInfo, _WindowPlacement, _png_rgb
 
 
 def test_bounded_mdi_message_checks_call_success():
@@ -117,6 +118,7 @@ def _fake_minimized_gui(monkeypatch, *, capture_fails=False, rollback_fails=Fals
         ShowWindowAsync=minimize,
     )
     gui._path_for_hwnd = lambda _hwnd: "C:\\MT5-2\\terminal64.exe"
+    gui._focused_chart_view = lambda _path, hwnd: hwnd
     gui._class = lambda hwnd: "MetaQuotes::MetaTrader::5.00" if hwnd == 100 else "MDIClient" if hwnd == 200 else "AfxChart"
     gui._size = lambda hwnd: (1075, 2320) if hwnd in (100, 200) else (
         (0, 0) if iconic[hwnd] else (normal[hwnd][2] - normal[hwnd][0] - 12,
@@ -136,6 +138,58 @@ def _fake_minimized_gui(monkeypatch, *, capture_fails=False, rollback_fails=Fals
 
     gui._capture_process = capture
     return gui, iconic, active, calls
+
+
+def test_focused_chart_view_binds_the_mt5_child_window():
+    gui = WindowsCharts.__new__(WindowsCharts)
+
+    def thread_id(_hwnd, pointer):
+        ctypes.cast(pointer, ctypes.POINTER(wintypes.DWORD)).contents.value = 42
+        return 17
+
+    def gui_info(thread, pointer):
+        assert thread == 17
+        info = ctypes.cast(pointer, ctypes.POINTER(_GuiThreadInfo)).contents
+        assert info.cbSize == ctypes.sizeof(_GuiThreadInfo)
+        info.hwndFocus = 203
+        return 1
+
+    gui.user = SimpleNamespace(GetWindowThreadProcessId=thread_id, GetGUIThreadInfo=gui_info,
+                               GetParent=lambda hwnd: 201 if hwnd == 203 else 200)
+    gui._path_for_hwnd = lambda _hwnd: "C:\\MT5-2\\terminal64.exe"
+    assert gui._focused_chart_view("C:\\MT5-2\\terminal64.exe", 201) == 203
+    gui.user.GetParent = lambda _hwnd: 202
+    assert gui._focused_chart_view("C:\\MT5-2\\terminal64.exe", 201) is None
+    gui.user.GetParent = lambda _hwnd: 201
+    gui._path_for_hwnd = lambda _hwnd: "C:\\OTHER\\terminal64.exe"
+    with pytest.raises(RuntimeError, match="LIVE_CHART_FOCUS_UNVERIFIED"):
+        gui._focused_chart_view("C:\\MT5-2\\terminal64.exe", 201)
+
+
+def test_capture_sends_end_to_focused_view_and_restores_selection(monkeypatch):
+    gui = WindowsCharts.__new__(WindowsCharts)
+    active = [202]
+    calls = []
+    gui.user = SimpleNamespace(IsIconic=lambda _hwnd: False)
+    gui._focused_chart_view = lambda _path, _chart: 203 if active[0] == 201 else None
+    gui.list_charts = lambda _path: [{"chart_id": 201}, {"chart_id": 202}]
+    gui._bound_mdi = lambda _path, _ids: 200
+
+    def send(hwnd, message, wparam=0, lparam=0):
+        if message == 0x0229:
+            return active[0]
+        calls.append((hwnd, message, wparam))
+        if message == 0x0222:
+            active[0] = wparam
+        return 0
+
+    gui._send_bounded = send
+    gui._capture_process = lambda _path, hwnd: calls.append(("capture", hwnd)) or b"PNG"
+    monkeypatch.setattr("vibemql5.core.live_terminal_windows.time.sleep", lambda _seconds: None)
+    assert gui._capture_at_latest("C:\\MT5-2\\terminal64.exe", 201) == b"PNG"
+    assert calls == [(200, 0x0222, 201), (203, 0x0100, 0x23), (203, 0x0101, 0x23),
+                     ("capture", 201), (200, 0x0222, 202)]
+    assert active == [202]
 
 
 @pytest.mark.parametrize("capture_fails", [False, True])

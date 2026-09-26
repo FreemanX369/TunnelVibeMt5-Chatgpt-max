@@ -56,6 +56,14 @@ class _WindowPlacement(ctypes.Structure):
                 ("rcNormalPosition", wintypes.RECT), ("rcDevice", wintypes.RECT)]
 
 
+class _GuiThreadInfo(ctypes.Structure):
+    _fields_ = [("cbSize", wintypes.DWORD), ("flags", wintypes.DWORD),
+                ("hwndActive", wintypes.HWND), ("hwndFocus", wintypes.HWND),
+                ("hwndCapture", wintypes.HWND), ("hwndMenuOwner", wintypes.HWND),
+                ("hwndMoveSize", wintypes.HWND), ("hwndCaret", wintypes.HWND),
+                ("rcCaret", wintypes.RECT)]
+
+
 class WindowsCharts:
     def __init__(self) -> None:
         if os.name != "nt":
@@ -66,6 +74,9 @@ class WindowsCharts:
         self.user.EnumWindows.argtypes = [ctypes.c_void_p, wintypes.LPARAM]
         self.user.EnumChildWindows.argtypes = [wintypes.HWND, ctypes.c_void_p, wintypes.LPARAM]
         self.user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+        self.user.GetWindowThreadProcessId.restype = wintypes.DWORD
+        self.user.GetGUIThreadInfo.argtypes = [wintypes.DWORD, ctypes.POINTER(_GuiThreadInfo)]
+        self.user.GetGUIThreadInfo.restype = wintypes.BOOL
         self.user.GetWindowTextLengthW.argtypes = [wintypes.HWND]
         self.user.GetWindowTextW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
         self.user.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
@@ -206,14 +217,58 @@ class WindowsCharts:
             raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
         return self._temporarily_restore_capture(terminal_exe, chart_id, charts)
 
+    def _focused_chart_view(self, terminal_exe: str, chart_id: int) -> int | None:
+        """Find the child view that receives keys for this exact MT5 chart."""
+        pid = wintypes.DWORD()
+        thread_id = self.user.GetWindowThreadProcessId(chart_id, ctypes.byref(pid))
+        if not thread_id or not pid.value:
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        info = _GuiThreadInfo()
+        info.cbSize = ctypes.sizeof(info)
+        if not self.user.GetGUIThreadInfo(thread_id, ctypes.byref(info)):
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        focus = info.hwndFocus
+        if not focus or self.user.GetParent(focus) != chart_id:
+            return None
+        target = str(Path(terminal_exe)).replace("/", "\\").rstrip("\\").casefold()
+        if (self._path_for_hwnd(focus) or "").replace("/", "\\").casefold() != target:
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        return focus
+
     def _capture_at_latest(self, terminal_exe: str, chart_id: int) -> bytes:
-        # End moves the selected MT5 chart to its newest bar without changing Auto Scroll.
+        # MT5's chart view, not its MDI frame, handles the End shortcut.
+        view = self._focused_chart_view(terminal_exe, chart_id)
+        mdi = original_active = None
+        if view is None:
+            charts = self.list_charts(terminal_exe)
+            ids = {chart["chart_id"] for chart in charts}
+            mdi = self._bound_mdi(terminal_exe, ids)
+            original_active = self._send_bounded(mdi, 0x0229)
+            if original_active not in ids:
+                raise RuntimeError("LIVE_CHART_ACTIVE_WINDOW_UNVERIFIED")
+            if original_active != chart_id and self.user.IsIconic(original_active):
+                raise RuntimeError("LIVE_CHART_ACTIVE_RESTORE_UNSAFE")
         try:
-            self._send_bounded(chart_id, 0x0100, 0x23, 0x014F0001)  # WM_KEYDOWN / VK_END
+            if view is None:
+                self._send_bounded(mdi, 0x0222, chart_id)  # WM_MDIACTIVATE
+                deadline = time.monotonic() + 2
+                while (view := self._focused_chart_view(terminal_exe, chart_id)) is None:
+                    if time.monotonic() >= deadline:
+                        raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+                    time.sleep(0.05)
+            # A parent chart HWND can acknowledge these messages without navigating.
+            # The focused view was verified to be a child of this exact-process chart.
+            try:
+                self._send_bounded(view, 0x0100, 0x23, 0x014F0001)  # WM_KEYDOWN / VK_END
+            finally:
+                self._send_bounded(view, 0x0101, 0x23, 0xC14F0001)  # WM_KEYUP / VK_END
+            time.sleep(0.35)  # Let MT5 paint the new viewport before PrintWindow.
+            return self._capture_process(terminal_exe, chart_id)
         finally:
-            self._send_bounded(chart_id, 0x0101, 0x23, 0xC14F0001)  # WM_KEYUP / VK_END
-        time.sleep(0.12)  # Let MT5 paint the new viewport before PrintWindow.
-        return self._capture_process(terminal_exe, chart_id)
+            if mdi is not None and original_active != chart_id and self._send_bounded(mdi, 0x0229) != original_active:
+                self._send_bounded(mdi, 0x0222, original_active)
+                if self._send_bounded(mdi, 0x0229) != original_active:
+                    raise RuntimeError("LIVE_CHART_ACTIVE_SELECTION_CHANGED")
 
     def _capture_process(self, terminal_exe: str, chart_id: int) -> bytes:
         try:
