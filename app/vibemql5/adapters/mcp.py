@@ -91,7 +91,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "All direct native compiles and Strategy Tester jobs share one FIFO MT5 execution lease. Compile source-driven EAs before launching tests. For a user-supplied compiled EX5, prefer import_ex5 when ChatGPT fileParams binding works. If host attachment binding is unavailable, call open_ex5_ingress so the user can upload/select the EX5 in the ChatGPT widget; the widget calls app-only import_ex5_authorized_file and returns the same immutable ea_binary_ref. Pass that ref to launch_test; imported binaries must not be recompiled. Tests are asynchronous: launch_test returns a job_id; "
             "use bounded get_job long-polling and then read_result. Restore the checkpoint when acceptance fails. "
             "backend_run_powershell executes caller-supplied PowerShell as the Bridge Windows identity, requires confirm=true, and shares the same serialized mutation/native locks. It is not sandboxed, cannot identify the ChatGPT account, and must not be used to print secrets or credentials. "
-            "capture_live_chart returns image/png, an inline viewer, and a hash-bound PNG ResourceLink for the same bytes. When the user wants the chart visible in the final chat and the client has a local artifact workspace, materialize the returned ImageContent PNG during the capture tool orchestration, verify its SHA-256 against file_export.sha256, and embed the local file with Markdown image syntax in the final response. Present the ResourceLink separately for downloads; export_file(scope='exports', source_id=file_export.source_id, expected_sha256=file_export.sha256) can retrieve it later without recapturing. The MCP image block or ResourceLink alone does not prove final chat visibility. "
+            "capture_live_chart moves the selected chart to its newest bar before capture, without enabling Auto Scroll. It returns image/png, an inline viewer, and a hash-bound PNG ResourceLink for the same bytes. When the user wants the chart visible in the final chat and the client has a local artifact workspace, materialize the returned ImageContent PNG during the capture tool orchestration, verify its SHA-256 against file_export.sha256, and embed the local file with Markdown image syntax in the final response. Present the ResourceLink separately for downloads; export_file(scope='exports', source_id=file_export.source_id, expected_sha256=file_export.sha256) can retrieve it later without recapturing. The MCP image block or ResourceLink alone does not prove final chat visibility. "
             "For user-requested downloads, call export_file only on scoped VibeMQL5 artifacts; never request arbitrary filesystem paths."
         ),
     )
@@ -200,7 +200,7 @@ def create_server(root: Path, transport: str = "unknown"):
         annotations=reversible_chart_capture,
     )
     def capture_live_chart(ctx: Context, chart_id: int, aspect_ratio: str = "16:9") -> CallToolResult:
-        """Capture one MT5-2 chart as 960x540 PNG; return an image, viewer and PNG file link."""
+        """Move one MT5-2 chart to its newest bar, then capture PNG (default 960x540) with file link."""
         from mcp.types import ImageContent
         meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id, aspect_ratio))
         exported = meta["file_export"]

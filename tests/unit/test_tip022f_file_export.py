@@ -132,7 +132,7 @@ def test_tip022f_size_limit_is_fail_closed_without_reading_large_file(tmp_path: 
 
 
 def test_tip022f_catalog_and_build_version():
-    assert __version__ == "0.2.40"
+    assert __version__ == "0.2.41"
     assert MCP_TOOL_COUNT == 79
     assert MCP_TOOL_NAMES.count("export_file") == 1
     assert MCP_TOOL_NAMES.count("compare_baseline") == 1

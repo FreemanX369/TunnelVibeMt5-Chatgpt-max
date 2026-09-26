@@ -196,15 +196,24 @@ class WindowsCharts:
             raise RuntimeError("LIVE_CHART_NOT_FOUND_OR_VISIBLE")
         if aspect_ratio == "16:9":
             if selected["renderable"] and (selected["width"], selected["height"]) == (960, 540):
-                return self._capture_process(terminal_exe, chart_id)
+                return self._capture_at_latest(terminal_exe, chart_id)
             if not selected["renderable"] and (selected["width"] or selected["height"]):
                 raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
             return self._temporarily_resize_capture(terminal_exe, chart_id, charts)
         if selected["renderable"]:
-            return self._capture_process(terminal_exe, chart_id)
+            return self._capture_at_latest(terminal_exe, chart_id)
         if selected["width"] or selected["height"]:
             raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
         return self._temporarily_restore_capture(terminal_exe, chart_id, charts)
+
+    def _capture_at_latest(self, terminal_exe: str, chart_id: int) -> bytes:
+        # End moves the selected MT5 chart to its newest bar without changing Auto Scroll.
+        try:
+            self._send_bounded(chart_id, 0x0100, 0x23, 0x014F0001)  # WM_KEYDOWN / VK_END
+        finally:
+            self._send_bounded(chart_id, 0x0101, 0x23, 0xC14F0001)  # WM_KEYUP / VK_END
+        time.sleep(0.12)  # Let MT5 paint the new viewport before PrintWindow.
+        return self._capture_process(terminal_exe, chart_id)
 
     def _capture_process(self, terminal_exe: str, chart_id: int) -> bytes:
         try:
@@ -240,9 +249,9 @@ class WindowsCharts:
                 state.ptMaxPosition.x, state.ptMaxPosition.y,
                 state.rcDevice.left, state.rcDevice.top, state.rcDevice.right, state.rcDevice.bottom)
 
-    def _send_bounded(self, hwnd: int, message: int, wparam: int = 0) -> int:
+    def _send_bounded(self, hwnd: int, message: int, wparam: int = 0, lparam: int = 0) -> int:
         result = ctypes.c_size_t()
-        if not self.user.SendMessageTimeoutW(hwnd, message, wparam, 0, 0x0002 | 0x0020, 2000,
+        if not self.user.SendMessageTimeoutW(hwnd, message, wparam, lparam, 0x0002 | 0x0020, 2000,
                                               ctypes.byref(result)):
             raise RuntimeError("LIVE_CHART_WINDOW_MESSAGE_TIMEOUT")
         return result.value  # WM_MDIRESTORE returns zero on success; the API BOOL is authoritative.
@@ -300,7 +309,7 @@ class WindowsCharts:
             while True:
                 current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
                 if current and current["renderable"] and not self.user.IsIconic(chart_id):
-                    return self._capture_process(terminal_exe, chart_id)
+                    return self._capture_at_latest(terminal_exe, chart_id)
                 if time.monotonic() >= deadline:
                     raise RuntimeError("LIVE_CHART_RESTORE_NOT_RENDERABLE")
                 time.sleep(0.05)
@@ -365,7 +374,7 @@ class WindowsCharts:
                 current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
                 if (current and current["renderable"] and not self.user.IsIconic(chart_id)
                         and (current["width"], current["height"]) == (960, 540)):
-                    return self._capture_process(terminal_exe, chart_id)
+                    return self._capture_at_latest(terminal_exe, chart_id)
                 if time.monotonic() >= deadline:
                     raise RuntimeError("LIVE_CHART_16_9_SIZE_UNVERIFIED")
                 time.sleep(0.05)

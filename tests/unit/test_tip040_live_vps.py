@@ -33,7 +33,7 @@ def test_bounded_mdi_message_checks_call_success():
 def _fake_minimized_gui(monkeypatch, *, capture_fails=False, rollback_fails=False,
                         activation_fails=False, restore_times_out=False, selected=201,
                         placement_fails_after_dispatch=False, rollback_placement_fails=False,
-                        activation_restores=False):
+                        activation_restores=False, navigation_fails=False):
     monkeypatch.setattr(ctypes, "WINFUNCTYPE", ctypes.CFUNCTYPE, raising=False)
     gui = WindowsCharts.__new__(WindowsCharts)
     iconic = {201: True, 202: True}
@@ -62,7 +62,7 @@ def _fake_minimized_gui(monkeypatch, *, capture_fails=False, rollback_fails=Fals
             return 0
         return 1
 
-    def send(hwnd, message, wparam, _lparam, flags, timeout, pointer):
+    def send(hwnd, message, wparam, lparam, flags, timeout, pointer):
         assert flags == 0x22 and timeout == 2000
         if message == 0x0229:
             ctypes.cast(pointer, ctypes.POINTER(ctypes.c_size_t)).contents.value = active[0]
@@ -86,6 +86,12 @@ def _fake_minimized_gui(monkeypatch, *, capture_fails=False, rollback_fails=Fals
             if rollback_fails:
                 return 0
             iconic[hwnd] = True
+        elif message in (0x0100, 0x0101):
+            assert hwnd == selected and wparam == 0x23 and not iconic[hwnd]
+            assert lparam == (0x014F0001 if message == 0x0100 else 0xC14F0001)
+            calls.append(("end_down" if message == 0x0100 else "end_up", hwnd))
+            if navigation_fails and message == 0x0100:
+                return 0
         else:
             raise AssertionError("UNEXPECTED_WINDOW_MESSAGE")
         return 1
@@ -140,7 +146,8 @@ def test_temporary_restore_capture_always_restores_minimized_chart(monkeypatch, 
             gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201, "native")
     else:
         assert gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201, "native") == b"\x89PNG\r\n\x1a\n"
-    assert calls == [("restore", 201), ("capture", 201), ("minimize", 201), ("activate", 202)]
+    assert calls == [("restore", 201), ("end_down", 201), ("end_up", 201),
+                     ("capture", 201), ("minimize", 201), ("activate", 202)]
     assert iconic == {201: True, 202: True}
     assert active == [202]
     assert gui._placement(201) == (2, (32, 32, 427, 820))
@@ -167,7 +174,8 @@ def test_temporary_restore_reports_failed_rollback(monkeypatch):
     gui, iconic, active, calls = _fake_minimized_gui(monkeypatch, capture_fails=True, rollback_fails=True)
     with pytest.raises(RuntimeError, match="LIVE_CHART_ROLLBACK_REQUEST_FAILED"):
         gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201, "native")
-    assert calls == [("restore", 201), ("capture", 201), ("minimize", 201)]
+    assert calls == [("restore", 201), ("end_down", 201), ("end_up", 201),
+                     ("capture", 201), ("minimize", 201)]
     assert iconic[201] is False  # The failed rollback is explicit and never reported as success.
 
 
@@ -186,6 +194,28 @@ def test_restore_message_timeout_after_dispatch_still_rolls_back(monkeypatch):
         gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201, "native")
     assert calls == [("restore", 201), ("minimize", 201), ("activate", 202)]
     assert iconic == {201: True, 202: True} and active == [202]
+
+
+def test_navigation_failure_rolls_back_without_capturing(monkeypatch):
+    gui, iconic, active, calls = _fake_minimized_gui(monkeypatch, navigation_fails=True)
+    with pytest.raises(RuntimeError, match="LIVE_CHART_WINDOW_MESSAGE_TIMEOUT"):
+        gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201)
+    assert calls[:5] == [("resize", 201), ("restore", 201), ("end_down", 201),
+                         ("end_up", 201), ("reset", 201)]
+    assert ("capture", 201) not in calls and calls[-1] == ("reset", 201)
+    assert iconic == {201: True, 202: True} and active == [202]
+
+
+def test_already_16_9_chart_navigates_without_resizing(monkeypatch):
+    gui, iconic, active, calls = _fake_minimized_gui(monkeypatch)
+    iconic[201] = False
+    gui.list_charts = lambda _path: [
+        {"chart_id": 201, "visible": True, "renderable": True, "width": 960, "height": 540},
+        {"chart_id": 202, "visible": True, "renderable": False, "width": 0, "height": 0},
+    ]
+    assert gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201) == b"\x89PNG\r\n\x1a\n"
+    assert calls == [("end_down", 201), ("end_up", 201), ("capture", 201)]
+    assert active == [202]
 
 
 def test_live_capture_minimized_chart_metadata_and_png(monkeypatch, tmp_path):
@@ -213,7 +243,8 @@ def test_16_9_minimized_capture_restores_original_even_if_native_rect_exceeds_li
             gui.capture_chart("C:\\MT5-2\\terminal64.exe", 202)
     else:
         assert gui.capture_chart("C:\\MT5-2\\terminal64.exe", 202).startswith(b"\x89PNG")
-    assert calls == [("resize", 202), ("restore", 202), ("capture", 202), ("reset", 202)]
+    assert calls == [("resize", 202), ("restore", 202), ("end_down", 202),
+                     ("end_up", 202), ("capture", 202), ("reset", 202)]
     assert {hwnd: gui._placement(hwnd) for hwnd in iconic} == before
     assert iconic == {201: True, 202: True} and active == [202]
 
@@ -223,7 +254,8 @@ def test_16_9_capture_of_visible_chart_preserves_mixed_mdi_layout(monkeypatch):
     iconic[201] = False
     before = {hwnd: gui._placement(hwnd) for hwnd in iconic}
     assert gui.capture_chart("C:\\MT5-2\\terminal64.exe", 201).startswith(b"\x89PNG")
-    assert calls == [("resize", 201), ("capture", 201), ("reset", 201)]
+    assert calls == [("resize", 201), ("end_down", 201), ("end_up", 201),
+                     ("capture", 201), ("reset", 201)]
     assert {hwnd: gui._placement(hwnd) for hwnd in iconic} == before
     assert iconic == {201: False, 202: True} and active == [202]
 
