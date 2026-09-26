@@ -56,6 +56,14 @@ class _WindowPlacement(ctypes.Structure):
                 ("rcNormalPosition", wintypes.RECT), ("rcDevice", wintypes.RECT)]
 
 
+class _GuiThreadInfo(ctypes.Structure):
+    _fields_ = [("cbSize", wintypes.DWORD), ("flags", wintypes.DWORD),
+                ("hwndActive", wintypes.HWND), ("hwndFocus", wintypes.HWND),
+                ("hwndCapture", wintypes.HWND), ("hwndMenuOwner", wintypes.HWND),
+                ("hwndMoveSize", wintypes.HWND), ("hwndCaret", wintypes.HWND),
+                ("rcCaret", wintypes.RECT)]
+
+
 class WindowsCharts:
     def __init__(self) -> None:
         if os.name != "nt":
@@ -66,6 +74,9 @@ class WindowsCharts:
         self.user.EnumWindows.argtypes = [ctypes.c_void_p, wintypes.LPARAM]
         self.user.EnumChildWindows.argtypes = [wintypes.HWND, ctypes.c_void_p, wintypes.LPARAM]
         self.user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+        self.user.GetWindowThreadProcessId.restype = wintypes.DWORD
+        self.user.GetGUIThreadInfo.argtypes = [wintypes.DWORD, ctypes.POINTER(_GuiThreadInfo)]
+        self.user.GetGUIThreadInfo.restype = wintypes.BOOL
         self.user.GetWindowTextLengthW.argtypes = [wintypes.HWND]
         self.user.GetWindowTextW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
         self.user.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
@@ -187,7 +198,7 @@ class WindowsCharts:
         return sorted(charts, key=lambda item: item["chart_id"])
 
     def capture_chart(self, terminal_exe: str, chart_id: int, aspect_ratio: str = "16:9") -> bytes:
-        """Run PrintWindow in a disposable process; terminate it after five seconds."""
+        """Run PrintWindow in a disposable process with a bounded render timeout."""
         if aspect_ratio not in {"16:9", "native"}:
             raise ValueError("LIVE_CHART_ASPECT_RATIO_INVALID")
         charts = self.list_charts(terminal_exe)
@@ -196,21 +207,74 @@ class WindowsCharts:
             raise RuntimeError("LIVE_CHART_NOT_FOUND_OR_VISIBLE")
         if aspect_ratio == "16:9":
             if selected["renderable"] and (selected["width"], selected["height"]) == (960, 540):
-                return self._capture_process(terminal_exe, chart_id)
+                return self._capture_at_latest(terminal_exe, chart_id)
             if not selected["renderable"] and (selected["width"] or selected["height"]):
                 raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
             return self._temporarily_resize_capture(terminal_exe, chart_id, charts)
         if selected["renderable"]:
-            return self._capture_process(terminal_exe, chart_id)
+            return self._capture_at_latest(terminal_exe, chart_id)
         if selected["width"] or selected["height"]:
             raise RuntimeError("LIVE_CHART_NOT_RENDERABLE")
         return self._temporarily_restore_capture(terminal_exe, chart_id, charts)
+
+    def _focused_chart_view(self, terminal_exe: str, chart_id: int) -> int | None:
+        """Find the child view that receives keys for this exact MT5 chart."""
+        pid = wintypes.DWORD()
+        thread_id = self.user.GetWindowThreadProcessId(chart_id, ctypes.byref(pid))
+        if not thread_id or not pid.value:
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        info = _GuiThreadInfo()
+        info.cbSize = ctypes.sizeof(info)
+        if not self.user.GetGUIThreadInfo(thread_id, ctypes.byref(info)):
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        focus = info.hwndFocus
+        if not focus or self.user.GetParent(focus) != chart_id:
+            return None
+        target = str(Path(terminal_exe)).replace("/", "\\").rstrip("\\").casefold()
+        if (self._path_for_hwnd(focus) or "").replace("/", "\\").casefold() != target:
+            raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+        return focus
+
+    def _capture_at_latest(self, terminal_exe: str, chart_id: int) -> bytes:
+        # MT5's chart view, not its MDI frame, handles the End shortcut.
+        view = self._focused_chart_view(terminal_exe, chart_id)
+        mdi = original_active = None
+        if view is None:
+            charts = self.list_charts(terminal_exe)
+            ids = {chart["chart_id"] for chart in charts}
+            mdi = self._bound_mdi(terminal_exe, ids)
+            original_active = self._send_bounded(mdi, 0x0229)
+            if original_active not in ids:
+                raise RuntimeError("LIVE_CHART_ACTIVE_WINDOW_UNVERIFIED")
+            if original_active != chart_id and self.user.IsIconic(original_active):
+                raise RuntimeError("LIVE_CHART_ACTIVE_RESTORE_UNSAFE")
+        try:
+            if view is None:
+                self._send_bounded(mdi, 0x0222, chart_id)  # WM_MDIACTIVATE
+                deadline = time.monotonic() + 2
+                while (view := self._focused_chart_view(terminal_exe, chart_id)) is None:
+                    if time.monotonic() >= deadline:
+                        raise RuntimeError("LIVE_CHART_FOCUS_UNVERIFIED")
+                    time.sleep(0.05)
+            # A parent chart HWND can acknowledge these messages without navigating.
+            # The focused view was verified to be a child of this exact-process chart.
+            try:
+                self._send_bounded(view, 0x0100, 0x23, 0x014F0001)  # WM_KEYDOWN / VK_END
+            finally:
+                self._send_bounded(view, 0x0101, 0x23, 0xC14F0001)  # WM_KEYUP / VK_END
+            time.sleep(0.35)  # Let MT5 paint the new viewport before PrintWindow.
+            return self._capture_process(terminal_exe, chart_id)
+        finally:
+            if mdi is not None and original_active != chart_id and self._send_bounded(mdi, 0x0229) != original_active:
+                self._send_bounded(mdi, 0x0222, original_active)
+                if self._send_bounded(mdi, 0x0229) != original_active:
+                    raise RuntimeError("LIVE_CHART_ACTIVE_SELECTION_CHANGED")
 
     def _capture_process(self, terminal_exe: str, chart_id: int) -> bytes:
         try:
             done = subprocess.run(
                 [sys.executable, "-m", "vibemql5.core.live_terminal_windows", terminal_exe, str(chart_id)],
-                capture_output=True, check=False, timeout=5,
+                capture_output=True, check=False, timeout=8,
             )
         except subprocess.TimeoutExpired as exc:
             raise RuntimeError("LIVE_CHART_CAPTURE_TIMEOUT") from exc
@@ -240,9 +304,9 @@ class WindowsCharts:
                 state.ptMaxPosition.x, state.ptMaxPosition.y,
                 state.rcDevice.left, state.rcDevice.top, state.rcDevice.right, state.rcDevice.bottom)
 
-    def _send_bounded(self, hwnd: int, message: int, wparam: int = 0) -> int:
+    def _send_bounded(self, hwnd: int, message: int, wparam: int = 0, lparam: int = 0) -> int:
         result = ctypes.c_size_t()
-        if not self.user.SendMessageTimeoutW(hwnd, message, wparam, 0, 0x0002 | 0x0020, 2000,
+        if not self.user.SendMessageTimeoutW(hwnd, message, wparam, lparam, 0x0002 | 0x0020, 2000,
                                               ctypes.byref(result)):
             raise RuntimeError("LIVE_CHART_WINDOW_MESSAGE_TIMEOUT")
         return result.value  # WM_MDIRESTORE returns zero on success; the API BOOL is authoritative.
@@ -300,7 +364,7 @@ class WindowsCharts:
             while True:
                 current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
                 if current and current["renderable"] and not self.user.IsIconic(chart_id):
-                    return self._capture_process(terminal_exe, chart_id)
+                    return self._capture_at_latest(terminal_exe, chart_id)
                 if time.monotonic() >= deadline:
                     raise RuntimeError("LIVE_CHART_RESTORE_NOT_RENDERABLE")
                 time.sleep(0.05)
@@ -365,7 +429,7 @@ class WindowsCharts:
                 current = next((item for item in self.list_charts(terminal_exe) if item["chart_id"] == chart_id), None)
                 if (current and current["renderable"] and not self.user.IsIconic(chart_id)
                         and (current["width"], current["height"]) == (960, 540)):
-                    return self._capture_process(terminal_exe, chart_id)
+                    return self._capture_at_latest(terminal_exe, chart_id)
                 if time.monotonic() >= deadline:
                     raise RuntimeError("LIVE_CHART_16_9_SIZE_UNVERIFIED")
                 time.sleep(0.05)
