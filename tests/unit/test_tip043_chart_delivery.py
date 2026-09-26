@@ -19,11 +19,14 @@ def test_capture_wires_downloadable_inline_png_to_the_same_image_content(tmp_pat
     (tmp_path / "config" / "terminals.json").write_text(json.dumps({"terminals": []}), encoding="utf-8")
     png = _png_rgb(32, 32, bytes([0, 1, 2, 0]) * 1024)
     monkeypatch.setattr(ToolFacade, "reconcile_cancelled_jobs", lambda self, **_kw: {})
-    monkeypatch.setattr(ToolFacade, "capture_live_chart", lambda self, chart_id, aspect_ratio: (
-        {"alias": "MT5-2", "chart": {"chart_id": chart_id, "symbol": "XAUUSDm", "timeframe": "M1"},
-         "mime_type": "image/png", "bytes": len(png), "image_width": 32, "image_height": 32,
-         "aspect_ratio": aspect_ratio}, png,
-    ))
+    def fake_live_capture(self, operation, fn):
+        from types import SimpleNamespace
+        return fn(SimpleNamespace(capture=lambda chart_id, aspect_ratio: (
+            {"alias": "MT5-2", "chart": {"chart_id": chart_id, "symbol": "XAUUSDm", "timeframe": "M1"},
+             "mime_type": "image/png", "bytes": len(png), "image_width": 32, "image_height": 32,
+             "aspect_ratio": aspect_ratio}, png,
+        )))
+    monkeypatch.setattr(ToolFacade, "_observe_live", fake_live_capture)
     server = create_server(tmp_path, transport="stdio")
     assert len(server._tool_manager._tools) == 79
     tool = server._tool_manager._tools["capture_live_chart"]
@@ -37,10 +40,11 @@ def test_capture_wires_downloadable_inline_png_to_the_same_image_content(tmp_pat
 
     result = tool.fn(ctx=object(), chart_id=67328)
     assert result.is_error is False
-    assert [block.type for block in result.content] == ["text", "image"]
+    assert [block.type for block in result.content] == ["text", "image", "resource_link"]
     assert result.content[1].mime_type == "image/png"
     assert base64.b64decode(result.content[1].data) == png
     assert result.structured_content["aspect_ratio"] == "16:9"
+    assert result.content[2].uri == result.structured_content["file_export"]["uri"]
     assert "iVBOR" not in result.content[0].text
 
 

@@ -41,10 +41,10 @@ def _job(root: Path, state="PASSED") -> str:
 
 
 def test_tip014_version_and_runtime_provenance():
-    assert vibemql5.__version__ == "0.2.39"
+    assert vibemql5.__version__ == "0.2.40"
     p = _runtime_provenance()
-    assert p["bridge_build"] == "TIP-043"
-    assert p["bridge_version"] == "0.2.39"
+    assert p["bridge_build"] == "TIP-044"
+    assert p["bridge_version"] == "0.2.40"
 
 
 def test_create_update_persist_and_revision_chain(tmp_path: Path):
@@ -140,9 +140,9 @@ def test_mcp_exposes_tip014_session_tools(monkeypatch, tmp_path: Path):
     for name in ("list_project_sessions", "get_project_session", "create_project_session", "update_project_session", "resume_project_session"):
         assert name in server.tools
     info = server.tools["server_info"]()
-    assert info["version"] == "0.2.39"
+    assert info["version"] == "0.2.40"
     assert info["project_session_schema"] == "1.0"
-    assert info["runtime_provenance"]["bridge_build"] == "TIP-043"
+    assert info["runtime_provenance"]["bridge_build"] == "TIP-044"
 
 
 def test_current_restart_is_state_preserving_and_terminal_safe():

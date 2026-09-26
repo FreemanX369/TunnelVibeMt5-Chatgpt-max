@@ -328,10 +328,11 @@ def test_mcp_capture_returns_image_content_without_encoded_text(tmp_path, monkey
     monkeypatch.setattr(ToolFacade, "reconcile_cancelled_jobs", lambda self, **_kw: {})
     ratios = []
     def fake_capture(_self, chart_id, aspect_ratio):
+        from vibemql5.core.live_chart_archive import archive_chart_png
         ratios.append(aspect_ratio)
-        return (
-        {"alias": "MT5-2", "chart": {"chart_id": chart_id}, "mime_type": "image/png", "bytes": len(png)}, png
-        )
+        meta = {"alias": "MT5-2", "chart": {"chart_id": chart_id}, "mime_type": "image/png", "bytes": len(png)}
+        source_id = archive_chart_png(_self.root, meta, png)
+        return {**meta, "file_export": _self.file_exports.prepare("exports", source_id)}, png
     monkeypatch.setattr(ToolFacade, "capture_live_chart", fake_capture)
     server = create_server(tmp_path, transport="stdio")
     capture_tool = server._tool_manager._tools["capture_live_chart"]
@@ -343,6 +344,8 @@ def test_mcp_capture_returns_image_content_without_encoded_text(tmp_path, monkey
     response = capture_tool.fn(ctx=object(), chart_id=27)
     assert response.content[1].type == "image"
     assert response.content[1].mime_type == "image/png"
+    assert response.content[2].type == "resource_link"
+    assert response.content[2].mime_type == "image/png"
     assert response.structured_content["chart"]["chart_id"] == 27
     assert all("iVBOR" not in item.text for item in response.content if item.type == "text")
     capture_tool.fn(ctx=object(), chart_id=27, aspect_ratio="native")

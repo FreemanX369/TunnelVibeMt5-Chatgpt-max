@@ -71,7 +71,7 @@ def _fake_download(manager: BinaryIngressManager, payload: bytes, file_name: str
 
 
 def test_tip026r1_identity_and_ordered_catalog():
-    assert __version__ == "0.2.39"
+    assert __version__ == "0.2.40"
     assert MCP_TOOL_COUNT == 79
     assert MCP_TOOL_CATALOG_SHA256 == EXPECTED_CATALOG
     start = MCP_TOOL_NAMES.index("import_ex5")

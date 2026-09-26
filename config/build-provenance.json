@@ -1,9 +1,9 @@
 {
   "binary_ingress_schema": "1.0",
   "binary_ingress_widget_schema": "1.0",
-  "bridge_build": "TIP-043",
+  "bridge_build": "TIP-044",
   "bridge_name": "VibeMQL5 Bridge",
-  "bridge_version": "0.2.39",
+  "bridge_version": "0.2.40",
   "build_input_provenance_schema": "1.0",
   "iteration_schema": "1.0",
   "job_metadata_consistency_schema": "1.0",

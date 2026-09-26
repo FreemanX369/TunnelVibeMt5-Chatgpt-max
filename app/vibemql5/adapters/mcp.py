@@ -91,7 +91,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "All direct native compiles and Strategy Tester jobs share one FIFO MT5 execution lease. Compile source-driven EAs before launching tests. For a user-supplied compiled EX5, prefer import_ex5 when ChatGPT fileParams binding works. If host attachment binding is unavailable, call open_ex5_ingress so the user can upload/select the EX5 in the ChatGPT widget; the widget calls app-only import_ex5_authorized_file and returns the same immutable ea_binary_ref. Pass that ref to launch_test; imported binaries must not be recompiled. Tests are asynchronous: launch_test returns a job_id; "
             "use bounded get_job long-polling and then read_result. Restore the checkpoint when acceptance fails. "
             "backend_run_powershell executes caller-supplied PowerShell as the Bridge Windows identity, requires confirm=true, and shares the same serialized mutation/native locks. It is not sandboxed, cannot identify the ChatGPT account, and must not be used to print secrets or credentials. "
-            "capture_live_chart returns image/png and an inline viewer. When the user wants a native downloadable chat file and the host supports local artifacts, save the exact returned ImageContent bytes as a PNG and embed/link that artifact in the final answer; the MCP image block alone does not prove final chat visibility. "
+            "capture_live_chart returns image/png, an inline viewer, and a hash-bound PNG ResourceLink for the same bytes. Present the returned file link when a download is requested; export_file(scope='exports', source_id=file_export.source_id, expected_sha256=file_export.sha256) can retrieve it later without recapturing. The MCP image block alone does not prove final chat visibility. "
             "For user-requested downloads, call export_file only on scoped VibeMQL5 artifacts; never request arbitrary filesystem paths."
         ),
     )
@@ -150,6 +150,8 @@ def create_server(root: Path, transport: str = "unknown"):
             "live_chart_widget_schema": LIVE_CHART_WIDGET_SCHEMA_VERSION,
             "live_chart_widget_uri": LIVE_CHART_WIDGET_URI,
             "live_chart_widget_render_tool": "capture_live_chart",
+            "live_chart_file_delivery": "hash-bound-mcp-resource-link",
+            "live_chart_file_export_scope": "exports",
             "runtime_capture_schema": "1.0",
             "runtime_capture_transport": "job-bound/pss-proof+bounded-live-stream",
             "runtime_capture_profiles": ["private"],
@@ -198,12 +200,16 @@ def create_server(root: Path, transport: str = "unknown"):
         annotations=reversible_chart_capture,
     )
     def capture_live_chart(ctx: Context, chart_id: int, aspect_ratio: str = "16:9") -> CallToolResult:
-        """Capture one MT5-2 chart as 960x540 PNG by default; show it in chat with a PNG download."""
+        """Capture one MT5-2 chart as 960x540 PNG; return an image, viewer and PNG file link."""
         from mcp.types import ImageContent
         meta, png = _invoke(ctx, "capture_live_chart", lambda: facade.capture_live_chart(chart_id, aspect_ratio))
+        exported = meta["file_export"]
         return CallToolResult(
             content=[TextContent(type="text", text=json.dumps(meta, sort_keys=True, separators=(",", ":"))),
-                     ImageContent(type="image", data=base64.b64encode(png).decode("ascii"), mime_type="image/png")],
+                     ImageContent(type="image", data=base64.b64encode(png).decode("ascii"), mime_type="image/png"),
+                     ResourceLink(type="resource_link", uri=exported["uri"], name=exported["file_name"],
+                                  title=exported["file_name"], description=f"MT5-2 chart PNG SHA-256 {exported['sha256']}",
+                                  mime_type="image/png", size=exported["bytes"])],
             structured_content=meta,
         )
 

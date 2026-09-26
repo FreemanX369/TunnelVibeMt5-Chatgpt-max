@@ -22,6 +22,7 @@ from .tester_config import normalize_tester_request
 from .file_export import FileExportManager
 from .binary_ingress import BinaryIngressManager
 from .live_terminal import LiveTerminal
+from .live_chart_archive import archive_chart_png
 from .concurrency import ConcurrencyManager, current_actor
 from ..runtime_forensics.service import RuntimeForensicsManager
 
@@ -234,7 +235,11 @@ class ToolFacade:
         return self._observe_live("live_chart_inventory", lambda live: live.charts())
 
     def capture_live_chart(self, chart_id, aspect_ratio="16:9"):
-        return self._observe_live("live_chart_capture", lambda live: live.capture(chart_id, aspect_ratio))
+        meta, png = self._observe_live("live_chart_capture", lambda live: live.capture(chart_id, aspect_ratio))
+        with self.concurrency.mutation("live_chart_export", resource="exports/live-charts", wait_seconds=5):
+            source_id = archive_chart_png(self.root, meta, png)
+            exported = self.file_exports.prepare("exports", source_id)
+        return {**meta, "file_export": exported}, png
 
     def read_terminal_journal(self, source="journal", limit=100):
         return self._observe_live("live_terminal_logs", lambda live: live.logs(source, limit))

@@ -42,3 +42,4 @@ See [TIP-040 live MT5-2 observations](docs/releases/TIP-040.md) for the on-deman
 See [TIP-041 default 16:9 chart capture](docs/releases/TIP-041.md) for the new screenshot parameter, 960×540 output, rollback checks and `native` option.
 See [TIP-042 chart capture timeout](docs/releases/TIP-042.md) for the bounded render timeout adjustment after a live Business C capture failure.
 See [TIP-043 chart delivery](docs/releases/TIP-043.md) for inline PNG preview/download in ChatGPT and its Business C acceptance gate.
+See [TIP-044 chart file export](docs/releases/TIP-044.md) for a byte-exact PNG ResourceLink returned by the same capture call.

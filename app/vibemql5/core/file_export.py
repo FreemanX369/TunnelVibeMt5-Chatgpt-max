@@ -50,6 +50,7 @@ _JOB_IMMUTABLE = {
 _MIME_OVERRIDES = {
     ".ex5": "application/octet-stream",
     ".zip": "application/zip",
+    ".png": "image/png",
     ".md": "text/markdown",
     ".json": "application/json",
     ".jsonl": "application/x-ndjson",
@@ -219,7 +220,8 @@ class FileExportManager:
         if not base.is_dir():
             raise ValueError(f"Export scope root is missing: {scope}")
         path = _safe_existing_file(base, relative_path)
-        _check_exportable_path(path)
+        chart_png = scope == "exports" and relative_path.replace("\\", "/").startswith("live-charts/")
+        _check_exportable_path(path, _ALLOWED_SUFFIXES | {".png"} if chart_png else _ALLOWED_SUFFIXES)
         return path, True, f"{scope}_scoped_file"
 
     def _workspace_file(self, workspace: str, name: str, *, parameter: bool) -> tuple[Path, bool, str]:
