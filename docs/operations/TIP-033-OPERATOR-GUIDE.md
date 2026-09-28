@@ -1,5 +1,7 @@
 # TunnelVibeMQL5 TIP-033 Operator Guide
 
+> Historical TIP-033 certification and prompt (15 September). For the deployed TIP-045 runtime and current continuation, read [TIP-045 current checkpoint](TIP-045-CURRENT-CHECKPOINT.md). Values below describe that historical release and must not override fresh runtime evidence.
+
 This document is the post-TIP-035 operating and handover guide for normal use, new ChatGPT conversations, and fresh-environment qualification.
 
 ## 1. Certified release authority
