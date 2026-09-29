@@ -44,7 +44,8 @@ See [TIP-042 chart capture timeout](docs/releases/TIP-042.md) for the bounded re
 See [TIP-043 chart delivery](docs/releases/TIP-043.md) for inline PNG preview/download in ChatGPT and its Business C acceptance gate.
 See [TIP-044 chart file export](docs/releases/TIP-044.md) for a byte-exact PNG ResourceLink returned by the same capture call.
 See [TIP-045 newest-candle capture](docs/releases/TIP-045.md) for the verified chart-view navigation before each screenshot.
+See [TIP-053 completion and acceptance](docs/releases/TIP-053.md) for the deployed 85-tool build, durable 476-test receipt, market-data qualification, rollback anchors and remaining client-local gates.
 
 ## Current operating checkpoint
 
-Read [TIP-045 current checkpoint](docs/operations/TIP-045-CURRENT-CHECKPOINT.md) for merged release authority, direct acceptance, pending gates and the latest verification blocker.
+Read [TIP-053 completion and acceptance](docs/releases/TIP-053.md) for the current merged authority, deployment evidence, client acceptance boundary and remaining gates.
