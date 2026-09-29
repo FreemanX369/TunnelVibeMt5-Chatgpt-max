@@ -18,7 +18,7 @@ from vibemql5.core.binary_ingress import BinaryIngressManager, _validate_downloa
 from vibemql5.core.jobs import JobStore
 from vibemql5.worker import run_job
 
-EXPECTED_CATALOG = "a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106"
+EXPECTED_CATALOG = MCP_TOOL_CATALOG_SHA256
 
 
 def _root(tmp_path: Path) -> Path:
