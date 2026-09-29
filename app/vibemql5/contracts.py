@@ -12,6 +12,9 @@ MCP_TOOL_NAMES = (
     "get_terminal_live_state",
     "get_account_snapshot",
     "list_live_charts",
+    "get_symbol_snapshot",
+    "copy_rates",
+    "copy_ticks",
     "capture_live_chart",
     "read_terminal_journal",
     "inspect_terminal",
@@ -77,6 +80,9 @@ MCP_TOOL_NAMES = (
     "backend_write_file",
     "backend_import_hotfix",
     "backend_apply_hotfix_bundle",
+    "describe_capabilities",
+    "backend_start_test_run",
+    "backend_get_test_run",
     "backend_run_tests",
     "backend_restart_runtime",
     "backend_read_evidence",
@@ -87,8 +93,8 @@ MCP_TOOL_NAMES = (
     "tunnel_admin_restart",
     "backend_run_powershell",
 )
-MCP_TOOL_COUNT = 79
-MCP_TOOL_CATALOG_SHA256 = 'a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106'
+MCP_TOOL_COUNT = 85
+MCP_TOOL_CATALOG_SHA256 = '915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef'
 
 # MetaTrader 5 [Tester] ExecutionMode native bounds.
 EXECUTION_MODE_RANDOM = -1
