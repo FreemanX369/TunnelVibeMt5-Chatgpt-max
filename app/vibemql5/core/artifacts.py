@@ -454,7 +454,16 @@ class ArtifactManager:
 
     def retain(self, dry_run: bool = False) -> dict:
         keep = int(load_settings(self.root)["retention"].get("completed_jobs", 20))
-        referenced = self._referenced_job_ids()
+        try:
+            referenced = self._referenced_job_ids()
+        except Exception as exc:
+            return {
+                "status": "BLOCKED",
+                "reason_code": "RETENTION_REFERENCE_SCAN_FAILED",
+                "error": str(exc),
+                "dry_run": bool(dry_run),
+                "removed": [],
+            }
         dirs = [p for p in self.runs.iterdir() if p.is_dir()]
         completed = []
         protected = []
@@ -464,8 +473,14 @@ class ArtifactManager:
                 continue
             try:
                 j = json.loads(jobf.read_text(encoding="utf-8"))
-            except Exception as exc:
-                raise RuntimeError(f"RETENTION_JOB_METADATA_UNREADABLE:{p.name}") from exc
+            except Exception:
+                return {
+                    "status": "BLOCKED",
+                    "reason_code": "RETENTION_JOB_METADATA_UNREADABLE",
+                    "job_id": p.name,
+                    "dry_run": bool(dry_run),
+                    "removed": [],
+                }
             terminal = j.get("state") in {"PASSED","ANOMALY","FAILED","TIMEOUT","CANCELLED","INTERRUPTED","RESOURCE_LIMIT"}
             if not terminal:
                 continue
@@ -481,6 +496,7 @@ class ArtifactManager:
                 shutil.rmtree(p, ignore_errors=False)
                 removed.append(p.name)
         return {
+            "status": "PASS",
             "dry_run": bool(dry_run),
             "retention_keep": keep,
             "referenced_jobs": sorted(referenced),
