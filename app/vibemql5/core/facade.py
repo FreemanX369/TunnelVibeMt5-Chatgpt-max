@@ -1,5 +1,6 @@
 from __future__ import annotations
 import base64, hashlib, json, os, re, time, uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from ..config import default_root, load_settings
 from .workspace import WorkspaceManager
@@ -250,7 +251,35 @@ class ToolFacade:
         )
 
     def capture_live_chart(self, chart_id, aspect_ratio="16:9"):
-        meta, png = self._observe_live("live_chart_capture", lambda live: live.capture(chart_id, aspect_ratio))
+        def capture_with_freshness(live):
+            meta, png = live.capture(chart_id, aspect_ratio)
+            chart = meta.get("chart") or {}
+            evidence = {
+                "schema_version": "1.0",
+                "captured_at_utc": datetime.now(timezone.utc).isoformat(),
+                "navigation_requested": True,
+                "navigation_method": "TIP-045_END_TO_NEWEST_AVAILABLE_BAR",
+                "viewport_newest_bar_verified": False,
+                "viewport_verification": "UNVERIFIED_REQUIRES_IMAGE_ACCEPTANCE",
+                "feed_status": "UNAVAILABLE",
+                "latest_rate": None,
+            }
+            try:
+                rates = live.rates(
+                    str(chart.get("symbol") or ""),
+                    str(chart.get("timeframe") or "M1"),
+                    0,
+                    1,
+                )
+                evidence["feed_status"] = "AVAILABLE"
+                evidence["feed_observed_at_utc"] = rates.get("observed_at_utc")
+                evidence["latest_rate"] = (rates.get("rates") or [None])[-1]
+                evidence["feed_returned_count"] = rates.get("returned_count")
+            except Exception as exc:
+                evidence["feed_reason"] = str(exc)[:300]
+            return {**meta, "freshness_evidence": evidence}, png
+
+        meta, png = self._observe_live("live_chart_capture", capture_with_freshness)
         with self.concurrency.mutation("live_chart_export", resource="exports/live-charts", wait_seconds=5):
             source_id = archive_chart_png(self.root, meta, png)
             exported = self.file_exports.prepare("exports", source_id)
