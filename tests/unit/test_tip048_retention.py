@@ -62,3 +62,18 @@ def test_retention_delete_never_removes_referenced_job(tmp_path):
     assert referenced in out["protected_jobs"]
     assert (tmp_path / "runs" / referenced).is_dir()
     assert not (tmp_path / "runs" / disposable).exists()
+
+
+def test_retention_reference_scan_failure_blocks_without_deleting(tmp_path):
+    _settings(tmp_path)
+    disposable = "BT-20260929-000005-AAAAAA"
+    _job(tmp_path, disposable, "2026-09-29T00:00:02Z")
+    state = tmp_path / "state" / "project-sessions" / "P2"
+    state.mkdir(parents=True)
+    (state / "current.json").write_text("{not-json", encoding="utf-8")
+
+    out = ArtifactManager(tmp_path).retain(dry_run=False)
+    assert out["status"] == "BLOCKED"
+    assert out["reason_code"] == "RETENTION_REFERENCE_SCAN_FAILED"
+    assert out["removed"] == []
+    assert (tmp_path / "runs" / disposable).is_dir()
