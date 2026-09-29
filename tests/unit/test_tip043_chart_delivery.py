@@ -44,6 +44,10 @@ def test_capture_wires_downloadable_inline_png_to_the_same_image_content(tmp_pat
     assert result.content[1].mime_type == "image/png"
     assert base64.b64decode(result.content[1].data) == png
     assert result.structured_content["aspect_ratio"] == "16:9"
+    freshness = result.structured_content["freshness_evidence"]
+    assert freshness["navigation_requested"] is True
+    assert freshness["viewport_newest_bar_verified"] is False
+    assert freshness["viewport_verification"] == "UNVERIFIED_REQUIRES_IMAGE_ACCEPTANCE"
     assert result.content[2].uri == result.structured_content["file_export"]["uri"]
     assert "iVBOR" not in result.content[0].text
 
