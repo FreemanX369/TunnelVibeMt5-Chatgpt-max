@@ -234,6 +234,21 @@ class ToolFacade:
     def list_live_charts(self):
         return self._observe_live("live_chart_inventory", lambda live: live.charts())
 
+    def get_symbol_snapshot(self, symbol):
+        return self._observe_live("live_symbol_snapshot", lambda live: live.symbol_snapshot(symbol))
+
+    def copy_rates(self, symbol, timeframe="M1", start_pos=0, count=200):
+        return self._observe_live(
+            "live_copy_rates",
+            lambda live: live.rates(symbol, timeframe, int(start_pos), int(count)),
+        )
+
+    def copy_ticks(self, symbol, from_utc, count=1000, flags="all"):
+        return self._observe_live(
+            "live_copy_ticks",
+            lambda live: live.ticks(symbol, from_utc, int(count), flags),
+        )
+
     def capture_live_chart(self, chart_id, aspect_ratio="16:9"):
         meta, png = self._observe_live("live_chart_capture", lambda live: live.capture(chart_id, aspect_ratio))
         with self.concurrency.mutation("live_chart_export", resource="exports/live-charts", wait_seconds=5):
