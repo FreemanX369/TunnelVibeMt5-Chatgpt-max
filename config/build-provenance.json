@@ -1,18 +1,21 @@
 {
   "binary_ingress_schema": "1.0",
   "binary_ingress_widget_schema": "1.0",
-  "bridge_build": "TIP-045",
+  "bridge_build": "TIP-053",
   "bridge_name": "VibeMQL5 Bridge",
-  "bridge_version": "0.2.41",
+  "bridge_version": "0.2.42",
   "build_input_provenance_schema": "1.0",
   "iteration_schema": "1.0",
   "job_metadata_consistency_schema": "1.0",
-  "mcp_tool_count": 79,
+  "mcp_tool_count": 85,
   "multi_client_concurrency_schema": "1.0",
   "project_session_schema": "1.0",
   "release_bundle_schema": "1.0",
   "result_schema": "1.4",
   "schema_version": "1.0",
   "tester_structured_event_schema": "1.0",
-  "tunnel_admin_schema": "1.0"
+  "tunnel_admin_schema": "1.0",
+  "market_data_schema": "1.0",
+  "backend_test_run_schema": "1.0",
+  "retention_reference_guard_schema": "1.0"
 }
