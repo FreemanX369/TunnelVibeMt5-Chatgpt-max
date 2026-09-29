@@ -241,8 +241,8 @@ def test_d021r03_event_stream_and_bounded_long_poll(tmp_path):
 
 def test_tun08_tun09_schema_and_tool_catalog_single_source_of_truth():
     assert RESULT_SCHEMA_VERSION == "1.4"
-    assert MCP_TOOL_COUNT == 79 == len(MCP_TOOL_NAMES)
-    assert len(set(MCP_TOOL_NAMES)) == 79
+    assert MCP_TOOL_COUNT == 85 == len(MCP_TOOL_NAMES)
+    assert len(set(MCP_TOOL_NAMES)) == 85
     for required in (
         "read_iteration_history", "list_fault_receipts", "list_job_history",
         "export_file", "backend_run_powershell",
@@ -260,8 +260,12 @@ def test_tun08_tun09_schema_and_tool_catalog_single_source_of_truth():
             for deco in node.decorator_list:
                 if isinstance(deco, ast.Call) and isinstance(deco.func, ast.Attribute) and deco.func.attr == "tool":
                     tool_defs.append(node.name)
-    assert tuple(tool_defs) == (*MCP_TOOL_NAMES[:-17], "backend_run_powershell")
-    assert all(name.startswith(("backend_", "tunnel_admin_")) for name in MCP_TOOL_NAMES[-17:])
+    backend_start = MCP_TOOL_NAMES.index("backend_read_file")
+    assert tuple(tool_defs) == (*MCP_TOOL_NAMES[:backend_start], "backend_run_powershell")
+    assert all(
+        name.startswith(("backend_", "tunnel_admin_")) or name == "describe_capabilities"
+        for name in MCP_TOOL_NAMES[backend_start:-1]
+    )
     assert "register_backend_admin_tools(server" in source
     assert '"result_schema": RESULT_SCHEMA_VERSION' in source
 

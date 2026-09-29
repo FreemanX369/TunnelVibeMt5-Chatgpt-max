@@ -10,9 +10,9 @@ INVOKE = (ROOT / "ops" / "windows" / "Invoke-TIP019ReadOnlyQualification.ps1").r
 
 
 def test_tip019_version_build_tools_and_commands():
-    assert '"bridge_version": "0.2.41"' in PROV
-    assert '"bridge_build": "TIP-045"' in PROV
-    assert '"mcp_tool_count": 79' in PROV
+    assert '"bridge_version": "0.2.42"' in PROV
+    assert '"bridge_build": "TIP-053"' in PROV
+    assert '"mcp_tool_count": 85' in PROV
     for command in ("live-check", "live-attest", "live-package"):
         assert f's.add_parser("{command}")' in CLI
     assert "len(REQUIRED_TOOLS)==41" in APPLY

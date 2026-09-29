@@ -50,6 +50,18 @@ def register_backend_admin_tools(mcp, root: str | Path):
     def backend_apply_hotfix_bundle(bundle_path: str) -> dict[str, Any]:
         return admin.apply_hotfix_bundle(bundle_path)
 
+    @expose("describe_capabilities")
+    def describe_capabilities(workspace: str = "") -> dict[str, Any]:
+        return admin.describe_capabilities(workspace)
+
+    @expose("backend_start_test_run")
+    def backend_start_test_run(suite: str, operation_id: str) -> dict[str, Any]:
+        return admin.start_test_run(suite, operation_id)
+
+    @expose("backend_get_test_run")
+    def backend_get_test_run(run_id: str) -> dict[str, Any]:
+        return admin.get_test_run(run_id)
+
     @expose("backend_run_tests")
     def backend_run_tests(suite: str) -> dict[str, Any]:
         return admin.run_tests(suite)

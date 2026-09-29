@@ -420,10 +420,53 @@ class ArtifactManager:
         path = self.write_json_immutable(job_id, BUILD_OUTPUT_MANIFEST_NAME, record)
         return {**record, "manifest_sha256": self.file_metadata(path)["sha256"]}
 
-    def retain(self) -> dict:
+    @staticmethod
+    def _collect_job_refs(value: Any, out: set[str]) -> None:
+        if isinstance(value, dict):
+            for item in value.values():
+                ArtifactManager._collect_job_refs(item, out)
+        elif isinstance(value, list):
+            for item in value:
+                ArtifactManager._collect_job_refs(item, out)
+        elif isinstance(value, str) and re.fullmatch(r"BT-[0-9]{8}-[0-9]{6}-[A-F0-9]{6}", value):
+            out.add(value)
+
+    def _referenced_job_ids(self) -> set[str]:
+        refs: set[str] = set()
+        state_root = self.root / "state"
+        if not state_root.is_dir():
+            return refs
+        protected_roots = [
+            state_root / "project-sessions",
+            state_root / "iterations",
+            state_root / "continuity",
+        ]
+        for protected in protected_roots:
+            if not protected.exists():
+                continue
+            for path in protected.rglob("*.json"):
+                try:
+                    data = json.loads(path.read_text(encoding="utf-8-sig"))
+                except Exception as exc:
+                    raise RuntimeError(f"RETENTION_REFERENCE_SCAN_FAILED:{path}") from exc
+                self._collect_job_refs(data, refs)
+        return refs
+
+    def retain(self, dry_run: bool = False) -> dict:
         keep = int(load_settings(self.root)["retention"].get("completed_jobs", 20))
+        try:
+            referenced = self._referenced_job_ids()
+        except Exception as exc:
+            return {
+                "status": "BLOCKED",
+                "reason_code": "RETENTION_REFERENCE_SCAN_FAILED",
+                "error": str(exc),
+                "dry_run": bool(dry_run),
+                "removed": [],
+            }
         dirs = [p for p in self.runs.iterdir() if p.is_dir()]
         completed = []
+        protected = []
         for p in dirs:
             jobf = p / "job.json"
             if not jobf.exists():
@@ -431,13 +474,34 @@ class ArtifactManager:
             try:
                 j = json.loads(jobf.read_text(encoding="utf-8"))
             except Exception:
+                return {
+                    "status": "BLOCKED",
+                    "reason_code": "RETENTION_JOB_METADATA_UNREADABLE",
+                    "job_id": p.name,
+                    "dry_run": bool(dry_run),
+                    "removed": [],
+                }
+            terminal = j.get("state") in {"PASSED","ANOMALY","FAILED","TIMEOUT","CANCELLED","INTERRUPTED","RESOURCE_LIMIT"}
+            if not terminal:
                 continue
-            if j.get("pinned") or j.get("state") not in {"PASSED","ANOMALY","FAILED","TIMEOUT","CANCELLED","INTERRUPTED","RESOURCE_LIMIT"}:
+            if j.get("pinned") or p.name in referenced:
+                protected.append(p.name)
                 continue
             completed.append((j.get("updated_at", ""), p))
         completed.sort(reverse=True)
+        candidates = [p for _, p in completed[keep:]]
         removed = []
-        for _, p in completed[keep:]:
-            shutil.rmtree(p, ignore_errors=True)
-            removed.append(p.name)
-        return {"kept": min(len(completed), keep), "removed": removed}
+        if not dry_run:
+            for p in candidates:
+                shutil.rmtree(p, ignore_errors=False)
+                removed.append(p.name)
+        return {
+            "status": "PASS",
+            "dry_run": bool(dry_run),
+            "retention_keep": keep,
+            "referenced_jobs": sorted(referenced),
+            "protected_jobs": sorted(protected),
+            "candidates": [p.name for p in candidates],
+            "removed": removed,
+            "kept_unprotected": min(len(completed), keep),
+        }

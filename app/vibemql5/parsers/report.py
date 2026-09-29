@@ -16,7 +16,10 @@ KEYS = {
     "expected_payoff": ["expected payoff"],
     "recovery_factor": ["recovery factor"],
     "sharpe_ratio": ["sharpe ratio"],
-    "max_drawdown_pct": ["balance drawdown maximal", "equity drawdown maximal", "maximal drawdown", "max drawdown"],
+    # Legacy max_drawdown_pct remains balance drawdown for backward compatibility.
+    "max_drawdown_pct": ["balance drawdown maximal", "maximal drawdown", "max drawdown"],
+    "balance_drawdown_max_pct": ["balance drawdown maximal"],
+    "equity_drawdown_max_pct": ["equity drawdown maximal"],
 }
 
 def _read_auto(path: Path) -> str:

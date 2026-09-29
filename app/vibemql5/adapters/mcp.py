@@ -185,6 +185,39 @@ def create_server(root: Path, transport: str = "unknown"):
         """Enumerate chart windows owned by the exact fixed MT5-2 process; EA/indicator UNKNOWN."""
         return _invoke(ctx, "list_live_charts", facade.list_live_charts)
 
+    @server.tool(annotations=read_only_local)
+    def get_symbol_snapshot(ctx: Context, symbol: str) -> dict[str, Any]:
+        """Read an exact-symbol quote and bounded symbol metadata from the fixed MT5-2 IPC."""
+        return _invoke(ctx, "get_symbol_snapshot", lambda: facade.get_symbol_snapshot(symbol))
+
+    @server.tool(annotations=read_only_local)
+    def copy_rates(
+        ctx: Context,
+        symbol: str,
+        timeframe: str = "M1",
+        start_pos: int = 0,
+        count: int = 200,
+    ) -> dict[str, Any]:
+        """Read bounded exact-symbol OHLC rates; start_pos=0 includes the current forming bar."""
+        return _invoke(
+            ctx, "copy_rates",
+            lambda: facade.copy_rates(symbol, timeframe, start_pos, count),
+        )
+
+    @server.tool(annotations=read_only_local)
+    def copy_ticks(
+        ctx: Context,
+        symbol: str,
+        from_utc: str,
+        count: int = 1000,
+        flags: str = "all",
+    ) -> dict[str, Any]:
+        """Read bounded exact-symbol ticks from an explicit timezone-aware UTC timestamp."""
+        return _invoke(
+            ctx, "copy_ticks",
+            lambda: facade.copy_ticks(symbol, from_utc, count, flags),
+        )
+
     @server.resource(LIVE_CHART_WIDGET_URI, mime_type="text/html;profile=mcp-app")
     def live_chart_widget_resource() -> str:
         """Render the captured PNG inside the chat with a direct PNG download link."""
