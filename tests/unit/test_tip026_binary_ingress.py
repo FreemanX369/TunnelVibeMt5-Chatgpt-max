@@ -87,16 +87,16 @@ def _producer_state(root: Path, component: str = "watchdog") -> tuple[Path, dict
 
 
 def test_tip026_catalog_contains_import_ex5_and_current_hash():
-    assert MCP_TOOL_COUNT == 79
+    assert MCP_TOOL_COUNT == 85
     assert "import_ex5" in MCP_TOOL_NAMES
-    assert MCP_TOOL_CATALOG_SHA256 == "a0d2240862369aaf67039b34921bda2b0eeb3aba7e9dae1f4c71c44fd5c40106"
+    assert MCP_TOOL_CATALOG_SHA256 == "915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef"
 
 
 def test_tip031_bridge_provenance_catalog_comes_from_contract(tmp_path: Path):
     root = _root(tmp_path)
     _write_build_provenance(root)
     provenance = load_bridge_provenance(root)
-    assert provenance["mcp_tool_count"] == MCP_TOOL_COUNT == 79
+    assert provenance["mcp_tool_count"] == MCP_TOOL_COUNT == 85
     assert provenance["mcp_tool_catalog_sha256"] == MCP_TOOL_CATALOG_SHA256
     assert provenance["mcp_tool_catalog_source"] == "contracts.py"
 
@@ -330,7 +330,7 @@ def test_tip026_mcp_surface_has_file_param_metadata_and_hidden_context(monkeypat
     from vibemql5.adapters.mcp import create_server
     root = _root(tmp_path)
     server = create_server(root, transport="stdio")
-    assert len(server.tools) == 79
+    assert len(server.tools) == 85
     assert set(server.tools) == set(MCP_TOOL_NAMES)
     assert server.tool_meta["import_ex5"]["meta"] == {"openai/fileParams": ["file"]}
     ann = server.tool_meta["import_ex5"]["annotations"]
