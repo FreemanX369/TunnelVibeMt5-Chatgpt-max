@@ -28,7 +28,7 @@ def test_capture_wires_downloadable_inline_png_to_the_same_image_content(tmp_pat
         )))
     monkeypatch.setattr(ToolFacade, "_observe_live", fake_live_capture)
     server = create_server(tmp_path, transport="stdio")
-    assert len(server._tool_manager._tools) == 79
+    assert len(server._tool_manager._tools) == 85
     tool = server._tool_manager._tools["capture_live_chart"]
     assert tool.meta["ui"]["resourceUri"] == LIVE_CHART_WIDGET_URI
     assert tool.meta["openai/outputTemplate"] == LIVE_CHART_WIDGET_URI
