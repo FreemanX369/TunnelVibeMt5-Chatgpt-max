@@ -113,6 +113,18 @@ class CompilerDriver:
                 "source_path": str(ex5),
             }
         result.update({
+            "status_basis": {
+                "compiler_log_status": result.get("status"),
+                "timed_out": timed_out,
+                "ex5_exists": ex5.is_file(),
+                "ex5_bytes": ex5.stat().st_size if ex5.is_file() else 0,
+                "process_exit_code_authoritative": False,
+                "decision": (
+                    "TIMEOUT" if timed_out else
+                    "NO_EX5" if not ex5.exists() else
+                    "COMPILER_LOG_AND_EX5"
+                ),
+            },
             "expert_name": expert_name,
             "deployed_source": str(deployed),
             "ex5_path": str(ex5),
