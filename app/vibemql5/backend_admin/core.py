@@ -20,7 +20,8 @@ from pathlib import Path, PureWindowsPath
 from typing import Any, Iterable
 
 from ..core.concurrency import ConcurrencyManager, current_actor
-from ..core.jobs import _exclusive_file_lock
+from ..core.jobs import _exclusive_file_lock, _pid_exists
+from ..core.workspace import WorkspaceManager
 from .models import FileMeta, Receipt, new_id, sha256_file, write_json_atomic
 
 class BackendAdminError(RuntimeError):
@@ -91,6 +92,7 @@ class BackendAdmin:
         "baseline_aware",
         "tip033_soak",
     }
+    DURABLE_TEST_SUITES = TEST_SUITES
 
     TUNNEL_INSTANCES = {
         "A": {
@@ -134,6 +136,7 @@ class BackendAdmin:
         self.backup_root = self.root / "backups" / "backend-admin"
         self.inbox_root = self.root / "maintenance" / "inbox"
         self.receipt_root = self.root / "evidence" / "runtime" / "backend-admin"
+        self.test_run_root = self.receipt_root / "test-runs"
         self.python = self.root / ".venv" / "Scripts" / "python.exe"
         self.tunnel_admin_lock = self.root / "state" / "concurrency" / "tunnel-admin.lock"
         self._ensure_dirs()
@@ -142,6 +145,7 @@ class BackendAdmin:
         self.backup_root.mkdir(parents=True, exist_ok=True)
         self.inbox_root.mkdir(parents=True, exist_ok=True)
         self.receipt_root.mkdir(parents=True, exist_ok=True)
+        self.test_run_root.mkdir(parents=True, exist_ok=True)
 
     def _tunnel_spec(self, instance: str) -> tuple[str, dict[str, Any]]:
         key = str(instance or "").strip().upper()
@@ -541,8 +545,15 @@ class BackendAdmin:
     def read_file(self, path: str, max_bytes: int = 262144) -> dict[str, Any]:
         p = self.resolve_allowed(path, must_exist=True)
         size = p.stat().st_size
-        if size > min(max_bytes, self.MAX_FILE_BYTES):
-            raise BackendAdminError("FILE_TOO_LARGE")
+        limit = min(max(1, int(max_bytes)), self.MAX_FILE_BYTES)
+        if size > limit:
+            return {
+                "status": "BLOCKED",
+                "reason_code": "FILE_TOO_LARGE",
+                "path": str(p),
+                "bytes": size,
+                "max_bytes": limit,
+            }
         data = p.read_bytes()
         try:
             text = data.decode("utf-8")
@@ -1136,9 +1147,170 @@ class BackendAdmin:
             "payload": result,
         }
 
+    def describe_capabilities(self, workspace: str = "") -> dict[str, Any]:
+        baselines: list[str] = []
+        baseline_status = "WORKSPACE_NOT_REQUESTED"
+        if str(workspace or "").strip():
+            try:
+                ws_root = WorkspaceManager(self.root).workspace_root(str(workspace).strip())
+                baseline_dir = ws_root / "Baselines"
+                baselines = sorted(p.stem for p in baseline_dir.glob("*.json") if p.is_file())
+                baseline_status = "OK"
+            except Exception as exc:
+                baseline_status = f"UNAVAILABLE:{type(exc).__name__}"
+        return {
+            "status": "PASS",
+            "test_suites": sorted(self.TEST_SUITES),
+            "durable_test_suites": sorted(self.DURABLE_TEST_SUITES),
+            "baseline_identifier": "workspace/Baselines/<name>.json (pass <name>, not a raw job id)",
+            "workspace": str(workspace or ""),
+            "named_baselines": baselines,
+            "baseline_status": baseline_status,
+            "backend_read_file": {
+                "max_file_bytes": self.MAX_FILE_BYTES,
+                "max_bytes_semantics": "whole-file limit; the file is not partially returned",
+                "allowed_extensions": sorted(self.ALLOWED_EXTENSIONS),
+            },
+            "powershell": {
+                "max_script_chars": self.MAX_POWERSHELL_SCRIPT_CHARS,
+                "max_timeout_seconds": self.MAX_POWERSHELL_TIMEOUT_SECONDS,
+                "max_output_bytes": self.MAX_POWERSHELL_OUTPUT_BYTES,
+            },
+            "test_run": {
+                "operation_id_required": True,
+                "idempotent": True,
+                "result_lookup": "backend_get_test_run",
+                "tip033_soak_pass_rule": "STARTED is never PASS; final current-runtime certification is required",
+            },
+        }
+
+    @staticmethod
+    def _validate_test_operation_id(operation_id: str) -> str:
+        value = str(operation_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}", value):
+            raise BackendAdminError("TEST_OPERATION_ID_INVALID")
+        return value
+
+    def _test_run_id(self, operation_id: str) -> str:
+        digest = hashlib.sha256(operation_id.encode("utf-8")).hexdigest()[:20].upper()
+        return f"BTEST-{digest}"
+
+    def _test_run_path(self, run_id: str) -> Path:
+        if not re.fullmatch(r"BTEST-[A-F0-9]{20}", str(run_id or "")):
+            raise BackendAdminError("TEST_RUN_ID_INVALID")
+        return self.test_run_root / f"{run_id}.json"
+
+    def _write_test_run(self, path: Path, payload: dict[str, Any]) -> None:
+        write_json_atomic(path, payload)
+
+    def start_test_run(self, suite: str, operation_id: str) -> dict[str, Any]:
+        if suite not in self.TEST_SUITES:
+            return {
+                "status": "BLOCKED",
+                "reason_code": "TEST_SUITE_NOT_ALLOWED",
+                "suite": suite,
+                "allowed_suites": sorted(self.TEST_SUITES),
+            }
+        operation = self._validate_test_operation_id(operation_id)
+        run_id = self._test_run_id(operation)
+        path = self._test_run_path(run_id)
+        lock = self.test_run_root / f"{run_id}.lock"
+        with _exclusive_file_lock(lock, timeout_seconds=10.0):
+            if path.is_file():
+                existing = json.loads(path.read_text(encoding="utf-8"))
+                if existing.get("suite") != suite or existing.get("operation_id") != operation:
+                    return {
+                        "status": "BLOCKED",
+                        "reason_code": "TEST_OPERATION_CONFLICT",
+                        "run_id": run_id,
+                    }
+                return {**existing, "idempotent_recovered": True}
+
+            provenance = self.root / "config" / "build-provenance.json"
+            record: dict[str, Any] = {
+                "schema_version": "1.0",
+                "run_id": run_id,
+                "operation_id": operation,
+                "suite": suite,
+                "state": "STARTING",
+                "started_at_utc": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
+                "python": str(self.python),
+                "provenance_sha256": sha256_file(provenance) if provenance.is_file() else None,
+                "result": None,
+                "worker_pid": None,
+            }
+            self._write_test_run(path, record)
+
+            if suite == "tip033_soak":
+                result = self.run_tests(suite)
+                record["result"] = result
+                record["state"] = "RUNNING" if result.get("status") == "STARTED" else (
+                    "PASSED" if result.get("status") == "PASS" else "FAILED"
+                )
+                record["soak_state_path"] = result.get("state_path")
+                self._write_test_run(path, record)
+                return {**record, "idempotent_recovered": False}
+
+            flags = (0x00000200 | 0x08000000) if os.name == "nt" else 0
+            proc = subprocess.Popen(
+                [
+                    str(self.python), "-m", "vibemql5.backend_admin.test_run_worker",
+                    str(self.root), run_id,
+                ],
+                cwd=str(self.root),
+                close_fds=True,
+                creationflags=flags,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            record["worker_pid"] = int(proc.pid)
+            record["state"] = "RUNNING"
+            self._write_test_run(path, record)
+            return {**record, "idempotent_recovered": False}
+
+    def get_test_run(self, run_id: str) -> dict[str, Any]:
+        path = self._test_run_path(run_id)
+        if not path.is_file():
+            raise BackendAdminError("TEST_RUN_NOT_FOUND")
+        lock = self.test_run_root / f"{run_id}.lock"
+        with _exclusive_file_lock(lock, timeout_seconds=10.0):
+            record = json.loads(path.read_text(encoding="utf-8"))
+            if record.get("suite") == "tip033_soak" and record.get("state") == "RUNNING":
+                state_path_raw = str(record.get("soak_state_path") or "")
+                state_path = Path(state_path_raw) if state_path_raw else None
+                if state_path and state_path.is_file():
+                    try:
+                        soak = json.loads(state_path.read_text(encoding="utf-8-sig"))
+                        record["soak_state"] = soak
+                        if soak.get("last_status") == "PASS" and bool(soak.get("current_runtime_certification")):
+                            record["state"] = "PASSED"
+                            record["finished_at_utc"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+                        elif soak.get("last_status") in {"FAIL", "FAILED"}:
+                            record["state"] = "FAILED"
+                            record["finished_at_utc"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+                        self._write_test_run(path, record)
+                    except Exception:
+                        record["soak_state_status"] = "UNREADABLE"
+                return record
+
+            if record.get("state") == "RUNNING":
+                pid = int(record.get("worker_pid") or 0)
+                if pid and not _pid_exists(pid):
+                    record["state"] = "INTERRUPTED"
+                    record["reason_code"] = "TEST_WORKER_EXITED_WITHOUT_FINAL_RECEIPT"
+                    record["finished_at_utc"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+                    self._write_test_run(path, record)
+            return record
+
     def run_tests(self, suite: str) -> dict[str, Any]:
         if suite not in self.TEST_SUITES:
-            raise BackendAdminError("TEST_SUITE_NOT_ALLOWED")
+            return {
+                "status": "BLOCKED",
+                "reason_code": "TEST_SUITE_NOT_ALLOWED",
+                "suite": suite,
+                "allowed_suites": sorted(self.TEST_SUITES),
+            }
         py = str(self.python)
         if suite == "py_compile":
             targets = [str(p) for p in (self.root/"app"/"vibemql5").rglob("*.py")]
@@ -1204,15 +1376,23 @@ class BackendAdmin:
             expected = set(json.loads(baseline.read_text(encoding="utf-8"))) if baseline.is_file() else set()
             xml = self.receipt_root / f"pytest-{new_id('RUN')}.xml"
             cp = self._run([py, "-m", "pytest", "-q", str(self.root/"tests"/"unit"), f"--junitxml={xml}"], timeout=300)
-            current = self._failure_ids(xml)
+            report_present = xml.is_file()
+            current = self._failure_ids(xml) if report_present else set()
             new = sorted(current - expected)
+            framework_completed = cp.returncode in {0, 1} and report_present
+            baseline_conformant = framework_completed and not new
             return {
-                "status": "PASS" if not new else "FAIL",
+                "status": "PASS" if baseline_conformant else "FAIL",
                 "suite": suite,
                 "returncode": cp.returncode,
+                "framework_completed": framework_completed,
+                "report_present": report_present,
+                "baseline_conformant": baseline_conformant,
                 "baseline_failures": len(expected),
                 "current_failures": len(current),
                 "new_failures": new,
+                "result_class": ("ALL_GREEN" if cp.returncode == 0 and not current else
+                                 "BASELINE_CONFORMANT" if baseline_conformant else "TEST_RUN_FAILED"),
                 "stdout_tail": cp.stdout[-4096:],
                 "stderr_tail": cp.stderr[-4096:],
             }
