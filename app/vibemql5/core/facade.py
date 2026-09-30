@@ -326,14 +326,22 @@ class ToolFacade:
         with self.concurrency.mutation("restore_checkpoint", resource=f"{workspace}:{checkpoint_id}"):
             return self.revisions.restore_checkpoint(workspace,checkpoint_id,expected_current_sha256)
 
+    def _validate_source_checkpoint(self, workspace, path, checkpoint_id, expected_sha256):
+        _, metadata = self.revisions._load_metadata(workspace, checkpoint_id)
+        if self.ws.resolve(workspace, metadata["path"]) != self.ws.resolve(workspace, path):
+            raise ValueError("SOURCE_CHECKPOINT_PATH_MISMATCH")
+        if metadata.get("sha256") != str(expected_sha256).strip().lower():
+            raise ValueError("SOURCE_CHECKPOINT_VERSION_MISMATCH")
+
     def write_source(self, workspace, path, content, expected_sha256="", checkpoint_id=""):
-        target = self.ws.resolve(workspace, path)
-        if target.is_file():
-            if not str(expected_sha256 or "").strip():
-                raise ValueError("MULTI_CLIENT_CAS_REQUIRED: existing source requires expected_sha256")
-            if not str(checkpoint_id or "").strip():
-                raise ValueError("MULTI_CLIENT_CHECKPOINT_REQUIRED: existing source requires checkpoint_id")
         with self.concurrency.mutation("write_source", resource=f"{workspace}:{path}"):
+            target = self.ws.resolve(workspace, path)
+            if target.is_file():
+                if not str(expected_sha256 or "").strip():
+                    raise ValueError("MULTI_CLIENT_CAS_REQUIRED: existing source requires expected_sha256")
+                if not str(checkpoint_id or "").strip():
+                    raise ValueError("MULTI_CLIENT_CHECKPOINT_REQUIRED: existing source requires checkpoint_id")
+                self._validate_source_checkpoint(workspace, path, checkpoint_id, expected_sha256)
             return self.ws.write_text(workspace,path,content,expected_sha256,checkpoint_id)
 
     def apply_patch(self, workspace, path, replacements, expected_sha256="", checkpoint_id=""):
@@ -342,6 +350,7 @@ class ToolFacade:
         if not str(checkpoint_id or "").strip():
             raise ValueError("MULTI_CLIENT_CHECKPOINT_REQUIRED: apply_patch requires checkpoint_id")
         with self.concurrency.mutation("apply_patch", resource=f"{workspace}:{path}"):
+            self._validate_source_checkpoint(workspace, path, checkpoint_id, expected_sha256)
             return self.ws.apply_patch(workspace,path,replacements,expected_sha256,checkpoint_id)
 
     def _fixed_terminal(self):
