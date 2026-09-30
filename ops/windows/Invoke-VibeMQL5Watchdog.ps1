@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 
 . (Join-Path $PSScriptRoot 'VibeMQL5.AtomicFile.ps1')
 function Write-AtomicJson { param([string]$Path,[object]$Value) Write-VibeAtomicJson -Path $Path -Value $Value -Depth 10 }
-function Read-JsonSafe { param([string]$Path) try { if(Test-Path -LiteralPath $Path){ return Get-Content -LiteralPath $Path -Raw -Encoding UTF8|ConvertFrom-Json } } catch{}; return $null }
+function Read-JsonSafe { param([string]$Path) Read-VibeJsonSafe -Path $Path }
 function Get-HttpStatus { param([string]$Url) try { return [int](Invoke-WebRequest -UseBasicParsing -Uri $Url -TimeoutSec 2).StatusCode } catch { return 0 } }
 function Get-ExactTunnelProcess {
     param([string]$Executable,[string]$Profile)
@@ -39,7 +39,8 @@ $health=Get-HttpStatus -Url $config.supervisor.healthUrl
 $ready=Get-HttpStatus -Url $config.supervisor.readyUrl
 $exact=@(Get-ExactTunnelProcess -Executable $config.tunnel.executable -Profile ([string]$config.tunnel.profile))
 $heartbeatFresh=$false
-if($super -and $super.last_heartbeat_utc){ try{$heartbeatFresh=(([DateTime]::UtcNow-[datetime]::Parse([string]$super.last_heartbeat_utc)).TotalSeconds -lt [int]$config.supervisor.heartbeatStaleSeconds)}catch{} }
+$watchdogNow=[DateTimeOffset]::UtcNow
+if($super -and $super.last_heartbeat_utc){ $heartbeatFresh=Test-VibeHeartbeatFresh -Timestamp ([string]$super.last_heartbeat_utc) -StaleSeconds ([int]$config.supervisor.heartbeatStaleSeconds) -Now $watchdogNow }
 $interactiveAvailable=Test-InteractiveUserSession -UserId ([string]$config.tasks.interactiveUser)
 $bootEnabled=[bool]$config.tasks.enableBootTunnel
 $desired=if($interactiveAvailable){"interactive"}elseif($bootEnabled){"background"}else{"waiting"}
@@ -47,11 +48,11 @@ $healthy=($exact.Count -eq 1 -and $health -eq 200 -and $ready -eq 200 -and $hear
 
 $history=@()
 if($previous -and $previous.restart_history_utc){ $history=@($previous.restart_history_utc) }
-$cutoff=[DateTime]::UtcNow.AddHours(-1)
-$history=@($history|Where-Object{ try{ [datetime]::Parse([string]$_) -gt $cutoff }catch{$false} })
+$cutoff=$watchdogNow.AddHours(-1)
+$history=@($history|Where-Object{ $stamp=ConvertTo-VibeUtcTimestamp -Timestamp ([string]$_); $null -ne $stamp -and $stamp -gt $cutoff })
 $lastRestart=$null
-if($history.Count -gt 0){ try{$lastRestart=[datetime]::Parse([string]$history[-1])}catch{} }
-$cooldownOk=($null -eq $lastRestart -or ([DateTime]::UtcNow-$lastRestart).TotalSeconds -ge [int]$config.supervisor.watchdogRestartCooldownSeconds)
+foreach($entry in $history){ $stamp=ConvertTo-VibeUtcTimestamp -Timestamp ([string]$entry); if($null -eq $lastRestart -or $stamp -gt $lastRestart){$lastRestart=$stamp} }
+$cooldownOk=($null -eq $lastRestart -or ($watchdogNow-$lastRestart).TotalSeconds -ge [int]$config.supervisor.watchdogRestartCooldownSeconds)
 $budgetOk=($history.Count -lt [int]$config.supervisor.maxRestartsPerHour)
 $action="NONE"; $status=if($healthy){"HEALTHY"}else{"DEGRADED"}
 
