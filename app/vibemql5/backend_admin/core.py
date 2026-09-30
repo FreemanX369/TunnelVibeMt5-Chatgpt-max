@@ -1203,6 +1203,16 @@ class BackendAdmin:
     def _write_test_run(self, path: Path, payload: dict[str, Any]) -> None:
         write_json_atomic(path, payload)
 
+    def _failed_test_start(self, path: Path, record: dict[str, Any], exc: Exception) -> dict[str, Any]:
+        record.update(state="FAILED", reason_code="TEST_WORKER_START_FAILED",
+                      finished_at_utc=datetime.now(timezone.utc).isoformat(timespec="milliseconds"))
+        record["result"] = {
+            "status": "FAIL", "suite": record["suite"], "reason_code": "TEST_WORKER_START_FAILED",
+            "exception_type": type(exc).__name__, "error": str(exc),
+        }
+        self._write_test_run(path, record)
+        return {**record, "idempotent_recovered": False}
+
     def start_test_run(self, suite: str, operation_id: str) -> dict[str, Any]:
         if suite not in self.TEST_SUITES:
             return {
@@ -1242,28 +1252,38 @@ class BackendAdmin:
             self._write_test_run(path, record)
 
             if suite == "tip033_soak":
-                result = self.run_tests(suite)
+                try:
+                    result = self.run_tests(suite)
+                except Exception as exc:
+                    return self._failed_test_start(path, record, exc)
                 record["result"] = result
                 record["state"] = "RUNNING" if result.get("status") == "STARTED" else (
                     "PASSED" if result.get("status") == "PASS" else "FAILED"
                 )
                 record["soak_state_path"] = result.get("state_path")
+                record["soak_run_id"] = result.get("soak_run_id")
+                record["soak_started_at_utc"] = result.get("soak_started_at_utc")
+                record["soak_bridge_build"] = result.get("bridge_build")
+                record["soak_recovered"] = bool(result.get("recovered"))
                 self._write_test_run(path, record)
                 return {**record, "idempotent_recovered": False}
 
             flags = (0x00000200 | 0x08000000) if os.name == "nt" else 0
-            proc = subprocess.Popen(
-                [
-                    str(self.python), "-m", "vibemql5.backend_admin.test_run_worker",
-                    str(self.root), run_id,
-                ],
-                cwd=str(self.root),
-                close_fds=True,
-                creationflags=flags,
-                stdin=subprocess.DEVNULL,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
+            try:
+                proc = subprocess.Popen(
+                    [
+                        str(self.python), "-m", "vibemql5.backend_admin.test_run_worker",
+                        str(self.root), run_id,
+                    ],
+                    cwd=str(self.root),
+                    close_fds=True,
+                    creationflags=flags,
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            except Exception as exc:
+                return self._failed_test_start(path, record, exc)
             record["worker_pid"] = int(proc.pid)
             record["state"] = "RUNNING"
             self._write_test_run(path, record)
@@ -1283,6 +1303,24 @@ class BackendAdmin:
                     try:
                         soak = json.loads(state_path.read_text(encoding="utf-8-sig"))
                         record["soak_state"] = soak
+                        actual_start = str((soak.get("last_result") or {}).get("started_at_utc") or "")
+                        expected_start = str(record.get("soak_started_at_utc") or "")
+                        expected_run_id = str(record.get("soak_run_id") or "")
+                        start_stamp = datetime.fromisoformat(actual_start.replace("Z", "+00:00")) if actual_start else None
+                        receipt_stamp = datetime.fromisoformat(record["started_at_utc"])
+                        binding_matches = (
+                            bool(record.get("soak_bridge_build"))
+                            and soak.get("bridge_build") == record["soak_bridge_build"]
+                            and start_stamp is not None and start_stamp.tzinfo is not None
+                            and (soak.get("run_id") == expected_run_id if expected_run_id else bool(expected_start))
+                            and (actual_start == expected_start if expected_start else
+                                 not record.get("soak_recovered") and start_stamp >= receipt_stamp)
+                        )
+                        if not binding_matches:
+                            record["soak_state_status"] = "UNVERIFIED_RUN_BINDING"
+                            return record
+                        record["soak_started_at_utc"] = actual_start
+                        record["soak_state_status"] = "VERIFIED_RUN_BINDING"
                         if soak.get("last_status") == "PASS" and bool(soak.get("current_runtime_certification")):
                             record["state"] = "PASSED"
                             record["finished_at_utc"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
@@ -1347,7 +1385,7 @@ class BackendAdmin:
                             stamp = stamp.replace(tzinfo=timezone.utc)
                         age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
                         if age < 90:
-                            return {"status":"STARTED","suite":suite,"recovered":True,"bridge_build":bridge_build,"state_path":str(state_path)}
+                            return {"status":"STARTED","suite":suite,"recovered":True,"bridge_build":bridge_build,"state_path":str(state_path), "soak_run_id":current.get("run_id"), "soak_started_at_utc":(current.get("last_result") or {}).get("started_at_utc")}
                 except Exception:
                     pass
             script = self.root / "ops" / "windows" / "Invoke-TIP013Soak.ps1"
@@ -1361,6 +1399,7 @@ class BackendAdmin:
                 "-File", str(script), "-ConfigPath", str(config_path),
                 "-DurationMinutes", "60", "-SampleSeconds", "30", "-MaxConsecutiveBad", "0",
                 "-BridgeBuild", bridge_build, "-CertifyCurrentRuntime",
+                "-RunId", rid,
             ]
             flags = (0x00000200 | 0x08000000) if os.name == "nt" else 0
             out = stdout_path.open("ab", buffering=0); err = stderr_path.open("ab", buffering=0)
@@ -1368,7 +1407,7 @@ class BackendAdmin:
                 proc = subprocess.Popen(args, cwd=str(self.root), close_fds=True, creationflags=flags, stdin=subprocess.DEVNULL, stdout=out, stderr=err)
             finally:
                 out.close(); err.close()
-            return {"status":"STARTED","suite":suite,"recovered":False,"bridge_build":bridge_build,"controller_pid":proc.pid,"state_path":str(state_path),"stdout":str(stdout_path),"stderr":str(stderr_path)}
+            return {"status":"STARTED","suite":suite,"recovered":False,"bridge_build":bridge_build,"controller_pid":proc.pid,"state_path":str(state_path),"stdout":str(stdout_path),"stderr":str(stderr_path), "soak_run_id":rid}
         else:
             # Standalone baseline-aware gate uses an on-disk approved baseline list.
             baseline = self.receipt_root / "approved-unit-failures.json"
