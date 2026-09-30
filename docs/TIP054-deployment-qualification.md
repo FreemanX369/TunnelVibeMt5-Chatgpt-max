@@ -2,9 +2,9 @@
 
 ## Verdict
 
-**DEPLOYED HEAD VERIFIED / CI AND ALL SHORT SUITES PASSED / FINAL SOAK RUNNING / MERGE PENDING**
+**DEPLOYED HEAD VERIFIED / ALL RUNTIME QUALIFICATION PASSED / MERGE GATED BY RELEASE CI**
 
-The nine implementation and test files from PR #52 match the reviewed code head exactly. Both final Windows suites passed 513 cases, including 20 new PowerShell regressions. Final runtime-forensics and binary-ingress checks passed. Public tick, source-guard and sampled chart/export checks passed. The fresh 60-minute certification controller launched on 2026-09-30 at 05:15:43.712 UTC / 12:15:43.712 Asia/Ho_Chi_Minh and is **RUNNING, not PASS**. Its approximate finish is 06:16 UTC / 13:16 local time; the final receipt must determine completion and acceptance. Merge remains pending.
+The nine implementation and test files from PR #52 match the reviewed code head exactly. Both final Windows suites passed 513 cases, including 20 new PowerShell regressions; runtime-forensics, binary-ingress and sampled public checks passed. The fresh 60-minute soak **PASSED with verified run binding, 120 samples, zero bad episodes, and zero tunnel-PID or generation changes**. Its script ran from **2026-09-30T05:15:44.4108878Z** to **2026-09-30T06:16:12.9390278Z**, an elapsed **60 minutes 28.529 seconds**; the finish was **13:16:12.939 Asia/Ho_Chi_Minh**. Current-runtime certification is true. Final post-soak checks found A/B/C ready and the deployed hashes unchanged. Merge follows successful CI on the exact final documentation commit; the linked PR is the authoritative merge record.
 
 ## Reviewed authority
 
@@ -33,7 +33,7 @@ The nine implementation and test files from PR #52 match the reviewed code head 
 
 ## Exact deployed file identity
 
-All nine hashes were reverified at approximately **05:15 UTC on 2026-09-30** and matched the reviewed head.
+All nine hashes matched the reviewed head before the soak at approximately 05:15 UTC and were reverified unchanged during final acceptance at approximately **10:55 UTC on 2026-09-30**.
 
 | Repository path | SHA-256 |
 |---|---|
@@ -53,8 +53,8 @@ File hashes establish disk contents. Separate restart receipts and post-restart 
 
 | Gate | Evidence | Status |
 |---|---|---|
-| Exact nine-file identity | All hashes match reviewed code head; reverified at 05:15 UTC | PASS |
-| Repository CI | All four relevant workflows green on `e9e7cd296a0ee2e87cdc80dec87210974c226f78` | PASS |
+| Exact nine-file identity | All hashes match reviewed code head; final reverification at approximately 10:55 UTC | PASS |
+| Reviewed-code and handoff CI | All four relevant workflows green on code `e9e7cd296a0ee2e87cdc80dec87210974c226f78` and documentation handoff `a99f8164006467bf1380c6fbc132046e1fc6a59d` | PASS |
 | Local non-Windows regression | 278 passed, 23 skipped; 20 added PowerShell cases subsequently exercised on Windows | PASS — platform-limited |
 | Python compilation | Durable run `BTEST-25A828BC6487426BD317` | PASS |
 | Corrected PowerShell syntax | All three corrected scripts parsed; RunId contract present | PASS |
@@ -67,10 +67,13 @@ File hashes establish disk contents. Separate restart receipts and post-restart 
 | Public source checkpoint guard | Fabricated checkpoint rejected with INVALID_ARGUMENT; original source hash unchanged | PASS |
 | Public chart/export | 960×540 PNG with matching exported bytes/hash; forming-bar OHLC matched feed at the sampled instant; four chart layouts restored | PASS — sampled |
 | Original candidate soak | `BTEST-34D20F952EF4BDC2F4B3`: verified binding, failed at sample 6 with heartbeat freshness false | FAIL — retained |
-| Fresh final 60-minute soak | `BTEST-27F5963BDC539470FDA0`; run `SOAK-20260930-121543-DC5BEA99`; VERIFIED_RUN_BINDING; script started 05:15:44.4108878 UTC; nine healthy samples at approximately 05:20 UTC, zero bad episodes and zero PID/generation changes | RUNNING |
-| Repository merge | Await successful exact-run soak receipt and final acceptance | PENDING |
+| Final 60-minute soak | `BTEST-27F5963BDC539470FDA0`; run `SOAK-20260930-121543-DC5BEA99`; PASSED / VERIFIED_RUN_BINDING; 120 samples, zero bad episodes or PID/generation changes; final HTTP 200/200 and heartbeat fresh; current-runtime certification true | PASS |
+| Post-soak operational acceptance | Supervisor READY; watchdog HEALTHY/NONE; fresh heartbeat age approximately 9 seconds at 10:57:26 UTC; all A/B/C one process and HTTP 200/200; queue empty and no active job/native/mutation lock | PASS |
+| Final release-head CI and merge | Require all four workflows successful on the exact final documentation head; then merge with an expected-head guard. The linked PR records completion. | GATED |
 
-The fresh soak's operation is `TIP054-C-FINAL-SOAK-20260930-02`. Its durable receipt started at 05:15:43.712 UTC, and its script started at **2026-09-30T05:15:44.4108878Z**. Binding is **VERIFIED_RUN_BINDING**. It began after all final short suites and public native checks, with a fresh controller and run identity. At approximately 05:20 UTC, nine samples were healthy with zero bad episodes and zero PID/generation changes; this progress is not final certification. The earlier continuation was interrupted before a replacement soak started; it supplied no completed certification. Acceptance requires this run's terminal PASS, matching build/run/start binding, complete 60-minute duration, zero bad samples and preserved history. The 45-second heartbeat limit, restart limits and zero-bad certification policy remain unchanged.
+The final soak's operation is `TIP054-C-FINAL-SOAK-20260930-02`. Its durable receipt started at 05:15:43.712 UTC and binds the script start **2026-09-30T05:15:44.4108878Z**, run ID `SOAK-20260930-121543-DC5BEA99`, and build TIP-053. The script finished at **2026-09-30T06:16:12.9390278Z** with 120 samples and unchanged observed tunnel PID/generation. Durable state is **PASSED**, binding is **VERIFIED_RUN_BINDING**, and both the run snapshot and fresh shared resilience state certify this runtime. Durable lookup finalization is a separate timestamp from script completion; elapsed qualification uses the script's own start and finish. Final acceptance re-read all four short-suite receipts and the two preserved failed/superseded runs. The 45-second heartbeat limit, restart limits and zero-bad certification policy remain unchanged.
+
+Final documentation updates do not alter the qualified implementation or test files. CI must succeed on that exact documentation head before the guarded merge. Post-merge PR and main-branch records establish the merge commit without another source change.
 
 ## Preserved failure and timeout evidence
 
@@ -80,7 +83,7 @@ Subsequent probes reproduced a sharing violation on one of 77 state reads and de
 
 A separate direct fixture probe reached its 20-second tool timeout after 16 progress marks without a reported test failure. Its TIMEOUT receipt remains an incomplete probe; the completed durable unit suite provides the successful test outcome. Earlier superseded certification `BTEST-1BCA08FAFA008C282E49` remains FAILED with `SUPERSEDED_BY_PR52_DEPLOYMENT`.
 
-Instance B retained three recovered external network-poll timeout episodes, most recently recovered at **12:03:43 local time**. Current readiness and a future successful runtime soak do not establish zero external network timeouts across all clients.
+Instance B retained three recovered external network-poll timeout episodes, most recently recovered at **12:03:43 local time**. Current readiness and the successful runtime soak do not establish zero external network timeouts across all clients.
 
 ## Coverage and client boundaries
 
@@ -95,4 +98,4 @@ Public Python tick/source/chart proofs remain applicable because those files did
 3. Reload the affected Python processes if rolling back Python changes, and repeat readiness, exact hashes and durable qualification checks. PowerShell changes load on their next invocation.
 4. Preserve failure and supersession history. An old or unrelated PASS must never certify this run.
 
-No rollback has been required. Fill the final soak and merge gates from actual receipts before claiming completed qualification.
+No rollback has been required. Runtime qualification is complete. Release CI and merge completion must be read from the exact final head and the linked PR; this document does not predeclare a merge.
