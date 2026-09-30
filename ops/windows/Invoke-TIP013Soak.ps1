@@ -5,6 +5,7 @@ param(
     [int]$SampleSeconds = 30,
     [int]$MaxConsecutiveBad = 4,
     [string]$BridgeBuild = 'TIP-013',
+    [string]$RunId = '',
     [switch]$CertifyCurrentRuntime
 )
 Set-StrictMode -Version Latest
@@ -39,6 +40,7 @@ while([DateTime]::UtcNow-lt $deadline){
     $gen=if($sup){[string]$sup.generation}else{''};if($lastGen -and $gen -and $gen-ne $lastGen){$generationChanges++};if($gen){$lastGen=$gen;if($observedGen -notcontains $gen){$observedGen+=$gen}}
     if($healthy){$bad=0}else{if($bad-eq 0){$badEpisodes++};$bad++;$maxBad=[Math]::Max($maxBad,$bad)}
     $out=[ordered]@{schema_version='1.0';bridge_build=$BridgeBuild;evidence_role=if($CertifyCurrentRuntime){'CURRENT_RUNTIME_CERTIFICATION'}else{'HISTORICAL_QUALIFICATION'};current_runtime_certification=$false;last_scenario='Soak';last_status=if($bad-gt $MaxConsecutiveBad){'FAIL'}else{'RUNNING'};updated_at_utc=[DateTime]::UtcNow.ToString('o');last_result=[ordered]@{scenario='Soak';status=if($bad-gt $MaxConsecutiveBad){'FAIL'}else{'RUNNING'};started_at_utc=$started.ToString('o');evidence=[ordered]@{duration_minutes=$DurationMinutes;sample_seconds=$SampleSeconds;samples=$samples;current_healthy=$healthy;consecutive_bad=$bad;max_consecutive_bad=$maxBad;bad_episodes=$badEpisodes;tunnel_pid_changes=$pidChanges;generation_changes=$generationChanges;observed_tunnel_pids=$observedTunnel;observed_generations=$observedGen;healthz=$h;readyz=$r;heartbeat_fresh=$fresh}};history=$history}
+    $out['run_id']=$RunId
     Write-AtomicJson -Path $statePath -Value $out
     if($bad-gt $MaxConsecutiveBad){throw "TIP013_SOAK_SUSTAINED_DEGRADATION consecutive_bad=$bad"}
     Start-Sleep -Seconds $SampleSeconds
@@ -48,4 +50,5 @@ if($CertifyCurrentRuntime -and ($maxBad-ne 0 -or $badEpisodes-ne 0 -or $pidChang
 $finalEntry=[ordered]@{scenario='Soak';status='PASS';started_at_utc=$started.ToString('o');finished_at_utc=[DateTime]::UtcNow.ToString('o');evidence=[ordered]@{duration_minutes=$DurationMinutes;sample_seconds=$SampleSeconds;samples=$samples;max_consecutive_bad=$maxBad;bad_episodes=$badEpisodes;tunnel_pid_changes=$pidChanges;generation_changes=$generationChanges;observed_tunnel_pids=$observedTunnel;observed_generations=$observedGen;final_healthz=$h;final_readyz=$r;final_heartbeat_fresh=$fresh}}
 $history+=@($finalEntry);if($history.Count-gt 20){$history=@($history|Select-Object -Last 20)}
 $final=[ordered]@{schema_version='1.0';bridge_build=$BridgeBuild;evidence_role=if($CertifyCurrentRuntime){'CURRENT_RUNTIME_CERTIFICATION'}else{'HISTORICAL_QUALIFICATION'};current_runtime_certification=[bool]$CertifyCurrentRuntime;last_scenario='Soak';last_status='PASS';updated_at_utc=[DateTime]::UtcNow.ToString('o');last_result=$finalEntry;history=$history}
+$final['run_id']=$RunId
 Write-AtomicJson -Path $statePath -Value $final;$final|ConvertTo-Json -Depth 16;Write-Host 'TIP013_SOAK=PASS'
