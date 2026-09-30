@@ -154,3 +154,19 @@ def test_copy_ticks_rejects_naive_timestamp(tmp_path):
         LiveTerminal(inventory, "MT5-2", mt5=mt5).ticks(
             "XAUUSDm", "2026-09-29T08:00:00", 2, "all"
         )
+
+
+@pytest.mark.parametrize("fraction,expected_count", [(".100", 1), (".100001", 0)])
+def test_copy_ticks_filters_mt5_second_rounded_cursor_with_exact_inclusive_bound(tmp_path, monkeypatch, fraction, expected_count):
+    inventory = Inventory(tmp_path)
+    mt5 = MT5(inventory)
+    original = mt5.copy_ticks_from("XAUUSDm", None, 2, mt5.COPY_TICKS_ALL)
+    original[0]["time_msc"] -= 1
+    monkeypatch.setattr(mt5, "copy_ticks_from", lambda *_args: original)
+    out = LiveTerminal(inventory, "MT5-2", mt5=mt5).ticks(
+        "XAUUSDm", f"2026-09-29T08:00:00{fraction}+00:00", 2, "all"
+    )
+    assert out["returned_count"] == expected_count
+    assert out["filtered_before_from_utc"] == 2 - expected_count
+    if expected_count:
+        assert out["ticks"][0]["time_msc"] == 1790668800100
