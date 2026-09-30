@@ -7,7 +7,7 @@ import os
 import re
 import struct
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -274,6 +274,7 @@ class LiveTerminal:
         if mode not in {"all", "info", "trade"}:
             raise ValueError("TICKS_FLAGS_INVALID")
         start = self._parse_utc(from_utc)
+        start_us = (start - datetime(1970, 1, 1, tzinfo=timezone.utc)) // timedelta(microseconds=1)
         with self._market_session() as (mt5, terminal_info):
             if mt5.symbol_info(name) is None:
                 raise RuntimeError("MT5_SYMBOL_NOT_FOUND")
@@ -287,9 +288,14 @@ class LiveTerminal:
                 err = mt5.last_error()
                 raise RuntimeError(f"MT5_COPY_TICKS_FAILED:{err}")
             rows = []
+            filtered_before_start = 0
             for row in raw:
                 epoch = int(row["time"])
                 msc = int(row["time_msc"])
+                # MT5 rounds its datetime cursor to seconds; preserve the caller's exact bound.
+                if msc * 1000 < start_us:
+                    filtered_before_start += 1
+                    continue
                 rows.append({
                     "time": epoch,
                     "time_utc": self._utc_iso_from_epoch(epoch),
@@ -311,6 +317,7 @@ class LiveTerminal:
                 "flags": mode,
                 "requested_count": count,
                 "returned_count": len(rows),
+                "filtered_before_from_utc": filtered_before_start,
                 "coverage": {
                     "first_utc": rows[0]["time_msc_utc"] if rows else None,
                     "last_utc": rows[-1]["time_msc_utc"] if rows else None,
