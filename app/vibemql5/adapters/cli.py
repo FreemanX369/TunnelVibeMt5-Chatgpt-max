@@ -18,6 +18,9 @@ def build_parser():
     s = p.add_subparsers(dest="cmd", required=True)
     for x in ["health", "diagnose", "list-workspaces", "list-terminals", "list-presets", "session-list", "iteration-list"]:
         s.add_parser(x)
+    q = s.add_parser("identity-bootstrap"); q.add_argument("--expected-revision", type=int)
+    q = s.add_parser("identity-show")
+    q = s.add_parser("identity-update"); q.add_argument("terminal_id"); q.add_argument("--expected-revision", required=True, type=int); q.add_argument("--operation-id", required=True); q.add_argument("--alias"); q.add_argument("--terminal-path"); q.add_argument("--data-root"); q.add_argument("--enabled", choices=("true", "false"))
     q = s.add_parser("session-get"); q.add_argument("project_id")
     q = s.add_parser("session-resume"); q.add_argument("project_id")
     q = s.add_parser("session-create"); q.add_argument("project_id"); q.add_argument("workspace"); q.add_argument("ea"); q.add_argument("--goal", default=""); q.add_argument("--decision", action="append", default=[]); q.add_argument("--phase", default="IDLE"); q.add_argument("--checkpoint-id", default=""); q.add_argument("--baseline-job-id", default=""); q.add_argument("--last-job-id", default="")
@@ -77,6 +80,27 @@ def wait_for_job(f: ToolFacade, job_id: str, timeout: int) -> dict:
 
 def main(argv=None):
     a = build_parser().parse_args(argv)
+    if a.cmd.startswith("identity-"):
+        from ..core.inventory import TerminalInventory
+        from ..fleet.identity import IdentityError, IdentityRegistry
+        from ..errors import ConfigError
+        registry = IdentityRegistry(Path(a.root))
+        try:
+            if a.cmd == "identity-show":
+                record = registry.load()
+                return emit({"identity_status": "ENROLLED" if record else "UNENROLLED", "registry": record})
+            if a.cmd == "identity-bootstrap":
+                inventory = TerminalInventory(Path(a.root))
+                return emit(registry.bootstrap(inventory._identity_items, expected_revision=a.expected_revision))
+            return emit(registry.update(a.terminal_id, expected_revision=a.expected_revision, operation_id=a.operation_id,
+                alias=a.alias, terminal_path=a.terminal_path, data_root=a.data_root,
+                enabled=None if a.enabled is None else a.enabled == "true"))
+        except IdentityError as exc:
+            emit({"status": "BLOCKED", "reason_code": exc.code, "error": str(exc)})
+            return 2
+        except (ConfigError, TypeError, KeyError) as exc:
+            emit({"status": "BLOCKED", "reason_code": "IDENTITY_INVALID", "error": str(exc)})
+            return 2
     f = ToolFacade(Path(a.root))
     if a.cmd == "health": return emit(f.health())
     if a.cmd == "diagnose": return emit(f.diagnose())

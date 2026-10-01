@@ -1,6 +1,6 @@
 # Fleet v1 — Revised Task Graph
 
-Status: planning draft, activated only by explicit Blueprint approval. Dependencies express capability gates, not a requirement to change all files in one PR.
+Status: **ACTIVE after recorded Blueprint approval**; TIP-055A implementation verified locally, with deployment qualification pending. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md) and [Completion Report](TIP-055A-completion.md).
 
 ## TIP scopes and dependencies
 
@@ -31,7 +31,7 @@ Read-fleet pilot can be delivered before native or multi-agent work. Such delive
 
 ## GitHub workflow
 
-- This first PR contains Blueprint documentation only and remains Draft until reviewed.
+- The Blueprint documentation was approved at `063d6a3` and merged through PR #53. The [approval record](approval-2026-10-02.md) records its exact scope.
 - After explicit approval, record exact Blueprint commit/owner statement and implement 055A in an implementation branch/PR based on the latest compatible main. No direct commit to main.
 - Later implementation PRs reference their approved TIP, REQ/AC IDs and exact base. Dependency PRs are merged only after verification and the owner's authorized scope supports it.
 - Update the planning index with actual status/receipts; future task outlines are not marked DONE merely because their docs exist.

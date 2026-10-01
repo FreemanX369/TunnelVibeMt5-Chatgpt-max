@@ -6,6 +6,7 @@ from pathlib import Path
 from ..config import load_json, default_root
 from ..models.types import TerminalInfo
 from ..errors import TerminalNotFound, VibeMQL5Error
+from ..fleet.identity import IdentityRegistry
 
 
 class TerminalBusy(VibeMQL5Error):
@@ -16,7 +17,8 @@ class TerminalInventory:
     def __init__(self, root: Path | None = None):
         self.root = Path(root or default_root())
         raw = load_json(self.root / "config" / "terminals.json")
-        self._items = {x["alias"].upper(): TerminalInfo.from_dict(x) for x in raw.get("terminals", [])}
+        self._identity_items = [TerminalInfo.from_dict(x) for x in raw.get("terminals", [])]
+        self._items = {x.alias.upper(): x for x in self._identity_items}
 
     def list(self, enabled_only: bool = True) -> list[TerminalInfo]:
         items = list(self._items.values())
@@ -61,6 +63,7 @@ class TerminalInventory:
 
     def describe(self, enabled_only: bool = True) -> list[dict]:
         observed = self.latest_observed_builds()
+        identities = IdentityRegistry(self.root).overlay(self._identity_items)
         out = []
         for terminal in self.list(enabled_only=enabled_only):
             item = terminal.to_dict()
@@ -73,6 +76,7 @@ class TerminalInventory:
             )
             item["observed_job_id"] = evidence["observed_job_id"] if evidence else None
             item["observed_at_utc"] = evidence["observed_at_utc"] if evidence else None
+            item.update(identities[terminal.alias.upper()])
             out.append(item)
         return out
 
@@ -169,6 +173,7 @@ class TerminalInventory:
     def validate(self) -> list[dict]:
         running = self.running_terminal_paths()
         observed = self.latest_observed_builds()
+        identities = IdentityRegistry(self.root).overlay(self._identity_items)
         out = []
         for t in self.list(enabled_only=False):
             terminal = Path(t.terminal_path)
@@ -189,5 +194,6 @@ class TerminalInventory:
                 "observed_at_utc": evidence["observed_at_utc"] if evidence else None,
                 "running": self._norm(t.terminal_path) in running,
                 "ok": t.enabled and terminal.is_file() and meta.is_file() and data.is_dir(),
+                **identities[t.alias.upper()],
             })
         return out

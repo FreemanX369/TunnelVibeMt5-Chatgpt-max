@@ -1,6 +1,6 @@
 # Fleet v1 — Verification, migration and release contract
 
-Status: proposed. This document specifies evidence to collect; it contains no new fleet PASS receipt.
+Status: approved verification contract, per the [owner record](approval-2026-10-02.md). This document specifies evidence to collect; it contains no new fleet PASS receipt.
 
 ## Evidence and non-regression matrix
 
@@ -53,4 +53,4 @@ A 60-minute final soak records sample count, workload, exact code/config/tool-ca
 
 Contractor records approved Blueprint revision, active TIP/base/head, actual implementation/CI/physical receipts, outstanding gates, deviations and the next authorized action. Repository documents become the handover authority; no fresh chat needs to reconstruct the brainstorm. Read only relevant drift and retained reports before continuing. Never reset the baseline evidence or announce release completion from documentation alone.
 
-At this PR: Blueprint draft created, owner approval pending, TIP-055A not built, no fleet deployment or physical qualification. Next authorized methodology action after approval is dispatch/implement TIP-055A, verify its outputs and return a Completion Report.
+Current checkpoint: Blueprint approved at 063d6a3 and documentation merged through PR #53; TIP-055A implementation verified locally with 313 unit tests passed and 24 platform/runtime skips. The [Completion Report](TIP-055A-completion.md) maps AC evidence and the implementation PR supplies exact-head Windows CI receipts. Fleet deployment and physical/client qualification remain pending.

@@ -1,6 +1,6 @@
 # Fleet v1 — Requirements, RRI synthesis and decision ledger
 
-Status: **PROPOSED**. Owner approval pending; no answer below is attributed to an interview that did not occur.
+Status: **APPROVED DIRECTION / TIP-055A IMPLEMENTATION VERIFIED LOCALLY**, per the [owner approval record](approval-2026-10-02.md) and [Completion Report](TIP-055A-completion.md). Deployment qualification remains pending. No answer below is attributed to an interview that did not occur.
 
 ## Five-persona RRI synthesis
 
@@ -39,7 +39,7 @@ This compressed RRI reuses the supplied requirements rather than repeating a lar
 
 ## Proposed decisions linked to the original D-01 → D-12
 
-All statuses are `PROPOSED`, not `APPROVED`. D entries establish direction; O entries list details still required at the affected milestone. Approval of this package records the selected choices at an exact commit.
+D entries establish the approved direction and choices within the recorded approval scope; O entries list details still required at the affected milestone. The approval record binds the original package to its exact reviewed commit. Future milestone details remain gated rather than invented.
 
 | ID | Proposed choice | Reason and boundary | Affects |
 |---|---|---|---|
@@ -67,7 +67,7 @@ No open item below blocks writing/reviewing this package. Only items for the TIP
 
 | Open ID | Concrete information/specification needed | Required before |
 |---|---|---|
-| O-01 | Owner approval of Blueprint commit / any amendments | BUILD of 055A |
+| O-01 | CLOSED: owner approved revision 063d6a3; future amendments require their own record | 055A authorized |
 | O-02 | Public gateway host/provider, TLS identity, singleton service owner and provisioning/backup location | 058 deployment |
 | O-03 | Exact pairing, canonical signing, clock skew/nonce retention, key rotation and clone/revoke tests | 058 build |
 | O-04 | Actual two pilot nodes, distinct roots, Windows sessions and tool visibility | M1 physical acceptance |
