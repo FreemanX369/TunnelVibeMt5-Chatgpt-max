@@ -39,10 +39,9 @@ A hard deadline for an uninterruptible native-library call may require a separat
 ## Evidence needed to turn this into a dispatchable TIP
 
 1. Real M0 bootstrap/show receipts, stable IDs across fresh process, verified complete registry backup and at least two physically independent QUALIFIED bindings.
-2. TIP-055B release recovery actual Windows evidence and exact reviewed deployed source; initial issue #56 failure retained.
+2. CLOSED for release recovery: [TIP-055B runtime checkpoint](TIP-055B-runtime-qualification.md) binds exact reviewed/deployed source, four passing CI workflows, actual Windows handles and guarded VPS qualification. Initial issue #56 failure remains retained. This closes no identity or targeted IPC gate.
 3. Source/schema delta and exact state/account output shape frozen; chosen actual pilot target IDs recorded. No illustrative labels substituted.
 4. Numeric caller/lease/IPC deadline contract and honest non-cancellable-call recovery policy selected before build.
 5. Gherkin ACs bound to the selected schema/error codes, fixture map and planned actual client/Windows proof.
 
 This refinement does not unlock M1 or assert any actual account/IPC observation. A source/fixture implementation may be prepared only when its applicable approved dependency gates are satisfied. Gateway endpoint/provider, Ed25519 enrollment and two-node read acceptance remain TIP-058/059 gates.
-

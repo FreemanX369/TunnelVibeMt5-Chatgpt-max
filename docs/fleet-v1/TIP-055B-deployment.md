@@ -1,6 +1,6 @@
 # TIP-055B — Guarded corrective rollout
 
-Status: READY FOR EXACT-HEAD CI/CONTRACTOR QUALIFICATION; deployment not yet claimed in this initial package. Owner scope: [02:12:19 continuation](approval-2026-10-02.md). The [TIP](TIP-055B.md) and Completion Report determine source/fixture evidence; later runtime receipts determine deployed acceptance.
+Status: EXECUTED / BOUNDED FIX QUALIFIED. Owner scope: [02:12:19 continuation](approval-2026-10-02.md). The [TIP](TIP-055B.md) and Completion Report determine source/fixture evidence; the [runtime checkpoint](TIP-055B-runtime-qualification.md) and [receipts](evidence/2026-10-02-tip055b-runtime.json) establish actual deployed acceptance. The sequence below remains the retained protocol; rollback was not exercised.
 
 ## Payload and source authority
 
@@ -42,4 +42,3 @@ The created fixture remains after a functional service rollback. It can fail aga
 ## Completion boundary
 
 Keep CI, Windows mechanism, guarded write/readback/checkpoint, compile/selector, refresh and public-read receipts separately. Close issue #56 only after the reviewed fix and deployed qualification receipts exist. Real M0 identity enrollment/show/reload/backup/root qualification remains OPEN and uses the concrete CLI steps in [the M0 runtime checkpoint](TIP-055A-runtime-qualification.md). TIP-057R remains [readiness refinement](TIP-057R-readiness.md).
-
