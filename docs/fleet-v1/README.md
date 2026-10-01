@@ -15,6 +15,9 @@ This package turns the fleet brainstorm and its source-based review into an appr
 7. [TIP-055A operator guide](TIP-055A-operator.md): explicit bootstrap/update/retry and retained-state rollback.
 8. [TIP-055A deployment runbook](TIP-055A-deployment.md): exact payload, drift/CAS/checkpoints and recovery boundaries.
 9. [TIP-055A runtime checkpoint](TIP-055A-runtime-qualification.md): deployed fixture/read acceptance and concrete real enrollment step.
+10. [TIP-055B](TIP-055B.md): bounded correction for retained Windows lease-release issue #56.
+    [Completion Report](TIP-055B-completion.md) and [rollout protocol](TIP-055B-deployment.md) retain exact local evidence and pending Windows/deployed gates.
+11. [TIP-057R readiness](TIP-057R-readiness.md): next local read slice and open dispatch gates.
 
 [Original brainstorm](reference/2026-10-01-brainstorm.md) and [plan review](reference/2026-10-01-plan-review.md) are historical inputs. On approval, this package supersedes their conflicting implementation order. Runtime evidence continues to outrank design assumptions. Existing TIP-053/054 evidence remains retained and is not fleet acceptance.
 
