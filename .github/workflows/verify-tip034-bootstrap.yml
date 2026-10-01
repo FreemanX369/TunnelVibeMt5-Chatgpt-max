@@ -25,7 +25,7 @@ jobs:
       - name: Compile Python tree
         run: python -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"
       - name: Full unit suite
-        run: python -m pytest tests/unit -q
+        run: python -m pytest tests/unit -q -rs
       - name: Verify sanitized Windows config
         run: python -c "import json,pathlib; p=pathlib.Path('ops/windows/vibemql5.windows.json'); c=json.loads(p.read_text(encoding='utf-8')); assert c['tasks']['interactiveUser']==''; assert c['tunnel']['secretFile'].lower().endswith('.dpapi'); print('CONFIG_TEMPLATE_PASS')"
       - name: Windows bootstrap dry-run

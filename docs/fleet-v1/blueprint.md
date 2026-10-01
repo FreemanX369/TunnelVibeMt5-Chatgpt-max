@@ -1,6 +1,6 @@
 # Fleet v1 — Proposed Blueprint
 
-Version: 1.0 draft. Date: 2026-10-01. **Approval pending.**
+Version: 1.0. Date: 2026-10-01. **Approved at original revision 063d6a3**, per the [owner approval record](approval-2026-10-02.md); implementation/capability gates remain active.
 
 ## 1. Product outcome and delivery scope
 

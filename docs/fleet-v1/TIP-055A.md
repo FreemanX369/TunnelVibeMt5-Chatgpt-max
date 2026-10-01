@@ -1,6 +1,6 @@
 # TIP-055A — Local Target Identity Foundation
 
-**Status:** SPEC DRAFT — dispatch after owner Blueprint approval. **Priority:** first implementation. **Dependency:** approved Fleet v1 Blueprint at an exact commit. Date: 2026-10-01. Impact: medium; reversible code, persisted identity requires careful rollback. No product code is delivered by this file.
+**Status:** APPROVED SPEC — IMPLEMENTATION VERIFIED LOCALLY; DEPLOYMENT PARTIAL. See the [Completion Report](TIP-055A-completion.md). **Priority:** first implementation. **Dependency:** Blueprint revision 063d6a3 approved in the [owner record](approval-2026-10-02.md). Specification date: 2026-10-01. Impact: medium; reversible code, persisted identity requires careful rollback. This specification alone makes no implementation-completion claim.
 
 ## Intent, why and smallest change
 
