@@ -1,6 +1,6 @@
 # Fleet v1 — Requirements, RRI synthesis and decision ledger
 
-Status: **APPROVED DIRECTION / TIP-055A IMPLEMENTATION VERIFIED LOCALLY**, per the [owner approval record](approval-2026-10-02.md) and [Completion Report](TIP-055A-completion.md). Deployment qualification remains pending. No answer below is attributed to an interview that did not occur.
+Status: **APPROVED DIRECTION / M0 CODE DEPLOYED / REAL ENROLLMENT OPEN**, per the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [runtime checkpoint](TIP-055A-runtime-qualification.md). TIP-055B has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md) for the observed existing lease-release defect; targeted read requirements remain [at readiness refinement](TIP-057R-readiness.md). No answer below is attributed to an interview that did not occur.
 
 ## Five-persona RRI synthesis
 

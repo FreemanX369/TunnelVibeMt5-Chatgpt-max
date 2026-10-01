@@ -1,0 +1,68 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+___ test_persistent_denial_expires_explicitly_and_later_release_succeeds[32] ___
+
+lease = <vibemql5.core.concurrency._QueuedFileLease object at 0x7fc0d547ad20>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc0d549daf0>
+code = 32
+
+    @pytest.mark.parametrize("code", [32, 33])
+    def test_persistent_denial_expires_explicitly_and_later_release_succeeds(lease, monkeypatch, code):
+        original = Path.unlink
+        committed = lease.lock_path.read_bytes()
+        clock = Clock()
+        monkeypatch.setattr(concurrency, "time", clock)
+        attempts = []
+        denied = True
+    
+        def unlink(path, *args, **kwargs):
+            if path == lease.lock_path:
+                attempts.append(path)
+                if denied:
+                    raise sharing_error(code)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(Path, "unlink", unlink)
+        with pytest.raises(PermissionError) as failure:
+            lease.release()
+        assert failure.value.winerror == code
+>       assert not lease.released and lease.lock_path.read_bytes() == committed
+E       assert (not True)
+E        +  where True = <vibemql5.core.concurrency._QueuedFileLease object at 0x7fc0d547ad20>.released
+
+tests/unit/test_tip055b_runtime_forensics_release.py:88: AssertionError
+___ test_persistent_denial_expires_explicitly_and_later_release_succeeds[33] ___
+
+lease = <vibemql5.core.concurrency._QueuedFileLease object at 0x7fc0d5464bf0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc0d5466e40>
+code = 33
+
+    @pytest.mark.parametrize("code", [32, 33])
+    def test_persistent_denial_expires_explicitly_and_later_release_succeeds(lease, monkeypatch, code):
+        original = Path.unlink
+        committed = lease.lock_path.read_bytes()
+        clock = Clock()
+        monkeypatch.setattr(concurrency, "time", clock)
+        attempts = []
+        denied = True
+    
+        def unlink(path, *args, **kwargs):
+            if path == lease.lock_path:
+                attempts.append(path)
+                if denied:
+                    raise sharing_error(code)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(Path, "unlink", unlink)
+        with pytest.raises(PermissionError) as failure:
+            lease.release()
+        assert failure.value.winerror == code
+>       assert not lease.released and lease.lock_path.read_bytes() == committed
+E       assert (not True)
+E        +  where True = <vibemql5.core.concurrency._QueuedFileLease object at 0x7fc0d5464bf0>.released
+
+tests/unit/test_tip055b_runtime_forensics_release.py:88: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip055b_runtime_forensics_release.py::test_persistent_denial_expires_explicitly_and_later_release_succeeds[32]
+FAILED tests/unit/test_tip055b_runtime_forensics_release.py::test_persistent_denial_expires_explicitly_and_later_release_succeeds[33]
+2 failed, 30 deselected in 0.12s

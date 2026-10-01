@@ -6,7 +6,8 @@ Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified;
 
 | TIP | Output | Dependencies | Unlock / acceptance gate |
 |---|---|---|---|
-| TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | M0 IDs stable; legacy behavior intact; only executable TIP in this package |
+| TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | Code/read deployment verified; real stable-ID/resource qualification remains open |
+| TIP-055B | Bounded existing lease-release liveness correction | Verified 055A source / issue #56 | DONE: actual Windows CI and guarded VPS compile/fixtures/refresh/readback PASS; no native routing |
 | TIP-057R | Local targeted read path | 055A | Two distinct physical bindings, exact IPC roots, serialize lifecycle; no native routing |
 | TIP-058 | Singleton gateway + outbound node enrollment | 055A; 057R before targeted-read acceptance | TLS/enrollment/replay/revoke/restart; actual endpoint and worker capability contract |
 | TIP-059 | Remote targeted read fleet | 057R + 058 | Exact node/terminal attribution, scoped failures, bounded deadlines and restart/reconnect |
@@ -19,7 +20,7 @@ Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified;
 | TIP-063 | Multi-agent task isolation | 061B + 060 | Verified principal ownership and Git worktree; no duplicate Continuity system |
 | TIP-064 | Final fleet release qualification | Every capability included in the selected release | Scope-bound fault/load/soak/migration/restore evidence on exact candidate |
 
-Current execution checkpoint: PR #54 merged; PR #55 records the bounded fixture/drift follow-up and six-file VPS installation. Compile and isolated forensics fixtures PASS; B/C/A refreshed; all five public rows remain UNENROLLED/UNQUALIFIED. This does not close stable enrolled physical identity acceptance or unlock 057R build. Its concrete spec may be refined while the operator enrollment gate is completed.
+Current execution checkpoint: PR #54/#55 merged and six-file M0 VPS installation verified. All five public rows remain UNENROLLED/UNQUALIFIED. TIP-055B in PR #57 has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md); issue #56 closes only after its exact reviewed merge. It does not enable native routing. [TIP-057R readiness](TIP-057R-readiness.md) records the next bounded read slice and remaining enrollment/schema/deadline gates, without dispatching its build.
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 

@@ -1,0 +1,75 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_same_lease_concurrent_release_preserves_an_acquired_successor ______
+
+lease = <vibemql5.core.concurrency._QueuedFileLease object at 0x7f6c9542fcb0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c954502c0>
+
+    def test_same_lease_concurrent_release_preserves_an_acquired_successor(lease, monkeypatch):
+        original_read = Path.read_text
+        original_unlink = Path.unlink
+        first_at_delete = threading.Event()
+        permit_first_delete = threading.Event()
+        second_started = threading.Event()
+        second_read_owner = threading.Event()
+        successor_installed = threading.Event()
+        delete_attempts = []
+        errors = []
+        successors = []
+    
+        def read_owner(path, *args, **kwargs):
+            raw = original_read(path, *args, **kwargs)
+            if path == lease.lock_path and threading.current_thread().name == "second-release":
+                if json.loads(raw).get("token") == lease.token:
+                    second_read_owner.set()
+                    assert successor_installed.wait(2), "successor was not installed between read and delete"
+            return raw
+    
+        def delete_owner(path, *args, **kwargs):
+            if path != lease.lock_path:
+                return original_unlink(path, *args, **kwargs)
+            caller = threading.current_thread().name
+            delete_attempts.append(caller)
+            if caller == "first-release":
+                first_at_delete.set()
+                assert permit_first_delete.wait(2), "first release was not permitted to complete"
+                original_unlink(path, *args, **kwargs)
+                successors.append(acquire_native_execution(lease.root, "SUCCESSOR", kind="fixture", wait_seconds=2))
+                successor_installed.set()
+                return None
+            return original_unlink(path, *args, **kwargs)
+    
+        def release_same_object(second=False):
+            if second:
+                second_started.set()
+            try:
+                lease.release()
+            except BaseException as exc:
+                errors.append(exc)
+    
+        monkeypatch.setattr(Path, "read_text", read_owner)
+        monkeypatch.setattr(Path, "unlink", delete_owner)
+        first = threading.Thread(target=release_same_object, name="first-release")
+        second = threading.Thread(target=release_same_object, args=(True,), name="second-release")
+        try:
+            first.start()
+            assert first_at_delete.wait(2)
+            second.start()
+            assert second_started.wait(2)
+            # An unsynchronized second release is held with its old owner read until a real
+            # successor acquires. A serialized release cannot perform that duplicate read.
+            second_read_owner.wait(0.2)
+            permit_first_delete.set()
+            first.join(2)
+            second.join(2)
+            assert not first.is_alive() and not second.is_alive() and errors == []
+>           assert lease.released and not second_read_owner.is_set()
+E           assert (True and not True)
+E            +  where True = <vibemql5.core.concurrency._QueuedFileLease object at 0x7f6c9542fcb0>.released
+E            +  and   True = is_set()
+E            +    where is_set = <threading.Event at 0x7f6c95450440: set>.is_set
+
+tests/unit/test_tip055b_runtime_forensics_release.py:277: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip055b_runtime_forensics_release.py::test_same_lease_concurrent_release_preserves_an_acquired_successor
+1 failed, 32 deselected in 0.07s

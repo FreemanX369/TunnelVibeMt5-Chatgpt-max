@@ -4,6 +4,7 @@ import contextvars
 import hashlib
 import json
 import os
+import threading
 import time
 import uuid
 from contextlib import contextmanager
@@ -11,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterator
 
-from .jobs import _exclusive_file_lock, _pid_exists
+from .jobs import _exclusive_file_lock, _pid_exists, _read_json_object
 
 _SCHEMA_VERSION = "1.0"
 _CURRENT_ACTOR: contextvars.ContextVar[dict[str, Any] | None] = contextvars.ContextVar(
@@ -155,6 +156,7 @@ class _QueuedFileLease:
         self.acquired_at = ""
         self.wait_elapsed_seconds = 0.0
         self.released = False
+        self._release_lock = threading.Lock()
 
     def _owner_payload(self) -> dict[str, Any]:
         return {
@@ -293,25 +295,45 @@ class _QueuedFileLease:
             raise
 
     def release(self) -> None:
-        if self.released:
-            return
-        self.released = True
-        try:
-            if self.lock_path.is_file():
-                try:
-                    data = json.loads(self.lock_path.read_text(encoding="utf-8"))
-                except Exception:
-                    data = {}
-                if data.get("token") == self.token:
-                    self.lock_path.unlink(missing_ok=True)
-        finally:
-            if self.ticket_path is not None:
-                try:
-                    self.ticket_path.unlink(missing_ok=True)
-                except OSError:
-                    pass
-                self.ticket_path = None
+        with self._release_lock:
+            if self.released:
+                return
+            deadline = time.monotonic() + 1.0
+            try:
+                while True:
+                    try:
+                        try:
+                            data = _read_json_object(self.lock_path, attempts=1)
+                        except FileNotFoundError:
+                            try:
+                                self.lock_path.lstat()
+                            except FileNotFoundError:
+                                self.released = True
+                                return
+                            raise
+                        token = data.get("token")
+                        if not isinstance(token, str) or not token.strip():
+                            raise ValueError(f"CONCURRENCY_{self.namespace.upper()}_OWNER_CORRUPT")
+                        if token == self.token:
+                            self.lock_path.unlink(missing_ok=True)
+                        self.released = True
+                        return
+                    except OSError as exc:
+                        remaining = deadline - time.monotonic()
+                        if getattr(exc, "winerror", None) not in {32, 33} or remaining <= 0:
+                            raise
+                        time.sleep(min(0.05, remaining))
+                        if time.monotonic() >= deadline:
+                            raise
+            finally:
+                if self.ticket_path is not None:
+                    try:
+                        self.ticket_path.unlink(missing_ok=True)
+                    except OSError:
+                        pass
+                    self.ticket_path = None
 
+    # Compatibility with the historical worker lock Path contract.
     def unlink(self, missing_ok: bool = True) -> None:
         self.release()
 
@@ -385,6 +407,8 @@ class ConcurrencyManager:
                     fh.flush()
                     os.fsync(fh.fileno())
         except Exception:
+            # Audit is diagnostic provenance, not the safety primitive. Lock/CAS failures
+            # remain fail-closed independently and must not be hidden by audit I/O noise.
             pass
 
     @contextmanager
