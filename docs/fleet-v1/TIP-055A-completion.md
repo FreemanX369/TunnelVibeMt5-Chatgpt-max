@@ -1,6 +1,6 @@
 # TIP-055A — Contractor Completion Report
 
-Date: 2026-10-02, Asia/Saigon. Status: **PARTIAL — implementation verified locally; deployment qualification pending**.
+Date: 2026-10-02, Asia/Saigon. Status: **PARTIAL — implementation and deployed code/read acceptance verified; real enrollment/qualification pending**. The original implementation evidence below remains historical; [the runtime checkpoint](TIP-055A-runtime-qualification.md) records the later approved rollout.
 
 ## Approval and candidate authority
 
@@ -28,7 +28,7 @@ YAGNI-3: identity must exist to remove alias/build ambiguity; reuse TerminalInfo
 | `app/vibemql5/fleet/targets.py` | M0-only exact local target validation |
 | `app/vibemql5/core/inventory.py` | Additive overlay; retain raw config rows to detect aliases before legacy dictionary collapse |
 | `app/vibemql5/adapters/cli.py` | `identity-show`, `identity-bootstrap`, `identity-update` before native facade construction |
-| `tests/unit/test_tip055a_identity.py` | AC fixtures, race/crash, resource, replay and compatibility cases |
+| `tests/unit/test_tip055a_runtime_forensics_identity.py` | AC fixtures, race/crash, resource, replay and compatibility cases; selected by the existing runtime_forensics suite |
 | `.github/workflows/verify-tip034-bootstrap.yml` | Print skipped-test reasons from the existing full Windows unit suite |
 | [Operator guide](TIP-055A-operator.md) | Bootstrap, alignment, update/retry, qualification and rollback procedure |
 
@@ -36,7 +36,7 @@ Planning-document edits record actual owner approval and the current checkpoint.
 
 ## AC verification map
 
-Test references below are in `tests/unit/test_tip055a_identity.py` unless a legacy test file is named. PASS denotes the listed fixture/output, not a deployed MT5 result.
+Test references below are in `tests/unit/test_tip055a_runtime_forensics_identity.py` unless a legacy test file is named. PASS denotes the listed fixture/output, not a deployed MT5 result.
 
 | AC | Evidence | Contractor result |
 |---|---|---|
@@ -82,9 +82,9 @@ These corrections stay within the approved contract. No architecture/policy devi
 
 ## Remaining gates and next action
 
-- Review the implementation PR and its exact-head Windows CI, including whether the junction test executed or explicitly skipped.
-- Before deployed M0 acceptance, prepare a reviewed exact-head deployment/rollback package and obtain deployment-specific authorization. Verify actual executable/data-root independence, retained identity backup/recovery and selected-client inventory output on the real Windows installation.
-- No VPS identity was initialized, no service was deployed/restarted and no native MT5/account/credential/AutoTrading operation was performed in this iteration.
+- Implementation PR #54 passed exact-head CI and merged under continuation approval. PR #55 preserves live CLI comments and reuses the fixed forensics selector; its source head passed all four workflows, with the Windows junction fixture executed on CI.
+- The authorized six-file rollout, compile/isolated fixtures and B/C/A refresh are complete; public old fields are preserved and M0 fields visible. See the runtime checkpoint and exact hash/write/restart receipts.
+- Real VPS identity initialization, canonical binding/reload/backup qualification remain open: all five rows are UNENROLLED/UNQUALIFIED. No native MT5/account/credential/AutoTrading operation was performed. The original implementation iteration made no VPS deployment; the later approved rollout is recorded separately.
 - M1 starts with its own concrete TIP-057R specification and readiness review after the applicable 055A verification gate. Its outline and later gateway choices are not implementation-completion evidence.
 
-The full big update remains in progress. TIP-055A has a reviewable implementation; its PARTIAL status preserves deployment qualification as an open gate.
+The full big update remains in progress. TIP-055A code is deployed; its PARTIAL status preserves real enrollment/resource qualification as an open gate.

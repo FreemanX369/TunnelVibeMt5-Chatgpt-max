@@ -1,6 +1,6 @@
 # Fleet v1 — Revised Task Graph
 
-Status: **ACTIVE after recorded Blueprint approval**; TIP-055A implementation verified locally, with deployment qualification pending. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md) and [Completion Report](TIP-055A-completion.md).
+Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified; real identity enrollment/resource qualification remains OPEN. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [runtime checkpoint](TIP-055A-runtime-qualification.md).
 
 ## TIP scopes and dependencies
 
@@ -18,6 +18,8 @@ Status: **ACTIVE after recorded Blueprint approval**; TIP-055A implementation ve
 | TIP-061B | Remote guarded source mutation | 060 | Single project writer, exact checkpoint/source CAS, operation transport and recovery fencing |
 | TIP-063 | Multi-agent task isolation | 061B + 060 | Verified principal ownership and Git worktree; no duplicate Continuity system |
 | TIP-064 | Final fleet release qualification | Every capability included in the selected release | Scope-bound fault/load/soak/migration/restore evidence on exact candidate |
+
+Current execution checkpoint: PR #54 merged; PR #55 records the bounded fixture/drift follow-up and six-file VPS installation. Compile and isolated forensics fixtures PASS; B/C/A refreshed; all five public rows remain UNENROLLED/UNQUALIFIED. This does not close stable enrolled physical identity acceptance or unlock 057R build. Its concrete spec may be refined while the operator enrollment gate is completed.
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 

@@ -21,7 +21,7 @@ Primary reuse/context:
 - `app/vibemql5/adapters/mcp.py`, `contracts.py`, `adapters/cli.py`: current tool/catalog and bootstrap interface.
 - Existing `tests/unit/test_tip053_catalog.py`, TIP-024 concurrency tests, TIP-028 idempotency, TIP-054 guard tests and inventory selection tests are regression anchors. Locate their exact files at dispatch rather than guessing names.
 
-Proposed modules: `app/vibemql5/fleet/identity.py` and `targets.py` if existing modules cannot express the small contract cleanly. Proposed new tests `tests/unit/test_tip055a_identity.py`. Builder may choose an equivalent shorter organization and reports it. No generic repository abstraction or transport is added.
+Proposed modules: `app/vibemql5/fleet/identity.py` and `targets.py` if existing modules cannot express the small contract cleanly. New tests are `tests/unit/test_tip055a_runtime_forensics_identity.py`, named for the existing bounded runtime-forensics selector. Builder may choose an equivalent shorter organization and reports it. No generic repository abstraction or transport is added.
 
 ## Task
 
