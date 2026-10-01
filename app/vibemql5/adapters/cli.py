@@ -71,6 +71,8 @@ def wait_for_job(f: ToolFacade, job_id: str, timeout: int) -> dict:
         seq = int(job.get("event_seq") or seq)
         if job.get("state") in FINAL:
             return f.read_result(job_id)
+    # A positive explicit CLI safety timeout remains authoritative. Cancel only
+    # the exact job; timeout=0 never enters this branch.
     try:
         f.cancel_job(job_id)
     except Exception:

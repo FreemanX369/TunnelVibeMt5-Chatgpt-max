@@ -28,7 +28,7 @@ YAGNI-3: identity must exist to remove alias/build ambiguity; reuse TerminalInfo
 | `app/vibemql5/fleet/targets.py` | M0-only exact local target validation |
 | `app/vibemql5/core/inventory.py` | Additive overlay; retain raw config rows to detect aliases before legacy dictionary collapse |
 | `app/vibemql5/adapters/cli.py` | `identity-show`, `identity-bootstrap`, `identity-update` before native facade construction |
-| `tests/unit/test_tip055a_identity.py` | AC fixtures, race/crash, resource, replay and compatibility cases |
+| `tests/unit/test_tip055a_runtime_forensics_identity.py` | AC fixtures, race/crash, resource, replay and compatibility cases; selected by the existing runtime_forensics suite |
 | `.github/workflows/verify-tip034-bootstrap.yml` | Print skipped-test reasons from the existing full Windows unit suite |
 | [Operator guide](TIP-055A-operator.md) | Bootstrap, alignment, update/retry, qualification and rollback procedure |
 
@@ -36,7 +36,7 @@ Planning-document edits record actual owner approval and the current checkpoint.
 
 ## AC verification map
 
-Test references below are in `tests/unit/test_tip055a_identity.py` unless a legacy test file is named. PASS denotes the listed fixture/output, not a deployed MT5 result.
+Test references below are in `tests/unit/test_tip055a_runtime_forensics_identity.py` unless a legacy test file is named. PASS denotes the listed fixture/output, not a deployed MT5 result.
 
 | AC | Evidence | Contractor result |
 |---|---|---|
