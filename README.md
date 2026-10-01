@@ -36,6 +36,10 @@ Project updates are persisted here rather than existing only in chat. Source, co
 
 This repository starts intentionally minimal. Additional files/directories are added only when required by an implemented or verified capability.
 
+## Fleet big-update planning
+
+See [Fleet v1 Blueprint checkpoint](docs/fleet-v1/README.md) for the proposed Vibecode Kit v6 big-update scope, decision ledger, revised task graph and TIP-055A specification. This is a documentation proposal pending owner approval; it does not change the fixed MT5-2 operating policy or certify fleet capabilities.
+
 ## Latest release candidate
 
 See [TIP-040 live MT5-2 observations](docs/releases/TIP-040.md) for the on-demand account, chart, screenshot and log tool contracts and their runtime acceptance gate.
