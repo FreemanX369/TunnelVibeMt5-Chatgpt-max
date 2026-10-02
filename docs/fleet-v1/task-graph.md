@@ -8,7 +8,7 @@ Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual 
 |---|---|---|---|
 | TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | DONE for M0: code/read installation, actual stable IDs, verified backup/reload and five inventory QUALIFIED bindings |
 | TIP-055B | Bounded existing lease-release liveness correction | Verified 055A source / issue #56 | DONE: actual Windows CI and guarded VPS compile/fixtures/refresh/readback PASS; no native routing |
-| TIP-057R | Local targeted read path | 055A | Two distinct physical bindings, exact IPC roots, serialize lifecycle; no native routing |
+| TIP-057R | Local targeted read path | 055A | Contract prepared; product BUILD blocked by shared cleanup ownership and strict no-start; later two-binding/client acceptance |
 | TIP-058 | Singleton gateway + outbound node enrollment | 055A; 057R before targeted-read acceptance | TLS/enrollment/replay/revoke/restart; actual endpoint and worker capability contract |
 | TIP-059 | Remote targeted read fleet | 057R + 058 | Exact node/terminal attribution, scoped failures, bounded deadlines and restart/reconnect |
 | TIP-062A | Minimal fleet snapshot | 059 | Partial coverage/freshness; per-target account values; no totals or heavy auto-captures |
@@ -20,7 +20,7 @@ Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual 
 | TIP-063 | Multi-agent task isolation | 061B + 060 | Verified principal ownership and Git worktree; no duplicate Continuity system |
 | TIP-064 | Final fleet release qualification | Every capability included in the selected release | Scope-bound fault/load/soak/migration/restore evidence on exact candidate |
 
-Current execution checkpoint: PR #54/#55/#57/#58 merged; M0 installation and bounded lease correction qualified; issue #56 closed. Explicit 12:07 PowerShell authorization now has [actual enrollment receipts](TIP-055A-enrollment-qualification.md): all five rows ENROLLED/QUALIFIED, stable generation/revision1, verified backup/reload and native routing false. [TIP-056 readiness](TIP-056-readiness.md) remains M4 after TIP-060. [TIP-057R readiness](TIP-057R-readiness.md) and [source scan](TIP-057R-source-scan.md) retain schema/deadline/cleanup/no-start contract gates before BUILD; enrollment is closed.
+Current execution checkpoint: PR #54/#55/#57/#58/#59 merged; M0 installation and bounded lease correction qualified; issue #56 closed. Explicit 12:07 PowerShell authorization now has [actual enrollment receipts](TIP-055A-enrollment-qualification.md): all five rows ENROLLED/QUALIFIED, stable generation/revision1, verified backup/reload and native routing false. [TIP-056 readiness](TIP-056-readiness.md) remains M4 after TIP-060. The 13:36 continuation completes [TIP-057R contract](TIP-057R-contract.md) preparation and [Builder feasibility](TIP-057R-feasibility.md); shared recovery and strict no-start still block usable target IPC. Next concrete decision is [TIP-057R-Q isolated Windows boundary proof](TIP-057R-boundary-proposal.md), a proposal outside product BUILD until separately approved. No roadmap ordering or capability unlock changed.
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 
