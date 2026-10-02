@@ -2,6 +2,8 @@
 
 Date: 2026-10-02, Asia/Saigon. Status: **DONE for the bounded lease-release correction**. Real M0 identity enrollment/resource qualification remains **OPEN**. This is the Contractor qualification of [PR #57](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/57), after the Builder's local [Completion Report](TIP-055B-completion.md).
 
+Latest independent M0 update: [actual local enrollment/backup/reload/inventory qualification PASS](TIP-055A-enrollment-qualification.md), after explicit PowerShell authorization at 12:07:49. The OPEN/UNENROLLED samples below are retained historical TIP-055B observations; this later identity transition does not change the reviewed lease source or native policy.
+
 ## Exact authority
 
 Owner continuation “Duyệt tiếp tục theo plan” at 02:12:19+07:00 is recorded in [the approval ledger](approval-2026-10-02.md). Reviewed source head `954e2e7bcaaec062484e47c3c32605558fea83d4`, tree `ef091532815cbe1aac07ba5380f8c0ad2e6d3789`, derives from main `db9a12895c1b908fb6b0e61f89f9d76db1b04415`. All 171 candidate blobs were verified. The following checkpoint commit changes documents/evidence only; runtime and regression bytes remain those reviewed and deployed.
@@ -42,4 +44,3 @@ The historical Soak PASS belongs to generation `58cd0f1bcb3346439b81afe2116226eb
 TIP-055B output gates are closed by these receipts; issue #56 can close after exact reviewed PR merge. M0 remains PARTIAL. Use the existing [concrete local CLI enrollment steps](TIP-055A-runtime-qualification.md#concrete-operator-step-to-close-enrollment), retain bootstrap/show/reload and a hash-verified complete registry backup, and require at least two distinct physically QUALIFIED bindings.
 
 The connector has no identity CLI executor and cannot access `state/fleet` through guarded file operations. This is the current execution boundary, not a new permission question. No generic PowerShell MCP, JSON injection, native job, live chart or account/credential/AutoTrading operation was used. [TIP-057R readiness](TIP-057R-readiness.md) marks release recovery evidence closed while enrollment and frozen schema/deadline ACs remain open; its build is not dispatched.
-

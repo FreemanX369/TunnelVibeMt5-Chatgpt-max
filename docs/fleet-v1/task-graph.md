@@ -1,12 +1,12 @@
 # Fleet v1 — Revised Task Graph
 
-Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified; real identity enrollment/resource qualification remains OPEN. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [runtime checkpoint](TIP-055A-runtime-qualification.md).
+Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual local enrollment/backup/reload/inventory resource qualification verified. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment checkpoint](TIP-055A-enrollment-qualification.md).
 
 ## TIP scopes and dependencies
 
 | TIP | Output | Dependencies | Unlock / acceptance gate |
 |---|---|---|---|
-| TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | Code/read deployment verified; real stable-ID/resource qualification remains open |
+| TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | DONE for M0: code/read installation, actual stable IDs, verified backup/reload and five inventory QUALIFIED bindings |
 | TIP-055B | Bounded existing lease-release liveness correction | Verified 055A source / issue #56 | DONE: actual Windows CI and guarded VPS compile/fixtures/refresh/readback PASS; no native routing |
 | TIP-057R | Local targeted read path | 055A | Two distinct physical bindings, exact IPC roots, serialize lifecycle; no native routing |
 | TIP-058 | Singleton gateway + outbound node enrollment | 055A; 057R before targeted-read acceptance | TLS/enrollment/replay/revoke/restart; actual endpoint and worker capability contract |
@@ -20,7 +20,7 @@ Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified;
 | TIP-063 | Multi-agent task isolation | 061B + 060 | Verified principal ownership and Git worktree; no duplicate Continuity system |
 | TIP-064 | Final fleet release qualification | Every capability included in the selected release | Scope-bound fault/load/soak/migration/restore evidence on exact candidate |
 
-Current execution checkpoint: PR #54/#55/#57 merged; six-file M0 installation and bounded lease correction qualified on the VPS; issue #56 closed after exact reviewed merge. All five public rows remain UNENROLLED/UNQUALIFIED on the 11:27 continuation. [TIP-056 readiness](TIP-056-readiness.md) confirms M4 after TIP-060; it is not the next implementation by numeric ID. [TIP-057R readiness](TIP-057R-readiness.md) and [source scan](TIP-057R-source-scan.md) record the next bounded slice and remaining enrollment/schema/deadline/cleanup/no-start gates, without dispatching BUILD.
+Current execution checkpoint: PR #54/#55/#57/#58 merged; M0 installation and bounded lease correction qualified; issue #56 closed. Explicit 12:07 PowerShell authorization now has [actual enrollment receipts](TIP-055A-enrollment-qualification.md): all five rows ENROLLED/QUALIFIED, stable generation/revision1, verified backup/reload and native routing false. [TIP-056 readiness](TIP-056-readiness.md) remains M4 after TIP-060. [TIP-057R readiness](TIP-057R-readiness.md) and [source scan](TIP-057R-source-scan.md) retain schema/deadline/cleanup/no-start contract gates before BUILD; enrollment is closed.
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 

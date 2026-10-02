@@ -2,6 +2,8 @@
 
 Date: 2026-10-02, Asia/Saigon. Status: **READINESS REVIEW COMPLETE / BUILD BLOCKED BY DEPENDENCIES**. This is a planning checkpoint, not a dispatched TIP or concurrency certificate. User request: “Check task tip-056 theo plan & tiếp tục”, 11:27:00+07:00.
 
+Latest dependency update: [actual M0 local enrollment/backup/reload/inventory qualification PASS](TIP-055A-enrollment-qualification.md), after explicit 12:07 PowerShell authorization. Historical UNENROLLED/read-only samples below are retained. TIP-056 still waits for TIP-060 and its own measured physical capacity contract.
+
 ## Approved placement and current evidence
 
 The [approved task graph](task-graph.md) places TIP-056 at **M4 after TIP-060**, not immediately after TIP-055B. Blueprint section 9 preserves node native capacity 1 through M3 and requires resource conflict qualification before same-node parallelism. REQ-F11 is the primary requirement; REQ-F02/F06/F07/F08/F10/F15 supply compatibility, target, replay, cancellation, session and release constraints.
@@ -12,7 +14,7 @@ A and C retain one recovered poll TIMEOUT episode each, at 05:35 and 07:51 respe
 
 | Dependency | Current result | Needed to dispatch TIP-056 |
 |---|---|---|
-| TIP-055A / M0 | Code/read installation PASS; actual identity qualification OPEN | Stable real IDs, complete verified backup/reload, physically independent resources |
+| TIP-055A / M0 | PASS for approved local scope; five stable inventory QUALIFIED bindings, verified complete backup/reload | CLOSED for M0; later live/native session and capacity qualification remain separate |
 | TIP-057R | Readiness and [source scan](TIP-057R-source-scan.md); no implementation | Qualified exact local reads and serialized IPC lifecycle |
 | TIP-058/059 | Roadmap only | Enrolled node transport and exact remote read bindings |
 | TIP-061A / TIP-057N | Roadmap only | Frozen project/job targets and exact local native worker/result/cancel provenance |
@@ -72,8 +74,8 @@ These are output requirements to refine into the dispatched TIP after prerequisi
 
 ## Next authorized work
 
-Continue the nearest unmet dependency: real M0 enrollment, then freeze the [TIP-057R contract](TIP-057R-readiness.md) using its source scan. The existing [operator CLI handoff](TIP-055A-runtime-qualification.md#concrete-operator-step-to-close-enrollment) is concrete: identity-show → coordinated identity-bootstrap → fresh-process identity-show, verified complete backup, then public inventory proving two distinct physical QUALIFIED bindings.
+M0 enrollment has been executed and qualified. Continue by freezing the [TIP-057R contract](TIP-057R-readiness.md) using the source scan and actual enrolled IDs, resolving additive schema/deadline/cleanup/no-start decisions before BUILD. The retained [operator CLI procedure](TIP-055A-runtime-qualification.md#concrete-operator-step-to-close-enrollment) remains for controlled future identity transitions; do not reset or recreate the current registry.
 
-The connector exposes no specialized identity CLI executor and guarded files exclude `state/fleet`. Generic PowerShell MCP remains outside the approved scope. Approval is not enrollment evidence; no hidden fixture or JSON injection substitutes for it.
+The connector exposes no specialized identity CLI executor and guarded files still exclude `state/fleet`. Explicit owner authorization enabled bounded PowerShell CLI/backup for this M0 transition; other generic PowerShell scope remains excluded. Actual receipts, not approval alone, close the gate; no hidden fixture or JSON injection was used.
 
 Build dispatch for TIP-056 must reference the exact future dependency heads, chosen pilot target IDs/resource sets, numeric admission/fairness policy and actual recovery/Windows plan. This readiness document changes no approved dependency order or product capability.

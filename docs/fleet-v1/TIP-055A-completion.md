@@ -1,6 +1,6 @@
 # TIP-055A — Contractor Completion Report
 
-Date: 2026-10-02, Asia/Saigon. Status: **PARTIAL — implementation and deployed code/read acceptance verified; real enrollment/qualification pending**. The original implementation evidence below remains historical; [the runtime checkpoint](TIP-055A-runtime-qualification.md) records the later approved rollout.
+Date: 2026-10-02, Asia/Saigon. Status: **DONE FOR M0 — implementation, deployed code/read acceptance and actual local enrollment/backup/reload/inventory qualification PASS**. The original implementation evidence and handoff gates below remain historical; [the deployment checkpoint](TIP-055A-runtime-qualification.md) and [actual enrollment checkpoint](TIP-055A-enrollment-qualification.md) record later approved receipts. This does not certify the remaining fleet roadmap.
 
 ## Approval and candidate authority
 

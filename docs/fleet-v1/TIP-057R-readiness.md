@@ -1,8 +1,8 @@
 # TIP-057R — Targeted local read readiness
 
-Status: REFINEMENT ONLY; not dispatched or capability-qualified. Direction derives from approved Blueprint section 6 and REQ-F04/F10/F14/F15. Current M0 runtime has five UNENROLLED/UNQUALIFIED rows; real identity acceptance remains a build dependency. TIP-055B is corrective maintenance for the existing global lease, not implementation of this TIP.
+Status: REFINEMENT ONLY; not dispatched or capability-qualified. Direction derives from approved Blueprint section 6 and REQ-F04/F10/F14/F15. [Actual M0 enrollment/backup/reload/inventory qualification is now PASS](TIP-055A-enrollment-qualification.md), with five real ENROLLED/QUALIFIED bindings and stable IDs. TIP-055B is corrective maintenance for the existing global lease, not implementation of this TIP.
 
-The resumed [focused source scan](TIP-057R-source-scan.md) is complete at the 11:27 continuation and provides draft signatures/output/error/budget inputs. Real enrollment and unresolved lifecycle/deadline/no-start contracts still gate dispatch; draft inputs are not implemented APIs.
+The resumed [focused source scan](TIP-057R-source-scan.md) is complete and provides draft signatures/output/error/budget inputs. Enrollment is closed by later actual receipts. Additive schema and unresolved lifecycle/deadline/no-start contracts still gate dispatch; draft inputs are not implemented APIs.
 
 ## Smallest next slice
 
@@ -42,7 +42,7 @@ A hard deadline for an uninterruptible native-library call may require a separat
 
 ## Evidence needed to turn this into a dispatchable TIP
 
-1. Real M0 bootstrap/show receipts, stable IDs across fresh process, verified complete registry backup and at least two physically independent QUALIFIED bindings.
+1. CLOSED: [real M0 bootstrap/show/backup/reload/public inventory receipts](TIP-055A-enrollment-qualification.md) prove five stable actual local QUALIFIED bindings. This is inventory qualification, not live IPC/session or native capacity acceptance.
 2. CLOSED for release recovery: [TIP-055B runtime checkpoint](TIP-055B-runtime-qualification.md) binds exact reviewed/deployed source, four passing CI workflows, actual Windows handles and guarded VPS qualification. Initial issue #56 failure remains retained. This closes no identity or targeted IPC gate.
 3. Source/schema delta and exact state/account output shape frozen; chosen actual pilot target IDs recorded. No illustrative labels substituted.
 4. Numeric caller/lease/IPC deadline contract and honest non-cancellable-call recovery policy selected before build.

@@ -1,6 +1,6 @@
 # TIP-055A — Deployed M0 checkpoint
 
-Date: 2026-10-02, Asia/Saigon. Status: **PARTIAL — M0 code deployed and read acceptance PASS; real identity enrollment/qualification OPEN**.
+Date: 2026-10-02, Asia/Saigon. Original deployed-code checkpoint: **PASS**. Latest M0 enrollment/backup/reload/inventory qualification: **PASS at the 12:07 authorized continuation**, with [actual receipts](TIP-055A-enrollment-qualification.md). The UNENROLLED samples, operator boundary and pending labels below are the retained original deployment observations, not current identity state.
 
 ## Authority and result
 
@@ -66,4 +66,4 @@ Then refresh public `list_terminals` through the existing MCP read path. Require
 
 ## Next capability gate
 
-TIP-055A implementation/deployment and un-enrolled read acceptance are verified; M0 remains PARTIAL until real enrollment, reload/backup and deployed resource qualification have receipts. TIP-057R specification/refinement may be prepared from the approved graph, but its build/targeted-read acceptance must retain that dependency. Gateway, remote nodes, native routing and concurrency remain subsequent TIPs; this checkpoint does not unlock them.
+The later [actual enrollment checkpoint](TIP-055A-enrollment-qualification.md) now closes real local enrollment, backup/reload and inventory resource qualification for all five rows. M0 is PASS for its approved scope. TIP-057R may use these actual IDs while retaining its unresolved additive schema/deadline/cleanup/no-start contract and physical live-read acceptance gates. Gateway, remote nodes, native routing and concurrency remain subsequent TIPs.
