@@ -81,7 +81,7 @@ No open item below blocks writing/reviewing this package. Only items for the TIP
 | O-09 | Conflict matrix, capacity reservation, lock ordering and measured resource/latency/fairness thresholds | 056 build |
 | O-10 | Remote source-guard transport, recovery fencing and verified caller principal model | 061B/063 build |
 | O-11 | Physical topology, test workload, soak/performance/recovery thresholds and release/deploy scope | 064 qualification |
-| O-12 | Shared uncertain-IPC ownership/recovery mechanism and preventive attach-only boundary; approved Q1 fixture investigation now in progress | 057R product BUILD; Q1 approval closed, production/Q2 still open |
+| O-12 | Shared uncertain-IPC ownership/recovery mechanism and preventive attach-only boundary; Q1 fixture cases verified / PARTIAL with Q03 and product paths OPEN | 057R product BUILD; Q1 approval closed, production/Q2 still open |
 
 TIP-057R G02-schema preparation is complete; G02 actual client/pilot remains a later acceptance gate. Local soft-budget selection does not imply hard deadline qualification. G03-ownership/G04 remain OPEN, not paperwork gates or reasons to manufacture successful account reads. The original Blueprint architecture and product policy are unchanged.
 
