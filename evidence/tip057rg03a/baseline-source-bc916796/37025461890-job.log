@@ -1,0 +1,215 @@
+﻿2026-10-02T15:13:42.3843454Z Current runner version: '2.337.0'
+2026-10-02T15:13:42.3879028Z ##[group]Runner Image Provisioner
+2026-10-02T15:13:42.3880353Z Hosted Compute Agent
+2026-10-02T15:13:42.3881439Z Version: 20260901.588
+2026-10-02T15:13:42.3882486Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-02T15:13:42.3883795Z Build Date: 2026-09-01T19:56:44Z
+2026-10-02T15:13:42.3885290Z Worker ID: {5101de11-830a-47aa-a243-6761705d2179}
+2026-10-02T15:13:42.3886557Z Azure Region: eastus
+2026-10-02T15:13:42.3887643Z ##[endgroup]
+2026-10-02T15:13:42.3889982Z ##[group]Operating System
+2026-10-02T15:13:42.3891102Z Ubuntu
+2026-10-02T15:13:42.3891965Z 24.04.5
+2026-10-02T15:13:42.3892942Z LTS
+2026-10-02T15:13:42.3893825Z ##[endgroup]
+2026-10-02T15:13:42.3894963Z ##[group]Runner Image
+2026-10-02T15:13:42.3896129Z Image: ubuntu-24.04
+2026-10-02T15:13:42.3897062Z Version: 20260927.320.1
+2026-10-02T15:13:42.3899190Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-02T15:13:42.3901983Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+2026-10-02T15:13:42.3903821Z ##[endgroup]
+2026-10-02T15:13:42.3906117Z ##[group]GITHUB_TOKEN Permissions
+2026-10-02T15:13:42.3909431Z Contents: read
+2026-10-02T15:13:42.3910542Z Metadata: read
+2026-10-02T15:13:42.3911444Z ##[endgroup]
+2026-10-02T15:13:42.3914847Z Secret source: Actions
+2026-10-02T15:13:42.3916501Z Cache mode: write
+2026-10-02T15:13:42.3917694Z Prepare workflow directory
+2026-10-02T15:13:42.4408474Z Prepare all required actions
+2026-10-02T15:13:42.4481449Z Getting action download info
+2026-10-02T15:13:42.6468440Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-02T15:13:42.7622175Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-02T15:13:42.9484671Z Complete job name: idempotent-bindings
+2026-10-02T15:13:43.0292155Z ##[group]Run actions/checkout@v4
+2026-10-02T15:13:43.0293107Z with:
+2026-10-02T15:13:43.0293651Z   repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.0297782Z   token: ***
+2026-10-02T15:13:43.0298233Z   ssh-strict: true
+2026-10-02T15:13:43.0298686Z   ssh-user: git
+2026-10-02T15:13:43.0299144Z   persist-credentials: true
+2026-10-02T15:13:43.0299648Z   clean: true
+2026-10-02T15:13:43.0300101Z   sparse-checkout-cone-mode: true
+2026-10-02T15:13:43.0300642Z   fetch-depth: 1
+2026-10-02T15:13:43.0301092Z   fetch-tags: false
+2026-10-02T15:13:43.0301616Z   show-progress: true
+2026-10-02T15:13:43.0302136Z   lfs: false
+2026-10-02T15:13:43.0302621Z   submodules: false
+2026-10-02T15:13:43.0303079Z   set-safe-directory: true
+2026-10-02T15:13:43.0303595Z   allow-unsafe-pr-checkout: false
+2026-10-02T15:13:43.0304574Z ##[endgroup]
+2026-10-02T15:13:43.1382645Z Syncing repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.1386404Z ##[group]Getting Git version info
+2026-10-02T15:13:43.1388011Z Working directory is '/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max'
+2026-10-02T15:13:43.1390254Z [command]/usr/bin/git version
+2026-10-02T15:13:43.1428842Z git version 2.55.0
+2026-10-02T15:13:43.1565798Z ##[endgroup]
+2026-10-02T15:13:43.1574966Z Temporarily overriding HOME='/home/runner/work/_temp/faf2275f-7ba2-425b-ae00-6c3848eabd1c' before making global git config changes
+2026-10-02T15:13:43.1577475Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T15:13:43.1580311Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.1584142Z Deleting the contents of '/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max'
+2026-10-02T15:13:43.1586635Z ##[group]Initializing the repository
+2026-10-02T15:13:43.1588231Z [command]/usr/bin/git init /home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.1705477Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-02T15:13:43.1709366Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-02T15:13:43.1711253Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-02T15:13:43.1712813Z hint: call:
+2026-10-02T15:13:43.1713876Z hint:
+2026-10-02T15:13:43.1715256Z hint: 	git config --global init.defaultBranch <name>
+2026-10-02T15:13:43.1716391Z hint:
+2026-10-02T15:13:43.1717431Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-02T15:13:43.1719084Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-02T15:13:43.1720524Z hint:
+2026-10-02T15:13:43.1721349Z hint: 	git branch -m <name>
+2026-10-02T15:13:43.1722289Z hint:
+2026-10-02T15:13:43.1723404Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-02T15:13:43.1725439Z Initialized empty Git repository in /home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/.git/
+2026-10-02T15:13:43.1728971Z [command]/usr/bin/git remote add origin https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.1779527Z ##[endgroup]
+2026-10-02T15:13:43.1780917Z ##[group]Disabling automatic garbage collection
+2026-10-02T15:13:43.1784716Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-02T15:13:43.1820418Z ##[endgroup]
+2026-10-02T15:13:43.1821798Z ##[group]Setting up auth
+2026-10-02T15:13:43.1829362Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T15:13:43.1866485Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T15:13:43.2248838Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T15:13:43.2291223Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T15:13:43.2529106Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T15:13:43.2566949Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T15:13:43.2796840Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-02T15:13:43.2839363Z ##[endgroup]
+2026-10-02T15:13:43.2840230Z ##[group]Fetching the repository
+2026-10-02T15:13:43.2849608Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd:refs/remotes/pull/62/merge
+2026-10-02T15:13:43.6158683Z From https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.6160034Z  * [new ref]         12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd -> pull/62/merge
+2026-10-02T15:13:43.6163285Z ##[endgroup]
+2026-10-02T15:13:43.6164645Z ##[group]Determining the checkout info
+2026-10-02T15:13:43.6168109Z ##[endgroup]
+2026-10-02T15:13:43.6176190Z [command]/usr/bin/git sparse-checkout disable
+2026-10-02T15:13:43.6246032Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-02T15:13:43.6283309Z ##[group]Checking out the ref
+2026-10-02T15:13:43.6287219Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/62/merge
+2026-10-02T15:13:43.6591033Z Note: switching to 'refs/remotes/pull/62/merge'.
+2026-10-02T15:13:43.6591872Z 
+2026-10-02T15:13:43.6592311Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-02T15:13:43.6593332Z changes and commit them, and you can discard any commits you make in this
+2026-10-02T15:13:43.6594610Z state without impacting any branches by switching back to a branch.
+2026-10-02T15:13:43.6595225Z 
+2026-10-02T15:13:43.6595682Z If you want to create a new branch to retain commits you create, you may
+2026-10-02T15:13:43.6596907Z do so (now or later) by using -c with the switch command. Example:
+2026-10-02T15:13:43.6597436Z 
+2026-10-02T15:13:43.6597673Z   git switch -c <new-branch-name>
+2026-10-02T15:13:43.6598055Z 
+2026-10-02T15:13:43.6598279Z Or undo this operation with:
+2026-10-02T15:13:43.6598628Z 
+2026-10-02T15:13:43.6598826Z   git switch -
+2026-10-02T15:13:43.6599155Z 
+2026-10-02T15:13:43.6599585Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-02T15:13:43.6600281Z 
+2026-10-02T15:13:43.6601209Z HEAD is now at 12f6b67 Merge bc9167969d67d288c37a4ce9aa5854a0bf2db14d into 70e2112da9fe8eaa6262f2ba896b55bf3e078260
+2026-10-02T15:13:43.6663840Z ##[endgroup]
+2026-10-02T15:13:43.6668148Z [command]/usr/bin/git log -1 --format=%H
+2026-10-02T15:13:43.6697585Z 12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd
+2026-10-02T15:13:43.7043859Z ##[group]Run actions/setup-python@v5
+2026-10-02T15:13:43.7044936Z with:
+2026-10-02T15:13:43.7045464Z   python-version: 3.12
+2026-10-02T15:13:43.7046091Z   check-latest: false
+2026-10-02T15:13:43.7055356Z   token: ***
+2026-10-02T15:13:43.7055896Z   update-environment: true
+2026-10-02T15:13:43.7056586Z   allow-prereleases: false
+2026-10-02T15:13:43.7057260Z   freethreaded: false
+2026-10-02T15:13:43.7057830Z ##[endgroup]
+2026-10-02T15:13:43.8508923Z ##[group]Installed versions
+2026-10-02T15:13:43.8596923Z (node:2319) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-02T15:13:43.8600680Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-02T15:13:43.8602896Z Successfully set up CPython (3.12.14)
+2026-10-02T15:13:43.8605459Z ##[endgroup]
+2026-10-02T15:13:43.8836207Z ##[group]Run python -m py_compile \
+2026-10-02T15:13:43.8837757Z [36;1mpython -m py_compile \[0m
+2026-10-02T15:13:43.8839114Z [36;1m  app/vibemql5/core/project_sessions.py \[0m
+2026-10-02T15:13:43.8840638Z [36;1m  app/vibemql5/core/facade.py \[0m
+2026-10-02T15:13:43.8841994Z [36;1m  app/vibemql5/adapters/mcp.py \[0m
+2026-10-02T15:13:43.8843584Z [36;1m  tests/unit/test_tip028_idempotent_bindings.py[0m
+2026-10-02T15:13:43.9161639Z shell: /usr/bin/bash -e {0}
+2026-10-02T15:13:43.9162565Z env:
+2026-10-02T15:13:43.9163455Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:43.9165364Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-02T15:13:43.9167110Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:43.9168567Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:43.9169806Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:43.9171142Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-02T15:13:43.9172151Z ##[endgroup]
+2026-10-02T15:13:44.0479306Z ##[group]Run python - <<'PY'
+2026-10-02T15:13:44.0480128Z [36;1mpython - <<'PY'[0m
+2026-10-02T15:13:44.0480781Z [36;1mimport ast[0m
+2026-10-02T15:13:44.0481395Z [36;1mfrom pathlib import Path[0m
+2026-10-02T15:13:44.0482130Z [36;1m[0m
+2026-10-02T15:13:44.0482655Z [36;1mdef parameters(path, name):[0m
+2026-10-02T15:13:44.0483710Z [36;1m    tree = ast.parse(Path(path).read_text(encoding="utf-8"))[0m
+2026-10-02T15:13:44.0485815Z [36;1m    matches = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == name][0m
+2026-10-02T15:13:44.0487653Z [36;1m    assert len(matches) == 1, (path, name, len(matches))[0m
+2026-10-02T15:13:44.0488692Z [36;1m    node = matches[0][0m
+2026-10-02T15:13:44.0490069Z [36;1m    return [arg.arg for arg in (*node.args.posonlyargs, *node.args.args, *node.args.kwonlyargs)][0m
+2026-10-02T15:13:44.0491520Z [36;1m[0m
+2026-10-02T15:13:44.0492279Z [36;1massert {"operation_id", "expected_revision_sha256"} <= set([0m
+2026-10-02T15:13:44.0493753Z [36;1m    parameters("app/vibemql5/core/project_sessions.py", "update")[0m
+2026-10-02T15:13:44.0495013Z [36;1m)[0m
+2026-10-02T15:13:44.0495777Z [36;1massert {"operation_id", "expected_revision_sha256"} <= set([0m
+2026-10-02T15:13:44.0497467Z [36;1m    parameters("app/vibemql5/core/facade.py", "update_project_session")[0m
+2026-10-02T15:13:44.0498670Z [36;1m)[0m
+2026-10-02T15:13:44.0499710Z [36;1massert "operation_id" in parameters("app/vibemql5/core/facade.py", "launch_test")[0m
+2026-10-02T15:13:44.0501362Z [36;1massert {"operation_id", "expected_revision_sha256"} <= set([0m
+2026-10-02T15:13:44.0502867Z [36;1m    parameters("app/vibemql5/adapters/mcp.py", "update_project_session")[0m
+2026-10-02T15:13:44.0504090Z [36;1m)[0m
+2026-10-02T15:13:44.0505305Z [36;1massert "operation_id" in parameters("app/vibemql5/adapters/mcp.py", "launch_test")[0m
+2026-10-02T15:13:44.0506949Z [36;1massert {"operation_id", "expected_revision_sha256"} <= set([0m
+2026-10-02T15:13:44.0508495Z [36;1m    parameters("app/vibemql5/adapters/mcp.py", "update_project_session_v2")[0m
+2026-10-02T15:13:44.0509743Z [36;1m)[0m
+2026-10-02T15:13:44.0510832Z [36;1massert "operation_id" in parameters("app/vibemql5/adapters/mcp.py", "launch_test_v2")[0m
+2026-10-02T15:13:44.0512221Z [36;1m[0m
+2026-10-02T15:13:44.0513292Z [36;1mproject = Path("app/vibemql5/core/project_sessions.py").read_text(encoding="utf-8")[0m
+2026-10-02T15:13:44.0515264Z [36;1mfacade = Path("app/vibemql5/core/facade.py").read_text(encoding="utf-8")[0m
+2026-10-02T15:13:44.0516916Z [36;1mmcp = Path("app/vibemql5/adapters/mcp.py").read_text(encoding="utf-8")[0m
+2026-10-02T15:13:44.0518319Z [36;1massert "session_update_request_sha256" in project[0m
+2026-10-02T15:13:44.0519607Z [36;1massert "same operation_id has a different request" in project[0m
+2026-10-02T15:13:44.0520870Z [36;1massert "operation_id=operation_id" in facade[0m
+2026-10-02T15:13:44.0522192Z [36;1massert "expected_revision_sha256=expected_revision_sha256" in facade[0m
+2026-10-02T15:13:44.0523510Z [36;1massert "operation_id=operation_id" in mcp[0m
+2026-10-02T15:13:44.0524492Z [36;1mPY[0m
+2026-10-02T15:13:44.0589019Z shell: /usr/bin/bash -e {0}
+2026-10-02T15:13:44.0589678Z env:
+2026-10-02T15:13:44.0590381Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:44.0591709Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-02T15:13:44.0593045Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:44.0594383Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:44.0595599Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-02T15:13:44.0596807Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-02T15:13:44.0597790Z ##[endgroup]
+2026-10-02T15:13:44.1897403Z Post job cleanup.
+2026-10-02T15:13:44.3119204Z (node:2332) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-02T15:13:44.3122959Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-02T15:13:44.3405321Z Post job cleanup.
+2026-10-02T15:13:44.4321148Z [command]/usr/bin/git version
+2026-10-02T15:13:44.4368176Z git version 2.55.0
+2026-10-02T15:13:44.4411192Z Temporarily overriding HOME='/home/runner/work/_temp/6798bac2-164c-4356-bf39-58cf847bb602' before making global git config changes
+2026-10-02T15:13:44.4415283Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T15:13:44.4419044Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:44.4467920Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T15:13:44.4513739Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T15:13:44.4788853Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T15:13:44.4823326Z http.https://github.com/.extraheader
+2026-10-02T15:13:44.4841194Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-02T15:13:44.4885095Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T15:13:44.5153904Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T15:13:44.5197825Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T15:13:44.5630681Z Cleaning up orphan processes
+2026-10-02T15:13:44.6138979Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

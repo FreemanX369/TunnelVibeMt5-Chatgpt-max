@@ -171,14 +171,16 @@ def create_server(root: Path, transport: str = "unknown"):
         return facade.health()
 
     @server.tool(annotations=read_only_local)
-    def get_terminal_live_state(ctx: Context) -> dict[str, Any]:
-        """Read account, connection and ping from the running fixed MT5-2 terminal on request."""
-        return _invoke(ctx, "get_terminal_live_state", facade.get_terminal_live_state)
+    def get_terminal_live_state(ctx: Context, target: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Read fixed MT5-2; explicit local target returns validation/denial until IPC is qualified."""
+        return _invoke(ctx, "get_terminal_live_state", lambda: facade.get_terminal_live_state(target)
+                       if target is not None else facade.get_terminal_live_state())
 
     @server.tool(annotations=read_only_local)
-    def get_account_snapshot(ctx: Context) -> dict[str, Any]:
-        """Read live Balance/Equity/Free Margin/Leverage and trade state; no trading calls."""
-        return _invoke(ctx, "get_account_snapshot", facade.get_account_snapshot)
+    def get_account_snapshot(ctx: Context, target: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Read fixed MT5-2 account; explicit local target validates without enabling IPC."""
+        return _invoke(ctx, "get_account_snapshot", lambda: facade.get_account_snapshot(target)
+                       if target is not None else facade.get_account_snapshot())
 
     @server.tool(annotations=read_only_local)
     def list_live_charts(ctx: Context) -> dict[str, Any]:

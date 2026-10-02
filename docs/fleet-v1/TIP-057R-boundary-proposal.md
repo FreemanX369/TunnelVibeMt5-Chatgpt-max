@@ -1,6 +1,6 @@
 # TIP-057R-Q — Proposed Windows IPC boundary proof
 
-Date: 2026-10-02. Status: **PROPOSAL / OWNER DECISION REQUIRED / NOT DISPATCHED**. This is a concrete response to the [contract](TIP-057R-contract.md)'s G03-ownership/G04 blockers, not a helper implementation or permission to operate current MT5 installations.
+Date: 2026-10-02. Status: **Q1 ISOLATED PROOF APPROVED / DISPATCHED; PRODUCT AND Q2 UNAPPROVED**. Owner approved the concrete preceding Q1 proposal at13:59:50+07:00; see [Q1 Builder TIP](TIP-057R-Q1.md) and [approval ledger](approval-2026-10-02.md). This is a concrete response to the [contract](TIP-057R-contract.md)'s G03-ownership/G04 blockers, not a production helper implementation or permission to operate current MT5 installations. The original decision alternatives below remain the historical proposal; Q1's bounded fixture investigation is now authorized.
 
 ## Selected direction
 

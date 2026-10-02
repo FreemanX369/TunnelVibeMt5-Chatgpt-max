@@ -1,0 +1,91 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+  "tree": "1d9f1e46f6154001d267950352a446b1665c60bb",
+  "pr": 61,
+  "workflows": [
+    {
+      "id": 36981015801,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015801"
+    },
+    {
+      "id": 36981015790,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015790"
+    },
+    {
+      "id": 36981015867,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015867"
+    },
+    {
+      "id": 36981015807,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015807"
+    },
+    {
+      "id": 36981015785,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head": "783f9a9f7aa2bdbff62a56a1b170d0b5f363d586",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015785"
+    }
+  ],
+  "dedicated_job": 110755305263,
+  "platform": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10 x64",
+  "result": {
+    "suite": "FAIL",
+    "job": "cancelled",
+    "tests_run": 16,
+    "failures": 3,
+    "errors": 7,
+    "skips": 0,
+    "elapsed_ms": 885344,
+    "distinct_test_fail_count": "not inferred from subtest failure/error totals"
+  },
+  "passed_checks": [
+    "C compilation",
+    "actual PR head equals expected",
+    "raw source bytes equal exact HEAD blobs",
+    "eight portable cases"
+  ],
+  "unqualified_checks": [
+    "Windows lifecycle ACs",
+    "launch controls",
+    "all five Q04 cleanup modes together",
+    "production SDK/no-start/common acquisition"
+  ],
+  "artifact": {
+    "id": 11215538983,
+    "size_bytes": 5150,
+    "zip_sha256": "c3806c321b0431df8fb92db2bb45cc8ef87b360ca625781b43c25ab3bc487e3e",
+    "retained_files": [
+      "second-783f9a9/summary.json",
+      "second-783f9a9/proof.log",
+      "second-783f9a9/compiler.log"
+    ]
+  },
+  "observed_defects": [
+    "QueryFullProcessImageNameW on exited exact handle: WinError31",
+    "unrestricted controls: started marker unavailable; cause unresolved",
+    "subprocess.run nominal timeout falls into unbounded pipe communicate reader join"
+  ],
+  "next_authorized_action": "Builder fixture-only refinement, independent review, exact-head Windows CI"
+}
