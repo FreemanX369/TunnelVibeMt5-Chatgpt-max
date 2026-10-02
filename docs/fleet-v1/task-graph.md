@@ -8,7 +8,7 @@ Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual 
 |---|---|---|---|
 | TIP-055A | Local identity registry, inventory overlay, target vocabulary | Approved Blueprint | DONE for M0: code/read installation, actual stable IDs, verified backup/reload and five inventory QUALIFIED bindings |
 | TIP-055B | Bounded existing lease-release liveness correction | Verified 055A source / issue #56 | DONE: actual Windows CI and guarded VPS compile/fixtures/refresh/readback PASS; no native routing |
-| TIP-057R | Local targeted read path | 055A | Contract prepared; product BUILD blocked by shared cleanup ownership and strict no-start; later two-binding/client acceptance |
+| TIP-057R | Local targeted read path | 055A | B1 research build PASS; C1 request/validation source DISPATCHED with permanent targeted IPC denial; shared cleanup integration/no-start and later two-binding/client acceptance remain OPEN |
 | TIP-058 | Singleton gateway + outbound node enrollment | 055A; 057R before targeted-read acceptance | TLS/enrollment/replay/revoke/restart; actual endpoint and worker capability contract |
 | TIP-059 | Remote targeted read fleet | 057R + 058 | Exact node/terminal attribution, scoped failures, bounded deadlines and restart/reconnect |
 | TIP-062A | Minimal fleet snapshot | 059 | Partial coverage/freshness; per-target account values; no totals or heavy auto-captures |
@@ -54,3 +54,7 @@ Report `DONE | PARTIAL | BLOCKED`, files changed, each AC's PASS/FAIL/evidence, 
 ## 2026-10-03 B1 source-build sequencing continuation
 
 At 00:12:01+07:00 the owner deferred private VM testing and directed source build first. This supersedes the earlier Q2-before-source order for [bounded B1](TIP-057R-B1-build.md) only. The proof-only isolated SDK state/account worker, protocol and harmless Windows stub are built under [the B1 report](TIP-057R-B1-completion.md); original environment slots stay unfilled, SDK/Q2/no-start/production descendants, G03-B integration, migration and activation remain OPEN. The SDK CLI denies effects; no product/native legacy behavior is changed. Source/stub CI is separate from the later actual private VM qualification.
+
+## 2026-10-03 C1 product source continuation
+
+The owner's next continuation approves [bounded C1](TIP-057R-C1-build.md) after verified B1 Draft #63 head `5583204f698dcbf664ad20ddae8106d96019c8d2`. C1 is DISPATCHED: the two selected reads gain optional target and strict fresh local identity validation with a fleet.read/1 failure receipt. Inventory resolution is not live_read authorization; resolved targets permanently deny LIVE_ATTACH_ONLY_UNPROVEN before process/SDK access. Legacy/null and other native contracts are retained. This source step needs no private VM effects and does not change the selected isolated-worker architecture or authorize transport policy invention. Q2, actual client/schema exposure, positive targeted IPC, producer integration/migration, no-start and M1 remain OPEN.

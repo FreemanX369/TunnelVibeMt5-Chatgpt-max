@@ -25,6 +25,7 @@ from .binary_ingress import BinaryIngressManager
 from .live_terminal import LiveTerminal
 from .live_chart_archive import archive_chart_png
 from .concurrency import ConcurrencyManager, current_actor
+from ..fleet.reads import targeted_read
 from ..runtime_forensics.service import RuntimeForensicsManager
 
 class ToolFacade:
@@ -226,10 +227,14 @@ class ToolFacade:
                                                kind=operation, wait_seconds=2):
             return fn(LiveTerminal(self.inv, self._fixed_terminal()))
 
-    def get_terminal_live_state(self):
+    def get_terminal_live_state(self, target=None):
+        if target is not None:
+            return targeted_read(self.root, self.concurrency, "get_terminal_live_state", target)
         return self._observe_live("live_terminal_state", lambda live: live.state())
 
-    def get_account_snapshot(self):
+    def get_account_snapshot(self, target=None):
+        if target is not None:
+            return targeted_read(self.root, self.concurrency, "get_account_snapshot", target)
         return self._observe_live("live_account_snapshot", lambda live: live.state())
 
     def list_live_charts(self):
