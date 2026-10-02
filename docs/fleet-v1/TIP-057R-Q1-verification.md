@@ -33,7 +33,19 @@ Contractor downloaded the ZIP, verified its digest and candidate/head fields, an
 
 All four baseline workflows passed at the first candidate: TIP-027 `36979951816`, TIP-028 `36979952026`, TIP-034 `36979951789`, TIP-053 `36979951792`. Their success does not replace Q1's failed dedicated proof.
 
-## Qualification boundaries
+## Retained second actual Windows receipt
+
+The second candidate `783f9a9f7aa2bdbff62a56a1b170d0b5f363d586` has **four baseline workflow successes**, but dedicated [run 36981015785](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36981015785), job `110755305263`, ended **cancelled at the 15-minute job ceiling**. Its retained suite summary is **FAIL: 16 tests, 3 failures, 7 errors, 0 skips**, elapsed 885,344 ms. Subtest errors are included in the error count; it is not a count of ten distinct failed top-level tests. All eight portable cases passed on Windows. Actual C compilation, PR-head comparison and raw source-versus-HEAD blob comparison passed.
+
+Artifact `11215538983` is 5,150 bytes, ZIP SHA256 `c3806c321b0431df8fb92db2bb45cc8ef87b360ca625781b43c25ab3bc487e3e`. Contractor downloaded it, verified the ZIP/candidate/head/source fields, and retained all three original files: [summary.json](evidence/tip057rq/second-783f9a9/summary.json), [proof.log](evidence/tip057rq/second-783f9a9/proof.log), [compiler.log](evidence/tip057rq/second-783f9a9/compiler.log). The proof log's original hash/size is retained and no truncation occurred.
+
+Seven errors come from querying the executable image with `QueryFullProcessImageNameW` after the exact worker exits (`WinError 31`). Those errors affect normal reconciliation and post-termination identity checks; they are observed API lifetime behavior rather than a child restriction conclusion. Several restricted workers report AppContainer/child policy active before work and deny privileged parent opens, but the corresponding ACs remain failed because full lifecycle acceptance did not complete. Unrestricted target/control started markers are unavailable, so no launch-denial causality is qualified. Q06's nominal subprocess timeout falls into an unbounded pipe-reader join after kill; the CI ceiling interrupts it, and cleanup remains explicitly unproven.
+
+Builder is refining same-handle live-image capture with fresh PID/creation checks after exit, bounded crash-harness/stdio ownership and control diagnostics. A newly opened recovery handle must obtain its own live image before caching; an expected ledger must never be copied into a fresh handle to bypass failed OS identity queries. Missing identity remains recovery-required. This is a routine fixture implementation refinement within approved Q1, not a change to product policy or architecture.
+
+### Gates remain open
+
+The proposed identity repair is bounded to an image independently observed while that exact handle's process is live. Q06 deliberately leaves a live worker that a restarted parent can reopen and verify before terminating. A first recovery open of an already-dead worker has no fresh live-image capture; failure to establish identity remains recovery-required. Same-handle in-memory caching does not prove durable late-dead recovery across parent restarts or product-wide liveness. Those ownership/integration cases need separate evidence and, if necessary, a reviewed mechanism.
 
 Actual SDK/MT5 compatibility and broker/uncontained launch paths remain **OPEN**. Breakaway causal denial can be qualified only if its matching unrestricted control works; ambient runner JobObject denial must remain OPEN. The fixture tests shorten a hang budget to 250 ms and report actual total/termination times; no hard 10-second deadline is certified. Simulated altered creation timestamp is identified as such, not forced PID recycling.
 

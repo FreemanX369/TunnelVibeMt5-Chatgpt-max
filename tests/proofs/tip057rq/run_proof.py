@@ -23,7 +23,7 @@ from windows_boundary import Boundary, Process, Windows
 
 EVIDENCE = []
 EXECUTABLE = None
-PHASE_FILES = ("started.json", "result.json", "initialize-attempted.json", "cleanup-attempted.json",
+PHASE_FILES = ("entry.json", "started.json", "result.json", "initialize-attempted.json", "cleanup-attempted.json",
                "observation-attempted.json", "observation.json", "direct-child.json", "breakaway-child.json", "go.txt")
 
 
@@ -31,14 +31,57 @@ def record(case, **values):
     EVIDENCE.append({"case": case, **values})
 
 
-def wait_json(path, seconds=5):
+def wait_json(path, seconds=5, *, process=None, case="fixture-output"):
+    path = Path(path)
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
         try:
-            return json.loads(Path(path).read_text(encoding="utf-8"))
+            return json.loads(path.read_text(encoding="utf-8"))
         except (FileNotFoundError, json.JSONDecodeError):
+            if process is not None and process.exited():
+                code = process.wait(0)
+                record(case, missing_output=path.name, exit_code=code,
+                       exit_code_hex=f"0x{code:08x}",
+                       phase_markers={name: (path.parent / name).exists() for name in PHASE_FILES},
+                       lifetime=process.lifetime())
+                raise AssertionError(f"FIXTURE_EXIT_BEFORE_OUTPUT:{path.name}:0x{code:08x}")
             time.sleep(0.005)
-    raise AssertionError(f"FIXTURE_OUTPUT_UNAVAILABLE:{Path(path).name}")
+    record(case, missing_output=path.name, output_timeout_seconds=seconds,
+           process_signaled=None if process is None else process.exited(),
+           phase_markers={name: (path.parent / name).exists() for name in PHASE_FILES})
+    raise AssertionError(f"FIXTURE_OUTPUT_UNAVAILABLE:{path.name}")
+
+
+def log_tail(path, limit=4000):
+    with Path(path).open("rb") as stream:
+        stream.seek(0, os.SEEK_END)
+        stream.seek(max(0, stream.tell() - limit))
+        return stream.read(limit).decode("utf-8", errors="replace")
+
+
+def diagnostic_tail(path):
+    try:
+        return log_tail(path)
+    except OSError as error:
+        return f"DIAGNOSTIC_UNAVAILABLE:{type(error).__name__}:{str(error)[:500]}"
+
+
+def stop_controller(caller):
+    if caller.poll() is None:
+        # On Windows Popen.kill uses its owned process handle, not a PID lookup.
+        caller.kill()
+    try:
+        return caller.wait(timeout=2)
+    except subprocess.TimeoutExpired as error:
+        raise RuntimeError("OWNED_CONTROLLER_STOP_UNPROVEN") from error
+
+
+def wait_controller(caller, seconds):
+    try:
+        return caller.wait(timeout=seconds)
+    except subprocess.TimeoutExpired as error:
+        code = stop_controller(caller)
+        raise AssertionError(f"FIXTURE_CONTROLLER_TIMEOUT:{seconds}:STOP_PROVEN:{code}") from error
 
 
 class ModelProcess:
@@ -192,9 +235,10 @@ class WindowsCases(unittest.TestCase):
         self.processes.append(process)
         expected = self.authority.bind_worker(expected, process.identity(),
                                               descendants="UNRESOLVED" if mode in {"launch", "launch_race"} else descendants)
+        self.assertFalse((self.root / "entry.json").exists(), "suspended worker entered early")
         self.assertFalse((self.root / "started.json").exists(), "suspended worker executed early")
         process.resume()
-        started = wait_json(self.root / "started.json")
+        started = wait_json(self.root / "started.json", process=process, case=self.id())
         self.assertEqual(started["pid"], expected["worker"]["pid"])
         record(self.id(), restriction=started, worker=process.identity(), intent=expected)
         return lease, expected, process, started
@@ -215,7 +259,8 @@ class WindowsCases(unittest.TestCase):
         else:
             with self.assertRaises(RecoveryRequired):
                 FixtureAuthority(self.authority.root).arm(self.parent)
-        record(self.id(), result=result, response=response, exact_exit=process.exited())
+        record(self.id(), result=result, response=response, exact_exit=process.exited(),
+               exited_identity=process.identity(), identity_basis="SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL")
         return result, response
 
     def test_q01_restriction_active_before_work_and_setup_failure_no_attempt(self):
@@ -274,9 +319,9 @@ class WindowsCases(unittest.TestCase):
             target_boundary._grant_fixture_root()
             target = target_boundary.spawn(target_executable, "hang", self.parent["pid"], restricted=False)
             self.processes.append(target)
-            target.resume()
-            wait_json(target_root / "started.json")
             target_ref = target.identity()
+            target.resume()
+            wait_json(target_root / "started.json", process=target, case=self.id())
             _, expected, worker, started = self.start("launch_race")
             self.assertEqual(started["child_restricted"], 1)
             elapsed = target.terminate_exact(target_ref)
@@ -331,7 +376,8 @@ class WindowsCases(unittest.TestCase):
         self.authority.reconcile(expected, worker)
         self.assertFalse(lease.exists())
         record(self.id(), observation_budget_ms=250, actual_total_ms=(time.monotonic()-total_start)*1000,
-               termination_ms=termination_ms, hard_10s_claim=False)
+               termination_ms=termination_ms, hard_10s_claim=False,
+               post_exit_lifetime=worker.lifetime(), post_exit_identity=worker.identity())
 
     def test_q06_real_parent_crash_before_failure_marker(self):
         crash_root = self.root / "crash-parent"
@@ -339,12 +385,19 @@ class WindowsCases(unittest.TestCase):
         fresh = FixtureAuthority(crash_root / "authority")
         worker = None
         expected = None
+        controller = None
+        stdout_path, stderr_path = crash_root / "controller.stdout.log", crash_root / "controller.stderr.log"
         cleanup_errors = []
         try:
-            crashed = subprocess.run([sys.executable, str(HERE / "run_proof.py"), "--crash-parent", str(crash_root),
-                                      "--executable", str(EXECUTABLE)], capture_output=True, text=True, timeout=15)
-            self.assertEqual(crashed.returncode, 73, crashed.stderr[-2000:])
+            with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                controller = subprocess.Popen([sys.executable, "-u", str(HERE / "run_proof.py"),
+                                               "--crash-parent", str(crash_root), "--executable", str(EXECUTABLE)],
+                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                              creationflags=subprocess.CREATE_NO_WINDOW)
+                code = wait_controller(controller, 15)
+            self.assertEqual(code, 73, log_tail(stderr_path))
             expected = fresh.read()
+            self.assertEqual(expected["parent"]["pid"], controller.pid)
             self.assertFalse((crash_root / "failure.json").exists())
             with self.assertRaises(RecoveryRequired):
                 fresh.arm(self.parent)
@@ -361,6 +414,15 @@ class WindowsCases(unittest.TestCase):
             record(self.id(), crashed_parent=expected["parent"], worker=expected["worker"],
                    failure_marker_absent=True, termination_ms=termination_ms)
         finally:
+            if controller is not None:
+                try:
+                    stop_controller(controller)
+                except BaseException as error:
+                    cleanup_errors.append(f"CRASH_CONTROLLER_STOP_UNPROVEN:{type(error).__name__}:{str(error)[:500]}")
+                record(self.id(), controller_pid=controller.pid, controller_exit_code=controller.returncode,
+                       stdout_tail=diagnostic_tail(stdout_path), stderr_tail=diagnostic_tail(stderr_path),
+                       controller_phase_tail=diagnostic_tail(crash_root / "controller-phase.json")
+                       if (crash_root / "controller-phase.json").exists() else None)
             # Recover only a persisted exact fixture identity. An unknown create outcome
             # stays visibly unresolved; never guess a PID or enumerate/kill strangers.
             try:
@@ -368,8 +430,9 @@ class WindowsCases(unittest.TestCase):
                     retained = fresh.read()
                     if retained is not None and retained.get("worker") is not None:
                         known = retained["worker"]
-                        fixture_image = os.path.normcase(str((crash_root / "fixture.exe").resolve()))
-                        if known["image"] != fixture_image:
+                        # Windows may return a long image path while the temp root uses
+                        # its 8.3 alias. Compare the actual file, then verify live identity.
+                        if not os.path.samefile(known["image"], crash_root / "fixture.exe"):
                             raise RuntimeError("UNOWNED_CRASH_IMAGE")
                         worker = Process.open_expected(self.windows, known)
                         self.processes.append(worker)
@@ -380,7 +443,7 @@ class WindowsCases(unittest.TestCase):
                         worker.terminate_exact(worker.identity())
                     worker.close()
             except BaseException as error:
-                cleanup_errors.append(f"CRASH_OWNED_WORKER_CLEANUP_UNPROVEN:{type(error).__name__}")
+                cleanup_errors.append(f"CRASH_OWNED_WORKER_CLEANUP_UNPROVEN:{type(error).__name__}:{str(error)[:500]}")
             try:
                 profile_path = crash_root / "profile.json"
                 if profile_path.exists():
@@ -408,6 +471,14 @@ class WindowsCases(unittest.TestCase):
         with self.assertRaisesRegex(RecoveryRequired, "STALE"):
             self.authority.reconcile(stale, worker)
         worker.terminate_exact(expected["worker"])
+        try:
+            fresh_dead = Process.open_expected(self.windows, expected["worker"])
+        except (OSError, RuntimeError) as error:
+            record(self.id(), fresh_dead_identity="UNPROVEN_NO_LIVE_IMAGE_CACHE",
+                   fresh_dead_error=f"{type(error).__name__}:{str(error)[:500]}")
+        else:
+            fresh_dead.close()
+            self.fail("fresh dead-process handle qualified identity without a live image query")
         with self.assertRaisesRegex(RecoveryRequired, "DESCENDANT"):
             self.authority.reconcile(expected, worker)
         self.assertTrue(lease.exists())
@@ -427,14 +498,31 @@ class WindowsCases(unittest.TestCase):
             except BaseException as error:
                 errors.append(error)
         # These two acquisitions are independent processes using the common fixture gate.
-        callers = [subprocess.Popen([sys.executable, str(HERE / "run_proof.py"),
-                                     "--attempt-arm", str(self.authority.root)],
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for _ in range(2)]
+        callers = []
         caller_receipts = []
-        for caller in callers:
-            stdout, stderr = caller.communicate(timeout=10)
-            self.assertEqual(caller.returncode, 0, stderr[-2000:])
-            caller_receipts.append(json.loads(stdout))
+        try:
+            for index in range(2):
+                stdout_path = self.root / f"caller-{index}.stdout.log"
+                stderr_path = self.root / f"caller-{index}.stderr.log"
+                with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                    caller = subprocess.Popen([sys.executable, "-u", str(HERE / "run_proof.py"),
+                                               "--attempt-arm", str(self.authority.root)],
+                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                              creationflags=subprocess.CREATE_NO_WINDOW)
+                callers.append((caller, stdout_path, stderr_path))
+            for caller, stdout_path, stderr_path in callers:
+                self.assertEqual(wait_controller(caller, 10), 0, log_tail(stderr_path))
+                caller_receipts.append(json.loads(log_tail(stdout_path)))
+        finally:
+            stop_errors = []
+            for caller, stdout_path, stderr_path in callers:
+                try:
+                    stop_controller(caller)
+                except BaseException as error:
+                    stop_errors.append(f"CALLER_STOP_UNPROVEN:{caller.pid}:{type(error).__name__}")
+                record(self.id(), caller_pid=caller.pid, caller_exit_code=caller.returncode,
+                       stdout_tail=diagnostic_tail(stdout_path), stderr_tail=diagnostic_tail(stderr_path))
+            self.assertEqual(stop_errors, [])
         self.assertTrue(all(row["status"] == "BLOCKED" for row in caller_receipts))
         self.assertEqual(len({row["parent"]["pid"] for row in caller_receipts}), 2)
         self.assertFalse(worker.exited())
@@ -509,8 +597,10 @@ def compile_fixture(output):
 
 def crash_parent(root, executable):
     root = Path(root)
+    atomic(root / "controller-phase.json", {"phase": "ENTERED", "pid": os.getpid()})
     copied = root / "fixture.exe"
     shutil.copy2(executable, copied)
+    atomic(root / "controller-phase.json", {"phase": "BEFORE_BOUNDARY_SETUP", "pid": os.getpid()})
     boundary = Boundary(root)
     worker = None
     try:
@@ -518,11 +608,17 @@ def crash_parent(root, executable):
         parent = Process(boundary.windows, boundary.windows.kernel.GetCurrentProcess()).identity()
         authority = FixtureAuthority(root / "authority")
         _, expected = authority.arm(parent)
+        atomic(root / "controller-phase.json", {"phase": "BEFORE_CREATE", "pid": os.getpid()})
         worker = boundary.spawn(copied, "hang", parent["pid"],
                                 before_create=lambda: authority.begin_create(expected))
+        atomic(root / "controller-phase.json", {"phase": "BEFORE_LIVE_IDENTITY", "pid": os.getpid()})
         expected = authority.bind_worker(expected, worker.identity())
+        atomic(root / "controller-phase.json", {"phase": "BOUND_BEFORE_RESUME", "pid": os.getpid(),
+                                                "worker": expected["worker"]})
         worker.resume()
-        wait_json(root / "started.json")
+        wait_json(root / "started.json", process=worker, case="crash-parent-helper")
+        atomic(root / "controller-phase.json", {"phase": "ABOUT_TO_CRASH", "pid": os.getpid(),
+                                                "worker": expected["worker"]})
         # No shutdown/failure marker is recorded: intent survives this intentional crash.
         os._exit(73)
     except BaseException:

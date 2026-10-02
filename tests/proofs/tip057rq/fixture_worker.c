@@ -36,7 +36,7 @@ static DWORD attempt_child(const wchar_t *root, const wchar_t *marker, DWORD fla
     if (swprintf_s(command, 32768, L"\"%s\" \"%s\" child \"%s\"", executable, root, marker) < 0)
         return ERROR_INVALID_PARAMETER;
     startup.cb = sizeof(startup);
-    if (!CreateProcessW(executable, command, NULL, NULL, FALSE, flags,
+    if (!CreateProcessW(executable, command, NULL, NULL, FALSE, flags | CREATE_NO_WINDOW,
                         NULL, root, &startup, &process)) return GetLastError();
     *created = 1;
     error = WaitForSingleObject(process.hProcess, 2000) == WAIT_OBJECT_0 ? 0 : WAIT_TIMEOUT;
@@ -76,6 +76,8 @@ int wmain(int argc, wchar_t **argv) {
         return write_json(root, argv[3], "{\"executed\":true}\n") ? 0 : 82;
     }
     if (argc != 5) return 83;
+    sprintf_s(report, sizeof(report), "{\"pid\":%lu,\"entered\":true}\n", GetCurrentProcessId());
+    if (!write_json(root, L"entry.json", report)) return 95;
     parent_pid = wcstoul(argv[3], NULL, 10);
     inherited_pid = GetProcessId((HANDLE)(uintptr_t)_wcstoui64(argv[4], NULL, 10));
     if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) return 84;

@@ -113,16 +113,36 @@ class Windows:
 class Process:
     def __init__(self, windows, process, thread=None):
         self.windows, self.handle, self.thread = windows, process, thread
+        self._live_identity = None
+        self._identity_handle = None
 
-    def identity(self):
+    def lifetime(self):
         times = [W.FILETIME() for _ in range(4)]
         require(self.windows.kernel.GetProcessTimes(self.handle, *(C.byref(t) for t in times)))
+        created = (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime
+        return {"pid": int(require(self.windows.kernel.GetProcessId(self.handle))),
+                "creation_100ns": created}
+
+    def identity(self):
+        lifetime = self.lifetime()
+        signaled = self.exited()
+        if self._live_identity is not None:
+            if self._identity_handle != self.handle or any(
+                    self._live_identity[key] != value for key, value in lifetime.items()):
+                raise RuntimeError("EXACT_PROCESS_IDENTITY_MISMATCH")
+            # A retained kernel handle identifies one process lifetime. The image was
+            # queried while this handle was live; do not query a dead executable path.
+            return dict(self._live_identity)
+        if signaled:
+            raise RuntimeError("LIVE_IMAGE_NOT_CAPTURED_BEFORE_EXIT")
         image = C.create_unicode_buffer(32768)
         length = W.DWORD(len(image))
         require(self.windows.kernel.QueryFullProcessImageNameW(self.handle, 0, image, C.byref(length)))
-        created = (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime
-        return {"pid": int(require(self.windows.kernel.GetProcessId(self.handle))),
-                "creation_100ns": created, "image": os.path.normcase(image.value)}
+        if self.exited():
+            raise RuntimeError("LIVE_IMAGE_CAPTURE_RACED_EXIT")
+        self._live_identity = {**lifetime, "image": os.path.normcase(image.value)}
+        self._identity_handle = self.handle
+        return dict(self._live_identity)
 
     def resume(self):
         if self.windows.kernel.ResumeThread(self.thread) == 0xFFFFFFFF:
@@ -132,6 +152,8 @@ class Process:
         wait = self.windows.kernel.WaitForSingleObject(self.handle, 0)
         if wait == 0xFFFFFFFF:
             raise C.WinError(C.get_last_error())
+        if wait not in (0, 0x102):
+            raise RuntimeError(f"FIXTURE_EXIT_STATUS_UNKNOWN:{wait}")
         return wait == 0
 
     def wait(self, milliseconds=5000):
@@ -149,7 +171,8 @@ class Process:
         if not self.exited():
             require(self.windows.kernel.TerminateProcess(self.handle, 92))
         self.wait()
-        assert self.exited() and self.identity() == expected
+        if not self.exited() or self.identity() != expected:
+            raise RuntimeError("EXACT_PROCESS_EXIT_NOT_PROVEN")
         return (time.monotonic() - started) * 1000
 
     def close(self):
@@ -159,6 +182,8 @@ class Process:
         if self.handle:
             require(self.windows.kernel.CloseHandle(self.handle))
             self.handle = None
+            self._live_identity = None
+            self._identity_handle = None
 
     @classmethod
     def open_expected(cls, windows, expected):
@@ -212,7 +237,7 @@ class Boundary:
         attributes, initialized = None, False
         size = SIZE()
         startup = STARTUPINFOEX()
-        startup.startup.cb = C.sizeof(startup)
+        startup.startup.cb = C.sizeof(startup) if restricted or setup_fault else C.sizeof(STARTUPINFO)
         capabilities = SECURITY_CAPABILITIES(self.sid, None, 0, 0)
         policy = W.DWORD(1)
         try:
@@ -237,8 +262,11 @@ class Boundary:
             # durable PID+creation identity to be committed before fixture work can start.
             if before_create is not None:
                 before_create()
+            flags = 0x4 | 0x08000000  # suspended, no console; identical fixture I/O for controls
+            if initialized:
+                flags |= 0x80000
             require(self.windows.kernel.CreateProcessW(str(executable), command, None, None,
-                                                      bool(inherit), 0x80000 | 0x4, None,
+                                                      bool(inherit), flags, None,
                                                       str(self.root), C.byref(startup), C.byref(process)))
             return Process(self.windows, process.process, process.thread)
         finally:
