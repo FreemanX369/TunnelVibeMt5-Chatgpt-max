@@ -1,0 +1,522 @@
+{
+  "schema": "fleet.contract-checkpoint/1",
+  "owner_statement": "Duyệt bước tiếp theo plan",
+  "owner_submitted_at": "2026-10-02T13:36:39+07:00",
+  "captured_at_utc": "2026-10-02T06:48:48.086Z",
+  "base_commit": "146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809",
+  "base_tree": "efd3d54d8db7c1c981a0fc24acae0ae56bb54716",
+  "base_blob_count": 180,
+  "status": "CONTRACT_PREPARED_PRODUCT_IPC_BUILD_BLOCKED",
+  "product_code_changed": false,
+  "product_tests_run": 0,
+  "native_calls": 0,
+  "deployment_performed": false,
+  "scope": "read-only runtime drift checks and documentation/Builder feasibility",
+  "gates": {
+    "G01": "CLOSED_M0",
+    "G02_schema": "PREPARED",
+    "G02_client_pilot": "OPEN_LATER_ACCEPTANCE",
+    "G03_budget": "LOCAL_SOFT_SELECTION_ONLY",
+    "G03_ownership": "OPEN",
+    "G04": "OPEN",
+    "TIP057RQ": "PROPOSED_OWNER_DECISION_REQUIRED"
+  },
+  "receipts": {
+    "main": {
+      "content": "{\"ref\":\"refs/heads/main\",\"node_id\":\"REF_kwDOUY4RGq9yZWZzL2hlYWRzL21haW4\",\"url\":\"https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/refs/heads/main\",\"object\":{\"sha\":\"146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/commits/146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809\"}}",
+      "title": "main",
+      "modified_date": null,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/ref/heads/main",
+      "display_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/ref/heads/main",
+      "display_title": "main",
+      "structuredContent": {
+        "title": "main",
+        "content": "{\"ref\":\"refs/heads/main\",\"node_id\":\"REF_kwDOUY4RGq9yZWZzL2hlYWRzL21haW4\",\"url\":\"https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/refs/heads/main\",\"object\":{\"sha\":\"146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/commits/146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809\"}}",
+        "display_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/git/ref/heads/main"
+      }
+    },
+    "health": {
+      "service": "READY",
+      "state": "READY",
+      "disk_free_gb": 13.38,
+      "memory_total_mb": 2047.5,
+      "memory_free_mb": 1469.2,
+      "disk_warning_gb": 4,
+      "disk_block_gb": 2,
+      "min_free_memory_mb": 256,
+      "queue_length": 0,
+      "active_job": null,
+      "terminals_valid": 5,
+      "terminals_registered": 5,
+      "concurrency": {
+        "schema_version": "1.0",
+        "mode": "MULTI_CLIENT_SERIALIZED",
+        "tool_surface_preserved": true,
+        "source_mutation_parallelism": 1,
+        "native_mt5_parallelism": 1,
+        "mutation_lock": null,
+        "mutation_waiters": 0,
+        "native_lock": null,
+        "native_waiters": 0,
+        "attribution": {
+          "model": "MCP_REQUEST_PLUS_PROJECT_ITERATION_WORKSTREAM",
+          "authenticated_account_identity": false,
+          "note": "stdio tunnel does not expose a security-grade ChatGPT account id"
+        }
+      }
+    },
+    "server_info": {
+      "name": "VibeMQL5 Bridge",
+      "version": "0.2.42",
+      "bridge_build": "TIP-053",
+      "tool_count": 85,
+      "tool_catalog_sha256": "915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef",
+      "tool_names": [
+        "server_info",
+        "health",
+        "get_terminal_live_state",
+        "get_account_snapshot",
+        "list_live_charts",
+        "get_symbol_snapshot",
+        "copy_rates",
+        "copy_ticks",
+        "capture_live_chart",
+        "read_terminal_journal",
+        "inspect_terminal",
+        "diagnose",
+        "runtime_status",
+        "get_continuity",
+        "read_continuity_events",
+        "verify_continuity",
+        "append_continuity_event",
+        "create_continuity_checkpoint",
+        "reconcile_continuity",
+        "list_project_sessions",
+        "get_project_session",
+        "create_project_session",
+        "update_project_session",
+        "update_project_session_v2",
+        "resume_project_session",
+        "start_iteration",
+        "get_iteration",
+        "list_iterations",
+        "resume_iteration",
+        "accept_iteration",
+        "reject_iteration",
+        "cancel_iteration",
+        "read_iteration_history",
+        "list_fault_receipts",
+        "list_job_history",
+        "list_workspaces",
+        "list_terminals",
+        "list_eas",
+        "list_presets",
+        "list_parameter_sets",
+        "read_source",
+        "get_source_hash",
+        "create_checkpoint",
+        "list_checkpoints",
+        "diff_checkpoint",
+        "restore_checkpoint",
+        "write_source",
+        "apply_patch",
+        "compile_ea",
+        "import_ex5",
+        "open_ex5_ingress",
+        "import_ex5_authorized_file",
+        "get_ex5_import_receipt",
+        "launch_test",
+        "launch_test_v2",
+        "get_job",
+        "cancel_job",
+        "read_result",
+        "read_compile_diagnostics",
+        "read_tester_events",
+        "read_artifact",
+        "export_file",
+        "capture_runtime_snapshot",
+        "compare_runtime_snapshots",
+        "compare_baseline",
+        "backend_read_file",
+        "backend_get_file_hash",
+        "backend_create_checkpoint",
+        "backend_restore_checkpoint",
+        "backend_apply_patch",
+        "backend_write_file",
+        "backend_import_hotfix",
+        "backend_apply_hotfix_bundle",
+        "describe_capabilities",
+        "backend_start_test_run",
+        "backend_get_test_run",
+        "backend_run_tests",
+        "backend_restart_runtime",
+        "backend_read_evidence",
+        "tunnel_admin_status",
+        "tunnel_admin_install_autostart",
+        "tunnel_admin_start",
+        "tunnel_admin_stop",
+        "tunnel_admin_restart",
+        "backend_run_powershell"
+      ],
+      "tool_visibility": {
+        "server_catalog_count": 85,
+        "model_visible_expected_count": 84,
+        "app_only_tools": [
+          "import_ex5_authorized_file"
+        ]
+      },
+      "generic_shell_exposed": true,
+      "root": "C:\\VibeMQL5",
+      "transport": "stdio",
+      "fixed_terminal": "MT5-2",
+      "mcp_sdk": "2.x",
+      "source_checkpointing": "native-persistent",
+      "result_schema": "1.4",
+      "continuity_schema": "1.0",
+      "project_session_schema": "1.0",
+      "file_export_schema": "1.0",
+      "file_export_max_bytes": 16777216,
+      "binary_ingress_schema": "1.0",
+      "binary_ingress_max_bytes": 16777216,
+      "binary_ingress_extensions": [
+        ".ex5"
+      ],
+      "binary_ingress_transport": "openai/fileParams",
+      "binary_ingress_transports": [
+        "openai/fileParams",
+        "chatgpt/widget-authorized-url"
+      ],
+      "binary_ingress_widget_schema": "1.0",
+      "binary_ingress_widget_uri": "ui://vibemql5/ex5-ingress-r1.html",
+      "binary_ingress_widget_render_tool": "open_ex5_ingress",
+      "binary_ingress_widget_import_tool": "import_ex5_authorized_file",
+      "binary_ingress_widget_source": "CHATGPT_WIDGET_FILE_IMPORT",
+      "binary_ingress_receipt_schema": "1.0",
+      "binary_ingress_receipt_resolver": "get_ex5_import_receipt",
+      "live_chart_widget_schema": "1.0",
+      "live_chart_widget_uri": "ui://vibemql5/live-chart-r1.html",
+      "live_chart_widget_render_tool": "capture_live_chart",
+      "live_chart_file_delivery": "hash-bound-mcp-resource-link",
+      "live_chart_file_export_scope": "exports",
+      "runtime_capture_schema": "1.0",
+      "runtime_capture_transport": "job-bound/pss-proof+bounded-live-stream",
+      "runtime_capture_profiles": [
+        "private"
+      ],
+      "runtime_capture_binding": "serialized-single-agent-v1",
+      "cancel_recovery_schema": "1.0",
+      "multi_client_concurrency_schema": "1.0",
+      "multi_client_mode": "SERIALIZED_SHARED_VPS",
+      "authenticated_client_identity": false,
+      "startup_cancel_recovery": {
+        "schema_version": "1.0",
+        "candidates": 0,
+        "settled": 0,
+        "settled_job_ids": [],
+        "unresolved": [],
+        "errors": [],
+        "complete": true
+      },
+      "runtime_provenance": {
+        "bridge_build": "TIP-053",
+        "bridge_version": "0.2.42",
+        "provenance_schema": "1.0",
+        "mcp_tool_count": 85,
+        "mcp_tool_catalog_sha256": "915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef",
+        "pid": 3804,
+        "runtime_mode": "interactive",
+        "supervisor_generation": "38f74e08b4c1418c8695e4698b203a31",
+        "supervisor_session_id": "2",
+        "workspace_module_path": "C:\\VibeMQL5\\app\\vibemql5\\core\\workspace.py",
+        "workspace_module_sha256": "d13f16dd44739605d584b2b3ed4fce1acb376318a83d64f9ab8d88c8ad35de22",
+        "mcp_module_path": "C:\\VibeMQL5\\app\\vibemql5\\adapters\\mcp.py",
+        "mcp_module_sha256": "d50d2896fb80837af113a985ddc65cbc12bffa8ffa26e57b7257726911a9de99"
+      }
+    },
+    "tunnels": {
+      "status": "PASS",
+      "schema_version": "1.0",
+      "mode": "ALLOWLISTED_MULTI_TUNNEL_ADMIN",
+      "instances": [
+        {
+          "instance": "A",
+          "profile": "vibemql5-vps",
+          "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.json",
+          "config_exists": true,
+          "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps.yaml",
+          "profile_exists": true,
+          "secret_present": true,
+          "health_port": 8080,
+          "healthz_status": 200,
+          "readyz_status": 200,
+          "pids": [
+            4392
+          ],
+          "process_count": 1,
+          "tasks": {
+            "interactive": {
+              "name": "VibeMQL5-OpenAI-Tunnel",
+              "state": "Running"
+            },
+            "watchdog": {
+              "name": "VibeMQL5-Watchdog",
+              "state": "Ready"
+            },
+            "background": {
+              "name": "VibeMQL5-OpenAI-Tunnel-Background",
+              "state": "Ready"
+            }
+          },
+          "poll_diagnostics": {
+            "status": "PASS",
+            "schema_version": "1.0",
+            "events_retained": 244,
+            "oldest_event_at": "2026-10-02T02:51:00.1895774+07:00",
+            "newest_event_at": "2026-10-02T13:37:15.569296+07:00",
+            "poll_failures_retained": 1,
+            "episodes_retained": 1,
+            "episodes": [
+              {
+                "first_failure_at": "2026-10-02T05:35:21.7943059+07:00",
+                "first_error_kind": "TIMEOUT",
+                "failure_count": 1,
+                "recovered_at": "2026-10-02T05:35:52.4685613+07:00",
+                "last_failure_at": "2026-10-02T05:35:21.7943059+07:00",
+                "last_error_kind": "TIMEOUT",
+                "retry_in_ms": 200
+              }
+            ]
+          }
+        },
+        {
+          "instance": "B",
+          "profile": "vibemql5-vps-b",
+          "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.b.json",
+          "config_exists": true,
+          "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps-b.yaml",
+          "profile_exists": true,
+          "secret_present": true,
+          "health_port": 8081,
+          "healthz_status": 200,
+          "readyz_status": 200,
+          "pids": [
+            4412
+          ],
+          "process_count": 1,
+          "tasks": {
+            "interactive": {
+              "name": "VibeMQL5-OpenAI-Tunnel-B",
+              "state": "Running"
+            },
+            "watchdog": {
+              "name": "VibeMQL5-Watchdog-B",
+              "state": "Ready"
+            },
+            "background": {
+              "name": "VibeMQL5-OpenAI-Tunnel-Background-B",
+              "state": "Ready"
+            }
+          },
+          "poll_diagnostics": {
+            "status": "PASS",
+            "schema_version": "1.0",
+            "events_retained": 174,
+            "oldest_event_at": "2026-10-02T02:49:58.2050656+07:00",
+            "newest_event_at": "2026-10-02T12:22:00.2970886+07:00",
+            "poll_failures_retained": 1,
+            "episodes_retained": 1,
+            "episodes": [
+              {
+                "first_failure_at": "2026-10-02T12:21:29.8420421+07:00",
+                "first_error_kind": "AWAITING_HEADERS_TIMEOUT",
+                "failure_count": 1,
+                "recovered_at": "2026-10-02T12:22:00.2970886+07:00",
+                "last_failure_at": "2026-10-02T12:21:29.8420421+07:00",
+                "last_error_kind": "AWAITING_HEADERS_TIMEOUT",
+                "poll_timeout_ms": 30000,
+                "poll_deadline_ms": 35000,
+                "retry_in_ms": 200
+              }
+            ]
+          }
+        },
+        {
+          "instance": "C",
+          "profile": "vibemql5-vps-c",
+          "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.c.json",
+          "config_exists": true,
+          "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps-c.yaml",
+          "profile_exists": true,
+          "secret_present": true,
+          "health_port": 8082,
+          "healthz_status": 200,
+          "readyz_status": 200,
+          "pids": [
+            5740
+          ],
+          "process_count": 1,
+          "tasks": {
+            "interactive": {
+              "name": "VibeMQL5-OpenAI-Tunnel-C",
+              "state": "Running"
+            },
+            "watchdog": {
+              "name": "VibeMQL5-Watchdog-C",
+              "state": "Ready"
+            },
+            "background": {
+              "name": "VibeMQL5-OpenAI-Tunnel-Background-C",
+              "state": "Ready"
+            }
+          },
+          "poll_diagnostics": {
+            "status": "PASS",
+            "schema_version": "1.0",
+            "events_retained": 174,
+            "oldest_event_at": "2026-10-02T02:50:28.7587989+07:00",
+            "newest_event_at": "2026-10-02T07:51:41.0542147+07:00",
+            "poll_failures_retained": 1,
+            "episodes_retained": 1,
+            "episodes": [
+              {
+                "first_failure_at": "2026-10-02T07:51:10.4271072+07:00",
+                "first_error_kind": "TIMEOUT",
+                "failure_count": 1,
+                "recovered_at": "2026-10-02T07:51:41.0542147+07:00",
+                "last_failure_at": "2026-10-02T07:51:10.4271072+07:00",
+                "last_error_kind": "TIMEOUT",
+                "retry_in_ms": 200
+              }
+            ]
+          }
+        }
+      ],
+      "generic_shell_exposed": true
+    },
+    "inventory": {
+      "result": [
+        {
+          "alias": "MT5-1",
+          "terminal_path": "C:\\Users\\Administrator\\Desktop\\MT5-1\\terminal64.exe",
+          "metaeditor_path": "C:\\Users\\Administrator\\Desktop\\MT5-1\\MetaEditor64.exe",
+          "data_hash": "7C95C3B1407D72E29EBE4228949082ED",
+          "data_root": "C:\\Users\\Administrator\\AppData\\Roaming\\MetaQuotes\\Terminal\\7C95C3B1407D72E29EBE4228949082ED",
+          "build": 5464,
+          "enabled": true,
+          "configured_build": 5464,
+          "observed_build": null,
+          "build_source": "CONFIGURED_METADATA",
+          "observed_job_id": null,
+          "observed_at_utc": null,
+          "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+          "terminal_id": "term_aa5090f42e3b4743a4322384f2e139bf",
+          "terminal_generation": 1,
+          "identity_revision": 1,
+          "identity_status": "ENROLLED",
+          "identity_source": "LOCAL_PERSISTED_REGISTRY",
+          "resource_qualification": "QUALIFIED",
+          "resource_conflicts": [],
+          "routed_native_enabled": false
+        },
+        {
+          "alias": "MT5-2",
+          "terminal_path": "C:\\Users\\Administrator\\Desktop\\MT5-2\\terminal64.exe",
+          "metaeditor_path": "C:\\Users\\Administrator\\Desktop\\MT5-2\\MetaEditor64.exe",
+          "data_hash": "64FD23D25F36584DF725EFDD100CDEC9",
+          "data_root": "C:\\Users\\Administrator\\AppData\\Roaming\\MetaQuotes\\Terminal\\64FD23D25F36584DF725EFDD100CDEC9",
+          "build": 6230,
+          "enabled": true,
+          "configured_build": 6140,
+          "observed_build": 6230,
+          "build_source": "LATEST_COMPLETED_NATIVE_RESULT",
+          "observed_job_id": "BT-20260929-143719-805BD7",
+          "observed_at_utc": "2026-09-29T07:38:11Z",
+          "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+          "terminal_id": "term_dbfaf35a2a5f4b41bd2fedd387512c3a",
+          "terminal_generation": 1,
+          "identity_revision": 1,
+          "identity_status": "ENROLLED",
+          "identity_source": "LOCAL_PERSISTED_REGISTRY",
+          "resource_qualification": "QUALIFIED",
+          "resource_conflicts": [],
+          "routed_native_enabled": false
+        },
+        {
+          "alias": "MT5-3",
+          "terminal_path": "C:\\Users\\Administrator\\Desktop\\MT5-3\\terminal64.exe",
+          "metaeditor_path": "C:\\Users\\Administrator\\Desktop\\MT5-3\\MetaEditor64.exe",
+          "data_hash": "B1B13542592AB19247261B5EF2C9ADEC",
+          "data_root": "C:\\Users\\Administrator\\AppData\\Roaming\\MetaQuotes\\Terminal\\B1B13542592AB19247261B5EF2C9ADEC",
+          "build": 5233,
+          "enabled": true,
+          "configured_build": 5233,
+          "observed_build": null,
+          "build_source": "CONFIGURED_METADATA",
+          "observed_job_id": null,
+          "observed_at_utc": null,
+          "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+          "terminal_id": "term_e989b1b76e3f417ca98fc52f431eba55",
+          "terminal_generation": 1,
+          "identity_revision": 1,
+          "identity_status": "ENROLLED",
+          "identity_source": "LOCAL_PERSISTED_REGISTRY",
+          "resource_qualification": "QUALIFIED",
+          "resource_conflicts": [],
+          "routed_native_enabled": false
+        },
+        {
+          "alias": "MT5-4",
+          "terminal_path": "C:\\Users\\Administrator\\Desktop\\MT5-4\\terminal64.exe",
+          "metaeditor_path": "C:\\Users\\Administrator\\Desktop\\MT5-4\\MetaEditor64.exe",
+          "data_hash": "AA4F9AAE0D958B63982DF28B47BFCDB7",
+          "data_root": "C:\\Users\\Administrator\\AppData\\Roaming\\MetaQuotes\\Terminal\\AA4F9AAE0D958B63982DF28B47BFCDB7",
+          "build": 5233,
+          "enabled": true,
+          "configured_build": 5233,
+          "observed_build": null,
+          "build_source": "CONFIGURED_METADATA",
+          "observed_job_id": null,
+          "observed_at_utc": null,
+          "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+          "terminal_id": "term_569512a99eb646aab650428e0b8d4433",
+          "terminal_generation": 1,
+          "identity_revision": 1,
+          "identity_status": "ENROLLED",
+          "identity_source": "LOCAL_PERSISTED_REGISTRY",
+          "resource_qualification": "QUALIFIED",
+          "resource_conflicts": [],
+          "routed_native_enabled": false
+        },
+        {
+          "alias": "MT5-PROGRAM",
+          "terminal_path": "C:\\Program Files\\MetaTrader 5\\terminal64.exe",
+          "metaeditor_path": "C:\\Program Files\\MetaTrader 5\\MetaEditor64.exe",
+          "data_hash": "D0E8209F77C8CF37AD8BF550E51FF075",
+          "data_root": "C:\\Users\\Administrator\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075",
+          "build": 4774,
+          "enabled": true,
+          "configured_build": 4774,
+          "observed_build": null,
+          "build_source": "CONFIGURED_METADATA",
+          "observed_job_id": null,
+          "observed_at_utc": null,
+          "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+          "terminal_id": "term_f5ef765543364591ae25a3dcb270e277",
+          "terminal_generation": 1,
+          "identity_revision": 1,
+          "identity_status": "ENROLLED",
+          "identity_source": "LOCAL_PERSISTED_REGISTRY",
+          "resource_qualification": "QUALIFIED",
+          "resource_conflicts": [],
+          "routed_native_enabled": false
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No attach-only or hard-deadline proof",
+    "No actual state/account target receipt or client schema exposure",
+    "No Windows boundary implementation or physical race test",
+    "Recovered tunnel poll episodes retained; no new soak/capacity acceptance"
+  ]
+}

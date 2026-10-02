@@ -2,6 +2,8 @@
 
 Status: approved verification contract, per the [owner record](approval-2026-10-02.md). This document specifies evidence to collect; it contains no new fleet PASS receipt.
 
+Latest checkpoint at13:36: [TIP-057R contract](TIP-057R-contract.md) and [Builder feasibility](TIP-057R-feasibility.md) are prepared from main `146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809`. All14 read ACs remain PLANNED. G03 shared uncertain-cleanup recovery and G04 strict no-start block product IPC BUILD; the [isolated Q1 proof proposal](TIP-057R-boundary-proposal.md) awaits a concrete architecture decision. Documentation CI validates the unchanged code baseline and does not certify a new helper, deadline, schema exposure or account read. [Fresh read-only receipts](evidence/2026-10-02-tip057r-contract.json) preserve current runtime and recovered B poll timeout.
+
 ## Evidence and non-regression matrix
 
 | Behavior | Required checks | Gate |

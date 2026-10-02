@@ -4,6 +4,8 @@ Date: 2026-10-02, Asia/Saigon. Status: **SCAN COMPLETE / CONTRACT INPUTS / BUILD
 
 Later runtime update: [actual M0 enrollment/backup/reload/inventory qualification PASS](TIP-055A-enrollment-qualification.md) closes G01 and supplies real IDs. The source findings and remaining proposed contract choices below are unchanged; R10 is the historical 11:27 sample.
 
+Later 13:36 contract continuation: [selected contract](TIP-057R-contract.md) and [Builder feasibility](TIP-057R-feasibility.md) complete schema/AC preparation and record10s local soft-budget selection. G02 actual client/pilot acceptance is explicitly later than implementation. Shared uncertain-cleanup ownership and strict no-start remain open; the [Q1 boundary proposal](TIP-057R-boundary-proposal.md) is pending owner decision. This scan's original draft/gap language below is retained, not a current implementation claim.
+
 An earlier scan at 03:07 was interrupted by an explicit usage-limit error; it was not completion. The resumed scan at the 11:27 continuation supplied the missing findings. No automatic 30-minute run receipt or numeric usage-percent reading exists in this checkpoint.
 
 ## Research brief and source authority

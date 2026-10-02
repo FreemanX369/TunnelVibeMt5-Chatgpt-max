@@ -1,6 +1,8 @@
 # TIP-057R — Targeted local read readiness
 
-Status: REFINEMENT ONLY; not dispatched or capability-qualified. Direction derives from approved Blueprint section 6 and REQ-F04/F10/F14/F15. [Actual M0 enrollment/backup/reload/inventory qualification is now PASS](TIP-055A-enrollment-qualification.md), with five real ENROLLED/QUALIFIED bindings and stable IDs. TIP-055B is corrective maintenance for the existing global lease, not implementation of this TIP.
+Status: **CONTRACT PREPARED / PRODUCT IPC BUILD BLOCKED**; not dispatched or capability-qualified. Direction derives from approved Blueprint section 6 and REQ-F04/F10/F14/F15. [Actual M0 enrollment/backup/reload/inventory qualification is now PASS](TIP-055A-enrollment-qualification.md), with five real ENROLLED/QUALIFIED bindings and stable IDs. TIP-055B is corrective maintenance for the existing global lease, not implementation of this TIP.
+
+Latest 13:36 continuation: the [selected contract](TIP-057R-contract.md) now supplies exact optional target/envelope/error/14-AC inputs and a10s local soft-success budget. The [Builder feasibility report](TIP-057R-feasibility.md) separates schema preparation from actual client/pilot acceptance. G03 shared uncertain-cleanup ownership and G04 preventive no-start remain technical blockers; see the [concrete Q1 boundary proof proposal](TIP-057R-boundary-proposal.md). The earlier refinement requirements below remain historical inputs, not proof that existing initialize supports attach-only or that a helper was approved.
 
 The resumed [focused source scan](TIP-057R-source-scan.md) is complete and provides draft signatures/output/error/budget inputs. Enrollment is closed by later actual receipts. Additive schema and unresolved lifecycle/deadline/no-start contracts still gate dispatch; draft inputs are not implemented APIs.
 

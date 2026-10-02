@@ -1,6 +1,6 @@
 # Fleet v1 — Requirements, RRI synthesis and decision ledger
 
-Status: **APPROVED DIRECTION / M0 CODE AND REAL LOCAL ENROLLMENT QUALIFIED**, per the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment receipts](TIP-055A-enrollment-qualification.md). TIP-055B has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md); targeted read schema/lifecycle/deadline/no-start requirements remain [at readiness refinement](TIP-057R-readiness.md). No answer below is attributed to an interview that did not occur.
+Status: **APPROVED DIRECTION / M0 QUALIFIED / TIP-057R CONTRACT PREPARED**, per the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment receipts](TIP-055A-enrollment-qualification.md). TIP-055B has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md). [Selected read contract](TIP-057R-contract.md) specifies schema/ACs and local soft budget; shared recovery and strict attach-only remain unresolved. No answer below is attributed to an interview that did not occur.
 
 ## Five-persona RRI synthesis
 
@@ -60,6 +60,9 @@ D entries establish the approved direction and choices within the recorded appro
 | D-15 | Dedicated tester role by default; live handoff separately authorized/qualified | Avoid silently interrupting live EA | 057N |
 | D-16 | Node operation journal + UNKNOWN outcome; no unconditional native retry | Preserve evidence when start/ACK outcome is ambiguous | 060 |
 | D-17 | M0 inventory-only identity enrichment; no job/hash/result rewrite | Isolate the first change and preserve idempotency/history | 055A |
+| D-18 | Prepare optional local target on only state/account; preserve legacy successful shape | Concrete [contract](TIP-057R-contract.md), not implemented or client-qualified | 057R |
+| D-19 | Local10s soft-success budget; do not claim hard response/cancellation | Exact overrun/cleanup ownership is recorded; TIP-059 total deadline stays separate | 057R contract |
+| D-20 | Strict no-start retained; restricted helper is pending proof/owner review | Existing initialize has no supported attach-only guarantee; [Q1 proposal](TIP-057R-boundary-proposal.md) is not approved architecture | 057R G03/G04 |
 
 ## Open gate register
 
@@ -78,5 +81,8 @@ No open item below blocks writing/reviewing this package. Only items for the TIP
 | O-09 | Conflict matrix, capacity reservation, lock ordering and measured resource/latency/fairness thresholds | 056 build |
 | O-10 | Remote source-guard transport, recovery fencing and verified caller principal model | 061B/063 build |
 | O-11 | Physical topology, test workload, soak/performance/recovery thresholds and release/deploy scope | 064 qualification |
+| O-12 | Shared uncertain-IPC ownership/recovery mechanism and preventive attach-only boundary; review concrete Q1 proposal | 057R product BUILD; Q1 itself awaits architecture decision |
+
+TIP-057R G02-schema preparation is complete; G02 actual client/pilot remains a later acceptance gate. Local soft-budget selection does not imply hard deadline qualification. G03-ownership/G04 remain OPEN, not paperwork gates or reasons to manufacture successful account reads. The original Blueprint architecture and product policy are unchanged.
 
 Builder resolves implementation choices within an approved contract. Missing architecture/authority/policy is escalated to Contractor; a scope/security/product-policy change returns to the owner with a concrete proposal.
