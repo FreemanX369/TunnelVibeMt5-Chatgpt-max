@@ -2,6 +2,8 @@
 
 Status: REFINEMENT ONLY; not dispatched or capability-qualified. Direction derives from approved Blueprint section 6 and REQ-F04/F10/F14/F15. Current M0 runtime has five UNENROLLED/UNQUALIFIED rows; real identity acceptance remains a build dependency. TIP-055B is corrective maintenance for the existing global lease, not implementation of this TIP.
 
+The resumed [focused source scan](TIP-057R-source-scan.md) is complete at the 11:27 continuation and provides draft signatures/output/error/budget inputs. Real enrollment and unresolved lifecycle/deadline/no-start contracts still gate dispatch; draft inputs are not implemented APIs.
+
 ## Smallest next slice
 
 Proposed first slice: exact local terminal state/account reads through the existing get_terminal_live_state and get_account_snapshot domain methods. Keep existing no-target MT5-2 behavior; explicit local fleet.target/1 supplies device_id, terminal_id and terminal_generation, with no fabricated route_generation. Exclude charts/capture, rates/ticks, remote transport, source changes and native compile/test routing from this first slice.
@@ -33,6 +35,8 @@ Current reuse facts:
 | Regression | Mixed A/B requests across at least two IDs, denied binding, disabled/replaced roots, concurrent identity change, initialize/observation/shutdown exceptions and original fixed-native behavior |
 
 The Builder must first check lifecycle failure cleanup: current state() enters its shutdown finally only after initialize succeeds. The new request cannot leave ambiguous process-wide IPC attachment after a failed initialize and then observe another target. Reuse/harden cleanup within the selected read scope rather than duplicate account conversion.
+
+Source scan also finds cached facade inventory, two process-discovery calls each with an 8s subprocess timeout, and a running-precheck/initialize race. Resolve fresh configuration under the shared lease. The API can launch a terminal if needed, so strict no-start is not proved by the precheck alone. Freeze compatible cleanup ownership and actual no-start evidence before BUILD.
 
 A hard deadline for an uninterruptible native-library call may require a separately reviewed helper boundary; approved direction allows proposing helper processes after Windows binding evidence. Do not silently insert a thread timeout that releases the shared lease while a native call continues, or expand architecture based on assumed cancellation semantics. This is an explicit readiness question, not a reason to claim implementation impossible.
 

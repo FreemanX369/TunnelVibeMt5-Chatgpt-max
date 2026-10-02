@@ -15,12 +15,12 @@ Status: **ACTIVE**; TIP-055A code deployed and fixture/read acceptance verified;
 | TIP-061A | Project/iteration target contract and STRICT baseline | 055A + 058 | Frozen target and writer authority before managed routed jobs; native remains fixed until 057N |
 | TIP-057N | Local native routing and end-to-end provenance | 057R + 061A | Serialized dedicated tester; worker/result/baseline/cancel/capture boundaries qualified |
 | TIP-060 | Durable remote native jobs and artifact proxy | 059 + 057N + 061A | Same-node inputs; capacity 1 per node; operation collision/replay/start/ACK/commit/recovery gates |
-| TIP-056 | Qualified terminal-scoped native concurrency | 060 | Resource conflicts/capacity reservations/shared legacy locks; measured loaded Windows qualification |
+| TIP-056 | Qualified terminal-scoped native concurrency | 060 | [Readiness review complete](TIP-056-readiness.md); BUILD gated by target/journal/resource reservations and measured loaded Windows qualification |
 | TIP-061B | Remote guarded source mutation | 060 | Single project writer, exact checkpoint/source CAS, operation transport and recovery fencing |
 | TIP-063 | Multi-agent task isolation | 061B + 060 | Verified principal ownership and Git worktree; no duplicate Continuity system |
 | TIP-064 | Final fleet release qualification | Every capability included in the selected release | Scope-bound fault/load/soak/migration/restore evidence on exact candidate |
 
-Current execution checkpoint: PR #54/#55 merged and six-file M0 VPS installation verified. All five public rows remain UNENROLLED/UNQUALIFIED. TIP-055B in PR #57 has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md); issue #56 closes only after its exact reviewed merge. It does not enable native routing. [TIP-057R readiness](TIP-057R-readiness.md) records the next bounded read slice and remaining enrollment/schema/deadline gates, without dispatching its build.
+Current execution checkpoint: PR #54/#55/#57 merged; six-file M0 installation and bounded lease correction qualified on the VPS; issue #56 closed after exact reviewed merge. All five public rows remain UNENROLLED/UNQUALIFIED on the 11:27 continuation. [TIP-056 readiness](TIP-056-readiness.md) confirms M4 after TIP-060; it is not the next implementation by numeric ID. [TIP-057R readiness](TIP-057R-readiness.md) and [source scan](TIP-057R-source-scan.md) record the next bounded slice and remaining enrollment/schema/deadline/cleanup/no-start gates, without dispatching BUILD.
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 
