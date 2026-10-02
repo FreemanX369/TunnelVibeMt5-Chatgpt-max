@@ -41,3 +41,8 @@ The current repository only declares `MetaTrader5>=5.0.6147`. Neither installed 
 Use the selected real console/session mode. Q1's no-console `0xc0000142` remains unresolved and must not be promoted to a runtime default. No SDK load, terminal setup, process tracing installation or VM provisioning is performed by this document.
 
 The actual SDK can fail because the sandbox blocks access required for IPC; this is a mechanism compatibility question, not a reason to relax no-start. If the preventive boundary and required IPC cannot coexist, keep targeted IPC disabled and return to a reviewed product/vendor boundary decision. A disposable Q2 PASS would still require G03 product producer/migration proof, actual client schema and guarded two-binding acceptance before TIP-057R/M1 is qualified.
+
+
+## 2026-10-03 B1 source-build sequencing continuation
+
+At 00:12:01+07:00 the owner deferred private VM testing and directed source build first. This supersedes the earlier Q2-before-source order for [bounded B1](TIP-057R-B1-build.md) only. The proof-only isolated SDK state/account worker, protocol and harmless Windows stub are built under [the B1 report](TIP-057R-B1-completion.md); original environment slots stay unfilled, SDK/Q2/no-start/production descendants, G03-B integration, migration and activation remain OPEN. The SDK CLI denies effects; no product/native legacy behavior is changed. Source/stub CI is separate from the later actual private VM qualification.

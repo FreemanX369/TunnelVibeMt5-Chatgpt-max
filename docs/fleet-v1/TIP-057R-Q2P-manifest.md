@@ -65,3 +65,8 @@ Stages L/I are compatibility-first. A failure ends later effect stages without r
 ## External input bundle and next handoff
 
 The smallest actionable operator handoff is: (1) selected disposable VM/session facts M01–M02 and owner; (2) exact Python/wheel/native DLL and terminal distribution receipts M03–M07 plus two clean canonical bindings; (3) proposed trace collector and zero-loss self-test plan M09; (4) ownership/effect/teardown allowlists M08/M10/M11. Contractor then validates a filled manifest and dispatches the bounded research worker source TIP, reviews its exact bytes, and presents the final physical manifest for the affected execution decision. No current VPS call or secrets are needed for preparation. Do not create a new launcher to compensate for absent operator facts.
+
+
+## 2026-10-03 B1 source-build sequencing continuation
+
+At 00:12:01+07:00 the owner deferred private VM testing and directed source build first. This supersedes the earlier Q2-before-source order for [bounded B1](TIP-057R-B1-build.md) only. The proof-only isolated SDK state/account worker, protocol and harmless Windows stub are built under [the B1 report](TIP-057R-B1-completion.md); original environment slots stay unfilled, SDK/Q2/no-start/production descendants, G03-B integration, migration and activation remain OPEN. The SDK CLI denies effects; no product/native legacy behavior is changed. Source/stub CI is separate from the later actual private VM qualification.

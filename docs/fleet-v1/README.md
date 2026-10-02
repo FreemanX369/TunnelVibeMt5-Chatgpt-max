@@ -45,3 +45,8 @@ The initial Blueprint approval covered direction, constraints, M0/M1 choices and
 The owner explicitly authorized the existing identity CLI through PowerShell MCP at 12:07:49; the bounded commands and necessary verified registry backup were executed and retained. Other generic shell/admin/native/account constraints remain. Later physical live/native pilots, gateway endpoint/provider and Windows worker readiness retain their separate execution gates.
 
 The owner approved the package by stating “Duyệt Blueprint”; the linked approval record binds that statement to the exact reviewed revision. A review/merge action alone must not be silently interpreted as permission to operate MT5. Further amendments need their own recorded decision; later capability gates remain in force.
+
+
+## 2026-10-03 B1 source-build sequencing continuation
+
+At 00:12:01+07:00 the owner deferred private VM testing and directed source build first. This supersedes the earlier Q2-before-source order for [bounded B1](TIP-057R-B1-build.md) only. The proof-only isolated SDK state/account worker, protocol and harmless Windows stub are built under [the B1 report](TIP-057R-B1-completion.md); original environment slots stay unfilled, SDK/Q2/no-start/production descendants, G03-B integration, migration and activation remain OPEN. The SDK CLI denies effects; no product/native legacy behavior is changed. Source/stub CI is separate from the later actual private VM qualification.

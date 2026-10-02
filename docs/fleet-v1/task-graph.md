@@ -49,3 +49,8 @@ Read-fleet pilot can be delivered before native or multi-agent work. Such delive
 ## Builder report for every TIP
 
 Report `DONE | PARTIAL | BLOCKED`, files changed, each AC's PASS/FAIL/evidence, issues with severity, deviations and suggested follow-up. Distinguish mock/Linux CI, Windows fixtures and physical MT5 acceptance. Contractor validates requirement coverage before capability unlock. Architecture changes are suggestions until approved; no unreviewed rewrite of gateway, project authority or target semantics.
+
+
+## 2026-10-03 B1 source-build sequencing continuation
+
+At 00:12:01+07:00 the owner deferred private VM testing and directed source build first. This supersedes the earlier Q2-before-source order for [bounded B1](TIP-057R-B1-build.md) only. The proof-only isolated SDK state/account worker, protocol and harmless Windows stub are built under [the B1 report](TIP-057R-B1-completion.md); original environment slots stay unfilled, SDK/Q2/no-start/production descendants, G03-B integration, migration and activation remain OPEN. The SDK CLI denies effects; no product/native legacy behavior is changed. Source/stub CI is separate from the later actual private VM qualification.
