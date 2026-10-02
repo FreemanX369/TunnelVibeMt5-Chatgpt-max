@@ -4,26 +4,124 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 
 /* Harmless fixture only: no SDK, terminal, account, IPC, shell or broker. */
+static DWORD write_error = 0;
+static DWORD write_native_error = 0, write_requested = 0, write_written = 0;
+static int write_errno = 0;
+static const char *write_error_source = "NONE";
+static const char *write_stage = "NOT_ATTEMPTED";
+static wchar_t write_path[32768];
+
 static int write_json(const wchar_t *root, const wchar_t *name, const char *json) {
-    wchar_t path[32768];
     HANDLE file;
     DWORD written = 0;
     size_t length = strlen(json);
-    if (swprintf_s(path, 32768, L"%s\\%s", root, name) < 0) return 0;
-    file = CreateFileW(path, GENERIC_WRITE, FILE_SHARE_READ, NULL,
+    write_error = write_native_error = write_written = 0;
+    write_requested = (DWORD)length;
+    write_errno = 0; write_error_source = "NONE";
+    write_stage = "PATH_FORMAT";
+    if (swprintf_s(write_path, 32768, L"%s\\%s", root, name) < 0) {
+        write_errno = errno; write_error_source = "CRT_ERRNO";
+        write_error = ERROR_INVALID_NAME; return 0;
+    }
+    write_stage = "CREATE_FILE";
+    file = CreateFileW(write_path, GENERIC_WRITE, FILE_SHARE_READ, NULL,
                        CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (file == INVALID_HANDLE_VALUE) return 0;
-    if (!WriteFile(file, json, (DWORD)length, &written, NULL) || written != length) {
+    if (file == INVALID_HANDLE_VALUE) {
+        write_native_error = GetLastError(); write_error = write_native_error;
+        write_error_source = "WIN32"; return 0;
+    }
+    write_stage = "WRITE_FILE";
+    if (!WriteFile(file, json, (DWORD)length, &written, NULL)) {
+        write_native_error = GetLastError(); write_error = write_native_error;
+        write_error_source = "WIN32"; write_written = written;
         CloseHandle(file); return 0;
     }
-    FlushFileBuffers(file);
-    CloseHandle(file);
+    write_written = written;
+    if (written != length) {
+        write_error = ERROR_WRITE_FAULT; write_error_source = "SHORT_WRITE";
+        CloseHandle(file); return 0;
+    }
+    write_stage = "FLUSH_FILE";
+    if (!FlushFileBuffers(file)) {
+        write_native_error = GetLastError(); write_error = write_native_error;
+        write_error_source = "WIN32"; CloseHandle(file); return 0;
+    }
+    write_stage = "CLOSE_FILE";
+    if (!CloseHandle(file)) {
+        write_native_error = GetLastError(); write_error = write_native_error;
+        write_error_source = "WIN32"; return 0;
+    }
+    write_stage = "COMPLETE";
     return 1;
+}
+
+static void json_path(char *target, const wchar_t *source) {
+    size_t used = 0, index;
+    for (index = 0; source[index] && index < 256; ++index) {
+        unsigned int value = (unsigned int)source[index];
+        if (value == '\\' || value == '"') {
+            target[used++] = '\\'; target[used++] = (char)value;
+        } else if (value >= 32 && value < 127) {
+            target[used++] = (char)value;
+        } else {
+            sprintf_s(target + used, 1537 - used, "\\u%04x", value);
+            used += 6;
+        }
+    }
+    target[used] = 0;
+}
+
+static void writer_diagnostic(const wchar_t *root, int success) {
+    HANDLE token = NULL, file;
+    DWORD app = 0xffffffff, integrity = 0xffffffff, token_error = 0, size = 0, written = 0;
+    DWORD root_attributes, root_error = 0;
+    PROCESS_MITIGATION_CHILD_PROCESS_POLICY policy = {0};
+    DWORD policy_ok;
+    union { TOKEN_MANDATORY_LABEL label; BYTE bytes[256]; } information;
+    wchar_t cwd[32768] = {0};
+    char root_json[1537], path_json[1537], cwd_json[1537], report[8192];
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) {
+        if (!GetTokenInformation(token, TokenIsAppContainer, &app, sizeof(app), &size)) token_error = GetLastError();
+        if (GetTokenInformation(token, TokenIntegrityLevel, &information, sizeof(information), &size)) {
+            PSID sid = information.label.Label.Sid;
+            integrity = *GetSidSubAuthority(sid, (DWORD)(*GetSidSubAuthorityCount(sid) - 1));
+        } else token_error = GetLastError();
+        CloseHandle(token);
+    } else token_error = GetLastError();
+    root_attributes = GetFileAttributesW(root);
+    if (root_attributes == INVALID_FILE_ATTRIBUTES) root_error = GetLastError();
+    GetCurrentDirectoryW(32768, cwd);
+    policy_ok = GetProcessMitigationPolicy(GetCurrentProcess(), ProcessChildProcessPolicy, &policy, sizeof(policy));
+    json_path(root_json, root); json_path(path_json, write_path); json_path(cwd_json, cwd);
+    sprintf_s(report, sizeof(report),
+        "{\"pid\":%lu,\"write_success\":%s,\"write_stage\":\"%s\",\"win32_error\":%lu,"
+        "\"exit_error\":%lu,\"error_source\":\"%s\",\"crt_errno\":%d,"
+        "\"requested_bytes\":%lu,\"written_bytes\":%lu,"
+        "\"root\":\"%s\",\"computed_path\":\"%s\",\"cwd\":\"%s\","
+        "\"root_attributes\":%lu,\"root_error\":%lu,\"appcontainer\":%lu,"
+        "\"integrity_rid\":%lu,\"token_error\":%lu,\"policy_query_ok\":%lu,"
+        "\"child_restricted\":%lu,\"path_limit_chars\":256}\n",
+        GetCurrentProcessId(), success ? "true" : "false", write_stage, write_native_error,
+        write_error, write_error_source, write_errno, write_requested, write_written,
+        root_json, path_json, cwd_json, root_attributes, root_error, app, integrity, token_error,
+        policy_ok, (DWORD)policy.NoChildProcessCreation);
+    /* Relative diagnostic path independently tests formatted path versus root access.
+       It is confined to the launcher's unique fixture working directory. */
+    file = CreateFileW(L"fixture-diagnostic.json", GENERIC_WRITE, FILE_SHARE_READ, NULL,
+                       CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file != INVALID_HANDLE_VALUE) {
+        WriteFile(file, report, (DWORD)strlen(report), &written, NULL);
+        FlushFileBuffers(file); CloseHandle(file);
+    } else {
+        /* Standalone control has file-backed stderr; restricted handles are not inherited. */
+        fputs(report, stderr); fflush(stderr);
+    }
 }
 
 static DWORD attempt_child(const wchar_t *root, const wchar_t *marker, DWORD flags,
@@ -36,7 +134,7 @@ static DWORD attempt_child(const wchar_t *root, const wchar_t *marker, DWORD fla
     if (swprintf_s(command, 32768, L"\"%s\" \"%s\" child \"%s\"", executable, root, marker) < 0)
         return ERROR_INVALID_PARAMETER;
     startup.cb = sizeof(startup);
-    if (!CreateProcessW(executable, command, NULL, NULL, FALSE, flags | CREATE_NO_WINDOW,
+    if (!CreateProcessW(executable, command, NULL, NULL, FALSE, flags,
                         NULL, root, &startup, &process)) return GetLastError();
     *created = 1;
     error = WaitForSingleObject(process.hProcess, 2000) == WAIT_OBJECT_0 ? 0 : WAIT_TIMEOUT;
@@ -76,8 +174,18 @@ int wmain(int argc, wchar_t **argv) {
         return write_json(root, argv[3], "{\"executed\":true}\n") ? 0 : 82;
     }
     if (argc != 5) return 83;
+    if (!wcscmp(mode, L"write_probe")) {
+        int success;
+        sprintf_s(report, sizeof(report), "{\"pid\":%lu,\"positive_marker\":true}\n", GetCurrentProcessId());
+        success = write_json(root, L"positive-marker.json", report);
+        writer_diagnostic(root, success);
+        return success ? 0 : (int)write_error;
+    }
     sprintf_s(report, sizeof(report), "{\"pid\":%lu,\"entered\":true}\n", GetCurrentProcessId());
-    if (!write_json(root, L"entry.json", report)) return 95;
+    if (!write_json(root, L"entry.json", report)) {
+        writer_diagnostic(root, 0);
+        return (int)write_error;
+    }
     parent_pid = wcstoul(argv[3], NULL, 10);
     inherited_pid = GetProcessId((HANDLE)(uintptr_t)_wcstoui64(argv[4], NULL, 10));
     if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) return 84;

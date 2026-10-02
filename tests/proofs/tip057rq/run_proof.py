@@ -24,7 +24,8 @@ from windows_boundary import Boundary, Process, Windows
 EVIDENCE = []
 EXECUTABLE = None
 PHASE_FILES = ("entry.json", "started.json", "result.json", "initialize-attempted.json", "cleanup-attempted.json",
-               "observation-attempted.json", "observation.json", "direct-child.json", "breakaway-child.json", "go.txt")
+               "observation-attempted.json", "observation.json", "direct-child.json", "breakaway-child.json", "go.txt",
+               "fixture-diagnostic.json", "positive-marker.json")
 
 
 def record(case, **values):
@@ -43,7 +44,8 @@ def wait_json(path, seconds=5, *, process=None, case="fixture-output"):
                 record(case, missing_output=path.name, exit_code=code,
                        exit_code_hex=f"0x{code:08x}",
                        phase_markers={name: (path.parent / name).exists() for name in PHASE_FILES},
-                       lifetime=process.lifetime())
+                       lifetime=process.lifetime(),
+                       writer_diagnostic=diagnostic_tail(path.parent / "fixture-diagnostic.json"))
                 raise AssertionError(f"FIXTURE_EXIT_BEFORE_OUTPUT:{path.name}:0x{code:08x}")
             time.sleep(0.005)
     record(case, missing_output=path.name, output_timeout_seconds=seconds,
@@ -392,8 +394,7 @@ class WindowsCases(unittest.TestCase):
             with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
                 controller = subprocess.Popen([sys.executable, "-u", str(HERE / "run_proof.py"),
                                                "--crash-parent", str(crash_root), "--executable", str(EXECUTABLE)],
-                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
-                                              creationflags=subprocess.CREATE_NO_WINDOW)
+                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
                 code = wait_controller(controller, 15)
             self.assertEqual(code, 73, log_tail(stderr_path))
             expected = fresh.read()
@@ -507,8 +508,7 @@ class WindowsCases(unittest.TestCase):
                 with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
                     caller = subprocess.Popen([sys.executable, "-u", str(HERE / "run_proof.py"),
                                                "--attempt-arm", str(self.authority.root)],
-                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
-                                              creationflags=subprocess.CREATE_NO_WINDOW)
+                                              stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
                 callers.append((caller, stdout_path, stderr_path))
             for caller, stdout_path, stderr_path in callers:
                 self.assertEqual(wait_controller(caller, 10), 0, log_tail(stderr_path))
@@ -595,6 +595,107 @@ def compile_fixture(output):
     return executable
 
 
+def startup_checkpoint():
+    """Matched debug controls; failure blocks qualification, never becomes a skip."""
+    rows = []
+    variants = (("plain_unrestricted_console", False, False, False, True),
+                ("granted_unrestricted_console", True, False, False, True),
+                ("granted_restricted_console", True, True, False, True),
+                ("granted_restricted_no_console", True, True, True, False))
+    for name, granted, restricted, no_console, required in variants:
+        row = {"variant": name, "restricted": restricted, "no_console": no_console,
+               "required_positive_control": required, "control_passed": False,
+               "inherited_handles": False if granted else "file-backed stdio only"}
+        temporary = tempfile.TemporaryDirectory(prefix="tip057rq-checkpoint-")
+        root = Path(temporary.name)
+        executable = root / "fixture.exe"
+        boundary = process = controller = None
+        cleanup_errors = []
+        try:
+            shutil.copy2(EXECUTABLE, executable)
+            if granted:
+                boundary = Boundary(root)
+                windows = boundary.windows
+            else:
+                windows = Windows()
+            row["parent_token_before"] = windows.token_observation()
+            row["root_security"] = windows.security_observation(root)
+            row["executable_security"] = windows.security_observation(executable)
+            row["parent_write_before"] = windows.write_observation(root / "parent-before.json")
+            if granted:
+                process = boundary.spawn(executable, "write_probe", os.getpid(), restricted=restricted,
+                                         no_console=no_console, inherit=False)
+                ref = process.identity()
+                row["worker"] = ref
+                process.resume()
+                code = process.wait(5000)
+                pid = ref["pid"]
+            else:
+                stdout_path, stderr_path = root / "stdout.log", root / "stderr.log"
+                with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                    controller = subprocess.Popen([str(executable), str(root), "write_probe", str(os.getpid()), "0"],
+                                                  cwd=root, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                                  close_fds=True)
+                    code = wait_controller(controller, 5)
+                pid = controller.pid
+                row["stderr_tail"] = diagnostic_tail(stderr_path)
+            row.update(exit_code=code, exit_code_hex=f"0x{code:08x}")
+            row["parent_token_after"] = windows.token_observation()
+            row["parent_write_after"] = windows.write_observation(root / "parent-after.json")
+            for filename, key in (("positive-marker.json", "marker"), ("fixture-diagnostic.json", "writer")):
+                path = root / filename
+                if path.exists():
+                    if path.stat().st_size > 8192:
+                        raise RuntimeError("CHECKPOINT_DIAGNOSTIC_LIMIT_EXCEEDED")
+                    row[key] = json.loads(path.read_text(encoding="utf-8"))
+            writer, marker = row.get("writer", {}), row.get("marker", {})
+            parent_writes = all(value.get("create_error") == 0 and value.get("write_error") == 0
+                                and value.get("written_bytes") == 3 and value.get("flush_error") == 0
+                                for value in (row["parent_write_before"], row["parent_write_after"]))
+            row["control_passed"] = bool(code == 0 and marker.get("positive_marker") is True
+                and marker.get("pid") == pid and writer.get("pid") == pid and writer.get("write_success") is True
+                and writer.get("win32_error") == 0 and writer.get("token_error") == 0
+                and writer.get("appcontainer") == int(restricted) and writer.get("policy_query_ok") == 1
+                and writer.get("child_restricted") == int(restricted) and parent_writes
+                and "sddl" in row["root_security"] and "sddl" in row["executable_security"])
+        except BaseException as error:
+            row["error"] = f"{type(error).__name__}:{str(error)[:2000]}"
+        finally:
+            if controller is not None:
+                try:
+                    stop_controller(controller)
+                except BaseException as error:
+                    cleanup_errors.append(f"CONTROLLER_STOP_UNPROVEN:{type(error).__name__}")
+            if process is not None:
+                try:
+                    if not process.exited():
+                        process.terminate_exact(process.identity())
+                    row["exact_handle_exit"] = process.exited()
+                except BaseException as error:
+                    cleanup_errors.append(f"WORKER_STOP_UNPROVEN:{type(error).__name__}")
+                finally:
+                    try:
+                        process.close()
+                    except BaseException as error:
+                        cleanup_errors.append(f"HANDLE_CLOSE_FAILED:{type(error).__name__}")
+            if boundary is not None:
+                try:
+                    boundary.close()
+                except BaseException as error:
+                    cleanup_errors.append(f"PROFILE_CLEANUP_FAILED:{type(error).__name__}")
+            try:
+                temporary.cleanup()
+            except BaseException as error:
+                cleanup_errors.append(f"ROOT_CLEANUP_FAILED:{type(error).__name__}")
+            row["cleanup_errors"] = cleanup_errors
+            rows.append(row)
+            record("startup_checkpoint", **row)
+    passed = all(row["control_passed"] for row in rows if row["required_positive_control"])
+    passed = passed and all(not row["cleanup_errors"] for row in rows)
+    return {"required_controls_passed": passed, "variants": rows,
+            "qualification": "STARTUP_AND_MARKER_ONLY_NO_CHILD_DENIAL_CLAIM"}
+
+
 def crash_parent(root, executable):
     root = Path(root)
     atomic(root / "controller-phase.json", {"phase": "ENTERED", "pid": os.getpid()})
@@ -654,6 +755,34 @@ def cap_proof_log(path, limit=64000):
         path.write_bytes(header + tail)
     metadata["retained_bytes"] = path.stat().st_size
     return metadata
+
+
+def bounded_summary(summary, limit=262144):
+    serialized = json.dumps(summary, indent=2, sort_keys=True)
+    original = serialized.encode("utf-8")
+    if len(original) <= limit:
+        return serialized, False
+    omitted = {"bytes": len(original), "sha256": hashlib.sha256(original).hexdigest(),
+               "disposition": "OMITTED_OVERSIZE_EVIDENCE"}
+    summary.update(status="FAIL", error="EVIDENCE_LIMIT_EXCEEDED", discarded_evidence=omitted, records=[])
+    checkpoint = summary.get("startup_checkpoint")
+    if checkpoint is not None:
+        raw = json.dumps(checkpoint, indent=2, sort_keys=True).encode("utf-8")
+        summary["startup_checkpoint"] = {"required_controls_passed": checkpoint.get("required_controls_passed"),
+            "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+            "disposition": "OMITTED_OVERSIZE_CHECKPOINT_NO_QUALIFICATION"}
+    serialized = json.dumps(summary, indent=2, sort_keys=True)
+    if len(serialized.encode("utf-8")) > limit:
+        # Preserve bounded provenance even if unrelated metadata is unexpectedly huge.
+        summary = {"schema": "tip057rq.proof/1", "status": "FAIL", "error": "EVIDENCE_LIMIT_EXCEEDED",
+                   "candidate_sha": summary.get("candidate_sha", "")[:64],
+                   "expected_head_sha": (summary.get("expected_head_sha") or "")[:64],
+                   "exact_head_verified": summary.get("exact_head_verified") is True,
+                   "discarded_evidence": omitted, "disposition": "MINIMAL_FAILURE_RECEIPT"}
+        serialized = json.dumps(summary, indent=2, sort_keys=True)
+    if len(serialized.encode("utf-8")) > limit:
+        raise RuntimeError("FINAL_EVIDENCE_CAP_NOT_ENFORCED")
+    return serialized, True
 
 
 def attempt_arm(root):
@@ -717,6 +846,13 @@ def main():
         if not options.portable:
             EXECUTABLE = compile_fixture(output)
             summary["fixture_exe_sha256"] = hashlib.sha256(EXECUTABLE.read_bytes()).hexdigest()
+            summary["startup_checkpoint"] = startup_checkpoint()
+            (output / "proof.log").write_text(json.dumps(summary["startup_checkpoint"], indent=2), encoding="utf-8")
+            summary["proof_log"] = cap_proof_log(output / "proof.log")
+            if not summary["startup_checkpoint"]["required_controls_passed"]:
+                summary.update(tests_run=0, failures=0, errors=0, skips=0, full_suite_attempted=False)
+                raise RuntimeError("WINDOWS_STARTUP_CHECKPOINT_BLOCKED")
+            summary["full_suite_attempted"] = True
             suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(WindowsCases))
         with (output / "proof.log").open("w", encoding="utf-8") as stream:
             result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordedResult).run(suite)
@@ -729,14 +865,12 @@ def main():
     finally:
         summary["elapsed_ms"] = (time.monotonic()-started)*1000
         summary["records"] = EVIDENCE
-        serialized = json.dumps(summary, indent=2, sort_keys=True)
-        if len(serialized.encode("utf-8")) > 262144:
-            summary["records"] = []
-            summary.update(status="FAIL", error="EVIDENCE_LIMIT_EXCEEDED", discarded_evidence_sha256=hashlib.sha256(serialized.encode()).hexdigest())
-            serialized = json.dumps(summary, indent=2, sort_keys=True)
+        serialized, overflow = bounded_summary(summary)
+        if overflow:
             exit_code = 1
-        (output / "summary.json").write_text(serialized, encoding="utf-8")
-        print(json.dumps({key: value for key, value in summary.items() if key != "records"}, indent=2))
+        # Write exact capped UTF-8 bytes; Windows newline translation cannot add bytes.
+        (output / "summary.json").write_bytes(serialized.encode("utf-8"))
+        print(json.dumps({key: value for key, value in json.loads(serialized).items() if key != "records"}, indent=2))
         if (output / "proof.log").exists():
             print((output / "proof.log").read_text(encoding="utf-8")[-64000:])
     return exit_code

@@ -65,6 +65,9 @@ class Windows:
             (self.kernel, "DeleteProcThreadAttributeList", [P], None),
             (self.kernel, "CreateProcessW", [W.LPCWSTR, W.LPWSTR, P, P, W.BOOL, W.DWORD, P, W.LPCWSTR, P, C.POINTER(PROCESS_INFORMATION)], W.BOOL),
             (self.kernel, "LocalFree", [P], P),
+            (self.kernel, "CreateFileW", [W.LPCWSTR, W.DWORD, W.DWORD, P, W.DWORD, W.DWORD, W.HANDLE], W.HANDLE),
+            (self.kernel, "WriteFile", [W.HANDLE, P, W.DWORD, C.POINTER(W.DWORD), P], W.BOOL),
+            (self.kernel, "FlushFileBuffers", [W.HANDLE], W.BOOL),
             (self.advapi, "OpenProcessToken", [W.HANDLE, W.DWORD, C.POINTER(W.HANDLE)], W.BOOL),
             (self.advapi, "GetTokenInformation", [W.HANDLE, C.c_int, P, W.DWORD, C.POINTER(W.DWORD)], W.BOOL),
             (self.advapi, "ConvertSidToStringSidW", [P, C.POINTER(W.LPWSTR)], W.BOOL),
@@ -73,6 +76,8 @@ class Windows:
             (self.advapi, "GetSecurityDescriptorDacl", [P, C.POINTER(W.BOOL), C.POINTER(P), C.POINTER(W.BOOL)], W.BOOL),
             (self.advapi, "GetSecurityDescriptorSacl", [P, C.POINTER(W.BOOL), C.POINTER(P), C.POINTER(W.BOOL)], W.BOOL),
             (self.advapi, "SetNamedSecurityInfoW", [W.LPWSTR, C.c_int, W.DWORD, P, P, P, P], W.DWORD),
+            (self.advapi, "GetNamedSecurityInfoW", [W.LPWSTR, C.c_int, W.DWORD] + [C.POINTER(P)] * 5, W.DWORD),
+            (self.advapi, "ConvertSecurityDescriptorToStringSecurityDescriptorW", [P, W.DWORD, W.DWORD, C.POINTER(W.LPWSTR), C.POINTER(W.DWORD)], W.BOOL),
             (self.userenv, "CreateAppContainerProfile", [W.LPCWSTR, W.LPCWSTR, W.LPCWSTR, P, W.DWORD, C.POINTER(P)], C.c_long),
             (self.userenv, "DeleteAppContainerProfile", [W.LPCWSTR], C.c_long),
         ]
@@ -108,6 +113,59 @@ class Windows:
         except BaseException:
             self.kernel.CloseHandle(handle)
             raise
+
+    def token_observation(self):
+        token = W.HANDLE()
+        require(self.advapi.OpenProcessToken(self.kernel.GetCurrentProcess(), 0x8, C.byref(token)))
+        try:
+            values = {}
+            for kind, name in ((1, "user_sid"), (25, "integrity_sid")):
+                size = W.DWORD()
+                self.advapi.GetTokenInformation(token, kind, None, 0, C.byref(size))
+                buffer = C.create_string_buffer(size.value)
+                require(self.advapi.GetTokenInformation(token, kind, buffer, size, C.byref(size)))
+                values[name] = self.sid_string(C.cast(buffer, C.POINTER(P))[0])
+            for kind, name in ((29, "appcontainer"), (20, "elevated")):
+                value, size = W.DWORD(), W.DWORD()
+                require(self.advapi.GetTokenInformation(token, kind, C.byref(value), C.sizeof(value), C.byref(size)))
+                values[name] = value.value
+            return values
+        finally:
+            require(self.kernel.CloseHandle(token))
+
+    def security_observation(self, path):
+        descriptor = P()
+        # DACL + mandatory label only. Never enable privileges or request a full SACL.
+        result = self.advapi.GetNamedSecurityInfoW(str(path), 1, 0x4 | 0x10,
+                                                 None, None, None, None, C.byref(descriptor))
+        if result:
+            return {"win32_error": int(result)}
+        text, size = W.LPWSTR(), W.DWORD()
+        try:
+            require(self.advapi.ConvertSecurityDescriptorToStringSecurityDescriptorW(
+                descriptor, 1, 0x4 | 0x8, C.byref(text), C.byref(size)))
+            # The in-memory SACL contains only the label requested above. Formatting
+            # that selected data does not query a full SACL or enable a privilege.
+            return {"sddl": text.value, "security_information": "DACL_AND_LABEL"}
+        finally:
+            if text:
+                self.kernel.LocalFree(C.cast(text, P))
+            self.kernel.LocalFree(descriptor)
+
+    def write_observation(self, path):
+        handle = self.kernel.CreateFileW(str(path), 0x40000000, 1, None, 1, 0x80, None)
+        if handle == W.HANDLE(-1).value:
+            return {"create_error": int(C.get_last_error()), "write_attempted": False}
+        result = {"create_error": 0, "write_attempted": True}
+        try:
+            data, written = C.create_string_buffer(b"{}\n"), W.DWORD()
+            ok = self.kernel.WriteFile(handle, data, 3, C.byref(written), None)
+            result.update(write_error=0 if ok else int(C.get_last_error()), written_bytes=written.value)
+            flushed = self.kernel.FlushFileBuffers(handle)
+            result["flush_error"] = 0 if flushed else int(C.get_last_error())
+            return result
+        finally:
+            require(self.kernel.CloseHandle(handle))
 
 
 class Process:
@@ -233,7 +291,7 @@ class Boundary:
             self.windows.kernel.LocalFree(descriptor)
 
     def spawn(self, executable, mode, parent_pid, privileged_handle=0, *, restricted=True,
-              inherit=False, setup_fault=False, before_create=None):
+              inherit=False, setup_fault=False, before_create=None, no_console=False):
         attributes, initialized = None, False
         size = SIZE()
         startup = STARTUPINFOEX()
@@ -262,7 +320,9 @@ class Boundary:
             # durable PID+creation identity to be committed before fixture work can start.
             if before_create is not None:
                 before_create()
-            flags = 0x4 | 0x08000000  # suspended, no console; identical fixture I/O for controls
+            flags = 0x4  # Retain the prior working console startup by default.
+            if no_console:  # Focused matched diagnostic only; not the default proof path.
+                flags |= 0x08000000
             if initialized:
                 flags |= 0x80000
             require(self.windows.kernel.CreateProcessW(str(executable), command, None, None,

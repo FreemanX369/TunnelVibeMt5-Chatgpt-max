@@ -1,0 +1,38 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "07316a4a66301eb471112528c2c0e31f781f2bc6",
+  "tree": "ce2f4455a3d75cfd14e5940de46688da54495ed8",
+  "pr": 61,
+  "workflows": [
+    {"id": 36998399394, "name": "Verify TIP-027 Continuity Core", "status": "completed", "conclusion": "success"},
+    {"id": 36998399395, "name": "Verify TIP-028 Idempotent Bindings", "status": "completed", "conclusion": "success"},
+    {"id": 36998399403, "name": "Verify TIP-034 Bootstrap Completeness", "status": "completed", "conclusion": "success"},
+    {"id": 36998399391, "name": "Verify TIP-053 Deep Update", "status": "completed", "conclusion": "success"},
+    {"id": 36998399463, "name": "Verify TIP-057R-Q1 isolated Windows proof", "status": "completed", "conclusion": "failure"}
+  ],
+  "dedicated_job": 110810267413,
+  "platform": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10 x64",
+  "result": {
+    "suite": "FAIL", "job": "failure", "tests_run": 16,
+    "failures": 12, "errors": 0, "skips": 0, "elapsed_ms": 12391,
+    "distinct_test_fail_count": "not inferred from subtest failure totals"
+  },
+  "passed_checks": ["C compilation", "actual PR head equals expected", "raw source bytes equal exact HEAD blobs", "eight portable cases"],
+  "unqualified_checks": ["Windows lifecycle ACs", "launch positive controls and causal denial", "production SDK/no-start/common acquisition", "fresh already-dead recovery"],
+  "artifact": {
+    "id": 11221823821, "size_bytes": 5165,
+    "zip_sha256": "a61cec71a148fcceeeb47e92e5021e37674bbd9c7dd3ef92cfc6487eb96e6796",
+    "retained_files": ["third-07316a4/summary.json", "third-07316a4/proof.log", "third-07316a4/compiler.log"]
+  },
+  "observed_defects": [
+    "restricted worker exit 0xc0000142 before entry marker",
+    "unrestricted controls reach wmain and return95 at first writer; native error not captured",
+    "fresh already-dead recovery cleanup remains unproven"
+  ],
+  "resolved_observation": "file-backed controller completes within bounded wait; prior pipe-reader hang not reproduced",
+  "causes_not_yet_proven": ["CREATE_NO_WINDOW", "path/ACL", "integrity inheritance"],
+  "next_authorized_action": "focused fixture-only startup/writer debug, independent review, exact-head Windows CI"
+}
