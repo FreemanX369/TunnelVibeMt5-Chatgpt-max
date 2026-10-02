@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ctypes as C
+import hashlib
 import os
 import subprocess
 import time
@@ -33,6 +34,15 @@ class PROCESS_INFORMATION(C.Structure):
 
 class SECURITY_CAPABILITIES(C.Structure):
     _fields_ = [("sid", P), ("capabilities", P), ("count", W.DWORD), ("reserved", W.DWORD)]
+
+
+class ACL(C.Structure):
+    _fields_ = [("revision", W.BYTE), ("reserved", W.BYTE), ("size", W.WORD),
+                ("count", W.WORD), ("reserved2", W.WORD)]
+
+
+class ACE_HEADER(C.Structure):
+    _fields_ = [("kind", W.BYTE), ("flags", W.BYTE), ("size", W.WORD)]
 
 
 def require(value):
@@ -75,6 +85,7 @@ class Windows:
             (self.advapi, "ConvertStringSecurityDescriptorToSecurityDescriptorW", [W.LPCWSTR, W.DWORD, C.POINTER(P), P], W.BOOL),
             (self.advapi, "GetSecurityDescriptorDacl", [P, C.POINTER(W.BOOL), C.POINTER(P), C.POINTER(W.BOOL)], W.BOOL),
             (self.advapi, "GetSecurityDescriptorSacl", [P, C.POINTER(W.BOOL), C.POINTER(P), C.POINTER(W.BOOL)], W.BOOL),
+            (self.advapi, "GetAce", [P, W.DWORD, C.POINTER(P)], W.BOOL),
             (self.advapi, "SetNamedSecurityInfoW", [W.LPWSTR, C.c_int, W.DWORD, P, P, P, P], W.DWORD),
             (self.advapi, "GetNamedSecurityInfoW", [W.LPWSTR, C.c_int, W.DWORD] + [C.POINTER(P)] * 5, W.DWORD),
             (self.advapi, "ConvertSecurityDescriptorToStringSecurityDescriptorW", [P, W.DWORD, W.DWORD, C.POINTER(W.LPWSTR), C.POINTER(W.DWORD)], W.BOOL),
@@ -114,9 +125,10 @@ class Windows:
             self.kernel.CloseHandle(handle)
             raise
 
-    def token_observation(self):
+    def token_observation(self, process_handle=None):
         token = W.HANDLE()
-        require(self.advapi.OpenProcessToken(self.kernel.GetCurrentProcess(), 0x8, C.byref(token)))
+        handle = self.kernel.GetCurrentProcess() if process_handle is None else process_handle
+        require(self.advapi.OpenProcessToken(handle, 0x8, C.byref(token)))
         try:
             values = {}
             for kind, name in ((1, "user_sid"), (25, "integrity_sid")):
@@ -146,7 +158,45 @@ class Windows:
                 descriptor, 1, 0x4 | 0x8, C.byref(text), C.byref(size)))
             # The in-memory SACL contains only the label requested above. Formatting
             # that selected data does not query a full SACL or enable a privilege.
-            return {"sddl": text.value, "security_information": "DACL_AND_LABEL"}
+            observation = {"sddl": text.value, "security_information": "DACL_AND_LABEL"}
+            present, defaulted, sacl = W.BOOL(), W.BOOL(), P()
+            require(self.advapi.GetSecurityDescriptorSacl(descriptor, C.byref(present), C.byref(sacl), C.byref(defaulted)))
+            labels = {"present": bool(present.value), "defaulted": bool(defaulted.value),
+                      "null_acl": not bool(sacl.value), "label_aces": [],
+                      "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR" if not present.value else "NULL_SELECTED_LABEL_ACL"}
+            if present.value and sacl.value:
+                acl = C.cast(sacl, C.POINTER(ACL)).contents
+                if acl.size < C.sizeof(ACL):
+                    raise RuntimeError("LABEL_DESCRIPTOR_ACL_SIZE_INVALID")
+                labels.update(acl_bytes=acl.size, ace_count=acl.count,
+                              raw_acl_sha256=hashlib.sha256(C.string_at(sacl, acl.size)).hexdigest(),
+                              parse_limit_aces=64, truncated=acl.count > 64,
+                              disposition="TRUNCATED_LABEL_PARSE_NO_QUALIFICATION" if acl.count > 64 else "OBSERVED_SELECTED_LABEL_ACL_ONLY")
+                for index in range(min(acl.count, 64)):
+                    ace = P()
+                    require(self.advapi.GetAce(sacl, index, C.byref(ace)))
+                    if not ace.value or not sacl.value + C.sizeof(ACL) <= ace.value or ace.value + C.sizeof(ACE_HEADER) > sacl.value + acl.size:
+                        raise RuntimeError("LABEL_DESCRIPTOR_ACE_POINTER_INVALID")
+                    header = C.cast(ace, C.POINTER(ACE_HEADER)).contents
+                    if header.size < C.sizeof(ACE_HEADER):
+                        raise RuntimeError("LABEL_DESCRIPTOR_ACE_INVALID")
+                    if ace.value + header.size > sacl.value + acl.size:
+                        raise RuntimeError("LABEL_DESCRIPTOR_ACE_OUTSIDE_ACL")
+                    if header.kind == 0x11:  # SYSTEM_MANDATORY_LABEL_ACE
+                        if header.size < 20:
+                            raise RuntimeError("MANDATORY_LABEL_ACE_TOO_SHORT")
+                        subauthorities = C.c_ubyte.from_address(ace.value + 9).value
+                        if not subauthorities or 16 + subauthorities * 4 > header.size:
+                            raise RuntimeError("MANDATORY_LABEL_SID_OUTSIDE_ACE")
+                        revision = C.c_ubyte.from_address(ace.value + 8).value
+                        authority = C.string_at(ace.value + 10, 6)
+                        if revision != 1 or subauthorities != 1 or authority != b"\0\0\0\0\0\x10":
+                            raise RuntimeError("MANDATORY_LABEL_SID_INVALID")
+                        mask = C.cast(ace.value + 4, C.POINTER(C.c_uint32)).contents.value
+                        labels["label_aces"].append({"index": index, "flags": header.flags, "mask": mask,
+                                                    "sid": self.sid_string(ace.value + 8)})
+            observation["selected_label_descriptor"] = labels
+            return observation
         finally:
             if text:
                 self.kernel.LocalFree(C.cast(text, P))

@@ -68,6 +68,21 @@ def diagnostic_tail(path):
         return f"DIAGNOSTIC_UNAVAILABLE:{type(error).__name__}:{str(error)[:500]}"
 
 
+def writer_probe_exit(code, mode):
+    raw = {"raw_exit": code, "raw_exit_hex": f"0x{code:08x}",
+           "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE"}
+    stages = {1: "CREATE_FILE", 2: "WRITE_FILE", 3: "FLUSH_FILE", 4: "CLOSE_FILE"}
+    stage = (code >> 16) & 0xF
+    if mode == "write_probe" and code & 0xFFF00000 == 0xE5100000 and stage in stages:
+        raw.update(protocol="tip057rq.writer-exit/1", inferred_writer_stage=stages[stage],
+                   inferred_win32_error_low16=code & 0xFFFF, error_payload_bits=16,
+                   emitter_rule="KNOWN_STAGE_AND_NATIVE_ERROR_FITS_16_BITS",
+                   provenance="NOT_AUTHENTICATED_BY_EXIT_ALONE", tag_collision_possible=True,
+                   qualification="NONE",
+                   disposition="PARTIAL_PROTOCOL_SHAPED_DIAGNOSTIC_CANDIDATE_KNOWN_PROBE_ONLY")
+    return raw
+
+
 def stop_controller(caller):
     if caller.poll() is None:
         # On Windows Popen.kill uses its owned process handle, not a PID lookup.
@@ -627,6 +642,7 @@ def startup_checkpoint():
                                          no_console=no_console, inherit=False)
                 ref = process.identity()
                 row["worker"] = ref
+                row["child_token_before_resume"] = windows.token_observation(process.handle)
                 process.resume()
                 code = process.wait(5000)
                 pid = ref["pid"]
@@ -640,6 +656,7 @@ def startup_checkpoint():
                 pid = controller.pid
                 row["stderr_tail"] = diagnostic_tail(stderr_path)
             row.update(exit_code=code, exit_code_hex=f"0x{code:08x}")
+            row["writer_exit_diagnostic"] = writer_probe_exit(code, "write_probe")
             row["parent_token_after"] = windows.token_observation()
             row["parent_write_after"] = windows.write_observation(root / "parent-after.json")
             for filename, key in (("positive-marker.json", "marker"), ("fixture-diagnostic.json", "writer")):
@@ -657,7 +674,9 @@ def startup_checkpoint():
                 and writer.get("win32_error") == 0 and writer.get("token_error") == 0
                 and writer.get("appcontainer") == int(restricted) and writer.get("policy_query_ok") == 1
                 and writer.get("child_restricted") == int(restricted) and parent_writes
-                and "sddl" in row["root_security"] and "sddl" in row["executable_security"])
+                and "sddl" in row["root_security"] and "sddl" in row["executable_security"]
+                and not row["root_security"]["selected_label_descriptor"].get("truncated", False)
+                and not row["executable_security"]["selected_label_descriptor"].get("truncated", False))
         except BaseException as error:
             row["error"] = f"{type(error).__name__}:{str(error)[:2000]}"
         finally:

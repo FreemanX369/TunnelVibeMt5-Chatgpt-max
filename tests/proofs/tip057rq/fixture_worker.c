@@ -124,6 +124,20 @@ static void writer_diagnostic(const wchar_t *root, int success) {
     }
 }
 
+static DWORD writer_probe_failure_exit(void) {
+    DWORD stage = 0;
+    if (strcmp(write_error_source, "WIN32") || write_native_error > 0xffff) return write_error;
+    if (!strcmp(write_stage, "CREATE_FILE")) stage = 1;
+    else if (!strcmp(write_stage, "WRITE_FILE")) stage = 2;
+    else if (!strcmp(write_stage, "FLUSH_FILE")) stage = 3;
+    else if (!strcmp(write_stage, "CLOSE_FILE")) stage = 4;
+    if (!stage) return write_error;
+    /* Application-defined tag E5, protocol version 1, known stage, exact fitting
+       Win32 error. This diagnostic-only return is used solely by write_probe.
+       Wider native/CRT/short-write errors keep their original DWORD exit. */
+    return 0xE5100000u | (stage << 16) | write_native_error;
+}
+
 static DWORD attempt_child(const wchar_t *root, const wchar_t *marker, DWORD flags,
                            DWORD *created, DWORD *termination_proven) {
     wchar_t executable[32768], command[32768];
@@ -179,7 +193,7 @@ int wmain(int argc, wchar_t **argv) {
         sprintf_s(report, sizeof(report), "{\"pid\":%lu,\"positive_marker\":true}\n", GetCurrentProcessId());
         success = write_json(root, L"positive-marker.json", report);
         writer_diagnostic(root, success);
-        return success ? 0 : (int)write_error;
+        return success ? 0 : (int)writer_probe_failure_exit();
     }
     sprintf_s(report, sizeof(report), "{\"pid\":%lu,\"entered\":true}\n", GetCurrentProcessId());
     if (!write_json(root, L"entry.json", report)) {
