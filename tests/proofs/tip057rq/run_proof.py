@@ -25,7 +25,7 @@ EVIDENCE = []
 EXECUTABLE = None
 PHASE_FILES = ("entry.json", "started.json", "result.json", "initialize-attempted.json", "cleanup-attempted.json",
                "observation-attempted.json", "observation.json", "direct-child.json", "breakaway-child.json", "go.txt",
-               "fixture-diagnostic.json", "positive-marker.json")
+               "fixture-diagnostic.json", "positive-marker.json", "borrowed-handle-probe.json")
 
 
 def record(case, **values):
@@ -45,6 +45,8 @@ def wait_json(path, seconds=5, *, process=None, case="fixture-output"):
                        exit_code_hex=f"0x{code:08x}",
                        phase_markers={name: (path.parent / name).exists() for name in PHASE_FILES},
                        lifetime=process.lifetime(),
+                       borrowed_handle_phase=diagnostic_tail(path.parent / "borrowed-handle-probe.json")
+                           if (path.parent / "borrowed-handle-probe.json").exists() else None,
                        writer_diagnostic=diagnostic_tail(path.parent / "fixture-diagnostic.json"))
                 raise AssertionError(f"FIXTURE_EXIT_BEFORE_OUTPUT:{path.name}:0x{code:08x}")
             time.sleep(0.005)
@@ -107,6 +109,23 @@ def directory_label_isolation(root_security, executable_before, executable_after
             "executable_label_matches_before_boundary": binary_unchanged,
             "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
             "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY"}
+
+
+def borrowed_handle_rejected(probe, argument, worker_pid):
+    required = {"api", "worker_pid", "attempted", "argument", "disposition", "returned_pid",
+                "api_return_value", "win32_error", "exception_code"}
+    if not isinstance(probe, dict) or not required.issubset(probe):
+        return False
+    if (probe.get("api") != "GetProcessId" or probe.get("attempted") is not True
+            or probe.get("worker_pid") != worker_pid or probe.get("argument") != argument
+            or not argument or probe.get("returned_pid") is not None):
+        return False
+    return ((probe.get("disposition") == "API_RETURNED_ZERO" and probe.get("win32_error") == 6
+             and probe.get("api_return_value") == 0
+             and probe.get("exception_code") is None)
+            or (probe.get("disposition") == "INVALID_HANDLE_EXCEPTION" and probe.get("exception_code") == 0xC0000008
+                and probe.get("api_return_value") is None
+                and probe.get("win32_error") is None))
 
 
 def stop_controller(caller):
@@ -331,6 +350,18 @@ class WindowsCases(unittest.TestCase):
         self.assertEqual(result["direct_terminated"], 1)
         self.assertTrue((self.root / "direct-child.json").exists())
         self.assertEqual(started["inherited_parent_pid"], self.parent["pid"])
+        probe = started["borrowed_handle_probe"]
+        self.assertEqual(probe["api"], "GetProcessId")
+        self.assertEqual(probe["worker_pid"], started["pid"])
+        self.assertIs(probe["attempted"], True)
+        self.assertEqual(probe["argument"], privileged)
+        self.assertEqual(probe["disposition"], "API_RETURNED_PID")
+        self.assertEqual(probe["returned_pid"], self.parent["pid"])
+        self.assertEqual(probe["api_return_value"], self.parent["pid"])
+        self.assertIsNone(probe["win32_error"])
+        self.assertIsNone(probe["exception_code"])
+        self.assertEqual(started["parent_create_error"], 0)
+        self.assertEqual(started["parent_vm_write_error"], 0)
         breakaway_control = (result["breakaway_error"] == 0 and result["breakaway_created"] == 1
                              and result["breakaway_terminated"] == 1 and (self.root / "breakaway-child.json").exists())
         control_breakaway_error = result["breakaway_error"]
@@ -340,7 +371,9 @@ class WindowsCases(unittest.TestCase):
         self.assertEqual(started["child_restricted"], 1)
         self.assertEqual(started["parent_create_error"], 5)
         self.assertEqual(started["parent_vm_write_error"], 5)
-        self.assertNotEqual(started["inherited_parent_pid"], self.parent["pid"])
+        self.assertIsNone(started["inherited_parent_pid"])
+        self.assertTrue(borrowed_handle_rejected(started["borrowed_handle_probe"], privileged, started["pid"]),
+                        "borrowed numeric handle rejection unqualified; actual probe retained")
         self.assertNotEqual(result["direct_error"], 0)
         self.assertNotEqual(result["breakaway_error"], 0)
         self.assertEqual(result["direct_created"], 0)

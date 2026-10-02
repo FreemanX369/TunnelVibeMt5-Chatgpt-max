@@ -1,6 +1,6 @@
 # TIP-057R-Q1 Builder Completion Report
 
-**Status: PARTIAL — five unsuccessful Windows receipts retained; the next focused directory-label applicability refinement is frozen.** This report accompanies the Draft proof, not a production implementation or no-start certification. Broker/SDK paths and actual MetaTrader5 compatibility remain OPEN even if every harmless fixture test later passes. The next exact-head Windows run must establish its required positive controls before attempting the full qualification suite. Earlier frozen payloads and pending statements below record their state at the time; receipt 5 and the current payload appear at the end.
+**Status: PARTIAL — six unsuccessful Windows receipts retained; receipt 6 passed its required checkpoint and 15/16 tests. The next narrow borrowed-handle probe refinement is frozen.** This report accompanies the Draft proof, not a production implementation or no-start certification. Broker/SDK paths and actual MetaTrader5 compatibility remain OPEN even if every harmless fixture test later passes. The next exact-head Windows run must preserve the positive controls and pass the full qualification suite. Earlier frozen payloads and pending statements below record their state at the time; receipt 6 and the current payload appear at the end.
 
 Authorization: owner approval at 2026-10-02T13:59:50+07:00, “Duyệt run plan auto tiến hành đúng vai trò theo methodology @vibecode kit v6”. Output contract: [TIP-057R-Q1](TIP-057R-Q1.md), with [read contract](TIP-057R-contract.md) and [boundary proposal](TIP-057R-boundary-proposal.md). Real base main `70e2112da9fe8eaa6262f2ba896b55bf3e078260`, tree `6b32f1bc2d13627eba9e915f6fa3c0011b3539e5`; supplied 184-blob base was verified before this work. Local synthetic snapshot `2c46924e16fe4227fa5e83628888892475f53741` is not a remote parent or candidate CI head. No applicable `AGENTS.md` was found.
 
@@ -387,3 +387,74 @@ A focused read-back sensitivity check uses receipt 5's retained actual root/exec
 | `tests/proofs/tip057rq/windows_boundary.py` | 20,910 | `36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84` |
 
 Code/workflow and this report are frozen for Contractor review/publication and the next exact-head Windows receipt. All five unsuccessful receipts remain preserved. Full Q1 remains PARTIAL; Q03 broker/SDK, late-dead recovery, Q2 physical MT5 and product integration remain OPEN. Even successful positive controls must be followed by the original full 16-test/five-fault-mode suite before bounded lifecycle claims can be assessed. No application, production policy, real VPS, terminal, account or SDK was changed or invoked.
+
+Contractor published the refinement-5 executable payload and consolidated frozen report together as head `8f2a0d1d08dae0aad0409348f9c7320f0b24d45c`, tree `58b2afe3be6736ad0815ba5f47411729009d6bc8`, parent `d156c5ecfef5c1874b2babe9658810cae429db65`. All 211 remote blobs were verified; independent portable checks and source/report review passed. This receipt reopens the report after its 59,839-byte revision, SHA-256 `490147a71bb200a6a9e783d3322db42f993d2eb016f33feae36db36bed906a4a`.
+
+## Actual Windows receipt 6 — checkpoint PASS, one full-suite failure
+
+| Field | Receipt |
+|---|---|
+| Reviewed head | `8f2a0d1d08dae0aad0409348f9c7320f0b24d45c` |
+| Dedicated run / job | `37004481970` / `110829439538` |
+| Platform | Windows Server 2025, build 10.0.26100; Python 3.12.10 |
+| Result | `FAIL`; **16 tests, 15 PASS, 1 failure, 0 errors/skips**, `full_suite_attempted=true` |
+| Timing | Runner elapsed 13,453 ms; unittest suite 2.991 s |
+| Compiler / exact head / source blobs | PASS / PASS / PASS |
+| Fixture executable SHA-256 | `ccf4ef2261a2819d4a9aa8aa7b02069fa1f914c6ddc5a959ea231010546c3845` |
+| Artifact | `11224633998`, 9,344-byte ZIP; SHA-256 `20627556a457c728c2dfa127953aaf2183a71bdb40b709933a886ea9ea12706e` |
+| Proof log | 4,491 bytes, untruncated; SHA-256 `f7799aa4f164b6c0714fd35e5ac0ff24f2fff4ac05b1301c8483fc78896429cf` |
+| Retained raw receipts | [summary.json](evidence/tip057rq/sixth-8f2a0d1/summary.json), [proof.log](evidence/tip057rq/sixth-8f2a0d1/proof.log), [compiler.log](evidence/tip057rq/sixth-8f2a0d1/compiler.log) |
+
+All three required writer controls passed. Actual root labels are low/NW with no inheritance flags; actual executable mandatory-label semantics match their pre-boundary baseline. The granted unrestricted suspended child matches the high-integrity parent control (`S-1-16-12288`, AppContainer 0, elevated 1, same user SID), and its actual writer succeeds at integrity RID 12,288. The restricted console writer succeeds at RID 4,096/AppContainer 1/child restriction 1. The nonrequired no-console observation still fails with raw `0xc0000142` and remains unqualified. These matched facts support the narrower label applicability correction; they do not retroactively authenticate the previous writer exit's stage/error or certify an SDK path.
+
+The full suite contains eight portable cases and eight Windows cases. All eight portable cases and seven Windows cases passed; all five Q04 fault submodes completed. The current bounded fixture acceptance is:
+
+| Case / boundary | Receipt 6 |
+|---|---|
+| Q01/Q09 real pre-work restriction and setup failure before create attempt | PASS; actual restricted startup and no-attempt release case. |
+| Q02 target exits before gated replacement attempt | PASS for the tested direct fixture path. |
+| Q02/Q03 unrestricted/restricted paired launch and inherited privileged-handle probe | FAIL; unrestricted half works, restricted half exits before reporting its probe/startup. Complete paired denial remains unqualified. |
+| Q04 initialize false, initialize SEH, observation SEH, shutdown SEH and combined primary/shutdown fault | PASS for all five synthetic callback modes, including observable cleanup attempts and precedence. No SDK shutdown claim. |
+| Q05 hang holds lease until exact worker termination | PASS; 250 ms observation budget, actual total 359 ms, recorded termination sample 0 ms. Timer-resolution sample is not an instantaneous or hard-10-second guarantee. |
+| Q06 parent crashes before failure marker | PASS; actual controller exits 73, intent survives, worker remains live for exact reopen/termination and acquisition stays blocked. Fresh already-dead recovery remains OPEN. |
+| Q07 creation mismatch, stale generation, descendant uncertainty, fresh-dead identity refusal | PASS; PID reuse is simulated by changing a real process's creation timestamp, not actual forced PID recycling. |
+| Q08 two independent blocked callers and stale recovery thread/successor race | PASS; both process callers BLOCKED and checked thread outcomes `STALE_REJECTED`/`BLOCKED` preserve generations 1/2. |
+| Q03 breakaway control | OPEN: matching unrestricted API returns error 5 without creating a child. Ambient host-job denial cannot qualify candidate-caused breakaway denial. |
+
+The working unrestricted launch control is worker PID 2620 under actual parent PID 8092. It reports the inherited parent handle resolving to PID 8092, and both separate `OpenProcess` probes for `PROCESS_CREATE_PROCESS` and `PROCESS_VM_WRITE` succeed with error 0. Its direct child is actually created, terminated and writes the marker; breakaway fails with error 5. After that lifecycle closes, the restricted worker PID 7596 enters C (`entry.json` present), then exits raw `0xc0000008` before `started.json`, initialize, cleanup or child markers. Receipt 6 cannot authenticate which call raised it because this version has no per-probe phase/exception observation. The borrowed numeric-handle `GetProcessId` call is the focused hypothesis, not an established fault-site attribution from the raw exit alone. Contractor reports all four unchanged baseline workflows PASS.
+
+## Bounded receipt-driven refinement 6 — observable borrowed-handle rejection
+
+Contractor approved the smallest probe correction within Q1. Only the harmless C fixture and its runner change. The helper guards **only `GetProcessId` on the supplied borrowed numeric handle**, using the existing MSVC SEH mechanism with an exact `EXCEPTION_INVALID_HANDLE` filter. A different native exception uses `EXCEPTION_CONTINUE_SEARCH`; unknown faults remain visible and fail the worker. There is no strict-handle policy change, inherited-handle change, extra capability or access grant. The borrowed numeric value is never closed, and no expected-parent PID is reopened.
+
+For a nonzero supplied argument C writes a pre-call phase marker carrying its actual worker PID and argument. Completed `started.json` carries structured probe evidence with the same actual PID/argument, attempted flag and disposition. An actual successful API call records the returned PID/value with no claimed failure error. An actual zero API return records return value 0 and immediately captured Win32 error, with PID null because no PID was obtained. A captured invalid-handle exception records its actual exception code and null API-return/PID/error fields. A zero argument records no attempt. The code never substitutes PID 0 or an invalid-handle error because the worker was expected to be restricted. These probe exceptions are distinct from Q04's injected callback counts.
+
+The paired test now requires the unrestricted inherited-handle control to actually return the parent PID with no fault, match the supplied argument/active worker, and independently open both privileged rights successfully. The restricted probe must attempt the same nonzero argument in its actual worker and report either actual API return 0 plus `ERROR_INVALID_HANDLE` 6, or captured `EXCEPTION_INVALID_HANDLE` `0xc0000008` with no claimed API return. An unrelated valid PID alias, other error, unknown exception, mismatched worker/argument, nonattempt or inconsistent mixed result is rejected. A rejected borrowed-handle probe is not itself child-launch denial: AppContainer 1, child restriction 1, both separate parent rights errors 5, actual child API creation failures/nonzero errors and no child markers still remain required. The matching breakaway control may still leave that path OPEN.
+
+The new marker is in the per-attempt cleanup allowlist. If a worker exits before completed evidence, the runner retains the bounded pre-call marker, raw exit, exact lifetime and ordinary phase-marker observations without assigning a fault site or treating the absence as denial. Exact process ownership, durable arm/create/bind/resume sequence, shared lease recovery, cleanup, source/head verification and evidence caps are unchanged. Required Windows cases are still never skipped or relaxed to force green.
+
+Primary references read for this refinement: [GetProcessId](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocessid), [Exception-Handler Syntax](https://learn.microsoft.com/en-us/windows/win32/debug/exception-handler-syntax), [MSVC try-except](https://learn.microsoft.com/en-us/cpp/cpp/try-except-statement?view=msvc-170), and [GetExceptionCode](https://learn.microsoft.com/en-us/windows/win32/debug/getexceptioncode). They document PID/error returns, exact exception filters and observing the code inside a handler. They do not establish the receipt-6 fault site or replace the next real Windows receipt.
+
+Final local checks after required-keyset review correction: **8 portable tests, 0 failures/errors/skips**, suite 0.015 s; summary elapsed 18.1938 ms. Three proof Python modules compile; whitespace and protected source/existing-test/packaging/four-workflow checks PASS. No native C compilation or execution was performed on Linux; the dedicated Windows job must compile the exact new C blob and qualify its real handler/probe behavior. Boundary/authority/workflow bytes are unchanged from receipt 6.
+
+A local evidence-gate sensitivity check accepts the two fully specified recognized forms and rejects ten adverse forms: unrelated PID, unknown API error/exception, synthetic PID zero, claimed API return after SEH, mixed API/SEH result, wrong argument/worker, nonattempt and wrong API. A zero argument also rejects. This uses synthetic dictionaries only and is explicitly not native C execution or Windows qualification. All earlier native/raw failures and local sensitivity evidence remain retained.
+
+Independent review found that `.get()` treated an omitted nullable field as explicit null. Before publication the gate was corrected to require an object and the full probe keyset. Deleting each of nine required fields from each recognized form now rejects (18 deletion cases), and five non-object inputs reject. C already emits the complete payload; this correction prevents incomplete evidence from being accepted by the runner. The pre-keyset manifest is retained as superseded; the final manifest below is authoritative.
+
+```text
+/workspace/scratch/250985b4823e/audit/tip057rq-portable-v7-keyset-final/summary.json
+/workspace/scratch/250985b4823e/audit/tip057rq-portable-v7-keyset-final/proof.log
+/workspace/scratch/250985b4823e/audit/tip057rq-borrowed-probe-v7.json
+/workspace/scratch/250985b4823e/audit/tip057rq-v7-frozen-manifest.json
+/workspace/scratch/250985b4823e/audit/tip057rq-v7-pre-keyset-manifest.json
+```
+
+| Frozen refinement-6 payload | Bytes | SHA-256 |
+|---|---:|---|
+| `.github/workflows/verify-tip057rq.yml` | 1,266 | `cc9efd3faee7b3646bdc29c76c067ba85df6a6b9274db5f9af61d442936467ed` |
+| `tests/proofs/tip057rq/authority.py` | 8,423 | `604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff` |
+| `tests/proofs/tip057rq/fixture_worker.c` | 15,684 | `8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a` |
+| `tests/proofs/tip057rq/run_proof.py` | 53,917 | `bd4d2d159a07aa7a2a81cb4b7f1dbe5ec400b4c044381ec92f4d2372ab1c4365` |
+| `tests/proofs/tip057rq/windows_boundary.py` | 20,910 | `36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84` |
+
+Builder freezes code/workflow and this report for Contractor review/publication and receipt 7. All six unsuccessful receipts remain preserved, including the 15-PASS/one-failure receipt. Full Q1 remains PARTIAL; Q03 broker/SDK/breakaway, late-dead recovery, no-console startup, Q2 physical MT5 and production integration remain OPEN. A fully successful bounded fixture suite would still not authorize production no-start or physical rollout. No app, production policy, VPS, terminal, account or SDK was changed or invoked.

@@ -170,11 +170,32 @@ static int injected_exception(void) {
     return 0;
 }
 
+static void probe_borrowed_handle(HANDLE handle, DWORD *pid, DWORD *error,
+                                  DWORD *exception, const char **disposition) {
+    if (!handle) { *disposition = "NOT_ATTEMPTED_ZERO_ARGUMENT"; return; }
+    __try {
+        *pid = GetProcessId(handle);
+        if (*pid) *disposition = "API_RETURNED_PID";
+        else { *error = GetLastError(); *disposition = "API_RETURNED_ZERO"; }
+    } __except (GetExceptionCode() == EXCEPTION_INVALID_HANDLE ?
+                EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
+        *exception = GetExceptionCode();
+        *disposition = "INVALID_HANDLE_EXCEPTION";
+    }
+    /* The numeric value is borrowed, never closed or reopened by expected PID.
+       Other native exceptions remain unhandled and visibly fail the fixture. */
+}
+
 int wmain(int argc, wchar_t **argv) {
     const wchar_t *root, *mode;
     HANDLE token = NULL, parent = NULL;
     DWORD bytes = 0, appcontainer = 0, policy_ok = 0;
     DWORD create_denial = 0, write_denial = 0, inherited_pid = 0;
+    DWORD inherited_error = 0, inherited_exception = 0;
+    unsigned long long inherited_argument;
+    const char *inherited_disposition = "NOT_ATTEMPTED";
+    char inherited_pid_json[32] = "null", inherited_error_json[32] = "null";
+    char inherited_exception_json[32] = "null", inherited_return_json[32] = "null";
     DWORD direct = 0, breakaway = 0, parent_pid;
     DWORD direct_created = 0, direct_terminated = 0, breakaway_created = 0, breakaway_terminated = 0;
     PROCESS_MITIGATION_CHILD_PROCESS_POLICY policy = {0};
@@ -201,7 +222,22 @@ int wmain(int argc, wchar_t **argv) {
         return (int)write_error;
     }
     parent_pid = wcstoul(argv[3], NULL, 10);
-    inherited_pid = GetProcessId((HANDLE)(uintptr_t)_wcstoui64(argv[4], NULL, 10));
+    inherited_argument = _wcstoui64(argv[4], NULL, 10);
+    if (inherited_argument) {
+        sprintf_s(report, sizeof(report),
+            "{\"pid\":%lu,\"stage\":\"BEFORE_GET_PROCESS_ID\",\"argument\":%llu}\n",
+            GetCurrentProcessId(), inherited_argument);
+        if (!write_json(root, L"borrowed-handle-probe.json", report)) return 96;
+    }
+    probe_borrowed_handle((HANDLE)(uintptr_t)inherited_argument, &inherited_pid,
+                          &inherited_error, &inherited_exception, &inherited_disposition);
+    if (inherited_pid) sprintf_s(inherited_pid_json, sizeof(inherited_pid_json), "%lu", inherited_pid);
+    if (!strcmp(inherited_disposition, "API_RETURNED_PID") || !strcmp(inherited_disposition, "API_RETURNED_ZERO"))
+        sprintf_s(inherited_return_json, sizeof(inherited_return_json), "%lu", inherited_pid);
+    if (!strcmp(inherited_disposition, "API_RETURNED_ZERO"))
+        sprintf_s(inherited_error_json, sizeof(inherited_error_json), "%lu", inherited_error);
+    if (inherited_exception)
+        sprintf_s(inherited_exception_json, sizeof(inherited_exception_json), "%lu", inherited_exception);
     if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) return 84;
     if (!GetTokenInformation(token, TokenIsAppContainer, &appcontainer, sizeof(appcontainer), &bytes)) {
         CloseHandle(token); return 85;
@@ -216,9 +252,14 @@ int wmain(int argc, wchar_t **argv) {
     sprintf_s(report, sizeof(report),
         "{\"pid\":%lu,\"appcontainer\":%lu,\"policy_query_ok\":%lu,"
         "\"child_restricted\":%lu,\"parent_create_error\":%lu,"
-        "\"parent_vm_write_error\":%lu,\"inherited_parent_pid\":%lu,\"before_work\":true}\n",
+        "\"parent_vm_write_error\":%lu,\"inherited_parent_pid\":%s,"
+        "\"borrowed_handle_probe\":{\"api\":\"GetProcessId\",\"worker_pid\":%lu,\"attempted\":%s,"
+        "\"argument\":%llu,\"disposition\":\"%s\",\"returned_pid\":%s,"
+        "\"api_return_value\":%s,\"win32_error\":%s,\"exception_code\":%s},\"before_work\":true}\n",
         GetCurrentProcessId(), appcontainer, policy_ok, (DWORD)policy.NoChildProcessCreation,
-        create_denial, write_denial, inherited_pid);
+        create_denial, write_denial, inherited_pid_json, GetCurrentProcessId(), inherited_argument ? "true" : "false",
+        inherited_argument, inherited_disposition, inherited_pid_json, inherited_return_json, inherited_error_json,
+        inherited_exception_json);
     if (!write_json(root, L"started.json", report)) return 86;
     if (!write_json(root, L"initialize-attempted.json", "{\"attempted\":true}\n")) return 89;
     if (!wcscmp(mode, L"hang")) Sleep(INFINITE);
