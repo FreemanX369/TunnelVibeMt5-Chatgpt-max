@@ -325,7 +325,9 @@ class Boundary:
     def _grant_fixture_root(self):
         user = self.windows.user_sid()
         app = self.windows.sid_string(self.sid)
-        sddl = f"D:(A;OICI;FA;;;{user})(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;{app})S:(ML;OICI;NW;;;LW)"
+        # Label only this flat fixture directory. Inheriting low MIC onto the
+        # executable would also lower the supposedly unrestricted control token.
+        sddl = f"D:(A;OICI;FA;;;{user})(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;{app})S:(ML;;NW;;;LW)"
         descriptor = P()
         require(self.windows.advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW(sddl, 1, C.byref(descriptor), None))
         try:

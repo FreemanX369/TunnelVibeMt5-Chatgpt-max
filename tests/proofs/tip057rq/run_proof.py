@@ -83,6 +83,32 @@ def writer_probe_exit(code, mode):
     return raw
 
 
+def directory_label_isolation(root_security, executable_before, executable_after):
+    """Read-back gate for a low directory without altering its binary label."""
+    observed = (root_security, executable_before, executable_after)
+    readable = all("sddl" in value and isinstance(value.get("selected_label_descriptor"), dict)
+                   and not value["selected_label_descriptor"].get("truncated", False)
+                   for value in observed)
+    if not readable:
+        return {"passed": False, "disposition": "LABEL_READBACK_UNQUALIFIED"}
+    root_label = root_security["selected_label_descriptor"]
+    before = executable_before["selected_label_descriptor"]
+    after = executable_after["selected_label_descriptor"]
+    directory_only = (root_label.get("ace_count") == 1 and root_label.get("label_aces") ==
+                      [{"index": 0, "flags": 0, "mask": 1, "sid": "S-1-16-4096"}])
+    # The LABEL-only reader emits SYSTEM_MANDATORY_LABEL_ACEs after complete
+    # parsing. Empty SACL/autoinherit metadata can change without an image label.
+    def mandatory_aces(label):
+        return [("SYSTEM_MANDATORY_LABEL_ACE", ace["flags"], ace["mask"], ace["sid"])
+                for ace in label["label_aces"]]
+    binary_unchanged = mandatory_aces(before) == mandatory_aces(after)
+    return {"passed": directory_only and binary_unchanged,
+            "root_directory_only_low_label": directory_only,
+            "executable_label_matches_before_boundary": binary_unchanged,
+            "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+            "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY"}
+
+
 def stop_controller(caller):
     if caller.poll() is None:
         # On Windows Popen.kill uses its owned process handle, not a PID lookup.
@@ -628,14 +654,17 @@ def startup_checkpoint():
         cleanup_errors = []
         try:
             shutil.copy2(EXECUTABLE, executable)
+            windows = Windows()
+            row["executable_security_before_boundary"] = windows.security_observation(executable)
             if granted:
                 boundary = Boundary(root)
                 windows = boundary.windows
-            else:
-                windows = Windows()
             row["parent_token_before"] = windows.token_observation()
             row["root_security"] = windows.security_observation(root)
             row["executable_security"] = windows.security_observation(executable)
+            if granted:
+                row["label_applicability"] = directory_label_isolation(
+                    row["root_security"], row["executable_security_before_boundary"], row["executable_security"])
             row["parent_write_before"] = windows.write_observation(root / "parent-before.json")
             if granted:
                 process = boundary.spawn(executable, "write_probe", os.getpid(), restricted=restricted,
@@ -643,6 +672,12 @@ def startup_checkpoint():
                 ref = process.identity()
                 row["worker"] = ref
                 row["child_token_before_resume"] = windows.token_observation(process.handle)
+                if not restricted:
+                    row["unrestricted_token_matches_parent"] = row["child_token_before_resume"] == row["parent_token_before"]
+                row["suspended_token_matches_fixture_role"] = (
+                    row["child_token_before_resume"]["appcontainer"] == 1
+                    and row["child_token_before_resume"]["integrity_sid"] == "S-1-16-4096"
+                    if restricted else row["unrestricted_token_matches_parent"])
                 process.resume()
                 code = process.wait(5000)
                 pid = ref["pid"]
@@ -669,11 +704,15 @@ def startup_checkpoint():
             parent_writes = all(value.get("create_error") == 0 and value.get("write_error") == 0
                                 and value.get("written_bytes") == 3 and value.get("flush_error") == 0
                                 for value in (row["parent_write_before"], row["parent_write_after"]))
+            observed_token = row["child_token_before_resume"] if granted else row["parent_token_before"]
+            integrity_matches_control = writer.get("integrity_rid") == int(observed_token["integrity_sid"].rsplit("-", 1)[1])
             row["control_passed"] = bool(code == 0 and marker.get("positive_marker") is True
                 and marker.get("pid") == pid and writer.get("pid") == pid and writer.get("write_success") is True
                 and writer.get("win32_error") == 0 and writer.get("token_error") == 0
                 and writer.get("appcontainer") == int(restricted) and writer.get("policy_query_ok") == 1
-                and writer.get("child_restricted") == int(restricted) and parent_writes
+                and writer.get("child_restricted") == int(restricted) and parent_writes and integrity_matches_control
+                and (not granted or row["label_applicability"]["passed"])
+                and (not granted or row["suspended_token_matches_fixture_role"])
                 and "sddl" in row["root_security"] and "sddl" in row["executable_security"]
                 and not row["root_security"]["selected_label_descriptor"].get("truncated", False)
                 and not row["executable_security"]["selected_label_descriptor"].get("truncated", False))
