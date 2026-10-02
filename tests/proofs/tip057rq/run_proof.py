@@ -1,0 +1,544 @@
+"""Dedicated Q1 runner. Windows requirements cannot turn into skipped PASS."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import platform
+import shutil
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import unittest
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[2]
+sys.path.insert(0, str(ROOT / "app"))
+from authority import FixtureAuthority, RecoveryRequired, atomic, outcome
+from windows_boundary import Boundary, Process, Windows
+
+EVIDENCE = []
+EXECUTABLE = None
+PHASE_FILES = ("started.json", "result.json", "initialize-attempted.json", "cleanup-attempted.json",
+               "observation-attempted.json", "observation.json", "direct-child.json", "breakaway-child.json", "go.txt")
+
+
+def record(case, **values):
+    EVIDENCE.append({"case": case, **values})
+
+
+def wait_json(path, seconds=5):
+    deadline = time.monotonic() + seconds
+    while time.monotonic() < deadline:
+        try:
+            return json.loads(Path(path).read_text(encoding="utf-8"))
+        except (FileNotFoundError, json.JSONDecodeError):
+            time.sleep(0.005)
+    raise AssertionError(f"FIXTURE_OUTPUT_UNAVAILABLE:{Path(path).name}")
+
+
+class ModelProcess:
+    def __init__(self, identity=None, exited=True):
+        self.ref = identity or {"pid": os.getpid(), "creation_100ns": 1, "image": "/harmless/fixture"}
+        self.dead = exited
+
+    def identity(self):
+        return self.ref
+
+    def exited(self):
+        return self.dead
+
+
+class PortableCases(unittest.TestCase):
+    """Authority/precedence checks, explicitly not Windows preventive proof."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="tip057rq-portable-")
+        self.root = Path(self.temporary.name)
+        self.authority = FixtureAuthority(self.root)
+        self.parent = ModelProcess().identity()
+
+    def tearDown(self):
+        self.temporary.cleanup()
+
+    def bound(self, descendants="NONE_FOR_FIXTURE_PATH"):
+        lease, expected = self.authority.arm(self.parent)
+        expected = self.authority.begin_create(expected)
+        process = ModelProcess()
+        expected = self.authority.bind_worker(expected, process.identity(), descendants=descendants)
+        return lease, expected, process
+
+    def test_no_attempt_release(self):
+        lease, expected = self.authority.arm(self.parent)
+        self.assertEqual(self.authority.no_start_release(expected), {"cleanup": "NOT_ATTEMPTED", "ownership": "RELEASED"})
+        self.assertFalse(lease.exists())
+
+    def test_create_attempt_without_binding_cannot_release(self):
+        lease, expected = self.authority.arm(self.parent)
+        self.authority.begin_create(expected)
+        with self.assertRaises(RecoveryRequired):
+            self.authority.no_start_release(expected)
+        with self.assertRaises(RecoveryRequired):
+            FixtureAuthority(self.root).arm(self.parent)
+        self.assertTrue(lease.exists())
+
+    def test_lost_active_intent_cannot_admit_after_dead_parent(self):
+        parent = {**self.parent, "pid": 99999999}
+        lease, _ = self.authority.arm(parent)
+        self.authority.intent_path.unlink()
+        # The native owner looks dead; loss of intent is still an active generation.
+        lock = json.loads(lease.lock_path.read_text())
+        lock["pid"] = parent["pid"]
+        atomic(lease.lock_path, lock)
+        with self.assertRaisesRegex(RecoveryRequired, "LOST_ACTIVE_INTENT"):
+            FixtureAuthority(self.root).arm(self.parent)
+        self.assertTrue(lease.exists())
+
+    def test_partial_intent_is_fail_closed(self):
+        lease, _ = self.authority.arm(self.parent)
+        self.authority.intent_path.write_text("{", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            FixtureAuthority(self.root).arm(self.parent)
+        self.assertTrue(lease.exists())
+
+    def test_live_exact_worker_and_identity_mismatch_reject_clear(self):
+        lease, expected, process = self.bound()
+        process.dead = False
+        with self.assertRaisesRegex(RecoveryRequired, "STILL_RUNNING"):
+            self.authority.reconcile(expected, process)
+        process.dead = True
+        process.ref = {**process.ref, "creation_100ns": 2}
+        with self.assertRaisesRegex(RecoveryRequired, "IDENTITY_MISMATCH"):
+            self.authority.reconcile(expected, process)
+        self.assertTrue(lease.exists())
+
+    def test_unresolved_descendant_rejects_clear(self):
+        lease, expected, process = self.bound(descendants="UNRESOLVED")
+        with self.assertRaisesRegex(RecoveryRequired, "DESCENDANT"):
+            self.authority.reconcile(expected, process)
+        self.assertTrue(lease.exists())
+
+    def test_stale_recovery_cannot_clear_successor(self):
+        _, old, process = self.bound()
+        self.authority.reconcile(old, process)
+        successor, new = FixtureAuthority(self.root).arm(self.parent)
+        with self.assertRaisesRegex(RecoveryRequired, "STALE"):
+            self.authority.reconcile(old, process)
+        self.assertGreater(new["generation"], old["generation"])
+        self.assertEqual(json.loads(successor.lock_path.read_text())["token"], successor.token)
+
+    def test_primary_cleanup_deadline_precedence_has_no_unqualified_values(self):
+        for primary in (None, "LIVE_IPC_INITIALIZE_FAILED", "LIVE_OBSERVATION_UNAVAILABLE"):
+            response = outcome(primary, "UNPROVEN", expired=True, qualified=True)
+            self.assertEqual(response["reason_code"], "LIVE_CLEANUP_UNPROVEN")
+            self.assertEqual(response["primary_reason_code"], primary)
+            self.assertIsNone(response["account"])
+        self.assertEqual(outcome("LIVE_OBSERVATION_UNAVAILABLE", expired=True)["reason_code"], "LIVE_OBSERVATION_UNAVAILABLE")
+        self.assertEqual(outcome(expired=True)["reason_code"], "LIVE_DEADLINE_EXCEEDED")
+
+
+class WindowsCases(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="tip057rq-windows-")
+        self.root = Path(self.temporary.name)
+        self.executable = self.root / "fixture.exe"
+        shutil.copy2(EXECUTABLE, self.executable)
+        self.boundary = Boundary(self.root)
+        self.windows = self.boundary.windows
+        self.processes = []
+        self.handles = []
+        self.authority = FixtureAuthority(self.root / "authority")
+        self.parent = Process(self.windows, self.windows.kernel.GetCurrentProcess()).identity()
+
+    def tearDown(self):
+        for process in self.processes:
+            if process.handle:
+                if not process.exited():
+                    process.terminate_exact(process.identity())
+                process.close()
+        for handle in self.handles:
+            self.windows.kernel.CloseHandle(handle)
+        self.boundary.close()
+        self.temporary.cleanup()
+
+    def start(self, mode="observe", restricted=True, inherit=False, handle=0, descendants="NONE_FOR_FIXTURE_PATH"):
+        lease, expected = self.authority.arm(self.parent)
+        for name in PHASE_FILES:
+            (self.root / name).unlink(missing_ok=True)
+        process = self.boundary.spawn(self.executable, mode, self.parent["pid"], handle,
+                                      restricted=restricted, inherit=inherit,
+                                      before_create=lambda: self.authority.begin_create(expected))
+        self.processes.append(process)
+        expected = self.authority.bind_worker(expected, process.identity(),
+                                              descendants="UNRESOLVED" if mode in {"launch", "launch_race"} else descendants)
+        self.assertFalse((self.root / "started.json").exists(), "suspended worker executed early")
+        process.resume()
+        started = wait_json(self.root / "started.json")
+        self.assertEqual(started["pid"], expected["worker"]["pid"])
+        record(self.id(), restriction=started, worker=process.identity(), intent=expected)
+        return lease, expected, process, started
+
+    def finish(self, expected, process):
+        self.assertEqual(process.wait(), 0)
+        result = wait_json(self.root / "result.json")
+        self.assertTrue((self.root / "cleanup-attempted.json").exists())
+        if expected["descendants"] == "UNRESOLVED":
+            for prefix in ("direct", "breakaway"):
+                self.assertFalse(result[prefix + "_created"] and not result[prefix + "_terminated"],
+                                 "descendant termination remains unknown; intent retained")
+            expected = self.authority.descendants_proven(expected)
+        response = outcome(result["primary_reason_code"], result["cleanup"], qualified=result["observed"])
+        if result["cleanup"] == "PROVEN":
+            released = self.authority.reconcile(expected, process)
+            self.assertEqual(released["ownership"], "RELEASED")
+        else:
+            with self.assertRaises(RecoveryRequired):
+                FixtureAuthority(self.authority.root).arm(self.parent)
+        record(self.id(), result=result, response=response, exact_exit=process.exited())
+        return result, response
+
+    def test_q01_restriction_active_before_work_and_setup_failure_no_attempt(self):
+        lease, expected = self.authority.arm(self.parent)
+        with self.assertRaises(OSError):
+            self.boundary.spawn(self.executable, "observe", self.parent["pid"], setup_fault=True,
+                                before_create=lambda: self.authority.begin_create(expected))
+        self.assertFalse((self.root / "started.json").exists())
+        self.assertEqual(self.authority.no_start_release(expected)["cleanup"], "NOT_ATTEMPTED")
+        self.assertFalse(lease.exists())
+        _, expected, process, started = self.start()
+        self.assertEqual(started["appcontainer"], 1)
+        self.assertEqual(started["policy_query_ok"], 1)
+        self.assertEqual(started["child_restricted"], 1)
+        self.assertTrue(started["before_work"])
+        self.finish(expected, process)
+
+    def test_q02_q03_unrestricted_control_and_restricted_stopped_launch(self):
+        privileged = self.windows.privileged_inheritable_parent()
+        self.handles.append(privileged)
+        _, expected, control, started = self.start("launch", restricted=False, inherit=True, handle=privileged)
+        result, _ = self.finish(expected, control)
+        self.assertEqual(result["direct_error"], 0)
+        self.assertEqual(result["direct_created"], 1)
+        self.assertEqual(result["direct_terminated"], 1)
+        self.assertTrue((self.root / "direct-child.json").exists())
+        self.assertEqual(started["inherited_parent_pid"], self.parent["pid"])
+        breakaway_control = (result["breakaway_error"] == 0 and result["breakaway_created"] == 1
+                             and result["breakaway_terminated"] == 1 and (self.root / "breakaway-child.json").exists())
+        control_breakaway_error = result["breakaway_error"]
+        _, expected, restricted, started = self.start("launch", handle=privileged)
+        result, _ = self.finish(expected, restricted)
+        self.assertEqual(started["appcontainer"], 1)
+        self.assertEqual(started["child_restricted"], 1)
+        self.assertEqual(started["parent_create_error"], 5)
+        self.assertEqual(started["parent_vm_write_error"], 5)
+        self.assertNotEqual(started["inherited_parent_pid"], self.parent["pid"])
+        self.assertNotEqual(result["direct_error"], 0)
+        self.assertNotEqual(result["breakaway_error"], 0)
+        self.assertEqual(result["direct_created"], 0)
+        self.assertEqual(result["breakaway_created"], 0)
+        self.assertFalse((self.root / "direct-child.json").exists())
+        self.assertFalse((self.root / "breakaway-child.json").exists())
+        record(self.id(), broker_sdk="OPEN", scope="CreateProcessW fixture paths only",
+               breakaway_control_error=control_breakaway_error,
+               breakaway_causal_qualification="QUALIFIED_FIXTURE_DENIAL" if breakaway_control else "OPEN_CONTROL_NOT_QUALIFIED_HOST_JOB_MAY_DENY")
+
+    def test_q02_exit_between_discovery_and_launch(self):
+        target_root = self.root / "target"
+        target_root.mkdir()
+        # This harmless target is controlled by its exact handle and never owns authority.
+        target_boundary = Boundary(target_root)
+        try:
+            target_executable = target_root / "fixture.exe"
+            shutil.copy2(EXECUTABLE, target_executable)
+            target_boundary._grant_fixture_root()
+            target = target_boundary.spawn(target_executable, "hang", self.parent["pid"], restricted=False)
+            self.processes.append(target)
+            target.resume()
+            wait_json(target_root / "started.json")
+            target_ref = target.identity()
+            _, expected, worker, started = self.start("launch_race")
+            self.assertEqual(started["child_restricted"], 1)
+            elapsed = target.terminate_exact(target_ref)
+            (self.root / "go.txt").write_text("exit-before-attempt", encoding="utf-8")
+            result, _ = self.finish(expected, worker)
+            self.assertNotEqual(result["direct_error"], 0)
+            self.assertEqual(result["direct_created"], 0)
+            self.assertFalse((self.root / "direct-child.json").exists())
+            record(self.id(), target_exit_ms=elapsed, exact_target=target_ref)
+            target.close()
+        finally:
+            target_boundary.close()
+
+    def test_q04_primary_and_real_fixture_cleanup_faults(self):
+        cases = [("init_false", "LIVE_IPC_INITIALIZE_FAILED", "PROVEN", 0),
+                 ("init_raise", "LIVE_IPC_INITIALIZE_FAILED", "PROVEN", 1),
+                 ("observe_raise", "LIVE_OBSERVATION_UNAVAILABLE", "PROVEN", 1),
+                 ("shutdown_raise", None, "UNPROVEN", 1),
+                 ("init_raise_shutdown_raise", "LIVE_IPC_INITIALIZE_FAILED", "UNPROVEN", 2)]
+        for mode, primary, cleanup, caught in cases:
+            with self.subTest(mode=mode):
+                # Each fault uses an independent temporary root/authority.
+                nested = WindowsCases("test_q01_restriction_active_before_work_and_setup_failure_no_attempt")
+                nested.setUp()
+                try:
+                    _, expected, worker, _ = nested.start(mode)
+                    result, response = nested.finish(expected, worker)
+                    self.assertEqual(result["primary_reason_code"], primary)
+                    self.assertEqual(result["cleanup"], cleanup)
+                    self.assertTrue(result["cleanup_attempted"])
+                    self.assertEqual(result["cleanup_completed"], cleanup == "PROVEN")
+                    self.assertEqual(result["caught_exceptions"], caught)
+                    self.assertIsNone(result["account"])
+                    self.assertIsNone(response["account"])
+                    record(self.id(), mode=mode, result=result, response=response)
+                finally:
+                    nested.tearDown()
+
+    def test_q05_hang_does_not_release_before_exact_termination(self):
+        total_start = time.monotonic()
+        lease, expected, worker, _ = self.start("hang")
+        budget_start = time.monotonic()
+        while (time.monotonic() - budget_start) < 0.25:
+            self.assertFalse(worker.exited())
+            time.sleep(0.01)
+        with self.assertRaisesRegex(RecoveryRequired, "STILL_RUNNING"):
+            self.authority.reconcile(expected, worker)
+        self.assertTrue(lease.exists())
+        with self.assertRaises(RecoveryRequired):
+            FixtureAuthority(self.authority.root).arm(self.parent)
+        termination_ms = worker.terminate_exact(expected["worker"])
+        self.authority.reconcile(expected, worker)
+        self.assertFalse(lease.exists())
+        record(self.id(), observation_budget_ms=250, actual_total_ms=(time.monotonic()-total_start)*1000,
+               termination_ms=termination_ms, hard_10s_claim=False)
+
+    def test_q06_real_parent_crash_before_failure_marker(self):
+        crash_root = self.root / "crash-parent"
+        crash_root.mkdir()
+        crashed = subprocess.run([sys.executable, str(HERE / "run_proof.py"), "--crash-parent", str(crash_root),
+                                  "--executable", str(EXECUTABLE)], capture_output=True, text=True, timeout=15)
+        self.assertEqual(crashed.returncode, 73, crashed.stderr[-2000:])
+        fresh = FixtureAuthority(crash_root / "authority")
+        expected = fresh.read()
+        self.assertFalse((crash_root / "failure.json").exists())
+        with self.assertRaises(RecoveryRequired):
+            fresh.arm(self.parent)
+        worker = Process.open_expected(self.windows, expected["worker"])
+        self.processes.append(worker)
+        try:
+            self.assertFalse(worker.exited())
+            termination_ms = worker.terminate_exact(expected["worker"])
+            fresh.reconcile(expected, worker)
+            successor, new = fresh.arm(self.parent)
+            with self.assertRaisesRegex(RecoveryRequired, "STALE"):
+                fresh.reconcile(expected, worker)
+            self.assertEqual(json.loads(successor.lock_path.read_text())["token"], new["lease_token"])
+            fresh.no_start_release(new)
+            record(self.id(), crashed_parent=expected["parent"], worker=expected["worker"],
+                   failure_marker_absent=True, termination_ms=termination_ms)
+        finally:
+            profile = wait_json(crash_root / "profile.json")["name"]
+            result = self.windows.userenv.DeleteAppContainerProfile(profile)
+            self.assertGreaterEqual(result, 0, f"owned crash profile cleanup failed:{result}")
+
+    def test_q07_real_creation_identity_stale_generation_and_descendants(self):
+        lease, expected, worker, _ = self.start("hang", descendants="UNRESOLVED")
+        mismatch = {**expected["worker"], "creation_100ns": expected["worker"]["creation_100ns"] + 1}
+        with self.assertRaisesRegex(RuntimeError, "IDENTITY_MISMATCH"):
+            Process.open_expected(self.windows, mismatch)
+        stale = {**expected, "generation": expected["generation"] + 1}
+        with self.assertRaisesRegex(RecoveryRequired, "STALE"):
+            self.authority.reconcile(stale, worker)
+        worker.terminate_exact(expected["worker"])
+        with self.assertRaisesRegex(RecoveryRequired, "DESCENDANT"):
+            self.authority.reconcile(expected, worker)
+        self.assertTrue(lease.exists())
+        record(self.id(), pid_reuse="simulated creation-time mismatch against a real process",
+               descendant_disposition="RECOVERY_REQUIRED")
+
+    def test_q08_conflicting_callers_restart_and_recovery_race(self):
+        lease, old, worker, _ = self.start("hang")
+        results = []
+        errors = []
+        def conflict():
+            try:
+                FixtureAuthority(self.authority.root).arm(self.parent)
+                results.append("UNSAFE_ACQUIRE")
+            except RecoveryRequired:
+                results.append("BLOCKED")
+            except BaseException as error:
+                errors.append(error)
+        # These two acquisitions are independent processes using the common fixture gate.
+        callers = [subprocess.Popen([sys.executable, str(HERE / "run_proof.py"),
+                                     "--attempt-arm", str(self.authority.root)],
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for _ in range(2)]
+        caller_receipts = []
+        for caller in callers:
+            stdout, stderr = caller.communicate(timeout=10)
+            self.assertEqual(caller.returncode, 0, stderr[-2000:])
+            caller_receipts.append(json.loads(stdout))
+        self.assertTrue(all(row["status"] == "BLOCKED" for row in caller_receipts))
+        self.assertEqual(len({row["parent"]["pid"] for row in caller_receipts}), 2)
+        self.assertFalse(worker.exited())
+        worker.terminate_exact(old["worker"])
+        self.authority.reconcile(old, worker)
+        successor, new = FixtureAuthority(self.authority.root).arm(self.parent)
+        def stale_clear():
+            try:
+                FixtureAuthority(self.authority.root).reconcile(old, worker)
+                results.append("UNSAFE_CLEAR")
+            except RecoveryRequired:
+                results.append("STALE_REJECTED")
+            except BaseException as error:
+                errors.append(error)
+        stale = threading.Thread(target=stale_clear)
+        contender = threading.Thread(target=conflict)
+        stale.start(); contender.start(); stale.join(3); contender.join(3)
+        self.assertFalse(stale.is_alive() or contender.is_alive())
+        self.assertEqual(errors, [])
+        self.assertCountEqual(results, ["STALE_REJECTED", "BLOCKED"])
+        self.assertTrue(successor.exists())
+        self.assertEqual(self.authority.read(), new)
+        self.assertEqual(json.loads(successor.lock_path.read_text())["token"], new["lease_token"])
+        self.assertGreater(new["generation"], old["generation"])
+        self.authority.no_start_release(new)
+        record(self.id(), process_callers=caller_receipts, recovery_thread_race=results,
+               generations=[old["generation"], new["generation"]])
+
+
+class RecordedResult(unittest.TextTestResult):
+    def startTest(self, test):
+        self.start_clock = time.monotonic()
+        super().startTest(test)
+
+    def addSuccess(self, test):
+        record(test.id(), status="PASS", elapsed_ms=(time.monotonic()-self.start_clock)*1000)
+        super().addSuccess(test)
+
+    def addFailure(self, test, error):
+        record(test.id(), status="FAIL", error_type=error[0].__name__)
+        super().addFailure(test, error)
+
+    def addError(self, test, error):
+        record(test.id(), status="ERROR", error_type=error[0].__name__)
+        super().addError(test, error)
+
+    def addSkip(self, test, reason):
+        # Required proof cases may not disappear as green skips.
+        self.addFailure(test, (AssertionError, AssertionError("REQUIRED_CASE_SKIPPED:" + reason), None))
+
+
+def compile_fixture(output):
+    installer = Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")) / "Microsoft Visual Studio/Installer/vswhere.exe"
+    found = subprocess.check_output([str(installer), "-latest", "-products", "*", "-requires",
+                                     "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationPath"], text=True).strip()
+    if not found:
+        raise RuntimeError("REQUIRED_WINDOWS_C_COMPILER_UNAVAILABLE")
+    vcvars = Path(found) / "VC/Auxiliary/Build/vcvars64.bat"
+    executable = output / "fixture.exe"
+    command = f'call "{vcvars}" >nul && cl /nologo /W4 /WX /MT /O2 /Fe:"{executable}" /Fo:"{output / "fixture.obj"}" "{HERE / "fixture_worker.c"}" advapi32.lib'
+    built = subprocess.run(["cmd.exe", "/d", "/s", "/c", command], capture_output=True, text=True, timeout=120)
+    (output / "compiler.log").write_text((built.stdout+built.stderr)[-64000:], encoding="utf-8")
+    if built.returncode:
+        raise RuntimeError("FIXTURE_COMPILATION_FAILED:" + (built.stdout+built.stderr)[-4000:])
+    return executable
+
+
+def crash_parent(root, executable):
+    root = Path(root)
+    copied = root / "fixture.exe"
+    shutil.copy2(executable, copied)
+    boundary = Boundary(root)
+    parent = Process(boundary.windows, boundary.windows.kernel.GetCurrentProcess()).identity()
+    authority = FixtureAuthority(root / "authority")
+    _, expected = authority.arm(parent)
+    worker = boundary.spawn(copied, "hang", parent["pid"],
+                            before_create=lambda: authority.begin_create(expected))
+    expected = authority.bind_worker(expected, worker.identity())
+    atomic(root / "profile.json", {"name": boundary.name})
+    worker.resume()
+    wait_json(root / "started.json")
+    # No shutdown/failure marker is recorded: the fixture intent must survive this crash.
+    os._exit(73)
+
+
+def attempt_arm(root):
+    windows = Windows()
+    parent = Process(windows, windows.kernel.GetCurrentProcess()).identity()
+    try:
+        FixtureAuthority(root).arm(parent)
+        print(json.dumps({"status": "UNSAFE_ACQUIRE", "parent": parent}))
+        return 1
+    except RecoveryRequired:
+        print(json.dumps({"status": "BLOCKED", "parent": parent}))
+        return 0
+
+
+def main():
+    global EXECUTABLE
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--portable", action="store_true")
+    parser.add_argument("--require-windows", action="store_true")
+    parser.add_argument("--output", default="tip057rq-evidence")
+    parser.add_argument("--crash-parent")
+    parser.add_argument("--attempt-arm")
+    parser.add_argument("--executable")
+    options = parser.parse_args()
+    if options.crash_parent:
+        crash_parent(options.crash_parent, options.executable)
+    if options.attempt_arm:
+        return attempt_arm(options.attempt_arm)
+    output = Path(options.output).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    started = time.monotonic()
+    actual_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    expected_head = os.environ.get("TIP057RQ_EXPECTED_SHA")
+    summary = {"schema": "tip057rq.proof/1", "os": platform.platform(), "python": sys.version,
+               "candidate_sha": actual_head, "expected_head_sha": expected_head,
+               "exact_head_verified": expected_head is not None and actual_head == expected_head,
+               "github_event_sha": os.environ.get("GITHUB_SHA"),
+               "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+               "mode": "PORTABLE_UNQUALIFIED" if options.portable else "REAL_WINDOWS_REQUIRED",
+               "broker_sdk": "OPEN", "scope": "isolated harmless fixture paths only",
+               "sources": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(HERE.glob("*")) if p.is_file()}}
+    exit_code = 1
+    try:
+        if not options.portable and os.name != "nt":
+            raise RuntimeError("REAL_WINDOWS_REQUIRED_NO_SKIP")
+        if expected_head is not None and actual_head != expected_head:
+            raise RuntimeError("REVIEWED_HEAD_MISMATCH")
+        if os.environ.get("GITHUB_ACTIONS") == "true" and expected_head is None:
+            raise RuntimeError("REVIEWED_HEAD_REQUIRED")
+        suite = unittest.defaultTestLoader.loadTestsFromTestCase(PortableCases)
+        if not options.portable:
+            EXECUTABLE = compile_fixture(output)
+            summary["fixture_exe_sha256"] = hashlib.sha256(EXECUTABLE.read_bytes()).hexdigest()
+            suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(WindowsCases))
+        with (output / "proof.log").open("w", encoding="utf-8") as stream:
+            result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordedResult).run(suite)
+        summary.update(tests_run=result.testsRun, failures=len(result.failures), errors=len(result.errors), skips=len(result.skipped))
+        exit_code = 0 if result.wasSuccessful() and not result.skipped else 1
+        summary["status"] = "PORTABLE_PASS_WINDOWS_UNQUALIFIED" if options.portable and not exit_code else "FIXTURE_PASS_Q03_OPEN" if not exit_code else "FAIL"
+    except BaseException as error:
+        summary.update(status="BLOCKED", error_type=type(error).__name__, error=str(error)[-4000:])
+    finally:
+        summary["elapsed_ms"] = (time.monotonic()-started)*1000
+        summary["records"] = EVIDENCE
+        serialized = json.dumps(summary, indent=2, sort_keys=True)
+        if len(serialized.encode("utf-8")) > 262144:
+            summary["records"] = []
+            summary.update(status="FAIL", error="EVIDENCE_LIMIT_EXCEEDED", discarded_evidence_sha256=hashlib.sha256(serialized.encode()).hexdigest())
+            serialized = json.dumps(summary, indent=2, sort_keys=True)
+            exit_code = 1
+        (output / "summary.json").write_text(serialized, encoding="utf-8")
+        print(json.dumps({key: value for key, value in summary.items() if key != "records"}, indent=2))
+        if (output / "proof.log").exists():
+            print((output / "proof.log").read_text(encoding="utf-8")[-64000:])
+    return exit_code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

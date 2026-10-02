@@ -24,6 +24,8 @@ Current execution checkpoint: PR #54/#55/#57/#58/#59 merged; M0 installation and
 
 The original numbering is retained with R/N or A/B subdivisions where scope was ambiguous. TIP-056 is deliberately moved after remote serialized jobs. The original TIP-061 is split so target/baseline correctness precedes jobs while remote source writes remain later. TIP-062 advanced totals/filtering are not implied by 062A and need their own approved requirement.
 
+At13:59:50 the owner approved the concrete [TIP-057R-Q1 isolated Windows proof](TIP-057R-Q1.md). Builder implementation/fixture tests and a Draft PR are authorized; Contractor verifies exact-head Windows evidence. This is the current task. Production targeted reads/common-acquisition integration, Q2 native proof and M1 capability remain gated; no delivery order or native capacity changed.
+
 ## Delivery order
 
 M0 = 055A. M1 = 057R + 058 + 059 + 062A. M2 = 061A + 057N. M3 = 060. M4 = 056. M5 = 061B + 063. Release = 064 for the capabilities selected for shipping.
