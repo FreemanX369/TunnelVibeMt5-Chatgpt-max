@@ -154,15 +154,33 @@ class WindowsCases(unittest.TestCase):
         self.parent = Process(self.windows, self.windows.kernel.GetCurrentProcess()).identity()
 
     def tearDown(self):
+        errors = []
         for process in self.processes:
             if process.handle:
-                if not process.exited():
-                    process.terminate_exact(process.identity())
-                process.close()
+                try:
+                    if not process.exited():
+                        process.terminate_exact(process.identity())
+                except BaseException as error:
+                    errors.append(f"OWNED_WORKER_STOP_UNPROVEN:{type(error).__name__}")
+                finally:
+                    try:
+                        process.close()
+                    except BaseException as error:
+                        errors.append(f"OWNED_HANDLE_CLOSE_FAILED:{type(error).__name__}")
         for handle in self.handles:
-            self.windows.kernel.CloseHandle(handle)
-        self.boundary.close()
-        self.temporary.cleanup()
+            if not self.windows.kernel.CloseHandle(handle):
+                errors.append("OWNED_PRIVILEGED_HANDLE_CLOSE_FAILED")
+        try:
+            self.boundary.close()
+        except BaseException as error:
+            errors.append(f"OWNED_PROFILE_CLEANUP_FAILED:{type(error).__name__}")
+        try:
+            self.temporary.cleanup()
+        except BaseException as error:
+            errors.append(f"TEMP_ROOT_CLEANUP_FAILED:{type(error).__name__}")
+        if errors:
+            record(self.id(), cleanup_errors=errors)
+            self.fail(";".join(errors))
 
     def start(self, mode="observe", restricted=True, inherit=False, handle=0, descendants="NONE_FOR_FIXTURE_PATH"):
         lease, expected = self.authority.arm(self.parent)
@@ -318,17 +336,20 @@ class WindowsCases(unittest.TestCase):
     def test_q06_real_parent_crash_before_failure_marker(self):
         crash_root = self.root / "crash-parent"
         crash_root.mkdir()
-        crashed = subprocess.run([sys.executable, str(HERE / "run_proof.py"), "--crash-parent", str(crash_root),
-                                  "--executable", str(EXECUTABLE)], capture_output=True, text=True, timeout=15)
-        self.assertEqual(crashed.returncode, 73, crashed.stderr[-2000:])
         fresh = FixtureAuthority(crash_root / "authority")
-        expected = fresh.read()
-        self.assertFalse((crash_root / "failure.json").exists())
-        with self.assertRaises(RecoveryRequired):
-            fresh.arm(self.parent)
-        worker = Process.open_expected(self.windows, expected["worker"])
-        self.processes.append(worker)
+        worker = None
+        expected = None
+        cleanup_errors = []
         try:
+            crashed = subprocess.run([sys.executable, str(HERE / "run_proof.py"), "--crash-parent", str(crash_root),
+                                      "--executable", str(EXECUTABLE)], capture_output=True, text=True, timeout=15)
+            self.assertEqual(crashed.returncode, 73, crashed.stderr[-2000:])
+            expected = fresh.read()
+            self.assertFalse((crash_root / "failure.json").exists())
+            with self.assertRaises(RecoveryRequired):
+                fresh.arm(self.parent)
+            worker = Process.open_expected(self.windows, expected["worker"])
+            self.processes.append(worker)
             self.assertFalse(worker.exited())
             termination_ms = worker.terminate_exact(expected["worker"])
             fresh.reconcile(expected, worker)
@@ -340,9 +361,43 @@ class WindowsCases(unittest.TestCase):
             record(self.id(), crashed_parent=expected["parent"], worker=expected["worker"],
                    failure_marker_absent=True, termination_ms=termination_ms)
         finally:
-            profile = wait_json(crash_root / "profile.json")["name"]
-            result = self.windows.userenv.DeleteAppContainerProfile(profile)
-            self.assertGreaterEqual(result, 0, f"owned crash profile cleanup failed:{result}")
+            # Recover only a persisted exact fixture identity. An unknown create outcome
+            # stays visibly unresolved; never guess a PID or enumerate/kill strangers.
+            try:
+                if worker is None:
+                    retained = fresh.read()
+                    if retained is not None and retained.get("worker") is not None:
+                        known = retained["worker"]
+                        fixture_image = os.path.normcase(str((crash_root / "fixture.exe").resolve()))
+                        if known["image"] != fixture_image:
+                            raise RuntimeError("UNOWNED_CRASH_IMAGE")
+                        worker = Process.open_expected(self.windows, known)
+                        self.processes.append(worker)
+                    elif retained is not None and retained["phase"] != "ARMED_BEFORE_CREATE":
+                        raise RuntimeError("CRASH_WORKER_IDENTITY_UNKNOWN")
+                if worker is not None and worker.handle:
+                    if not worker.exited():
+                        worker.terminate_exact(worker.identity())
+                    worker.close()
+            except BaseException as error:
+                cleanup_errors.append(f"CRASH_OWNED_WORKER_CLEANUP_UNPROVEN:{type(error).__name__}")
+            try:
+                profile_path = crash_root / "profile.json"
+                if profile_path.exists():
+                    receipt = json.loads(profile_path.read_text(encoding="utf-8"))
+                    profile = receipt["name"]
+                    suffix = profile.removeprefix("tip057rq.")
+                    if not profile.startswith("tip057rq.") or len(suffix) != 32 or any(c not in "0123456789abcdef" for c in suffix):
+                        raise RuntimeError("UNOWNED_CRASH_PROFILE")
+                    if receipt.get("status") != "DELETED":
+                        result = self.windows.userenv.DeleteAppContainerProfile(profile)
+                        if result < 0:
+                            raise RuntimeError(f"OWNED_CRASH_PROFILE_CLEANUP_FAILED:{result}")
+            except BaseException as error:
+                cleanup_errors.append(f"CRASH_OWNED_PROFILE_CLEANUP_FAILED:{type(error).__name__}")
+            if cleanup_errors:
+                record(self.id(), cleanup_errors=cleanup_errors)
+                self.fail(";".join(cleanup_errors))
 
     def test_q07_real_creation_identity_stale_generation_and_descendants(self):
         lease, expected, worker, _ = self.start("hang", descendants="UNRESOLVED")
@@ -439,8 +494,13 @@ def compile_fixture(output):
         raise RuntimeError("REQUIRED_WINDOWS_C_COMPILER_UNAVAILABLE")
     vcvars = Path(found) / "VC/Auxiliary/Build/vcvars64.bat"
     executable = output / "fixture.exe"
-    command = f'call "{vcvars}" >nul && cl /nologo /W4 /WX /MT /O2 /Fe:"{executable}" /Fo:"{output / "fixture.obj"}" "{HERE / "fixture_worker.c"}" advapi32.lib'
-    built = subprocess.run(["cmd.exe", "/d", "/s", "/c", command], capture_output=True, text=True, timeout=120)
+    batch = output / "compile-fixture.cmd"
+    batch.write_text(f'@echo off\ncall "{vcvars}" >nul\nif errorlevel 1 exit /b 1\n'
+                     f'cl /nologo /W4 /WX /MT /O2 /Fe:"{executable}" /Fo:"{output / "fixture.obj"}" "{HERE / "fixture_worker.c"}" advapi32.lib\n'
+                     'exit /b %errorlevel%\n', encoding="utf-8")
+    # Raw command line keeps cmd's outer quote pair intact. Passing the nested
+    # quoted vcvars command through list2cmdline produced the retained first CI failure.
+    built = subprocess.run(f'cmd.exe /d /s /c ""{batch}""', capture_output=True, text=True, timeout=120)
     (output / "compiler.log").write_text((built.stdout+built.stderr)[-64000:], encoding="utf-8")
     if built.returncode:
         raise RuntimeError("FIXTURE_COMPILATION_FAILED:" + (built.stdout+built.stderr)[-4000:])
@@ -452,17 +512,52 @@ def crash_parent(root, executable):
     copied = root / "fixture.exe"
     shutil.copy2(executable, copied)
     boundary = Boundary(root)
-    parent = Process(boundary.windows, boundary.windows.kernel.GetCurrentProcess()).identity()
-    authority = FixtureAuthority(root / "authority")
-    _, expected = authority.arm(parent)
-    worker = boundary.spawn(copied, "hang", parent["pid"],
-                            before_create=lambda: authority.begin_create(expected))
-    expected = authority.bind_worker(expected, worker.identity())
-    atomic(root / "profile.json", {"name": boundary.name})
-    worker.resume()
-    wait_json(root / "started.json")
-    # No shutdown/failure marker is recorded: the fixture intent must survive this crash.
-    os._exit(73)
+    worker = None
+    try:
+        atomic(root / "profile.json", {"name": boundary.name})
+        parent = Process(boundary.windows, boundary.windows.kernel.GetCurrentProcess()).identity()
+        authority = FixtureAuthority(root / "authority")
+        _, expected = authority.arm(parent)
+        worker = boundary.spawn(copied, "hang", parent["pid"],
+                                before_create=lambda: authority.begin_create(expected))
+        expected = authority.bind_worker(expected, worker.identity())
+        worker.resume()
+        wait_json(root / "started.json")
+        # No shutdown/failure marker is recorded: intent survives this intentional crash.
+        os._exit(73)
+    except BaseException:
+        cleanup_errors = []
+        if worker is not None:
+            try:
+                worker.terminate_exact(worker.identity())
+            except BaseException as error:
+                cleanup_errors.append(f"OWNED_WORKER_UNPROVEN:{type(error).__name__}")
+            finally:
+                try:
+                    worker.close()
+                except BaseException as error:
+                    cleanup_errors.append(f"OWNED_HANDLE_CLOSE_FAILED:{type(error).__name__}")
+        try:
+            boundary.close()
+            atomic(root / "profile.json", {"name": boundary.name, "status": "DELETED"})
+        except BaseException as error:
+            cleanup_errors.append(f"OWNED_PROFILE_UNPROVEN:{type(error).__name__}")
+        print(json.dumps({"crash_fixture_cleanup_errors": cleanup_errors}), file=sys.stderr)
+        raise
+
+
+def cap_proof_log(path, limit=64000):
+    data = path.read_bytes()
+    metadata = {"original_bytes": len(data), "original_sha256": hashlib.sha256(data).hexdigest(),
+                "truncated": len(data) > limit}
+    if len(data) > limit:
+        header = b"[truncated; original size/hash retained in summary.json]\n"
+        tail = data[-(limit-len(header)):]
+        # Drop the first partial line so the retained UTF-8 tail remains valid.
+        tail = tail.partition(b"\n")[2]
+        path.write_bytes(header + tail)
+    metadata["retained_bytes"] = path.stat().st_size
+    return metadata
 
 
 def attempt_arm(root):
@@ -512,6 +607,16 @@ def main():
             raise RuntimeError("REVIEWED_HEAD_MISMATCH")
         if os.environ.get("GITHUB_ACTIONS") == "true" and expected_head is None:
             raise RuntimeError("REVIEWED_HEAD_REQUIRED")
+        if expected_head is not None:
+            blob_sources = {}
+            for source in sorted(HERE.glob("*")):
+                if source.is_file():
+                    blob = subprocess.check_output(["git", "show", f"HEAD:{source.relative_to(ROOT).as_posix()}"], cwd=ROOT)
+                    blob_sources[source.name] = hashlib.sha256(blob).hexdigest()
+            summary["git_blob_sources"] = blob_sources
+            if blob_sources != summary["sources"]:
+                raise RuntimeError("CHECKOUT_SOURCE_BYTES_MISMATCH")
+            summary["source_blob_verified"] = True
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(PortableCases)
         if not options.portable:
             EXECUTABLE = compile_fixture(output)
@@ -519,6 +624,7 @@ def main():
             suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(WindowsCases))
         with (output / "proof.log").open("w", encoding="utf-8") as stream:
             result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordedResult).run(suite)
+        summary["proof_log"] = cap_proof_log(output / "proof.log")
         summary.update(tests_run=result.testsRun, failures=len(result.failures), errors=len(result.errors), skips=len(result.skipped))
         exit_code = 0 if result.wasSuccessful() and not result.skipped else 1
         summary["status"] = "PORTABLE_PASS_WINDOWS_UNQUALIFIED" if options.portable and not exit_code else "FIXTURE_PASS_Q03_OPEN" if not exit_code else "FAIL"
