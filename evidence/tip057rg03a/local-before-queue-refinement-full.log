@@ -1,0 +1,18 @@
+........................................................................ [ 17%]
+........................................................................ [ 34%]
+........................................................s............... [ 51%]
+........................ss.......................................sssssss [ 68%]
+sssssssssssss...........s............................................... [ 85%]
+........ss....................................................           [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/unit/test_tip039_generic_powershell.py:119: requires Windows PowerShell
+SKIPPED [1] tests/unit/test_tip040_live_vps.py:359: requires the interactive Windows VPS
+SKIPPED [1] tests/unit/test_tip040_live_vps.py:408: requires the interactive Windows VPS
+SKIPPED [6] tests/unit/test_tip054_windows_health_guards.py:37: PowerShell runtime required
+SKIPPED [1] tests/unit/test_tip054_windows_health_guards.py:73: PowerShell runtime required
+SKIPPED [7] tests/unit/test_tip054_windows_health_guards.py:84: PowerShell runtime required
+SKIPPED [6] tests/unit/test_tip054_windows_health_guards.py:105: PowerShell runtime required
+SKIPPED [1] tests/unit/test_tip055a_runtime_forensics_identity.py:299: Windows junction fixture requires Windows
+SKIPPED [1] tests/unit/test_tip055b_runtime_forensics_release.py:339: Actual Windows deny-delete handle gate requires Windows; injected faults are separate evidence
+SKIPPED [1] tests/unit/test_tip055b_runtime_forensics_release.py:388: Actual Windows persistent deny-delete gate requires Windows
+396 passed, 26 skipped in 12.70s

@@ -1,0 +1,113 @@
+{
+  "candidate_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+  "elapsed_ms": 1390.0,
+  "errors": 0,
+  "exact_head_verified": true,
+  "expected_head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+  "failures": 0,
+  "git_blob_sources": {
+    ".github/workflows/verify-tip057rg03a.yml": "b4bfa874909010df37186c40a27fd0d8e443e777d5780b7cf4d7f748ed06fa25",
+    "app/vibemql5/core/concurrency.py": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039",
+    "tests/proofs/tip057rg03a/run_windows.py": "70c293168a5db2f88f617a62063801688710bf58aac333c7b80eaa399e4e0cd3",
+    "tests/proofs/tip057rq/windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84",
+    "tests/unit/ownership_fixture.py": "c051e73bcdb2fbd2b48efd25b603c221508745cc9a80ee7eef71536d17cb39d6",
+    "tests/unit/test_tip057rg03a_native_ownership.py": "386fd523df702f899dca1a4ed048f22ca743a62c40ae83a2e3a2c452f65a627f"
+  },
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "production_descendant_verifier": "OPEN",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "active_reused_owner": "LOCK_PRESERVED",
+      "case": "__main__.WindowsAuthorityCases.test_a04_actual_live_reused_identity_active_lock_is_not_deleted",
+      "closed_reused_owner": "COMPATIBLE_RECOVERY"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a05_bind_publication_before_after_fault_stays_active",
+      "persistent_phase": "CREATE_ATTEMPT",
+      "window": "before"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a05_bind_publication_before_after_fault_stays_active",
+      "persistent_phase": "BOUND",
+      "window": "after"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a05_worker_closure_publication_fault_retains_barrier",
+      "descendant_evidence": "CONTRACT_FIXTURE_CALLBACK_ONLY_PRODUCTION_UNQUALIFIED",
+      "persistent_phase": "ACTIVE_BOUND",
+      "window": "before"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a05_worker_closure_publication_fault_retains_barrier",
+      "descendant_evidence": "CONTRACT_FIXTURE_CALLBACK_ONLY_PRODUCTION_UNQUALIFIED",
+      "persistent_phase": "ACTIVE_BOUND",
+      "window": "after"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a05_worker_closure_publication_fault_retains_barrier",
+      "descendant_evidence": "CONTRACT_FIXTURE_CALLBACK_ONLY_PRODUCTION_UNQUALIFIED",
+      "persistent_phase": "ACTIVE_BOUND",
+      "window": "readback"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a06_actual_create_before_bind_interruption_stays_unknown",
+      "unknown_create": "ACTIVE_WITHOUT_GUESSED_WORKER"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a06_descendant_unknown_boolean_unqualified_and_exception_stay_active",
+      "unqualified_descendants": "ALL_RETAIN_ACTIVE"
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a06_durable_arm_attempt_actual_suspended_bind_before_resume",
+      "descendant_evidence": "CONTRACT_FIXTURE_CALLBACK_ONLY_PRODUCTION_UNQUALIFIED",
+      "ordering": [
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "ACTUAL_SUSPENDED_CREATE",
+        "BOUND",
+        "RESUME",
+        "EXACT_EXIT"
+      ],
+      "worker": {
+        "creation": "134354276327116685",
+        "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+        "pid": 4216
+      }
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a07_live_orphan_fresh_observation_and_stale_cas",
+      "fresh_live_identity": "INDEPENDENT_OS_OBSERVATION",
+      "stale_cas": "REJECTED",
+      "successor_generation": 3
+    },
+    {
+      "case": "__main__.WindowsAuthorityCases.test_a08_fresh_already_dead_handle_never_uses_expected_journal_image",
+      "fresh_dead": "REFUSED_WITHOUT_INDEPENDENT_LIVE_IMAGE",
+      "retained_same_handle_exit": "PROVEN",
+      "worker": {
+        "creation": "134354276329348953",
+        "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+        "pid": 8084
+      }
+    }
+  ],
+  "schema": "tip057rg03a.windows/1",
+  "sdk_helper": "ABSENT",
+  "skips": 0,
+  "source_blob_verified": true,
+  "sources": {
+    ".github/workflows/verify-tip057rg03a.yml": "b4bfa874909010df37186c40a27fd0d8e443e777d5780b7cf4d7f748ed06fa25",
+    "app/vibemql5/core/concurrency.py": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039",
+    "tests/proofs/tip057rg03a/run_windows.py": "70c293168a5db2f88f617a62063801688710bf58aac333c7b80eaa399e4e0cd3",
+    "tests/proofs/tip057rq/windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84",
+    "tests/unit/ownership_fixture.py": "c051e73bcdb2fbd2b48efd25b603c221508745cc9a80ee7eef71536d17cb39d6",
+    "tests/unit/test_tip057rg03a_native_ownership.py": "386fd523df702f899dca1a4ed048f22ca743a62c40ae83a2e3a2c452f65a627f"
+  },
+  "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+  "tests_run": 8
+}

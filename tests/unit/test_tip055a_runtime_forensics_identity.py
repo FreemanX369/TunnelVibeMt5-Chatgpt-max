@@ -1,6 +1,8 @@
 """Isolated identity/provenance forensics selected by the supported runtime_forensics suite."""
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import copy
 import hashlib
 import json
@@ -209,6 +211,7 @@ def test_ac07_existing_compile_and_live_use_fixed_target_and_global_lease(tmp_pa
     assert calls == [("compile", "MT5-2"), ("test", "MT5-2"), ("live", "MT5-2")]
     assert leases == ["direct_compile", "live_terminal_state"]
     # Acquire the real untouched manager to prove its historical lock location.
+    install_closed(tmp_path)
     manager = ConcurrencyManager(tmp_path)
     with manager.native_execution("LOCAL-FIXTURE", kind="fixture", wait_seconds=0.1):
         assert (tmp_path / "runs" / ".active.lock").exists()
