@@ -1,0 +1,49 @@
+test_create_attempt_without_binding_cannot_release (__main__.PortableCases.test_create_attempt_without_binding_cannot_release) ... ok
+test_live_exact_worker_and_identity_mismatch_reject_clear (__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear) ... ok
+test_lost_active_intent_cannot_admit_after_dead_parent (__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent) ... ok
+test_no_attempt_release (__main__.PortableCases.test_no_attempt_release) ... ok
+test_partial_intent_is_fail_closed (__main__.PortableCases.test_partial_intent_is_fail_closed) ... ok
+test_primary_cleanup_deadline_precedence_has_no_unqualified_values (__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values) ... ok
+test_stale_recovery_cannot_clear_successor (__main__.PortableCases.test_stale_recovery_cannot_clear_successor) ... ok
+test_unresolved_descendant_rejects_clear (__main__.PortableCases.test_unresolved_descendant_rejects_clear) ... ok
+test_q01_restriction_active_before_work_and_setup_failure_no_attempt (__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt) ... ok
+test_q02_exit_between_discovery_and_launch (__main__.WindowsCases.test_q02_exit_between_discovery_and_launch) ... ok
+test_q02_q03_unrestricted_control_and_restricted_stopped_launch (__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch) ... FAIL
+test_q04_primary_and_real_fixture_cleanup_faults (__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults) ... ok
+test_q05_hang_does_not_release_before_exact_termination (__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination) ... ok
+test_q06_real_parent_crash_before_failure_marker (__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker) ... ok
+test_q07_real_creation_identity_stale_generation_and_descendants (__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants) ... ok
+test_q08_conflicting_callers_restart_and_recovery_race (__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race) ... ok
+
+======================================================================
+FAIL: test_q02_q03_unrestricted_control_and_restricted_stopped_launch (__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\proofs\tip057rq\run_proof.py", line 40, in wait_json
+    return json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-windows-5nrr2p1t\\started.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\proofs\tip057rq\run_proof.py", line 337, in test_q02_q03_unrestricted_control_and_restricted_stopped_launch
+    _, expected, restricted, started = self.start("launch", handle=privileged)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\proofs\tip057rq\run_proof.py", line 284, in start
+    started = wait_json(self.root / "started.json", process=process, case=self.id())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\proofs\tip057rq\run_proof.py", line 49, in wait_json
+    raise AssertionError(f"FIXTURE_EXIT_BEFORE_OUTPUT:{path.name}:0x{code:08x}")
+AssertionError: FIXTURE_EXIT_BEFORE_OUTPUT:started.json:0xc0000008
+
+----------------------------------------------------------------------
+Ran 16 tests in 2.991s
+
+FAILED (failures=1)

@@ -2,6 +2,8 @@
 
 Date: 2026-10-02, Asia/Saigon. Base main: `146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809`; tree `efd3d54d8db7c1c981a0fc24acae0ae56bb54716`. Status: **CONTRACT PREPARED / LIVE BUILD BLOCKED**. The 13:36 owner continuation authorizes this next contract step; it does not approve a changed IPC architecture or weaken strict no-start. This document specifies future outputs, not implemented APIs or actual account observations.
 
+Later13:59 owner decision explicitly approves [Q1 isolated fixture investigation](TIP-057R-Q1.md) of the proposed process/ownership boundary. Product integration, common-acquisition migration, Q2 native environment/effects and strict no-start relaxation remain unapproved/unqualified. The historical pending-decision wording below does not override this bounded Q1 approval or turn its future findings into product capability.
+
 Dependencies: actual [M0 qualification](TIP-055A-enrollment-qualification.md), approved Blueprint section 6, [focused source scan](TIP-057R-source-scan.md), and the ownership/no-start proof below. Priority: next M1 dependency. Requirements: REQ-F04/F10/F14/F15; REQ-F11 shared ownership compatibility.
 
 ## YAGNI-3 and scope

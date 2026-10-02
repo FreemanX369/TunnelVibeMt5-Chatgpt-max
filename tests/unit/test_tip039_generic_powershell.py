@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import base64
 import io
 import json
@@ -44,6 +46,7 @@ class _InputBuffer:
 
 
 def test_tip039_shell_requires_per_call_confirmation(tmp_path, monkeypatch):
+    install_closed(tmp_path)
     admin = BackendAdmin(tmp_path)
     monkeypatch.setattr(
         admin,
@@ -70,6 +73,7 @@ def test_tip039_shell_redaction_covers_quoted_values_with_spaces():
 
 
 def test_tip039_shell_uses_encoded_command_scrubs_env_and_audits_metadata(tmp_path, monkeypatch):
+    install_closed(tmp_path)
     admin = BackendAdmin(tmp_path)
     script = "Write-Output 'café'"
     captured = {}
@@ -114,6 +118,7 @@ def test_tip039_shell_uses_encoded_command_scrubs_env_and_audits_metadata(tmp_pa
 
 @pytest.mark.skipif(os.name != "nt", reason="requires Windows PowerShell")
 def test_tip039_shell_executes_powershell_and_cmd_on_windows(tmp_path):
+    install_closed(tmp_path)
     admin = BackendAdmin(tmp_path)
     script = (
         "$version = $PSVersionTable.PSVersion.ToString()\n"
@@ -131,6 +136,7 @@ def test_tip039_shell_executes_powershell_and_cmd_on_windows(tmp_path):
 
 
 def test_tip039_shell_bounds_script_timeout_and_output(tmp_path, monkeypatch):
+    install_closed(tmp_path)
     admin = BackendAdmin(tmp_path)
     with pytest.raises(BackendAdminError, match="POWERSHELL_SCRIPT_TOO_LARGE"):
         admin.run_powershell("x" * (admin.MAX_POWERSHELL_SCRIPT_CHARS + 1), confirm=True)
@@ -151,6 +157,7 @@ def test_tip039_shell_bounds_script_timeout_and_output(tmp_path, monkeypatch):
 
 
 def test_tip039_shell_timeout_kills_process_and_reports_structured_failure(tmp_path, monkeypatch):
+    install_closed(tmp_path)
     admin = BackendAdmin(tmp_path)
     process = _FakeProcess()
     calls = []

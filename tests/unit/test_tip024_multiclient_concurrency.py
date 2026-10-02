@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import hashlib
 import inspect
 import json
@@ -53,6 +55,7 @@ def _root(tmp_path: Path) -> Path:
     (root / "workspaces" / "demo" / "Experts" / "DemoEA.mq5").write_bytes(
         b"#property strict\r\nvoid OnTick(){}\r\n"
     )
+    install_closed(root)
     return root
 
 

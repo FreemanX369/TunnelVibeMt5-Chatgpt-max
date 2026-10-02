@@ -1,0 +1,110 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "bd3007a360abfc9e3b273f2988b8b4e251d12041",
+  "tree": "3db118ba9f46afedcc03512506fa165e677770fa",
+  "pr": 61,
+  "workflows": [
+    {
+      "id": 37006137129,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "conclusion": "success"
+    },
+    {
+      "id": 37006137153,
+      "name": "Verify TIP-027 Continuity Core",
+      "conclusion": "success"
+    },
+    {
+      "id": 37006137135,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "conclusion": "success"
+    },
+    {
+      "id": 37006137137,
+      "name": "Verify TIP-053 Deep Update",
+      "conclusion": "success"
+    },
+    {
+      "id": 37006137198,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "conclusion": "success"
+    }
+  ],
+  "dedicated_job": 110834743510,
+  "result": {
+    "status": "FIXTURE_PASS_Q03_OPEN",
+    "tests_run": 16,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "full_suite_attempted": true,
+    "elapsed_ms": 25578
+  },
+  "required_checkpoint": "PASS actual labels/tokens/writers/markers/cleanup",
+  "paired_control": {
+    "parent_pid": 2992,
+    "unrestricted_pid": 1808,
+    "restricted_pid": 2000,
+    "borrowed_argument": 896,
+    "unrestricted_returned_pid": 2992,
+    "restricted_exception": "0xc0000008",
+    "unrestricted_parent_rights": [
+      0,
+      0
+    ],
+    "restricted_parent_rights": [
+      5,
+      5
+    ],
+    "unrestricted_direct_child_created": 1,
+    "restricted_direct_child_created": 0,
+    "restricted_direct_error": 367
+  },
+  "breakaway_control": {
+    "error": 5,
+    "causal_qualification": "OPEN_CONTROL_NOT_QUALIFIED_HOST_JOB_MAY_DENY"
+  },
+  "timings": {
+    "observation_budget_ms": 250,
+    "q05_total_ms": 391,
+    "q05_termination_sample_ms": 0,
+    "q06_termination_ms": 16,
+    "hard_10s_claim": false
+  },
+  "artifact": {
+    "id": 11225807442,
+    "size_bytes": 8920,
+    "zip_sha256": "00a5486f9213890a8bc6d4c74f2f2934d8caec16f5fe66794aef1a7cd9b47767",
+    "retained_files": [
+      {
+        "path": "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/compiler.log",
+        "bytes": 18,
+        "sha256": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def"
+      },
+      {
+        "path": "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/proof.log",
+        "bytes": 2272,
+        "sha256": "866babcc0afafb8ef582270016a3799b664bbf4172561f22b94dccea6572f7c7"
+      },
+      {
+        "path": "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/summary.json",
+        "bytes": 75360,
+        "sha256": "9a7ae08b5a96bad26c34f4be228bf04ba5b60df47e8c905834c7ad979760d791"
+      }
+    ]
+  },
+  "open": [
+    "Q03 broker/SDK/uncontained paths",
+    "breakaway causal qualification",
+    "no-console startup",
+    "fresh already-dead reopened identity/recovery",
+    "production G03 common acquisition/recovery",
+    "production G04 actual SDK strict no-start",
+    "Q2 physical compatibility",
+    "M1 live-read capability"
+  ],
+  "overall_tip_status": "PARTIAL",
+  "next_authorized_action": "Finalize scoped reports/evidence and independently verify all five CI at final docs head; keep Draft"
+}

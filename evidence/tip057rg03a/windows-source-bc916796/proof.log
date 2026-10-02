@@ -1,0 +1,13 @@
+test_a04_actual_live_reused_identity_active_lock_is_not_deleted (__main__.WindowsAuthorityCases.test_a04_actual_live_reused_identity_active_lock_is_not_deleted) ... ok
+test_a05_bind_publication_before_after_fault_stays_active (__main__.WindowsAuthorityCases.test_a05_bind_publication_before_after_fault_stays_active) ... ok
+test_a05_worker_closure_publication_fault_retains_barrier (__main__.WindowsAuthorityCases.test_a05_worker_closure_publication_fault_retains_barrier) ... ok
+test_a06_actual_create_before_bind_interruption_stays_unknown (__main__.WindowsAuthorityCases.test_a06_actual_create_before_bind_interruption_stays_unknown) ... ok
+test_a06_descendant_unknown_boolean_unqualified_and_exception_stay_active (__main__.WindowsAuthorityCases.test_a06_descendant_unknown_boolean_unqualified_and_exception_stay_active) ... ok
+test_a06_durable_arm_attempt_actual_suspended_bind_before_resume (__main__.WindowsAuthorityCases.test_a06_durable_arm_attempt_actual_suspended_bind_before_resume) ... ok
+test_a07_live_orphan_fresh_observation_and_stale_cas (__main__.WindowsAuthorityCases.test_a07_live_orphan_fresh_observation_and_stale_cas) ... ok
+test_a08_fresh_already_dead_handle_never_uses_expected_journal_image (__main__.WindowsAuthorityCases.test_a08_fresh_already_dead_handle_never_uses_expected_journal_image) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.065s
+
+OK
