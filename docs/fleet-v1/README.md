@@ -18,6 +18,8 @@ This package turns the fleet brainstorm and its source-based review into an appr
 10. [TIP-055B](TIP-055B.md): bounded correction for retained Windows lease-release issue #56.
     [Completion Report](TIP-055B-completion.md), [rollout protocol](TIP-055B-deployment.md) and [runtime checkpoint](TIP-055B-runtime-qualification.md) retain local, actual Windows CI and deployed qualification PASS.
 11. [TIP-057R readiness](TIP-057R-readiness.md): next local read slice and open dispatch gates.
+    [Focused source scan](TIP-057R-source-scan.md) records additive schema proposals and unresolved cleanup/deadline/no-start guarantees.
+12. [TIP-056 readiness](TIP-056-readiness.md): M4 dependency review, source reuse, conflict contract and draft acceptance matrix; BUILD awaits TIP-060.
 
 [Original brainstorm](reference/2026-10-01-brainstorm.md) and [plan review](reference/2026-10-01-plan-review.md) are historical inputs. On approval, this package supersedes their conflicting implementation order. Runtime evidence continues to outrank design assumptions. Existing TIP-053/054 evidence remains retained and is not fleet acceptance.
 
