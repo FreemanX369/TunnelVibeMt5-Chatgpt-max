@@ -1,6 +1,6 @@
 # TIP-057R-Q2 — Disposable SDK compatibility readiness
 
-Date: 2026-10-02. Status: **PLANNED / ENVIRONMENT NOT SELECTED / NO EFFECTS AUTHORIZED**. Q1's 16/16 Windows fixture PASS and G03-A source proposal do not qualify Python/MetaTrader5 IPC or authorize creating/stopping terminals on the current VPS.
+Date: 2026-10-02. Status: **PLANNED / ENVIRONMENT NOT SELECTED / NO EFFECTS AUTHORIZED**. Q1's 16/16 Windows fixture PASS and G03-A FOUNDATION PASS do not qualify Python/MetaTrader5 IPC or authorize creating/stopping terminals on the current VPS. The [G03-B decision contract](TIP-057R-G03B.md) proposes exact disposable compatibility qualification before broad producer integration; this direction is under review and every concrete physical manifest item below is still unknown. Frozen isolated proof mechanisms can support research without a completed production helper, preventing a dependency cycle.
 
 ## Smallest useful qualification
 

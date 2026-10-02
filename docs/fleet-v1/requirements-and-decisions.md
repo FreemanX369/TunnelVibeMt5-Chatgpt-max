@@ -64,6 +64,7 @@ D entries establish the approved direction and choices within the recorded appro
 | D-19 | Local10s soft-success budget; do not claim hard response/cancellation | Exact overrun/cleanup ownership is recorded; TIP-059 total deadline stays separate | 057R contract |
 | D-20 | Strict no-start retained; Q1 isolated boundary proof approved13:59, product boundary pending proof/review | Existing initialize has no supported attach-only guarantee; [Q1 TIP](TIP-057R-Q1.md) authorizes fixture research, not product integration/Q2 | 057R G03/G04 |
 | D-21 APPROVED / FOUNDATION PASS | G03-A common source/tests foundation; native admission requires verified installation epoch/authority; cancel restore included; helper/SDK disabled | [Amendment](TIP-057R-boundary-amendment.md) approved at 21:21:49 against PR #61 head `0ee42c9`; [Draft PR #62](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/62) source `bc916796` and [A01–A14 output verification](TIP-057R-G03A-verification.md): six workflows PASS, G03-A Windows 8/8; full producer/migration qualification remains OPEN | 057R G03 foundation only |
+| D-22 PROPOSED / DESIGN REVIEW | Owned isolated SDK-worker candidate; exact disposable Q2 compatibility evidence before broad G03-B integration; producer-specific lifetime/persistent/GUI/privileged scope | [G03-B decision contract](TIP-057R-G03B.md) and [source feasibility](TIP-057R-G03B-feasibility.md) prepared under 22:56 continuation. New architecture not yet approved; no unused framework, SDK/helper/transfer schema or physical effects selected for BUILD | 057R full G03/G04; original fleet order retained |
 
 ## Open gate register
 
@@ -82,7 +83,7 @@ No open item below blocks writing/reviewing this package. Only items for the TIP
 | O-09 | Conflict matrix, capacity reservation, lock ordering and measured resource/latency/fairness thresholds | 056 build |
 | O-10 | Remote source-guard transport, recovery fencing and verified caller principal model | 061B/063 build |
 | O-11 | Physical topology, test workload, soak/performance/recovery thresholds and release/deploy scope | 064 qualification |
-| O-12 | Shared uncertain-IPC ownership/recovery mechanism and preventive attach-only boundary; Q1 fixture cases verified / PARTIAL with Q03 and product paths OPEN | 057R product BUILD; Q1 approval closed, production/Q2 still open |
+| O-12 | G03-A common authority FOUNDATION PASS; full producer/session/descendant/persistent-transfer and physical migration contracts unresolved; strict no-start SDK boundary remains unqualified. [G03-B proposal](TIP-057R-G03B.md) prepares the next decision | Broad 057R product BUILD; Q1/G03-A bounded approvals closed, production/Q2 still open |
 
 TIP-057R G02-schema preparation is complete; G02 actual client/pilot remains a later acceptance gate. Local soft-budget selection does not imply hard deadline qualification. G03-ownership/G04 remain OPEN, not paperwork gates or reasons to manufacture successful account reads. The original Blueprint architecture and product policy are unchanged.
 
