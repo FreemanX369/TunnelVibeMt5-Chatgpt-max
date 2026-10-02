@@ -28,6 +28,8 @@ At 13:59:50 the owner approved the concrete [TIP-057R-Q1 isolated Windows proof]
 
 ## Delivery order
 
+Next concrete review after Q1: [boundary amendment](TIP-057R-boundary-amendment.md) → [G03-A source/tests foundation](TIP-057R-G03A.md) after explicit amendment approval. Builder's focused read-only feasibility confirms common acquisition alone is insufficient: cancel restore, startup reconciliation and get_job can reach IPC/restart, so the central effect boundary is included. G03-A does not activate SDK/helper/live_read or close full producer/migration G03. [Q2 readiness](TIP-057R-Q2-readiness.md) retains missing exact disposable environment/SDK/two-binding facts. The 19:40 and 21:00 owner continuations authorize completing/reviewing this concrete next package; they do not record approval of a proposal not yet presented.
+
 M0 = 055A. M1 = 057R + 058 + 059 + 062A. M2 = 061A + 057N. M3 = 060. M4 = 056. M5 = 061B + 063. Release = 064 for the capabilities selected for shipping.
 
 058 transport work may proceed once 055A is verified and its own spec is approved; end-to-end targeted-read acceptance waits for 057R. 061A design may proceed after its dependencies; it must be verified before opening managed native routing. Delivery remains incremental, and each TIP returns a separate Completion Report.

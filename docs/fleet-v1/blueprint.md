@@ -2,6 +2,8 @@
 
 Version: 1.0. Date: 2026-10-01. **Approved at original revision 063d6a3**, per the [owner approval record](approval-2026-10-02.md); implementation/capability gates remain active.
 
+After Q1's scoped Windows fixture PASS, [TIP-057R boundary amendment](TIP-057R-boundary-amendment.md) proposes common product ownership/admission and an explicit installation protocol. It is **pending owner review**, not an amendment to this approved version yet. Its G03-A source-only contract and Q2 environment gates remain distinct.
+
 ## 1. Product outcome and delivery scope
 
 ChatGPT can identify and inspect the correct registered VPS/MT5 through one domain tool surface. Later it can run a bounded native job on an immutable target and retrieve verifiable evidence. The system must preserve existing checkpoint/CAS, guarded iteration, Continuity and exact process ownership rather than replace them with generic developer abstractions.
