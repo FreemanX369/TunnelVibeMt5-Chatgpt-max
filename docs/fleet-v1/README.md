@@ -1,6 +1,6 @@
 # Fleet v1 — Vibecode Kit v6 Blueprint checkpoint
 
-Date: 2026-10-02, Asia/Saigon. Status: **APPROVED — TIP-055A CODE DEPLOYED; REAL ENROLLMENT/QUALIFICATION OPEN**. See the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [runtime checkpoint](TIP-055A-runtime-qualification.md) for exact revisions, receipts and remaining gates.
+Date: 2026-10-02, Asia/Saigon. Status: **M0 CODE / REAL LOCAL ENROLLMENT / BACKUP / RELOAD / INVENTORY QUALIFICATION PASS**. See the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md), [deployment checkpoint](TIP-055A-runtime-qualification.md) and [actual enrollment receipts](TIP-055A-enrollment-qualification.md). TIP-057R contract gates and later fleet capabilities remain OPEN.
 
 This package turns the fleet brainstorm and its source-based review into an approved contract. Blueprint PR #53 was documentation only. The first implementation adds a local identity foundation; remote/native fleet capability and deployment qualification remain future gates.
 
@@ -15,6 +15,7 @@ This package turns the fleet brainstorm and its source-based review into an appr
 7. [TIP-055A operator guide](TIP-055A-operator.md): explicit bootstrap/update/retry and retained-state rollback.
 8. [TIP-055A deployment runbook](TIP-055A-deployment.md): exact payload, drift/CAS/checkpoints and recovery boundaries.
 9. [TIP-055A runtime checkpoint](TIP-055A-runtime-qualification.md): deployed fixture/read acceptance and concrete real enrollment step.
+   [Actual enrollment qualification](TIP-055A-enrollment-qualification.md): five stable real identities, complete verified backup/reload and local inventory binding PASS.
 10. [TIP-055B](TIP-055B.md): bounded correction for retained Windows lease-release issue #56.
     [Completion Report](TIP-055B-completion.md), [rollout protocol](TIP-055B-deployment.md) and [runtime checkpoint](TIP-055B-runtime-qualification.md) retain local, actual Windows CI and deployed qualification PASS.
 11. [TIP-057R readiness](TIP-057R-readiness.md): next local read slice and open dispatch gates.
@@ -29,7 +30,7 @@ Baseline repository commit: `64a62906b4e62274732f0cbc375bfb3687af9e42`. Review o
 
 Use SCAN → RRI → VISION → BLUEPRINT → TASK GRAPH → BUILD → VERIFY → REFINE. Reuse the completed audit where authority has not changed; scan only relevant drift. Requirements here are synthesized from the supplied plan and discussion, not invented interview answers. Owner approval is recorded explicitly. Builder implements a TIP and returns a Completion Report; Contractor verifies outputs against REQ/AC evidence.
 
-The graph is active after the recorded approval. TIP-055A has verified local/Windows fixtures and deployed code/read acceptance; real identity enrollment/resource qualification remains open. TIP-055B release recovery now has exact-head Windows CI and guarded deployed qualification PASS. Later TIPs require concrete specifications and dependency gates before dispatch. CI fixtures, deployed fixtures, enrolled physical bindings and native acceptance retain separate meanings.
+The graph is active after the recorded approval. TIP-055A now has verified local/Windows fixtures, deployed code/read acceptance and actual local enrollment/backup/reload/inventory binding PASS. TIP-055B release recovery has exact-head Windows CI and guarded deployed qualification PASS. TIP-057R still needs its schema/lifecycle/deadline/no-start contract before BUILD; later TIPs retain their dependencies. CI fixtures, deployed fixtures, enrolled physical bindings and native acceptance retain separate meanings.
 
 Every implementation TIP records three answers: why it must exist, what existing capability can be reused, and the shortest sufficient change. Small tasks use a shortened workflow; changes to architecture or product policy return to Blueprint review.
 
@@ -37,6 +38,6 @@ Every implementation TIP records three answers: why it must exist, what existing
 
 The initial Blueprint approval covered direction, constraints, M0/M1 choices and TIP-055A development. The subsequent “Duyệt tiếp tục theo plan” approved review/merge and bounded supported M0 rollout/qualification, recorded in the approval ledger. Native tester actions, live-terminal handoff, unidentified VPS pairing, generic PowerShell MCP and future architecture remain outside that continuation.
 
-Later deployment and physical qualification follow the owner's authorized scope and exact reviewed revision. Actual pilot machines, public gateway endpoint/provider and Windows worker readiness are OPEN execution gates, not fictional inventory.
+The owner explicitly authorized the existing identity CLI through PowerShell MCP at 12:07:49; the bounded commands and necessary verified registry backup were executed and retained. Other generic shell/admin/native/account constraints remain. Later physical live/native pilots, gateway endpoint/provider and Windows worker readiness retain their separate execution gates.
 
 The owner approved the package by stating “Duyệt Blueprint”; the linked approval record binds that statement to the exact reviewed revision. A review/merge action alone must not be silently interpreted as permission to operate MT5. Further amendments need their own recorded decision; later capability gates remain in force.

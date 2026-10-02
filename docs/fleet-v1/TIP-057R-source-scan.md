@@ -2,6 +2,8 @@
 
 Date: 2026-10-02, Asia/Saigon. Status: **SCAN COMPLETE / CONTRACT INPUTS / BUILD NOT DISPATCHED**. Base main `c9657aeee23960b59218abc641a8757af55bed7c`, tree `e8a0823e924c31c4f7bd1f817216633534d65b12`. Builder scan was read-only; Contractor independently checked selected signatures, validation, initializer/cleanup and vendor documentation. No code/tests/deployment changed.
 
+Later runtime update: [actual M0 enrollment/backup/reload/inventory qualification PASS](TIP-055A-enrollment-qualification.md) closes G01 and supplies real IDs. The source findings and remaining proposed contract choices below are unchanged; R10 is the historical 11:27 sample.
+
 An earlier scan at 03:07 was interrupted by an explicit usage-limit error; it was not completion. The resumed scan at the 11:27 continuation supplied the missing findings. No automatic 30-minute run receipt or numeric usage-percent reading exists in this checkpoint.
 
 ## Research brief and source authority
@@ -27,7 +29,7 @@ Source log:
 | R07 | Exact post-IPC executable-directory/data-root checks happen before account_info; current process discovery provides paths rather than a frozen process-creation identity (`core/live_terminal.py`:70–82; `core/inventory.py`:95–131) | Verified source |
 | R08 | Vendor documents initialize timeout as connection timeout and states initialize can launch the terminal if needed (S02) | Probable documented statement; not total-call or attach-only proof |
 | R09 | Vendor documents shutdown as closing the established connection; it supplies no cancellation/deadline guarantee for other calls (S03) | Probable documented statement; absence of guarantee is a contract gap |
-| R10 | Actual inventory remains five UNENROLLED/UNQUALIFIED rows, null identities and routed-native false (S04) | Verified point-in-time runtime observation |
+| R10 | At 11:27, inventory was five UNENROLLED/UNQUALIFIED rows, null identities and routed-native false (S04); the later enrollment checkpoint supersedes only that identity state | Verified historical point-in-time runtime observation |
 
 Duplicate language mirrors/search results were excluded. Conflict queue: none between these source statements; the implementation-versus-required guarantees below are gaps, not conflicting facts.
 
@@ -59,11 +61,11 @@ The running-precheck→initialize window remains a race: the process may exit be
 
 | Gap | Needed before dispatch / actual acceptance |
 |---|---|
-| G01 | Real M0 bootstrap/show/fresh-process reload, verified complete registry backup and two distinct physical QUALIFIED bindings; operator handoff already exists |
+| G01 | CLOSED by actual bootstrap/show/fresh-process equality, full verified backup and five distinct inventory QUALIFIED bindings; later live pilot/session readiness remains separate |
 | G02 | Frozen additive target/receipt/error schemas, actual selected-client exposure and real pilot IDs |
 | G03 | Numeric budget selected from pilot; choose honest hard-vs-soft contract, unfinished IPC/cleanup ownership and controlled recovery |
 | G04 | Prove strict no-start/attach-only policy in the running-process race, or review a concrete compatible boundary; no policy relaxation inferred |
 
 Draft AC map: legacy fixed shape/error compatibility; strict target rejection/no fallback; fresh config and generation pre/post; wrong IPC binding rejected before account access; disconnected/null semantics; mixed two-target calls serialized across lifecycle; initialize false/raise/observe/shutdown faults; budget expiry retaining ownership until proven cleanup; actual two-binding Windows/client exposure. Map each AC to a named test and real receipt in the dispatched TIP.
 
-Source scan closes the information-gathering step. It does not close G01–G04, dispatch BUILD or certify a native account observation. [TIP-057R readiness](TIP-057R-readiness.md) remains the governing gate list; [TIP-056 readiness](TIP-056-readiness.md) remains later M4 planning.
+Source scan closes the information-gathering step; later enrollment receipts close G01. G02–G04 remain open. Neither checkpoint dispatches BUILD or certifies a native account observation. [TIP-057R readiness](TIP-057R-readiness.md) remains the governing gate list; [TIP-056 readiness](TIP-056-readiness.md) remains later M4 planning.
