@@ -1,0 +1,23 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "6b84209a0af2db23e0f64cf4aa866e1580333555",
+  "tree": "c4f3526293121fa2dd22783e738888ff604b9a2d",
+  "pr": 61,
+  "workflows": [
+    {"id": 37001271816, "name": "Verify TIP-027 Continuity Core", "status": "completed", "conclusion": "success"},
+    {"id": 37001271811, "name": "Verify TIP-028 Idempotent Bindings", "status": "completed", "conclusion": "success"},
+    {"id": 37001271835, "name": "Verify TIP-034 Bootstrap Completeness", "status": "completed", "conclusion": "success"},
+    {"id": 37001271815, "name": "Verify TIP-053 Deep Update", "status": "completed", "conclusion": "success"},
+    {"id": 37001271851, "name": "Verify TIP-057R-Q1 isolated Windows proof", "status": "completed", "conclusion": "failure"}
+  ],
+  "dedicated_job": 110819284042,
+  "result": {"summary": "BLOCKED", "error": "WINDOWS_STARTUP_CHECKPOINT_BLOCKED", "tests_run": 0, "full_suite_attempted": false, "skips": 0, "elapsed_ms": 10187},
+  "checks_passed": ["C compilation", "exact PR head", "raw source blobs", "plain unrestricted writer", "granted restricted console writer", "parent writes before/after every probe", "owned cleanup"],
+  "failed_required_control": "granted unrestricted console writer: native exit5; marker/diagnostic unavailable",
+  "observational_failure": "restricted no-console exit0xc0000142; no startup/writer output",
+  "open": ["full Windows lifecycle and prevention ACs", "unrestricted child token/writer-stage cause", "actual broker/SDK", "late-dead recovery", "production integration"],
+  "artifact": {"id": 11223937630, "size_bytes": 4338, "zip_sha256": "5d466151daadecfd54db52ec3608575b08377ce3fb6276ee19ed7ac179f9cbc5", "retained_files": ["fourth-6b84209/summary.json", "fourth-6b84209/proof.log", "fourth-6b84209/compiler.log"]},
+  "next_authorized_action": "exact granted-control child-token/writer diagnosis and smallest fixture-only refinement"
+}

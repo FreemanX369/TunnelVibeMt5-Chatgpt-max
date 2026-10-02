@@ -4,6 +4,8 @@ Status: approved verification contract, per the [owner record](approval-2026-10-
 
 Latest checkpoint at13:36: [TIP-057R contract](TIP-057R-contract.md) and [Builder feasibility](TIP-057R-feasibility.md) are prepared from main `146c72ad37a5daa5f1f64ee4aba7f0d2f84ef809`. All14 read ACs remain PLANNED. G03 shared uncertain-cleanup recovery and G04 strict no-start block product IPC BUILD; the [isolated Q1 proof proposal](TIP-057R-boundary-proposal.md) awaits a concrete architecture decision. Documentation CI validates the unchanged code baseline and does not certify a new helper, deadline, schema exposure or account read. [Fresh read-only receipts](evidence/2026-10-02-tip057r-contract.json) preserve current runtime and recovered B poll timeout.
 
+At 13:59 the owner approved [Q1 isolated Windows fixture proof](TIP-057R-Q1.md), based on merged PR #60/main `70e2112da9fe8eaa6262f2ba896b55bf3e078260`. The seventh source candidate passes all 16 actual Windows tests and all four baseline workflows; [Contractor verification](TIP-057R-Q1-verification.md) preserves original successful and failed evidence. Overall result is **PARTIAL / FIXTURE_PASS_Q03_OPEN**. Final documentation-head CI is checked in Draft PR #61 before returning this task. Actual SDK/broker, breakaway causal qualification, no-console startup, late-dead recovery, production G03/G04 and Q2 remain open; no M1 capability or hard response guarantee is inferred.
+
 ## Evidence and non-regression matrix
 
 | Behavior | Required checks | Gate |
