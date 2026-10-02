@@ -124,3 +124,7 @@ Contractor verifies every implemented REQ/AC against Builder Completion Report; 
 | G04 | OPEN: existing initialize cannot prove strict attach-only; new boundary/policy requires a concrete review |
 
 Next: review [TIP-057R-Q boundary spike proposal](TIP-057R-boundary-proposal.md) and [Builder feasibility report](TIP-057R-feasibility.md). Do not dispatch product IPC implementation, alter the original Blueprint, or mark M1 qualified while G03-ownership/G04 remain unresolved. Source fixture preparation after boundary approval remains separate from deployment/physical acceptance.
+
+## Later C1 source disposition — 2026-10-03
+
+The owner's source-first continuation after B1 authorizes bounded [C1](TIP-057R-C1-build.md), now PRODUCT SOURCE PASS in Draft #64. Optional inputs, strict fresh local inventory resolution and fleet.read/1 failure receipts are implemented and source-tested for the two selected tools. Legacy/null remains compatible; every resolved explicit target permanently denies LIVE_ATTACH_ONLY_UNPROVEN before process/SDK access. [Verification](TIP-057R-C1-verification.md) records the source/schema/validation/denial subset of AC01–03/07/09/10/13. This later scoped result supersedes historical no-implementation wording for that subset only. It does not turn inventory resolution into live_read authorization or execute observation, physical client/two-binding success, SDK cleanup, preventive no-start or post-observation revalidation. The full original acceptance map, Q2/G03-B/G04 and M1 remain OPEN.

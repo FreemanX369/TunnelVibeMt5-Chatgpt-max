@@ -1,6 +1,6 @@
 # TIP-057R-C1 — Explicit local read validation source
 
-Date: 2026-10-03, Asia/Saigon. Status: DISPATCHED / SOURCE BUILD; real SDK and private VM qualification remain deferred. Parent Draft #63, head `5583204f698dcbf664ad20ddae8106d96019c8d2`, tree `9d8dbd8e6799ce9372e8f039d357dff88e2944ca`.
+Date: 2026-10-03, Asia/Saigon. Status: C1 PRODUCT SOURCE PASS; real SDK and private VM qualification remain deferred. Parent Draft #63, head `5583204f698dcbf664ad20ddae8106d96019c8d2`, tree `9d8dbd8e6799ce9372e8f039d357dff88e2944ca`. Source and acceptance receipts: [Contractor verification](TIP-057R-C1-verification.md).
 
 The owner's continued approval authorizes the next bounded product source step. The earlier instruction to build before private VM testing remains in force. This TIP implements the additive request and failure contract from TIP-057R without enabling targeted IPC. It does not close G03-B producer integration, G04 strict no-start, Q2, connector pilot or M1.
 
