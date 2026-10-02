@@ -1,0 +1,742 @@
+﻿2026-10-02T15:13:42.7182711Z Current runner version: '2.337.0'
+2026-10-02T15:13:42.7199995Z ##[group]Runner Image Provisioner
+2026-10-02T15:13:42.7200808Z Hosted Compute Agent
+2026-10-02T15:13:42.7201178Z Version: 20260901.588
+2026-10-02T15:13:42.7201537Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-02T15:13:42.7201980Z Build Date: 2026-09-01T19:56:44Z
+2026-10-02T15:13:42.7202387Z Worker ID: {53949b69-9b8d-492d-a9e2-0a945548e495}
+2026-10-02T15:13:42.7202782Z Azure Region: westus3
+2026-10-02T15:13:42.7203117Z ##[endgroup]
+2026-10-02T15:13:42.7203952Z ##[group]Operating System
+2026-10-02T15:13:42.7204323Z Microsoft Windows Server 2025
+2026-10-02T15:13:42.7204666Z 10.0.26100
+2026-10-02T15:13:42.7204957Z Datacenter
+2026-10-02T15:13:42.7205260Z ##[endgroup]
+2026-10-02T15:13:42.7205573Z ##[group]Runner Image
+2026-10-02T15:13:42.7205948Z Image: windows-2025-vs2026
+2026-10-02T15:13:42.7206314Z Version: 20260925.250.1
+2026-10-02T15:13:42.7207271Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+2026-10-02T15:13:42.7208208Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+2026-10-02T15:13:42.7208775Z ##[endgroup]
+2026-10-02T15:13:42.7209391Z ##[group]GITHUB_TOKEN Permissions
+2026-10-02T15:13:42.7210536Z Contents: read
+2026-10-02T15:13:42.7210864Z Metadata: read
+2026-10-02T15:13:42.7211174Z ##[endgroup]
+2026-10-02T15:13:42.7212443Z Secret source: Actions
+2026-10-02T15:13:42.7212956Z Cache mode: write
+2026-10-02T15:13:42.7213342Z Prepare workflow directory
+2026-10-02T15:13:42.7560788Z Prepare all required actions
+2026-10-02T15:13:42.7606476Z Getting action download info
+2026-10-02T15:13:43.0732927Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-02T15:13:43.1672780Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-02T15:13:43.2985619Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-02T15:13:43.5314497Z Complete job name: windows-proof
+2026-10-02T15:13:43.6588195Z ##[group]Run actions/checkout@v4
+2026-10-02T15:13:43.6588998Z with:
+2026-10-02T15:13:43.6589253Z   ref: bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:43.6589615Z   repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.6591821Z   token: ***
+2026-10-02T15:13:43.6592037Z   ssh-strict: true
+2026-10-02T15:13:43.6592269Z   ssh-user: git
+2026-10-02T15:13:43.6592501Z   persist-credentials: true
+2026-10-02T15:13:43.6592753Z   clean: true
+2026-10-02T15:13:43.6592982Z   sparse-checkout-cone-mode: true
+2026-10-02T15:13:43.6593253Z   fetch-depth: 1
+2026-10-02T15:13:43.6593472Z   fetch-tags: false
+2026-10-02T15:13:43.6593730Z   show-progress: true
+2026-10-02T15:13:43.6593958Z   lfs: false
+2026-10-02T15:13:43.6594167Z   submodules: false
+2026-10-02T15:13:43.6594399Z   set-safe-directory: true
+2026-10-02T15:13:43.6594685Z   allow-unsafe-pr-checkout: false
+2026-10-02T15:13:43.6595055Z env:
+2026-10-02T15:13:43.6595354Z   TIP057RQ_EXPECTED_SHA: bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:43.6595717Z   GIT_CONFIG_COUNT: 1
+2026-10-02T15:13:43.6595957Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-10-02T15:13:43.6596222Z   GIT_CONFIG_VALUE_0: false
+2026-10-02T15:13:43.6596467Z ##[endgroup]
+2026-10-02T15:13:43.7583394Z Syncing repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:43.7584429Z ##[group]Getting Git version info
+2026-10-02T15:13:43.7584855Z Working directory is 'D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max'
+2026-10-02T15:13:43.8239522Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-02T15:13:44.2830548Z git version 2.55.0.windows.5
+2026-10-02T15:13:44.2860758Z ##[endgroup]
+2026-10-02T15:13:44.2873615Z Temporarily overriding HOME='D:\a\_temp\1c443c9d-ac0b-4a80-8e1d-34548be7d894' before making global git config changes
+2026-10-02T15:13:44.2874340Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T15:13:44.2880601Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:44.3524805Z Deleting the contents of 'D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max'
+2026-10-02T15:13:44.3528653Z ##[group]Initializing the repository
+2026-10-02T15:13:44.3534573Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:44.4299223Z Initialized empty Git repository in D:/a/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/.git/
+2026-10-02T15:13:44.4328949Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:44.4910989Z ##[endgroup]
+2026-10-02T15:13:44.4912000Z ##[group]Disabling automatic garbage collection
+2026-10-02T15:13:44.4916839Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-02T15:13:44.5105527Z ##[endgroup]
+2026-10-02T15:13:44.5106445Z ##[group]Setting up auth
+2026-10-02T15:13:44.5113387Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T15:13:44.5303849Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-02T15:13:45.9429331Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T15:13:45.9627213Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-02T15:13:46.3144528Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T15:13:46.3341828Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-02T15:13:46.7177253Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-02T15:13:46.7389051Z ##[endgroup]
+2026-10-02T15:13:46.7389547Z ##[group]Fetching the repository
+2026-10-02T15:13:46.7397435Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:48.1537682Z From https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:13:48.1538313Z  * branch            bc9167969d67d288c37a4ce9aa5854a0bf2db14d -> FETCH_HEAD
+2026-10-02T15:13:48.1566321Z ##[endgroup]
+2026-10-02T15:13:48.1566662Z ##[group]Determining the checkout info
+2026-10-02T15:13:48.1568403Z ##[endgroup]
+2026-10-02T15:13:48.1575580Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-02T15:13:48.1908039Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-02T15:13:48.2106145Z ##[group]Checking out the ref
+2026-10-02T15:13:48.2114406Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:48.2892510Z Note: switching to 'bc9167969d67d288c37a4ce9aa5854a0bf2db14d'.
+2026-10-02T15:13:48.2892743Z 
+2026-10-02T15:13:48.2892889Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-02T15:13:48.2893156Z changes and commit them, and you can discard any commits you make in this
+2026-10-02T15:13:48.2893413Z state without impacting any branches by switching back to a branch.
+2026-10-02T15:13:48.2893566Z 
+2026-10-02T15:13:48.2893665Z If you want to create a new branch to retain commits you create, you may
+2026-10-02T15:13:48.2894588Z do so (now or later) by using -c with the switch command. Example:
+2026-10-02T15:13:48.2894734Z 
+2026-10-02T15:13:48.2894837Z   git switch -c <new-branch-name>
+2026-10-02T15:13:48.2894953Z 
+2026-10-02T15:13:48.2895023Z Or undo this operation with:
+2026-10-02T15:13:48.2895109Z 
+2026-10-02T15:13:48.2895157Z   git switch -
+2026-10-02T15:13:48.2895254Z 
+2026-10-02T15:13:48.2895373Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-02T15:13:48.2895547Z 
+2026-10-02T15:13:48.2898117Z HEAD is now at bc91679 TIP-057R-G03A: add common native ownership and recovery exclusion foundation
+2026-10-02T15:13:48.3005063Z ##[endgroup]
+2026-10-02T15:13:48.3306401Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-02T15:13:48.3472216Z bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:48.3828290Z ##[group]Run actions/setup-python@v5
+2026-10-02T15:13:48.3828489Z with:
+2026-10-02T15:13:48.3828608Z   python-version: 3.12
+2026-10-02T15:13:48.3828744Z   check-latest: false
+2026-10-02T15:13:48.3830011Z   token: ***
+2026-10-02T15:13:48.3830143Z   update-environment: true
+2026-10-02T15:13:48.3830287Z   allow-prereleases: false
+2026-10-02T15:13:48.3830412Z   freethreaded: false
+2026-10-02T15:13:48.3830521Z env:
+2026-10-02T15:13:48.3830669Z   TIP057RQ_EXPECTED_SHA: bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:48.3830855Z ##[endgroup]
+2026-10-02T15:13:48.4864656Z ##[group]Installed versions
+2026-10-02T15:13:48.5045443Z (node:5208) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-02T15:13:48.5045877Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-02T15:13:48.5046621Z Successfully set up CPython (3.12.10)
+2026-10-02T15:13:48.5047188Z ##[endgroup]
+2026-10-02T15:13:48.5285610Z ##[group]Run python tests/proofs/tip057rq/run_proof.py --require-windows --output tip057rq-evidence
+2026-10-02T15:13:48.5286200Z [36;1mpython tests/proofs/tip057rq/run_proof.py --require-windows --output tip057rq-evidence[0m
+2026-10-02T15:13:48.5311356Z shell: C:\Windows\system32\cmd.EXE /D /E:ON /V:OFF /S /C "CALL "{0}""
+2026-10-02T15:13:48.5311575Z env:
+2026-10-02T15:13:48.5311742Z   TIP057RQ_EXPECTED_SHA: bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:13:48.5311987Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:13:48.5312260Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-02T15:13:48.5312522Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:13:48.5313040Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:13:48.5313299Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:13:48.5313482Z ##[endgroup]
+2026-10-02T15:14:05.8719429Z {
+2026-10-02T15:14:05.8719729Z   "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+2026-10-02T15:14:05.8719937Z   "broker_sdk": "OPEN",
+2026-10-02T15:14:05.8720188Z   "candidate_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+2026-10-02T15:14:05.8720428Z   "elapsed_ms": 15250.0,
+2026-10-02T15:14:05.8720545Z   "errors": 0,
+2026-10-02T15:14:05.8720658Z   "exact_head_verified": true,
+2026-10-02T15:14:05.8720828Z   "expected_head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+2026-10-02T15:14:05.8721009Z   "failures": 0,
+2026-10-02T15:14:05.8721403Z   "fixture_exe_sha256": "df6dd2ac373dd98d38a61682166509dc1d69ed3bf01a4cb6ee09cd2aab72dacb",
+2026-10-02T15:14:05.8721775Z   "full_suite_attempted": true,
+2026-10-02T15:14:05.8721964Z   "git_blob_sources": {
+2026-10-02T15:14:05.8722222Z     "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+2026-10-02T15:14:05.8722688Z     "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+2026-10-02T15:14:05.8723185Z     "run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+2026-10-02T15:14:05.8723716Z     "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+2026-10-02T15:14:05.8724334Z   },
+2026-10-02T15:14:05.8724539Z   "github_event_sha": "12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd",
+2026-10-02T15:14:05.8724829Z   "mode": "REAL_WINDOWS_REQUIRED",
+2026-10-02T15:14:05.8725056Z   "os": "Windows-2025Server-10.0.26100-SP0",
+2026-10-02T15:14:05.8725287Z   "proof_log": {
+2026-10-02T15:14:05.8725453Z     "original_bytes": 2272,
+2026-10-02T15:14:05.8725780Z     "original_sha256": "784a696a9cd7cd2d0527504f18185d2aeabaa2c6b446e8489e57fa0e9a5385a2",
+2026-10-02T15:14:05.8726141Z     "retained_bytes": 2272,
+2026-10-02T15:14:05.8726329Z     "truncated": false
+2026-10-02T15:14:05.8726487Z   },
+2026-10-02T15:14:05.8726758Z   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+2026-10-02T15:14:05.8727121Z   "schema": "tip057rq.proof/1",
+2026-10-02T15:14:05.8727357Z   "scope": "isolated harmless fixture paths only",
+2026-10-02T15:14:05.8727603Z   "skips": 0,
+2026-10-02T15:14:05.8727715Z   "source_blob_verified": true,
+2026-10-02T15:14:05.8727836Z   "sources": {
+2026-10-02T15:14:05.8728024Z     "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+2026-10-02T15:14:05.8728350Z     "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+2026-10-02T15:14:05.8728703Z     "run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+2026-10-02T15:14:05.8729011Z     "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+2026-10-02T15:14:05.8729234Z   },
+2026-10-02T15:14:05.8729331Z   "startup_checkpoint": {
+2026-10-02T15:14:05.8729500Z     "qualification": "STARTUP_AND_MARKER_ONLY_NO_CHILD_DENIAL_CLAIM",
+2026-10-02T15:14:05.8731344Z     "required_controls_passed": true,
+2026-10-02T15:14:05.8731526Z     "variants": [
+2026-10-02T15:14:05.8731629Z       {
+2026-10-02T15:14:05.8731732Z         "cleanup_errors": [],
+2026-10-02T15:14:05.8731927Z         "control_passed": true,
+2026-10-02T15:14:05.8732061Z         "executable_security": {
+2026-10-02T15:14:05.8732213Z           "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+2026-10-02T15:14:05.8732512Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8732674Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8732834Z             "defaulted": false,
+2026-10-02T15:14:05.8732992Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8733161Z             "label_aces": [],
+2026-10-02T15:14:05.8733285Z             "null_acl": true,
+2026-10-02T15:14:05.8733409Z             "present": false
+2026-10-02T15:14:05.8733525Z           }
+2026-10-02T15:14:05.8733620Z         },
+2026-10-02T15:14:05.8733734Z         "executable_security_before_boundary": {
+2026-10-02T15:14:05.8733906Z           "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+2026-10-02T15:14:05.8734076Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8734235Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8734374Z             "defaulted": false,
+2026-10-02T15:14:05.8734526Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8734688Z             "label_aces": [],
+2026-10-02T15:14:05.8734807Z             "null_acl": true,
+2026-10-02T15:14:05.8734926Z             "present": false
+2026-10-02T15:14:05.8735040Z           }
+2026-10-02T15:14:05.8735131Z         },
+2026-10-02T15:14:05.8735226Z         "exit_code": 0,
+2026-10-02T15:14:05.8735349Z         "exit_code_hex": "0x00000000",
+2026-10-02T15:14:05.8735505Z         "inherited_handles": "file-backed stdio only",
+2026-10-02T15:14:05.8735656Z         "marker": {
+2026-10-02T15:14:05.8735758Z           "pid": 8352,
+2026-10-02T15:14:05.8735876Z           "positive_marker": true
+2026-10-02T15:14:05.8735998Z         },
+2026-10-02T15:14:05.8736094Z         "no_console": false,
+2026-10-02T15:14:05.8736212Z         "parent_token_after": {
+2026-10-02T15:14:05.8736424Z           "appcontainer": 0,
+2026-10-02T15:14:05.8736544Z           "elevated": 1,
+2026-10-02T15:14:05.8736689Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8736860Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8737020Z         },
+2026-10-02T15:14:05.8737118Z         "parent_token_before": {
+2026-10-02T15:14:05.8737246Z           "appcontainer": 0,
+2026-10-02T15:14:05.8737366Z           "elevated": 1,
+2026-10-02T15:14:05.8737484Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8737648Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8737807Z         },
+2026-10-02T15:14:05.8737906Z         "parent_write_after": {
+2026-10-02T15:14:05.8738032Z           "create_error": 0,
+2026-10-02T15:14:05.8738154Z           "flush_error": 0,
+2026-10-02T15:14:05.8738280Z           "write_attempted": true,
+2026-10-02T15:14:05.8738409Z           "write_error": 0,
+2026-10-02T15:14:05.8738529Z           "written_bytes": 3
+2026-10-02T15:14:05.8738639Z         },
+2026-10-02T15:14:05.8738735Z         "parent_write_before": {
+2026-10-02T15:14:05.8738858Z           "create_error": 0,
+2026-10-02T15:14:05.8738976Z           "flush_error": 0,
+2026-10-02T15:14:05.8739097Z           "write_attempted": true,
+2026-10-02T15:14:05.8739233Z           "write_error": 0,
+2026-10-02T15:14:05.8739354Z           "written_bytes": 3
+2026-10-02T15:14:05.8739462Z         },
+2026-10-02T15:14:05.8739565Z         "required_positive_control": true,
+2026-10-02T15:14:05.8739707Z         "restricted": false,
+2026-10-02T15:14:05.8739827Z         "root_security": {
+2026-10-02T15:14:05.8739986Z           "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+2026-10-02T15:14:05.8740526Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8740692Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8740830Z             "defaulted": false,
+2026-10-02T15:14:05.8740984Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8741148Z             "label_aces": [],
+2026-10-02T15:14:05.8741267Z             "null_acl": true,
+2026-10-02T15:14:05.8741386Z             "present": false
+2026-10-02T15:14:05.8741499Z           }
+2026-10-02T15:14:05.8741584Z         },
+2026-10-02T15:14:05.8741678Z         "stderr_tail": "",
+2026-10-02T15:14:05.8741812Z         "variant": "plain_unrestricted_console",
+2026-10-02T15:14:05.8741954Z         "writer": {
+2026-10-02T15:14:05.8742070Z           "appcontainer": 0,
+2026-10-02T15:14:05.8742194Z           "child_restricted": 0,
+2026-10-02T15:14:05.8742469Z           "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5\\positive-marker.json",
+2026-10-02T15:14:05.8742747Z           "crt_errno": 0,
+2026-10-02T15:14:05.8742939Z           "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+2026-10-02T15:14:05.8743153Z           "error_source": "NONE",
+2026-10-02T15:14:05.8743286Z           "exit_error": 0,
+2026-10-02T15:14:05.8743404Z           "integrity_rid": 12288,
+2026-10-02T15:14:05.8743532Z           "path_limit_chars": 256,
+2026-10-02T15:14:05.8743661Z           "pid": 8352,
+2026-10-02T15:14:05.8743772Z           "policy_query_ok": 1,
+2026-10-02T15:14:05.8743897Z           "requested_bytes": 36,
+2026-10-02T15:14:05.8744095Z           "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+2026-10-02T15:14:05.8744309Z           "root_attributes": 16,
+2026-10-02T15:14:05.8744432Z           "root_error": 0,
+2026-10-02T15:14:05.8744547Z           "token_error": 0,
+2026-10-02T15:14:05.8744666Z           "win32_error": 0,
+2026-10-02T15:14:05.8744789Z           "write_stage": "COMPLETE",
+2026-10-02T15:14:05.8744923Z           "write_success": true,
+2026-10-02T15:14:05.8745054Z           "written_bytes": 36
+2026-10-02T15:14:05.8745167Z         },
+2026-10-02T15:14:05.8745269Z         "writer_exit_diagnostic": {
+2026-10-02T15:14:05.8745767Z           "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+2026-10-02T15:14:05.8745946Z           "raw_exit": 0,
+2026-10-02T15:14:05.8746067Z           "raw_exit_hex": "0x00000000"
+2026-10-02T15:14:05.8746194Z         }
+2026-10-02T15:14:05.8746285Z       },
+2026-10-02T15:14:05.8746375Z       {
+2026-10-02T15:14:05.8746474Z         "child_token_before_resume": {
+2026-10-02T15:14:05.8746606Z           "appcontainer": 0,
+2026-10-02T15:14:05.8746733Z           "elevated": 1,
+2026-10-02T15:14:05.8746853Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8747022Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8747180Z         },
+2026-10-02T15:14:05.8747278Z         "cleanup_errors": [],
+2026-10-02T15:14:05.8747437Z         "control_passed": true,
+2026-10-02T15:14:05.8747568Z         "exact_handle_exit": true,
+2026-10-02T15:14:05.8747700Z         "executable_security": {
+2026-10-02T15:14:05.8748068Z           "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AINO_ACCESS_CONTROL",
+2026-10-02T15:14:05.8748455Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8748611Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8748750Z             "defaulted": false,
+2026-10-02T15:14:05.8748892Z             "disposition": "NULL_SELECTED_LABEL_ACL",
+2026-10-02T15:14:05.8749043Z             "label_aces": [],
+2026-10-02T15:14:05.8749158Z             "null_acl": true,
+2026-10-02T15:14:05.8749279Z             "present": true
+2026-10-02T15:14:05.8749389Z           }
+2026-10-02T15:14:05.8749477Z         },
+2026-10-02T15:14:05.8749648Z         "executable_security_before_boundary": {
+2026-10-02T15:14:05.8749937Z           "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+2026-10-02T15:14:05.8750110Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8750267Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8750408Z             "defaulted": false,
+2026-10-02T15:14:05.8750562Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8750725Z             "label_aces": [],
+2026-10-02T15:14:05.8750843Z             "null_acl": true,
+2026-10-02T15:14:05.8750962Z             "present": false
+2026-10-02T15:14:05.8751074Z           }
+2026-10-02T15:14:05.8751164Z         },
+2026-10-02T15:14:05.8751258Z         "exit_code": 0,
+2026-10-02T15:14:05.8751378Z         "exit_code_hex": "0x00000000",
+2026-10-02T15:14:05.8751514Z         "inherited_handles": false,
+2026-10-02T15:14:05.8751650Z         "label_applicability": {
+2026-10-02T15:14:05.8751850Z           "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+2026-10-02T15:14:05.8752100Z           "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+2026-10-02T15:14:05.8752303Z           "executable_label_matches_before_boundary": true,
+2026-10-02T15:14:05.8752572Z           "passed": true,
+2026-10-02T15:14:05.8752705Z           "root_directory_only_low_label": true
+2026-10-02T15:14:05.8752850Z         },
+2026-10-02T15:14:05.8752945Z         "marker": {
+2026-10-02T15:14:05.8753046Z           "pid": 5472,
+2026-10-02T15:14:05.8753162Z           "positive_marker": true
+2026-10-02T15:14:05.8753281Z         },
+2026-10-02T15:14:05.8753377Z         "no_console": false,
+2026-10-02T15:14:05.8753499Z         "parent_token_after": {
+2026-10-02T15:14:05.8753625Z           "appcontainer": 0,
+2026-10-02T15:14:05.8753743Z           "elevated": 1,
+2026-10-02T15:14:05.8753862Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8754029Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8754190Z         },
+2026-10-02T15:14:05.8754292Z         "parent_token_before": {
+2026-10-02T15:14:05.8754420Z           "appcontainer": 0,
+2026-10-02T15:14:05.8754537Z           "elevated": 1,
+2026-10-02T15:14:05.8754718Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8754883Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8755039Z         },
+2026-10-02T15:14:05.8755136Z         "parent_write_after": {
+2026-10-02T15:14:05.8755258Z           "create_error": 0,
+2026-10-02T15:14:05.8755375Z           "flush_error": 0,
+2026-10-02T15:14:05.8755501Z           "write_attempted": true,
+2026-10-02T15:14:05.8755634Z           "write_error": 0,
+2026-10-02T15:14:05.8755753Z           "written_bytes": 3
+2026-10-02T15:14:05.8755861Z         },
+2026-10-02T15:14:05.8755957Z         "parent_write_before": {
+2026-10-02T15:14:05.8756084Z           "create_error": 0,
+2026-10-02T15:14:05.8756201Z           "flush_error": 0,
+2026-10-02T15:14:05.8756323Z           "write_attempted": true,
+2026-10-02T15:14:05.8756451Z           "write_error": 0,
+2026-10-02T15:14:05.8756569Z           "written_bytes": 3
+2026-10-02T15:14:05.8756678Z         },
+2026-10-02T15:14:05.8756783Z         "required_positive_control": true,
+2026-10-02T15:14:05.8756926Z         "restricted": false,
+2026-10-02T15:14:05.8757043Z         "root_security": {
+2026-10-02T15:14:05.8757353Z           "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AI",
+2026-10-02T15:14:05.8757683Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8757838Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8757975Z             "ace_count": 1,
+2026-10-02T15:14:05.8758089Z             "acl_bytes": 28,
+2026-10-02T15:14:05.8758208Z             "defaulted": false,
+2026-10-02T15:14:05.8758368Z             "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+2026-10-02T15:14:05.8758584Z             "label_aces": [
+2026-10-02T15:14:05.8758696Z               {
+2026-10-02T15:14:05.8758800Z                 "flags": 0,
+2026-10-02T15:14:05.8758913Z                 "index": 0,
+2026-10-02T15:14:05.8759028Z                 "mask": 1,
+2026-10-02T15:14:05.8759149Z                 "sid": "S-1-16-4096"
+2026-10-02T15:14:05.8759276Z               }
+2026-10-02T15:14:05.8759372Z             ],
+2026-10-02T15:14:05.8759475Z             "null_acl": false,
+2026-10-02T15:14:05.8759600Z             "parse_limit_aces": 64,
+2026-10-02T15:14:05.8759734Z             "present": true,
+2026-10-02T15:14:05.8759943Z             "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+2026-10-02T15:14:05.8760171Z             "truncated": false
+2026-10-02T15:14:05.8760285Z           }
+2026-10-02T15:14:05.8760373Z         },
+2026-10-02T15:14:05.8760493Z         "suspended_token_matches_fixture_role": true,
+2026-10-02T15:14:05.8760667Z         "unrestricted_token_matches_parent": true,
+2026-10-02T15:14:05.8760832Z         "variant": "granted_unrestricted_console",
+2026-10-02T15:14:05.8760976Z         "worker": {
+2026-10-02T15:14:05.8761087Z           "creation_100ns": 134354276427279270,
+2026-10-02T15:14:05.8761339Z           "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-pevm_qnu\\fixture.exe",
+2026-10-02T15:14:05.8761578Z           "pid": 5472
+2026-10-02T15:14:05.8761682Z         },
+2026-10-02T15:14:05.8761775Z         "writer": {
+2026-10-02T15:14:05.8761882Z           "appcontainer": 0,
+2026-10-02T15:14:05.8762012Z           "child_restricted": 0,
+2026-10-02T15:14:05.8762284Z           "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu\\positive-marker.json",
+2026-10-02T15:14:05.8762569Z           "crt_errno": 0,
+2026-10-02T15:14:05.8762760Z           "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+2026-10-02T15:14:05.8762981Z           "error_source": "NONE",
+2026-10-02T15:14:05.8763109Z           "exit_error": 0,
+2026-10-02T15:14:05.8763229Z           "integrity_rid": 12288,
+2026-10-02T15:14:05.8763361Z           "path_limit_chars": 256,
+2026-10-02T15:14:05.8763551Z           "pid": 5472,
+2026-10-02T15:14:05.8763669Z           "policy_query_ok": 1,
+2026-10-02T15:14:05.8763794Z           "requested_bytes": 36,
+2026-10-02T15:14:05.8763999Z           "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+2026-10-02T15:14:05.8764222Z           "root_attributes": 16,
+2026-10-02T15:14:05.8764347Z           "root_error": 0,
+2026-10-02T15:14:05.8764464Z           "token_error": 0,
+2026-10-02T15:14:05.8764581Z           "win32_error": 0,
+2026-10-02T15:14:05.8764703Z           "write_stage": "COMPLETE",
+2026-10-02T15:14:05.8764839Z           "write_success": true,
+2026-10-02T15:14:05.8764964Z           "written_bytes": 36
+2026-10-02T15:14:05.8765082Z         },
+2026-10-02T15:14:05.8765192Z         "writer_exit_diagnostic": {
+2026-10-02T15:14:05.8765367Z           "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+2026-10-02T15:14:05.8765544Z           "raw_exit": 0,
+2026-10-02T15:14:05.8765670Z           "raw_exit_hex": "0x00000000"
+2026-10-02T15:14:05.8765795Z         }
+2026-10-02T15:14:05.8765885Z       },
+2026-10-02T15:14:05.8765973Z       {
+2026-10-02T15:14:05.8766076Z         "child_token_before_resume": {
+2026-10-02T15:14:05.8766207Z           "appcontainer": 1,
+2026-10-02T15:14:05.8766330Z           "elevated": 1,
+2026-10-02T15:14:05.8766456Z           "integrity_sid": "S-1-16-4096",
+2026-10-02T15:14:05.8766627Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8766785Z         },
+2026-10-02T15:14:05.8766882Z         "cleanup_errors": [],
+2026-10-02T15:14:05.8767007Z         "control_passed": true,
+2026-10-02T15:14:05.8767135Z         "exact_handle_exit": true,
+2026-10-02T15:14:05.8767272Z         "executable_security": {
+2026-10-02T15:14:05.8767889Z           "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AINO_ACCESS_CONTROL",
+2026-10-02T15:14:05.8768277Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8768441Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8768582Z             "defaulted": false,
+2026-10-02T15:14:05.8768723Z             "disposition": "NULL_SELECTED_LABEL_ACL",
+2026-10-02T15:14:05.8768878Z             "label_aces": [],
+2026-10-02T15:14:05.8768999Z             "null_acl": true,
+2026-10-02T15:14:05.8769118Z             "present": true
+2026-10-02T15:14:05.8769230Z           }
+2026-10-02T15:14:05.8769320Z         },
+2026-10-02T15:14:05.8769431Z         "executable_security_before_boundary": {
+2026-10-02T15:14:05.8769599Z           "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+2026-10-02T15:14:05.8769778Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8770050Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8770204Z             "defaulted": false,
+2026-10-02T15:14:05.8770360Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8770526Z             "label_aces": [],
+2026-10-02T15:14:05.8770646Z             "null_acl": true,
+2026-10-02T15:14:05.8770767Z             "present": false
+2026-10-02T15:14:05.8770878Z           }
+2026-10-02T15:14:05.8770971Z         },
+2026-10-02T15:14:05.8771063Z         "exit_code": 0,
+2026-10-02T15:14:05.8771182Z         "exit_code_hex": "0x00000000",
+2026-10-02T15:14:05.8771322Z         "inherited_handles": false,
+2026-10-02T15:14:05.8771458Z         "label_applicability": {
+2026-10-02T15:14:05.8771654Z           "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+2026-10-02T15:14:05.8771903Z           "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+2026-10-02T15:14:05.8772106Z           "executable_label_matches_before_boundary": true,
+2026-10-02T15:14:05.8772270Z           "passed": true,
+2026-10-02T15:14:05.8772401Z           "root_directory_only_low_label": true
+2026-10-02T15:14:05.8772539Z         },
+2026-10-02T15:14:05.8772694Z         "marker": {
+2026-10-02T15:14:05.8772804Z           "pid": 8180,
+2026-10-02T15:14:05.8772921Z           "positive_marker": true
+2026-10-02T15:14:05.8773041Z         },
+2026-10-02T15:14:05.8773140Z         "no_console": false,
+2026-10-02T15:14:05.8773262Z         "parent_token_after": {
+2026-10-02T15:14:05.8773389Z           "appcontainer": 0,
+2026-10-02T15:14:05.8773509Z           "elevated": 1,
+2026-10-02T15:14:05.8773631Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8773800Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8773961Z         },
+2026-10-02T15:14:05.8774060Z         "parent_token_before": {
+2026-10-02T15:14:05.8774192Z           "appcontainer": 0,
+2026-10-02T15:14:05.8774315Z           "elevated": 1,
+2026-10-02T15:14:05.8774437Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8774601Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8774762Z         },
+2026-10-02T15:14:05.8774860Z         "parent_write_after": {
+2026-10-02T15:14:05.8774986Z           "create_error": 0,
+2026-10-02T15:14:05.8775110Z           "flush_error": 0,
+2026-10-02T15:14:05.8775236Z           "write_attempted": true,
+2026-10-02T15:14:05.8775363Z           "write_error": 0,
+2026-10-02T15:14:05.8775483Z           "written_bytes": 3
+2026-10-02T15:14:05.8775595Z         },
+2026-10-02T15:14:05.8775694Z         "parent_write_before": {
+2026-10-02T15:14:05.8775819Z           "create_error": 0,
+2026-10-02T15:14:05.8775938Z           "flush_error": 0,
+2026-10-02T15:14:05.8776060Z           "write_attempted": true,
+2026-10-02T15:14:05.8776187Z           "write_error": 0,
+2026-10-02T15:14:05.8776301Z           "written_bytes": 3
+2026-10-02T15:14:05.8776412Z         },
+2026-10-02T15:14:05.8776576Z         "required_positive_control": true,
+2026-10-02T15:14:05.8776714Z         "restricted": true,
+2026-10-02T15:14:05.8776833Z         "root_security": {
+2026-10-02T15:14:05.8777135Z           "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AI",
+2026-10-02T15:14:05.8777574Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8777732Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8777871Z             "ace_count": 1,
+2026-10-02T15:14:05.8777988Z             "acl_bytes": 28,
+2026-10-02T15:14:05.8778106Z             "defaulted": false,
+2026-10-02T15:14:05.8778260Z             "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+2026-10-02T15:14:05.8778420Z             "label_aces": [
+2026-10-02T15:14:05.8778536Z               {
+2026-10-02T15:14:05.8778637Z                 "flags": 0,
+2026-10-02T15:14:05.8778751Z                 "index": 0,
+2026-10-02T15:14:05.8778863Z                 "mask": 1,
+2026-10-02T15:14:05.8778979Z                 "sid": "S-1-16-4096"
+2026-10-02T15:14:05.8779104Z               }
+2026-10-02T15:14:05.8779202Z             ],
+2026-10-02T15:14:05.8779305Z             "null_acl": false,
+2026-10-02T15:14:05.8799990Z             "parse_limit_aces": 64,
+2026-10-02T15:14:05.8800204Z             "present": true,
+2026-10-02T15:14:05.8800546Z             "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+2026-10-02T15:14:05.8800855Z             "truncated": false
+2026-10-02T15:14:05.8800986Z           }
+2026-10-02T15:14:05.8801083Z         },
+2026-10-02T15:14:05.8801205Z         "suspended_token_matches_fixture_role": true,
+2026-10-02T15:14:05.8801379Z         "variant": "granted_restricted_console",
+2026-10-02T15:14:05.8801528Z         "worker": {
+2026-10-02T15:14:05.8801648Z           "creation_100ns": 134354276427758022,
+2026-10-02T15:14:05.8801912Z           "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ma9atm6y\\fixture.exe",
+2026-10-02T15:14:05.8802159Z           "pid": 8180
+2026-10-02T15:14:05.8802267Z         },
+2026-10-02T15:14:05.8802863Z         "writer": {
+2026-10-02T15:14:05.8802976Z           "appcontainer": 1,
+2026-10-02T15:14:05.8803114Z           "child_restricted": 1,
+2026-10-02T15:14:05.8803391Z           "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y\\positive-marker.json",
+2026-10-02T15:14:05.8803674Z           "crt_errno": 0,
+2026-10-02T15:14:05.8803874Z           "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+2026-10-02T15:14:05.8804097Z           "error_source": "NONE",
+2026-10-02T15:14:05.8804229Z           "exit_error": 0,
+2026-10-02T15:14:05.8804352Z           "integrity_rid": 4096,
+2026-10-02T15:14:05.8804484Z           "path_limit_chars": 256,
+2026-10-02T15:14:05.8804617Z           "pid": 8180,
+2026-10-02T15:14:05.8804739Z           "policy_query_ok": 1,
+2026-10-02T15:14:05.8804871Z           "requested_bytes": 36,
+2026-10-02T15:14:05.8805080Z           "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+2026-10-02T15:14:05.8805309Z           "root_attributes": 16,
+2026-10-02T15:14:05.8805433Z           "root_error": 0,
+2026-10-02T15:14:05.8805550Z           "token_error": 0,
+2026-10-02T15:14:05.8805669Z           "win32_error": 0,
+2026-10-02T15:14:05.8805798Z           "write_stage": "COMPLETE",
+2026-10-02T15:14:05.8805934Z           "write_success": true,
+2026-10-02T15:14:05.8806061Z           "written_bytes": 36
+2026-10-02T15:14:05.8806182Z         },
+2026-10-02T15:14:05.8806287Z         "writer_exit_diagnostic": {
+2026-10-02T15:14:05.8806464Z           "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+2026-10-02T15:14:05.8806645Z           "raw_exit": 0,
+2026-10-02T15:14:05.8806771Z           "raw_exit_hex": "0x00000000"
+2026-10-02T15:14:05.8806898Z         }
+2026-10-02T15:14:05.8807051Z       },
+2026-10-02T15:14:05.8807141Z       {
+2026-10-02T15:14:05.8807243Z         "child_token_before_resume": {
+2026-10-02T15:14:05.8807380Z           "appcontainer": 1,
+2026-10-02T15:14:05.8807510Z           "elevated": 1,
+2026-10-02T15:14:05.8807633Z           "integrity_sid": "S-1-16-4096",
+2026-10-02T15:14:05.8807807Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8807967Z         },
+2026-10-02T15:14:05.8808073Z         "cleanup_errors": [],
+2026-10-02T15:14:05.8808203Z         "control_passed": false,
+2026-10-02T15:14:05.8808335Z         "exact_handle_exit": true,
+2026-10-02T15:14:05.8808470Z         "executable_security": {
+2026-10-02T15:14:05.8808829Z           "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AINO_ACCESS_CONTROL",
+2026-10-02T15:14:05.8809219Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8809382Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8809527Z             "defaulted": false,
+2026-10-02T15:14:05.8809672Z             "disposition": "NULL_SELECTED_LABEL_ACL",
+2026-10-02T15:14:05.8809831Z             "label_aces": [],
+2026-10-02T15:14:05.8809953Z             "null_acl": true,
+2026-10-02T15:14:05.8810133Z             "present": true
+2026-10-02T15:14:05.8810304Z           }
+2026-10-02T15:14:05.8810397Z         },
+2026-10-02T15:14:05.8810535Z         "executable_security_before_boundary": {
+2026-10-02T15:14:05.8810787Z           "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+2026-10-02T15:14:05.8811073Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8811323Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8811554Z             "defaulted": false,
+2026-10-02T15:14:05.8811777Z             "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+2026-10-02T15:14:05.8811943Z             "label_aces": [],
+2026-10-02T15:14:05.8812071Z             "null_acl": true,
+2026-10-02T15:14:05.8812192Z             "present": false
+2026-10-02T15:14:05.8812308Z           }
+2026-10-02T15:14:05.8812482Z         },
+2026-10-02T15:14:05.8812583Z         "exit_code": 3221225794,
+2026-10-02T15:14:05.8812717Z         "exit_code_hex": "0xc0000142",
+2026-10-02T15:14:05.8812856Z         "inherited_handles": false,
+2026-10-02T15:14:05.8812994Z         "label_applicability": {
+2026-10-02T15:14:05.8813195Z           "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+2026-10-02T15:14:05.8813449Z           "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+2026-10-02T15:14:05.8813654Z           "executable_label_matches_before_boundary": true,
+2026-10-02T15:14:05.8813814Z           "passed": true,
+2026-10-02T15:14:05.8813946Z           "root_directory_only_low_label": true
+2026-10-02T15:14:05.8814084Z         },
+2026-10-02T15:14:05.8814187Z         "no_console": true,
+2026-10-02T15:14:05.8814313Z         "parent_token_after": {
+2026-10-02T15:14:05.8814439Z           "appcontainer": 0,
+2026-10-02T15:14:05.8814566Z           "elevated": 1,
+2026-10-02T15:14:05.8814688Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8814865Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8815025Z         },
+2026-10-02T15:14:05.8815125Z         "parent_token_before": {
+2026-10-02T15:14:05.8815252Z           "appcontainer": 0,
+2026-10-02T15:14:05.8815372Z           "elevated": 1,
+2026-10-02T15:14:05.8815493Z           "integrity_sid": "S-1-16-12288",
+2026-10-02T15:14:05.8815659Z           "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+2026-10-02T15:14:05.8815816Z         },
+2026-10-02T15:14:05.8815918Z         "parent_write_after": {
+2026-10-02T15:14:05.8816041Z           "create_error": 0,
+2026-10-02T15:14:05.8816161Z           "flush_error": 0,
+2026-10-02T15:14:05.8816286Z           "write_attempted": true,
+2026-10-02T15:14:05.8816471Z           "write_error": 0,
+2026-10-02T15:14:05.8816591Z           "written_bytes": 3
+2026-10-02T15:14:05.8816703Z         },
+2026-10-02T15:14:05.8816801Z         "parent_write_before": {
+2026-10-02T15:14:05.8816924Z           "create_error": 0,
+2026-10-02T15:14:05.8817042Z           "flush_error": 0,
+2026-10-02T15:14:05.8817161Z           "write_attempted": true,
+2026-10-02T15:14:05.8817294Z           "write_error": 0,
+2026-10-02T15:14:05.8817409Z           "written_bytes": 3
+2026-10-02T15:14:05.8817520Z         },
+2026-10-02T15:14:05.8817623Z         "required_positive_control": false,
+2026-10-02T15:14:05.8818107Z         "restricted": true,
+2026-10-02T15:14:05.8818241Z         "root_security": {
+2026-10-02T15:14:05.8818545Z           "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AI",
+2026-10-02T15:14:05.8818870Z           "security_information": "DACL_AND_LABEL",
+2026-10-02T15:14:05.8819033Z           "selected_label_descriptor": {
+2026-10-02T15:14:05.8819174Z             "ace_count": 1,
+2026-10-02T15:14:05.8819289Z             "acl_bytes": 28,
+2026-10-02T15:14:05.8819412Z             "defaulted": false,
+2026-10-02T15:14:05.8819567Z             "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+2026-10-02T15:14:05.8819730Z             "label_aces": [
+2026-10-02T15:14:05.8819840Z               {
+2026-10-02T15:14:05.8819944Z                 "flags": 0,
+2026-10-02T15:14:05.8820058Z                 "index": 0,
+2026-10-02T15:14:05.8820173Z                 "mask": 1,
+2026-10-02T15:14:05.8820295Z                 "sid": "S-1-16-4096"
+2026-10-02T15:14:05.8820422Z               }
+2026-10-02T15:14:05.8820522Z             ],
+2026-10-02T15:14:05.8820624Z             "null_acl": false,
+2026-10-02T15:14:05.8820754Z             "parse_limit_aces": 64,
+2026-10-02T15:14:05.8820888Z             "present": true,
+2026-10-02T15:14:05.8821101Z             "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+2026-10-02T15:14:05.8821329Z             "truncated": false
+2026-10-02T15:14:05.8821444Z           }
+2026-10-02T15:14:05.8821534Z         },
+2026-10-02T15:14:05.8821725Z         "suspended_token_matches_fixture_role": true,
+2026-10-02T15:14:05.8821895Z         "variant": "granted_restricted_no_console",
+2026-10-02T15:14:05.8822046Z         "worker": {
+2026-10-02T15:14:05.8822218Z           "creation_100ns": 134354276428191907,
+2026-10-02T15:14:05.8822469Z           "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ika07otn\\fixture.exe",
+2026-10-02T15:14:05.8822706Z           "pid": 7796
+2026-10-02T15:14:05.8822811Z         },
+2026-10-02T15:14:05.8822911Z         "writer_exit_diagnostic": {
+2026-10-02T15:14:05.8823087Z           "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+2026-10-02T15:14:05.8823271Z           "raw_exit": 3221225794,
+2026-10-02T15:14:05.8823403Z           "raw_exit_hex": "0xc0000142"
+2026-10-02T15:14:05.8823529Z         }
+2026-10-02T15:14:05.8823621Z       }
+2026-10-02T15:14:05.8823709Z     ]
+2026-10-02T15:14:05.8823800Z   },
+2026-10-02T15:14:05.8823899Z   "status": "FIXTURE_PASS_Q03_OPEN",
+2026-10-02T15:14:05.8824031Z   "tests_run": 16
+2026-10-02T15:14:05.8824131Z }
+2026-10-02T15:14:05.8824400Z test_create_attempt_without_binding_cannot_release (__main__.PortableCases.test_create_attempt_without_binding_cannot_release) ... ok
+2026-10-02T15:14:05.8824895Z test_live_exact_worker_and_identity_mismatch_reject_clear (__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear) ... ok
+2026-10-02T15:14:05.8825400Z test_lost_active_intent_cannot_admit_after_dead_parent (__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent) ... ok
+2026-10-02T15:14:05.8825788Z test_no_attempt_release (__main__.PortableCases.test_no_attempt_release) ... ok
+2026-10-02T15:14:05.8826415Z test_partial_intent_is_fail_closed (__main__.PortableCases.test_partial_intent_is_fail_closed) ... ok
+2026-10-02T15:14:05.8827091Z test_primary_cleanup_deadline_precedence_has_no_unqualified_values (__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values) ... ok
+2026-10-02T15:14:05.8827701Z test_stale_recovery_cannot_clear_successor (__main__.PortableCases.test_stale_recovery_cannot_clear_successor) ... ok
+2026-10-02T15:14:05.8828320Z test_unresolved_descendant_rejects_clear (__main__.PortableCases.test_unresolved_descendant_rejects_clear) ... ok
+2026-10-02T15:14:05.8828814Z test_q01_restriction_active_before_work_and_setup_failure_no_attempt (__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt) ... ok
+2026-10-02T15:14:05.8829310Z test_q02_exit_between_discovery_and_launch (__main__.WindowsCases.test_q02_exit_between_discovery_and_launch) ... ok
+2026-10-02T15:14:05.8829787Z test_q02_q03_unrestricted_control_and_restricted_stopped_launch (__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch) ... ok
+2026-10-02T15:14:05.8830646Z test_q04_primary_and_real_fixture_cleanup_faults (__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults) ... ok
+2026-10-02T15:14:05.8831116Z test_q05_hang_does_not_release_before_exact_termination (__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination) ... ok
+2026-10-02T15:14:05.8831580Z test_q06_real_parent_crash_before_failure_marker (__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker) ... ok
+2026-10-02T15:14:05.8832078Z test_q07_real_creation_identity_stale_generation_and_descendants (__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants) ... ok
+2026-10-02T15:14:05.8832600Z test_q08_conflicting_callers_restart_and_recovery_race (__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race) ... ok
+2026-10-02T15:14:05.8832873Z 
+2026-10-02T15:14:05.8832963Z ----------------------------------------------------------------------
+2026-10-02T15:14:05.8833149Z Ran 16 tests in 3.037s
+2026-10-02T15:14:05.8833225Z 
+2026-10-02T15:14:05.8833260Z OK
+2026-10-02T15:14:05.8833313Z 
+2026-10-02T15:14:05.9014473Z ##[group]Run actions/upload-artifact@v4
+2026-10-02T15:14:05.9014768Z with:
+2026-10-02T15:14:05.9014947Z   name: tip057rq-windows-bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:14:05.9015283Z   path: tip057rq-evidence/summary.json
+tip057rq-evidence/proof.log
+tip057rq-evidence/compiler.log
+
+2026-10-02T15:14:05.9015550Z   retention-days: 14
+2026-10-02T15:14:05.9015673Z   if-no-files-found: error
+2026-10-02T15:14:05.9015799Z   compression-level: 6
+2026-10-02T15:14:05.9015912Z   overwrite: false
+2026-10-02T15:14:05.9016026Z   include-hidden-files: false
+2026-10-02T15:14:05.9016151Z env:
+2026-10-02T15:14:05.9016301Z   TIP057RQ_EXPECTED_SHA: bc9167969d67d288c37a4ce9aa5854a0bf2db14d
+2026-10-02T15:14:05.9016534Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:14:05.9016784Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-02T15:14:05.9017056Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:14:05.9017274Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:14:05.9017490Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-02T15:14:05.9017661Z ##[endgroup]
+2026-10-02T15:14:06.0228011Z (node:8912) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-02T15:14:06.0228404Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-02T15:14:06.0267067Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-02T15:14:06.0269159Z The least common ancestor is D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tip057rq-evidence. This will be the root directory of the artifact
+2026-10-02T15:14:06.0269813Z With the provided path, there will be 3 files uploaded
+2026-10-02T15:14:06.0272474Z Artifact name is valid!
+2026-10-02T15:14:06.0273303Z Root directory input is valid!
+2026-10-02T15:14:06.3623294Z Beginning upload of artifact content to blob storage
+2026-10-02T15:14:06.3818792Z (node:8912) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-02T15:14:06.5854550Z Uploaded bytes 8870
+2026-10-02T15:14:06.6417080Z Finished uploading artifact content to blob storage!
+2026-10-02T15:14:06.6417978Z SHA256 digest of uploaded artifact zip is b6b5719cad63b25f3495a2d9398777e0021b9370d6faca987593a90d3d2720fd
+2026-10-02T15:14:06.6419514Z Finalizing artifact upload
+2026-10-02T15:14:06.9309585Z Artifact tip057rq-windows-bc9167969d67d288c37a4ce9aa5854a0bf2db14d.zip successfully finalized. Artifact ID 11234907133
+2026-10-02T15:14:06.9310469Z Artifact tip057rq-windows-bc9167969d67d288c37a4ce9aa5854a0bf2db14d has been successfully uploaded! Final size is 8870 bytes. Artifact ID is 11234907133
+2026-10-02T15:14:06.9318303Z Artifact download URL: https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462247/artifacts/11234907133
+2026-10-02T15:14:06.9575251Z Post job cleanup.
+2026-10-02T15:14:07.0510197Z (node:8088) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-02T15:14:07.0510605Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-02T15:14:07.0734977Z Post job cleanup.
+2026-10-02T15:14:07.1808880Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-02T15:14:07.2037949Z git version 2.55.0.windows.5
+2026-10-02T15:14:07.2101658Z Temporarily overriding HOME='D:\a\_temp\14b99251-f2a4-4b63-a9a2-1efcc805a612' before making global git config changes
+2026-10-02T15:14:07.2118760Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T15:14:07.2119430Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-02T15:14:07.2319595Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T15:14:07.2536619Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-02T15:14:07.6454933Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T15:14:07.6619826Z http.https://github.com/.extraheader
+2026-10-02T15:14:07.6650556Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-02T15:14:07.6842353Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-02T15:14:08.0470892Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T15:14:08.0664591Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-02T15:14:08.4507804Z Cleaning up orphan processes
+2026-10-02T15:14:08.4699127Z Terminate orphan process: pid (2364) (vctip)
+2026-10-02T15:14:08.4714645Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

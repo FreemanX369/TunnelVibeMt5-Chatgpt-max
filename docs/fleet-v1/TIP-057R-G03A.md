@@ -1,6 +1,6 @@
 # TIP-057R-G03A — Common ownership foundation
 
-Status: **APPROVED / DISPATCHED FOR SOURCE/TESTS ONLY**. Owner statement “Duyệt tiêp tục theo plan”, **2026-10-02T21:21:49+07:00**, approves the concrete [boundary amendment](TIP-057R-boundary-amendment.md) and this TIP at Draft PR #61 head `0ee42c9cdc677926e3f27d02592c1ad9fc498c8d`. Retained Q1 evidence and main `70e2112da9fe8eaa6262f2ba896b55bf3e078260` remain the source authority. Priority: next G03 prerequisite. Maps REQ-F10/F11/F15 and preparatory F04. Deliverable: source/test implementation in a separate Draft PR, without production activation.
+Status: **DONE FOR BOUNDED G03-A / FOUNDATION PASS / PRODUCER OPEN**. Owner statement “Duyệt tiêp tục theo plan”, **2026-10-02T21:21:49+07:00**, approves the concrete [boundary amendment](TIP-057R-boundary-amendment.md) and this TIP at Draft PR #61 head `0ee42c9cdc677926e3f27d02592c1ad9fc498c8d`. [Draft implementation PR #62](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/62), source head `bc9167969d67d288c37a4ce9aa5854a0bf2db14d`, passes all six workflows, dedicated Windows 8/8 and retained Q1 16/16 without skips. [Builder Completion Report](TIP-057R-G03A-completion.md) and [Contractor verification](TIP-057R-G03A-verification.md) bind each AC to scoped evidence and original receipts. Maps REQ-F10/F11/F15 and preparatory F04. Source/tests only; no production activation.
 
 ## Context and task
 
@@ -14,7 +14,7 @@ YAGNI-3 is recorded in the amendment: required common exclusion, existing lockin
 
 ## Acceptance criteria
 
-These are **PLANNED / NOT RUN**. Test names below describe required results, not existing files.
+The approved requirements below are retained unchanged. Actual A01–A14 foundation results and limits are recorded in the [Completion Report](TIP-057R-G03A-completion.md) and [Contractor verification](TIP-057R-G03A-verification.md).
 
 | AC | Given / When / Then | Required evidence |
 |---|---|---|
