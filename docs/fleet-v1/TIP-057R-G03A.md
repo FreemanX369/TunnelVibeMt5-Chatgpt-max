@@ -1,10 +1,10 @@
 # TIP-057R-G03A — Common ownership foundation
 
-Status: **PROPOSED / NOT DISPATCHED**. Requires owner approval of the [boundary amendment](TIP-057R-boundary-amendment.md), retained Q1 evidence and compatible source at main `70e2112da9fe8eaa6262f2ba896b55bf3e078260` / Draft PR #61 `9fcb86fc7bf061ba9fceb1eb2948e6290cbf8701`. Priority: next G03 prerequisite. Maps REQ-F10/F11/F15 and preparatory F04. Proposed deliverable: source/test implementation in a separate Draft PR, without production activation. Planning approval is not implementation authorization until the concrete amendment is accepted.
+Status: **APPROVED / DISPATCHED FOR SOURCE/TESTS ONLY**. Owner statement “Duyệt tiêp tục theo plan”, **2026-10-02T21:21:49+07:00**, approves the concrete [boundary amendment](TIP-057R-boundary-amendment.md) and this TIP at Draft PR #61 head `0ee42c9cdc677926e3f27d02592c1ad9fc498c8d`. Retained Q1 evidence and main `70e2112da9fe8eaa6262f2ba896b55bf3e078260` remain the source authority. Priority: next G03 prerequisite. Maps REQ-F10/F11/F15 and preparatory F04. Deliverable: source/test implementation in a separate Draft PR, without production activation.
 
 ## Context and task
 
-Working checkout: `/workspace/scratch/250985b4823e/tip057rq-work`. Contractor owns design, dispatch and output review; Builder owns implementation, meaningful tests and Completion Report.
+Working checkout: `/workspace/scratch/250985b4823e/tip057rg03a-work`, isolated verified copy of all 222 approved-parent blobs. Local Git baseline is synthetic; actual GitHub parent is `0ee42c9cdc677926e3f27d02592c1ad9fc498c8d`. Contractor owns design, dispatch, publication and output review; Builder owns implementation, meaningful tests and Completion Report. The implementation branch starts from Draft PR #61's approved head. Its separate Draft PR targets main so existing required CI triggers; the PR body links the exact approved-parent comparison to isolate the G03-A delta and states its dependency on #61. Neither PR is merged by this source-build step.
 
 Key reuse: `core/concurrency.py`, `core/jobs.py`, `worker.py`, `core/facade.py`, `adapters/mcp.py`, existing concurrency/cancellation/runtime-forensics unit fixtures and Q1's harmless Windows proof. Current source has no real IPC helper. Do not import a proof/test module from runtime or copy Q1's two-file generation/intent protocol unchanged into product.
 

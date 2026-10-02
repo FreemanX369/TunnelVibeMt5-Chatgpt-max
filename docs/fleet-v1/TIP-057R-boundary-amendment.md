@@ -1,6 +1,6 @@
 # TIP-057R — Proposed boundary amendment after Q1
 
-Date: 2026-10-02, Asia/Saigon. Status: **PROPOSED / SOURCE BUILD NOT YET AUTHORIZED**. This is the concrete next decision package prepared under the owner's 19:40:29 continuation, “Tiếp tục triển khai theo plan”. It preserves the approved fleet Blueprint and strict no-start policy while proposing the product ownership boundary that Q1 deliberately did not authorize. Contractor owns this design; Builder's focused read-only SCAN supplies source feasibility. No product code, SDK, terminal, migration or runtime operation is performed by this planning step.
+Date: 2026-10-02, Asia/Saigon. Status: **APPROVED FOR G03-A SOURCE/TESTS BUILD ONLY**. The owner approved the concrete package at PR #61 head `0ee42c9cdc677926e3f27d02592c1ad9fc498c8d` by stating “Duyệt tiêp tục theo plan” at **2026-10-02T21:21:49+07:00**. This amendment preserves the approved fleet Blueprint and strict no-start policy while authorizing the bounded product ownership foundation described below. Contractor owns design/dispatch/review; Builder owns implementation/tests/report. Actual helper/SDK activation, production migration, Q2 effects and deployment remain separate gates. The earlier 19:40 and 21:00 continuations authorized preparation; this entry records the subsequent specific architecture decision.
 
 ## Evidence and selected next slice
 

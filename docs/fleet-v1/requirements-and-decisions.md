@@ -63,7 +63,7 @@ D entries establish the approved direction and choices within the recorded appro
 | D-18 | Prepare optional local target on only state/account; preserve legacy successful shape | Concrete [contract](TIP-057R-contract.md), not implemented or client-qualified | 057R |
 | D-19 | Local10s soft-success budget; do not claim hard response/cancellation | Exact overrun/cleanup ownership is recorded; TIP-059 total deadline stays separate | 057R contract |
 | D-20 | Strict no-start retained; Q1 isolated boundary proof approved13:59, product boundary pending proof/review | Existing initialize has no supported attach-only guarantee; [Q1 TIP](TIP-057R-Q1.md) authorizes fixture research, not product integration/Q2 | 057R G03/G04 |
-| D-21 PROPOSED | G03-A common source/tests foundation; native admission requires verified installation epoch/authority; cancel restore included; helper/SDK disabled | [Concrete amendment](TIP-057R-boundary-amendment.md) and [A01–A14 Builder TIP](TIP-057R-G03A.md); owner review pending | 057R G03 foundation only |
+| D-21 APPROVED SOURCE/TESTS | G03-A common source/tests foundation; native admission requires verified installation epoch/authority; cancel restore included; helper/SDK disabled | [Concrete amendment](TIP-057R-boundary-amendment.md) and [A01–A14 Builder TIP](TIP-057R-G03A.md) approved21:21:49 at PR #61 head0ee42c9; implementation/qualification not yet complete | 057R G03 foundation only |
 
 ## Open gate register
 

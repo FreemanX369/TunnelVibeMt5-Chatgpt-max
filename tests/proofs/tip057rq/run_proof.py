@@ -18,6 +18,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 sys.path.insert(0, str(ROOT / "app"))
+sys.path.insert(0, str(ROOT / "tests" / "unit"))
+from ownership_fixture import install_closed
 from authority import FixtureAuthority, RecoveryRequired, atomic, outcome
 from windows_boundary import Boundary, Process, Windows
 
@@ -163,6 +165,7 @@ class PortableCases(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="tip057rq-portable-")
         self.root = Path(self.temporary.name)
+        install_closed(self.root)
         self.authority = FixtureAuthority(self.root)
         self.parent = ModelProcess().identity()
 
@@ -255,6 +258,7 @@ class WindowsCases(unittest.TestCase):
         self.windows = self.boundary.windows
         self.processes = []
         self.handles = []
+        install_closed(self.root / "authority")
         self.authority = FixtureAuthority(self.root / "authority")
         self.parent = Process(self.windows, self.windows.kernel.GetCurrentProcess()).identity()
 
@@ -798,6 +802,7 @@ def crash_parent(root, executable):
     try:
         atomic(root / "profile.json", {"name": boundary.name})
         parent = Process(boundary.windows, boundary.windows.kernel.GetCurrentProcess()).identity()
+        install_closed(root / "authority")
         authority = FixtureAuthority(root / "authority")
         _, expected = authority.arm(parent)
         atomic(root / "controller-phase.json", {"phase": "BEFORE_CREATE", "pid": os.getpid()})
