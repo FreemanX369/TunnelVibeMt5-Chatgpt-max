@@ -17,8 +17,8 @@
     },
     {
       "path": "tests/unit/fleet_writer_fixture.py",
-      "bytes": 7445,
-      "sha256": "b92647d64b17cacd54fec921e8ecb0a089c7a3878c1775da5a9824ac983eec56"
+      "bytes": 5930,
+      "sha256": "d299dbd073c47d599af60bacc2b25bdaed2a50fbe366dc3feedc6ac49448c79d"
     },
     {
       "path": "tests/unit/test_tip061b_principals.py",
@@ -44,13 +44,8 @@
       "path": "docs/fleet-v1/TIP-061B-completion.md",
       "bytes": 6108,
       "sha256": "c046742e52a01f234ab08eead7e0a8eed3709f3484c769d9d970289b790801c6"
-    },
-    {
-      "path": "tests/unit/test_fleet_gateway_fixture.py",
-      "bytes": 3291,
-      "sha256": "526ec67b5fa6de8cbf9ea617c6968b9da376ebb93f07783d15d8cfc51b590198"
     }
   ],
-  "refinement_note": "Fixture-only bounded positive admission/startup observer refinement. Prior manifest retained as source-manifest-before-final-startup-refinement.json. Actual prior canonical Windows source proof passes but Deep reports two scheduling fixture failures; exact new candidate CI is separate. Product deadlines, negative budgets, authority TTLs and runtime source bytes are unchanged.",
-  "current_focused_receipt": "../tip064/startup-ci-refinement-v1/receipt.json"
+  "refinement_note": "Current file hashes after bounded async Windows CI fixture refinement. Previous manifest retained as source-manifest-before-async-ci-refinement.json. Historical M5 acceptance is unchanged; current focused Linux matrix and canonical candidate CI have separate scopes.",
+  "current_focused_receipt": "../tip064/async-ci-refinement-v1/receipt.json"
 }

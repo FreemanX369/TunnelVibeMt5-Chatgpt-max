@@ -90,7 +90,7 @@ def test_actual_protected_gateway_factory_and_owner_client_startup(tmp_path, tls
     import socket
     from dataclasses import asdict
     from cryptography.hazmat.primitives import serialization
-    from fleet_writer_fixture import principal_policy
+    from fleet_writer_fixture import principal_policy, wait_gateway_started
     from vibemql5.adapters.fleet_cli import gateway_factory, operator_server_context
     from vibemql5.adapters.fleet_client_tools import operator_configuration
     with socket.socket() as probe:
@@ -124,7 +124,7 @@ def test_actual_protected_gateway_factory_and_owner_client_startup(tmp_path, tls
         except BaseException as error: failures.put(error)
     thread = threading.Thread(target=run, daemon=True); thread.start()
     try:
-        assert ready.get(timeout=5)[1] == port
+        assert wait_gateway_started(ready, failures, thread)[1] == port
         client_config = {'schema': 'fleet.client-config/1', 'origin': origin, 'ca_file': str(private_dir / 'ca.pem'),
             'fleet_policy': asdict(fleet_policy()), 'owner_token_file': str(private_dir / 'owner.txt'),
             'principal_key_file': None, 'principal_credential_file': None}

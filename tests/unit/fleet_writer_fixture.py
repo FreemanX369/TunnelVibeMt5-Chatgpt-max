@@ -1,8 +1,11 @@
 """Ephemeral real Ed25519 client/node/gateway, verified local HTTPS only."""
 import hashlib
+import sys
 import threading
 import time
-from queue import Queue
+from dataclasses import replace
+from pathlib import Path
+from queue import Empty, Queue
 
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -27,11 +30,38 @@ def writer_policy():
     return WriterPolicy(max_operations=100,max_projects=20,max_payload_bytes=1048576,max_source_bytes=32768,wait_ms=50)
 
 
+def wait_gateway_started(ready, failures, thread, *, timeout=10):
+    """Bound observation of real startup; keep its actual exception/stack visible."""
+    deadline = time.monotonic() + timeout
+    while True:
+        if not failures.empty():
+            raise failures.get_nowait()
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            frame = sys._current_frames().get(thread.ident)
+            stack = []
+            while frame is not None and len(stack) < 12:
+                stack.append({'file': Path(frame.f_code.co_filename).name,
+                              'function': frame.f_code.co_name, 'line': frame.f_lineno})
+                frame = frame.f_back
+            error = TimeoutError('GATEWAY_STARTUP_FIXTURE_TIMEOUT')
+            error.add_note(str({'timeout_seconds': timeout, 'server_thread_alive': thread.is_alive(),
+                                'server_failure_count': failures.qsize(), 'stack': stack}))
+            raise error
+        try:
+            return ready.get(timeout=min(.1, remaining))
+        except Empty:
+            pass
+
+
 @pytest.fixture
 def writer_fixture(project_node,tls_files,tmp_path):
     ca,certificate,private=tls_files
     stopping,ready,failures=threading.Event(),Queue(),Queue()
     gatewaykey,clientkey,nodekey=(Ed25519PrivateKey.generate() for _ in range(3))
+    # Positive source/writer admission has a finite CI scheduling budget.
+    # The transport suite retains its 1000 ms deliberate deadline policy.
+    positive_policy = replace(fleet_policy(), http_timeout_ms=5000)
     root=project_node['root']; device=project_node['registry']['device_id']
     target={**project_node['project']['default_target'],'route_generation':1}
     def factory(address):
@@ -41,12 +71,17 @@ def writer_fixture(project_node,tls_files,tmp_path):
         native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
         authority=GatewayPrincipalAuthority(tmp_path/'gateway'/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True)
         domain=GatewayDomain(control,domains,native,principal_authority=authority,start_authorization_ms=2000)
-        return GatewayController(control,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
+        return GatewayController(control,positive_policy,audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
     def run():
         try: serve_gateway(('127.0.0.1',0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
         except BaseException as error: failures.put(error)
-    thread=threading.Thread(target=run,daemon=True);thread.start();address=ready.get(timeout=5)
-    http=HttpsClient('https://127.0.0.1:'+str(address[1]),fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+    thread=threading.Thread(target=run,daemon=True);thread.start()
+    try:
+        address=wait_gateway_started(ready,failures,thread)
+    except BaseException:
+        stopping.set();thread.join(timeout=3)
+        raise
+    http=HttpsClient('https://127.0.0.1:'+str(address[1]),positive_policy,cafile=str(ca));owner=OwnerClient(http,TOKEN)
     grant=owner.admin('grant',{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'operation_id':'grant','expected_revision':1,'expected_route_generation':None})
     node=NodeClient(http,nodekey,device,0);node.pair(grant_id=grant['receipt']['grant_id'],secret=grant['secret'],operation_id='pair',expected_revision=2)
     node.heartbeat('node-session')

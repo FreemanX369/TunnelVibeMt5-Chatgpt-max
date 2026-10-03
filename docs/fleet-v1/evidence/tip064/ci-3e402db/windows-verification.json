@@ -1,0 +1,134 @@
+{
+  "artifact_id": 11269073928,
+  "zip_sha256": "31df0410994217e1501f5be0c9430f70090e38ff38bce5bfe12a9d7fedb1b38b",
+  "zip_bytes": 258309,
+  "head_sha": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+  "tree_sha": "baadc33d2cbfe40428c5f564f011f763200c929d",
+  "status": "PASS",
+  "unit": {
+    "tests": 1132,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 10,
+    "passed": 1122,
+    "seconds": 215.75
+  },
+  "skips": [
+    {
+      "test": "test_tip040_live_mt5_2_account_chart_and_png",
+      "reason": "No deployed MT5-2 root"
+    },
+    {
+      "test": "test_tip041_live_each_open_chart_16_9_and_exact_layout_rollback",
+      "reason": "No deployed MT5-2 root"
+    },
+    {
+      "test": "test_ac08_observable_symlink_hardlink_and_symlink_retarget",
+      "reason": "POSIX symlink fixture; Windows junction evidence is a separate gate"
+    },
+    {
+      "test": "test_ac11_nonobservable_windows_roots_never_claim_qualification",
+      "reason": "Windows paths are observable only in the Windows deployment gate"
+    },
+    {
+      "test": "test_bounded_retained_read_rejects_fifo_without_waiting_for_writer",
+      "reason": "POSIX FIFO regression requires mkfifo"
+    },
+    {
+      "test": "test_installed_trust_and_approval_require_protected_owner_files[writable_trust]",
+      "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+    },
+    {
+      "test": "test_installed_trust_and_approval_require_protected_owner_files[public_approval]",
+      "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+    },
+    {
+      "test": "test_installed_trust_and_approval_require_protected_owner_files[symlink_trust]",
+      "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+    },
+    {
+      "test": "test_symlink_spelling_cannot_bypass_singleton_lock",
+      "reason": "POSIX symlink spelling; Windows real cooperative writer test is platform-neutral"
+    },
+    {
+      "test": "test_operator_config_writable_or_symlink_rejected_before_https",
+      "reason": "POSIX writable-mode rejection; Windows protected-owner/ACL positive is tested separately"
+    }
+  ],
+  "critical_windows_cases": {
+    "test_windows_private_acl_roundtrip_reports_public_semantics": "PASS",
+    "test_windows_private_key_foreign_owner_denied_on_retained_handle": "PASS",
+    "test_windows_staging_directory_cannot_be_renamed_while_held": "PASS",
+    "test_actual_suspended_bind_resume_descendant_boundary_and_exact_exit": "PASS",
+    "test_fault_before_resume_keeps_bound_authority_until_exact_owned_cleanup": "PASS",
+    "test_actual_parent_crash_contains_worker_but_never_claims_durable_closure": "PASS",
+    "test_expiry_during_durable_create_attempt_blocks_actual_create_and_retains_fence": "PASS",
+    "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable": "PASS"
+  },
+  "manifest_files": 205,
+  "manifest_verified": true,
+  "source_unchanged": true,
+  "cases": [
+    {
+      "case": "full-unit",
+      "exit_code": 0,
+      "timeout_seconds": 600,
+      "timed_out": false,
+      "elapsed_seconds": 216.719
+    },
+    {
+      "case": "b1-portable",
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 1.484
+    },
+    {
+      "case": "q1-harmless",
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 10.656
+    },
+    {
+      "case": "g03a-harmless",
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 1.157
+    },
+    {
+      "case": "b1-harmless",
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 4.468
+    }
+  ],
+  "proofs": {
+    "b1-portable": {
+      "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+      "passed": 39,
+      "skipped": 0,
+      "head_verified": true
+    },
+    "q1-harmless": {
+      "status": "FIXTURE_PASS_Q03_OPEN",
+      "passed": 16,
+      "skipped": 0,
+      "head_verified": true
+    },
+    "g03a-harmless": {
+      "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+      "passed": 8,
+      "skipped": 0,
+      "head_verified": true
+    },
+    "b1-harmless": {
+      "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+      "passed": 10,
+      "skipped": 0,
+      "head_verified": true
+    }
+  }
+}
