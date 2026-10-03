@@ -14,6 +14,7 @@ from vibemql5.fleet.job_journal import GatewayJobJournal
 from vibemql5.fleet.principals import GatewayPrincipalAuthority, PrincipalPolicy, sign_principal_request, PATHS
 from vibemql5.fleet.transport import GatewayController, HttpsClient, NodeClient, OwnerClient, serve_gateway
 from vibemql5.fleet.wire import encode_body
+from vibemql5.fleet.wire import WireError
 from vibemql5.fleet.writers import NodePrincipalRuntime, WriterPolicy
 
 
@@ -61,7 +62,19 @@ def writer_fixture(project_node,tls_files,tmp_path):
         value={'schema':'fleet.domain-request/1','node':{'device_id':device,'route_generation':1},'operation_id':operation,'payload':payload}
         body=encode_body(value,32768)
         headers=sign_principal_request(clientkey,credential,path=path,body_bytes=body,timestamp_ms=int(time.time()*1000),nonce='client-'+str(counter),audience=http.origin)
-        return http.post(path,value,headers)
+        begun=time.monotonic()
+        try:
+            return http.post(path,value,headers)
+        except WireError as error:
+            # HttpsClient deliberately hides transport details from callers.
+            # Retain only type/timing/lifecycle diagnostics in this fixture;
+            # never print request headers, credentials or payloads.
+            error.add_note('WRITER_HTTPS_FIXTURE '+str({
+                'code':error.code,'cause_type':type(error.__context__).__name__,
+                'elapsed_ms':round((time.monotonic()-begun)*1000),
+                'http_timeout_ms':http.policy.http_timeout_ms,
+                'server_thread_alive':thread.is_alive(),'server_failure_count':failures.qsize()}))
+            raise
     value={'root':root,'runtime':runtime,'admit':admit,'node':node,'owner':owner,'http':http,'credential':credential,'assignment':assignment,'principal':principal,
         'gateway_path':tmp_path/'gateway','gateway_key':gatewaykey,'stop':stopping,'thread':thread,'failures':failures,**project_node}
     yield value

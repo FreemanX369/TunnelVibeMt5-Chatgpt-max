@@ -531,8 +531,13 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
         assert status['state'] == 'RESULT_PENDING'
         assert status['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert stopping.request_stop()['status'] == 'STOP_PENDING'
-        time.sleep(.002)
+        # Observe the real monotonic deadline; a 2 ms sleep can return before
+        # the Windows monotonic clock advances to the next timer tick.
+        deadline = time.monotonic() + .5
+        while not stopping.stop_status()['deadline_elapsed'] and time.monotonic() < deadline:
+            time.sleep(.005)
         assert stopping.stop_status()['deadline_elapsed']
+        assert stopping.stop_status()['status'] == 'STOP_PENDING' and not cancelled.is_set()
         withheld = facade.inventory(node, 'inventory-withheld-during-stop')
         process = jobs.get(global_id)['result']['process_identity']
         cancel = facade.domain('/fleet/v1/jobs/cancel', node, 'cancel-blocked',
@@ -759,7 +764,7 @@ def test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret(project_
 
 
 @pytest.mark.parametrize('composed_service', [1000], indirect=True)
-def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant(project_node, composed_service):
+def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant(project_node, composed_service, monkeypatch):
     grants, events = [], []
     def start_fixture(request, fence):
         snapshot = fence['begin_effect']('deploy', 'snapshot_prepare:0001')
@@ -784,16 +789,36 @@ def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_g
         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
     adapter = SyntheticNativeAdapter(project_node['root'], callbacks={'start': start_fixture})
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service, adapter=adapter)
+    release_return, observed_return_race = threading.Event(), []
+    native_work = dispatcher._native_work
+    def delayed_return(*args):
+        result = native_work(*args)
+        assert release_return.wait(timeout=3)
+        return result
+    monkeypatch.setattr(dispatcher, '_native_work', delayed_return)
+    def succeeded_and_drained(global_job_id):
+        succeeded = facade.get_job(global_job_id)['state'] == 'SUCCEEDED'
+        if succeeded and not release_return.is_set():
+            # Force the Windows-observed ordering on every platform: gateway
+            # sees the terminal ACK before the worker future has returned.
+            assert dispatcher._futures and dispatcher.has_pending_work()
+            observed_return_race.append(True); release_return.set()
+        return succeeded and not dispatcher.has_pending_work()
     try:
         node, selected = discover(facade, client, agent)
         frozen = freeze(project_node, target=selected); raw = project_node['source'].read_bytes()
         request = native_request(frozen, logical_fixture(), [{'path': 'Experts/DemoEA.mq5', 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}])
         row = facade.launch_job('long-step-fixture', request)
-        pump(agent, lambda: facade.get_job(row['global_job_id'])['state'] == 'SUCCEEDED', seconds=5)
+        # A terminal journal ACK can arrive while the worker is returning.
+        # Its future must finish and pass through the normal owner drain too.
+        pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=5)
+        assert observed_return_race == [True]
         assert events == ['long-step-entered', 'fresh-next-phase']
         assert grants[1].grant_sha256 != grants[0].grant_sha256
         assert grants[1].binding['sequence'] > grants[0].binding['sequence']
         assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert not dispatcher._native_records and not dispatcher._acked
     finally:
+        release_return.set()
+        pump(agent, lambda: not dispatcher.has_pending_work())
         dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()

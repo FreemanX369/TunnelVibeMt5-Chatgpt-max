@@ -1,0 +1,12 @@
+{
+  "deep": {
+    "raw_sha256": "f1044d0bace30e770138f3ac99210709b3b62796eecdf749575c5f3e94877424",
+    "raw_bytes": 1123120,
+    "gzip_sha256": "a9c2a641e81fd3291be5b8d3ae5710e7e13b30552d29511ffd3e8b102159d32b"
+  },
+  "bootstrap": {
+    "raw_sha256": "b80ff44add4174bc3c1d3d7fdd22f9aab5b924037c3b49db95a34168a69ef49a",
+    "raw_bytes": 588049,
+    "gzip_sha256": "8a94f9daa99a02e3ae532ff8d412696626fe12eac2d95334d6e4441a36975401"
+  }
+}

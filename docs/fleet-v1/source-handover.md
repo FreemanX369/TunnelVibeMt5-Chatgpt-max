@@ -1,6 +1,6 @@
 # Fleet v1 — Complete source handover
 
-Status: PREPARING FINAL INTEGRATED ACCEPTANCE. This index is being finalized under the owner's continuous authorization. Final source status and exact Git/CI receipts are recorded in [source verification](source-update-verification.md). Private VM, real MT5/SDK qualification and production deployment remain for the owner after build.
+Status: SOURCE BUILD COMPLETE for M1–M5 and TIP-064 under the owner's continuous authorization. The delivered source is the current head of [Draft #65](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/65); source acceptance requires all eight workflow checks on that same head, including complete Linux/Windows integrated artifacts. [Source verification](source-update-verification.md) preserves the review and historical receipts. Private VM, real MT5/SDK qualification and production deployment remain for the owner after build.
 
 ## Included update
 

@@ -250,7 +250,8 @@ def test_frozen_corruption_is_denied_even_with_recomputed_integrity(node, mutati
     denied("FLEET_STATE_INVALID", lambda: node["projects"].load_frozen(original["frozen_id"]))
 
 
-@pytest.mark.parametrize("body", [b'{"schema":"fleet.project/1","schema":"fleet.project/1"}', b" " * 262145])
+@pytest.mark.parametrize("body", [b'{"schema":"fleet.project/1","schema":"fleet.project/1"}', b" " * 262145],
+    ids=["duplicate-schema", "oversize"])
 def test_project_read_rejects_duplicates_and_bounds_before_decode(node, body):
     node["projects"]._path("P").write_bytes(body)
     denied("FLEET_STATE_INVALID", lambda: node["projects"].get("P"))

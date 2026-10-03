@@ -2,7 +2,7 @@
 
 ## Current continuous source update — 2026-10-03
 
-The approved M1–M5 update is implemented in the cumulative [Draft #65](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/65); final integrated source acceptance is in progress. The owner authorized continuous execution without per-TIP approvals and deferred private VM/real SDK tests until handover. This current section supersedes historical build-dispatch timing below.
+The approved M1–M5 and TIP-064 source update is complete in the cumulative [Draft #65](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/65). Source acceptance requires all eight workflow checks to succeed on the delivered head, including complete integrated Linux/Windows evidence. The owner authorized continuous execution without per-TIP approvals and deferred private VM/real SDK tests until handover. This current section supersedes historical build-dispatch timing below.
 
 Start with the [source handover](source-handover.md), [cumulative requirement verification](source-update-verification.md) and [operator handbook](TIP-064-operator-handbook.md). Source reports cover [isolated SDK](TIP-057R-SDK-completion.md), [signed HTTPS/read fleet](TIP-058B-059-062A-completion.md), [project/native/STRICT](TIP-061A-057N-completion.md), [jobs/artifacts](TIP-060-completion.md), [scoped capacity](TIP-056-completion.md), [joint restore](TIP-060C-completion.md), [guarded writer](TIP-061B-completion.md), [Git worktrees](TIP-063-worktrees-completion.md) and [integration/startup](TIP-064-completion.md).
 

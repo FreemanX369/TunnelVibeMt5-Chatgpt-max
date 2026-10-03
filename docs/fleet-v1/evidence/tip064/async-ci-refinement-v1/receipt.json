@@ -1,0 +1,51 @@
+{
+  "schema": "fleet.async-ci-refinement-receipt/1",
+  "status": "PASS",
+  "scope": "FROZEN_OWNED_SOURCE_LOCAL_LINUX_HARMLESS_AND_SYNTHETIC_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "windows_runtime": "NOT_RUN",
+  "qualification_boundary": "Local worktree diagnostic only; exact canonical full Linux/Windows candidate CI remains required.",
+  "git_base_head": "943294e8f74463a31684322d6520f3de4e57f09d",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "counts": {
+    "tests": 162,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3
+  },
+  "passed": 159,
+  "duration_seconds": 25.534,
+  "owned_source_unchanged_during_run": true,
+  "retained_product_refs_unchanged_during_run": true,
+  "owned_source_sha256": {
+    "tests/unit/test_tip064_integration.py": "42112366299d0ad9bbdd02f1ee4f2804980e12221b514541575f4a4490be39c3",
+    "tests/unit/fleet_writer_fixture.py": "d299dbd073c47d599af60bacc2b25bdaed2a50fbe366dc3feedc6ac49448c79d",
+    "tests/proofs/fleet_v1/run_source.py": "507b0eaa92a5ca5ca832461b195ba88a372e3ed34e4306dfb9800632cd3f9748",
+    "tests/unit/test_fleet_source_runner.py": "f1b00d64f6301430852318d6a83275b667445e2830d4c388576de095e5882a38"
+  },
+  "owned_source_bundle_sha256": "fd0e5930a6a0465fe346b447e519d305e6bfdda731c9d28c4e68a154516fdbc6",
+  "retained_product_refs_sha256": {
+    "app/vibemql5/fleet/domain.py": "20aa7e67f8b7cbb3d18709de819ccc8bad95fb0f92290d8ab15b1002d7b35500",
+    "app/vibemql5/fleet/transport.py": "1ffdc7b733214d44871621443c47e2ac4a42aac2268aabcef1bb3c1373883fbc",
+    "app/vibemql5/adapters/fleet_cli.py": "7e1d7e6aa2e3b1bf62ad30b90b9aa6c4f4b8074f0726c359cbbd8f3c4c2a65b8",
+    "app/vibemql5/fleet/native_authorization.py": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5",
+    "app/vibemql5/fleet/job_journal.py": "fa6fbe895655c2cd2bc5bf0898d189398da7102a28e8b1dd1a619b8302c1e54a"
+  },
+  "artifact_sha256": {
+    "focused.log": "5e0f3c1b7d910fdaf0121f45fd0629bdcf9b3d8737e161e73b1815ac252e80cd",
+    "focused.junit.xml": "18cb63f7a9105f2735f3b8602d50510612f06e6d715f79b11a499a29cb1be913",
+    "source-before.json": "f8bf5396a14891eda88cdb7ee191cea6414cb428b315b574abfd164127a2cce3",
+    "source-after.json": "f8bf5396a14891eda88cdb7ee191cea6414cb428b315b574abfd164127a2cce3"
+  },
+  "command": "PYTHONPATH=<cached dependencies>:app:tests/unit python -m pytest tests/unit/test_fleet_source_runner.py tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip064_writer_resolution_https.py tests/unit/test_tip061b_writers.py tests/unit/test_tip063_worktrees.py tests/unit/test_tip058b_transport.py -q --tb=short --junitxml=<receipt-directory>/focused.junit.xml",
+  "full_source_runner": {
+    "full_unit_timeout_seconds": 600,
+    "proof_timeout_seconds": 120,
+    "windows_case_count": 5,
+    "max_case_wait_seconds": 1080,
+    "workflow_minutes": 20,
+    "required_proofs_preserved": true
+  },
+  "unknown_and_ttl_policy": "UNCHANGED"
+}

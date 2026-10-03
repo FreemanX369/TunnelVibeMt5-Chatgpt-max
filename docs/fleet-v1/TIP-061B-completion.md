@@ -29,3 +29,5 @@ ISSUES / LIMITS:
 - VM, installed SDK, actual native processes and external deployment remain deferred. Temporary local TLS fixtures establish source protocol behavior only.
 
 DEVIATIONS: none. Concrete optional drain authorization and typed UNKNOWN resolution were approved by the Contractor within M5. Actual Git worktree effects remain TIP-063's disjoint Builder responsibility, using these same sealed command/phase APIs.
+
+Current shared fixture hashes are retained in [the current source manifest](evidence/tip061b/source-manifest.json). The [asynchronous CI refinement](TIP-064-async-CI-refinement.md) adds sanitized writer-admission failure context while preserving its 1000 ms timeout; it also verifies normal native worker-return/drain ordering. The previous shared-fixture manifest is retained separately as `source-manifest-before-async-ci-refinement.json`; original M5 test counts retain their historical meaning.

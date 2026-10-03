@@ -7,12 +7,12 @@
     "app/vibemql5/fleet/native_authorization.py": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5",
     "app/vibemql5/fleet/resources.py": "e3b7cfff663518312648c07ecad605734b6d35129ff519c3b0b018917a0bb492",
     "app/vibemql5/fleet/scoped_resources.py": "ee7eb40be9d15135aab9b02232b6c20cb978a77b017a8fe1b68ef00938b1241c",
-    "docs/fleet-v1/TIP-056-completion.md": "34f5136ae61061ea4627188e67a3e785571606dfad19530443223b85f3a146c6",
-    "docs/fleet-v1/TIP-060-completion.md": "59172d9316aa6b2836b53ba8d77cc1e13d96563ce38d40219e5cd0fce50c52d7",
+    "docs/fleet-v1/TIP-056-completion.md": "413d9808fc7852a71049192452ad18d83a88fa5e242e41338f1ecd03fe88a244",
+    "docs/fleet-v1/TIP-060-completion.md": "fa6bc80fc4af168171e9de7cc48771de9b866c5445ac177112c84385fff1a414",
     "tests/unit/test_tip056_gateway_capacity.py": "021cfb1707a6be814d6374b9bd5928b29ec4e4c883f985c9ed49b4bbe8bc747e",
     "tests/unit/test_tip056_resources.py": "01abaf99f6a8b61cbf73e0da562f14e523df49f7818690d87d0e5f466084010a",
     "tests/unit/test_tip056_scoped.py": "8695e7958e93db56e76fa949050f9c1362bc1f1237961eb890edd4c666687f91",
-    "tests/unit/test_tip056_signed_roster.py": "4a15b64096ba25686660413157523ea710cd7b0927df38e1f4534a635e439de1",
+    "tests/unit/test_tip056_signed_roster.py": "0a619627e4e78b002a76ff336ebfc5f0fc27bfd017ae802bfa186719ac0548c3",
     "tests/unit/test_tip057r_sdk.py": "449558c0f8441003f03c4b605bf7dbc9af7366609064ebf9e35c5626c415d06a",
     "tests/unit/test_tip060_artifacts.py": "548ed2721b50d827e7923ee961e318cd802c819cae3238e852092c465e8016d0",
     "tests/unit/test_tip060_authorization.py": "91fe1952c22dea917ad931730562d0eb20bf652ed4eaff80646c6489626c147e",
@@ -20,7 +20,7 @@
     "tests/unit/test_tip060_journal.py": "358e8fd09c062a6c2c698ab0a186ed434cc2b63cb86a68f01c442d242317d727",
     "tests/unit/test_tip064_capacity_https.py": "f607707a0335035e09c77ffcf604d6656cdcb5e52e600a239f34e56bec8a125d"
   },
-  "files_snapshot_note": "Current owned file bytes after retained Win32 metadata and final POSIX FIFO refinement; historical top-level 378/7 JUnit and 105/1 Windows-followup counts describe their original earlier runs. The separate final_refinement receipt covers the current focused Linux run.",
+  "files_snapshot_note": "Current owned file bytes after retained Win32 metadata, POSIX FIFO refinement and Windows fixture portability refinement. Historical 378/7, 105/1 and 214/1 receipts describe their original earlier runs; windows_fixture_refinement records the later focused Linux run.",
   "final_refinement": {
     "builder": "final_refinement_builder",
     "fifo_regression": {
@@ -45,6 +45,30 @@
   "skipped": 7,
   "status": "BUILDER_SOURCE_SNAPSHOT_PASS_FINAL_ROOT_MATRIX_REQUIRED",
   "test_command": "PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest -q tests/unit/test_tip060_journal.py tests/unit/test_tip060_historical.py tests/unit/test_tip060_authorization.py tests/unit/test_tip060_artifacts.py tests/unit/test_tip056_resources.py tests/unit/test_tip056_scoped.py tests/unit/test_tip056_signed_roster.py tests/unit/test_tip056_gateway_capacity.py tests/unit/test_tip057r_sdk.py tests/unit/test_tip061a_057n.py tests/unit/test_tip057n_qualification.py tests/unit/test_tip057n_windows_owned_process.py tests/unit/test_tip058b_transport.py tests/unit/test_tip060c_restore.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip060c_node_transport.py tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py --junitxml=docs/fleet-v1/evidence/tip060056-source-matrix.xml",
+  "windows_fixture_refinement": {
+    "builder": "final_refinement_builder",
+    "deadline_changes": false,
+    "failed_candidate_prefix": "ebbb56c",
+    "files": {
+      "docs/fleet-v1/TIP-061A-057N-completion.md": "8b52f5ec1fd3084f9469805a78d05ad68efde9c51f518995e3ff30fa0758fe6a",
+      "docs/fleet-v1/TIP-063-worktrees-completion.md": "0f32a6753a383f563879b8e81a54d2de54c30260fb3792a9571a64d005cacda8",
+      "docs/fleet-v1/source-update-verification.md": "5c502201bec2f66da785fe236e81f025dcc0db345c6d72811cc2e2463442be07",
+      "tests/unit/test_tip056_signed_roster.py": "0a619627e4e78b002a76ff336ebfc5f0fc27bfd017ae802bfa186719ac0548c3",
+      "tests/unit/test_tip061a_057n.py": "034758ca46b73e8c66807edf50e76120f1c03fa3f2eb4fb3b2f6bfe504f1dcb2",
+      "tests/unit/test_tip063_worktrees.py": "6156b0e99d4dbb50a69b4db1bdfba998a6d7759406f34fbbe517c2dd9be9eaa6"
+    },
+    "junit": "docs/fleet-v1/evidence/tip060056-windows-fixture-refinement.xml",
+    "junit_sha256": "5f9cc4ecced84f1edb95e1183304cd6b761cb6e85320f97eaa27640442f9397b",
+    "log": "docs/fleet-v1/evidence/tip060056-windows-fixture-refinement.txt",
+    "log_sha256": "0bd15e710358228de7c2e64e2b5e39638331a4e2be58c9103c8a437721bafe8e",
+    "note": "Only fixture syntax/IDs changed. Duplicate alias normalizes Windows source separators; malformed-record bytes and rejection stay intact under short explicit pytest IDs; Git include path syntax is valid and read back before unchanged filter/no-execution denial.",
+    "passed": 141,
+    "product_changes": false,
+    "seconds": 14.07,
+    "skipped": 0,
+    "status": "FIXTURE_ONLY_FOCUSED_LINUX_PASS_EXACT_WINDOWS_CONFIRMATION_PENDING",
+    "test_command": "PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest -q tests/unit/test_tip056_signed_roster.py tests/unit/test_tip061a_057n.py tests/unit/test_tip063_worktrees.py --junitxml=docs/fleet-v1/evidence/tip060056-windows-fixture-refinement.xml"
+  },
   "windows_followup": {
     "affected_linux_passed": 105,
     "affected_linux_skipped": 1,

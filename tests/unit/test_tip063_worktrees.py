@@ -203,8 +203,9 @@ def test_hooks_and_external_config_are_denied_without_execution(worktrees,seam,t
     script.write_text('#!/bin/sh\nprintf executed > '+str(sentinel)+'\n');script.chmod(0o755)
     if seam=='disabled-hook':shutil.copy(script,f['worktrees'].hooks/'post-checkout')
     elif seam=='included-filter':
-        config=tmp_path/'included.config';config.write_text('[filter "bad"]\n clean = '+str(script)+'\n smudge = '+str(script)+'\n')
-        git(f['repo'],'config','include.path',str(config))
+        config=tmp_path/'included.config';config.write_text('[filter "bad"]\n clean = '+script.as_posix()+'\n smudge = '+script.as_posix()+'\n')
+        git(f['repo'],'config','include.path',config.as_posix())
+        assert git(f['repo'],'config','--get','filter.bad.clean')==script.as_posix()
     elif seam=='worktree-config':git(f['repo'],'config','extensions.worktreeConfig','true')
     elif seam=='direct-filter':git(f['repo'],'config','filter.bad.smudge',str(script))
     else:(f['repo']/'.git'/'info'/'attributes').write_text(EA+' filter=bad\n')

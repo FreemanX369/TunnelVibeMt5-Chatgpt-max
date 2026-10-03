@@ -62,3 +62,5 @@ No change to legacy/native signatures, fixed MT5-2 targeting, M0/C1 evidence, MC
 # Current cumulative source pointer
 
 The frozen TIP-058A rows and counts above retain their historical checkpoint meaning. Later control/restore refinements are documented in [TIP-060C completion](TIP-060C-completion.md) and its [current source manifest](evidence/tip060c/source-manifest.json). The whole-update [Contractor verification](source-update-verification.md) supplies exact-candidate acceptance; earlier hashes are not overwritten to represent current shared source.
+
+The [current shared fixture manifest](evidence/tip058a/current-shared-fixture-manifest.json) records the later integration, writer HTTPS diagnostics and source runner files from [the asynchronous CI refinement](TIP-064-async-CI-refinement.md). It is a current source pointer with focused Linux evidence, not a replacement for the frozen A v3/v4 before/after receipts or actual Windows acceptance.

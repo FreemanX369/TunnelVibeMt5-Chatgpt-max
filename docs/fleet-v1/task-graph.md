@@ -11,9 +11,9 @@ The latest owner direction authorizes all source tasks through M5 and 064 handov
 | 061A / 057N | DONE: [frozen project/STRICT/real native drivers](TIP-061A-057N-completion.md) | Dedicated tester/process/session qualification deferred |
 | 060 / 056 | DONE: [jobs/artifacts](TIP-060-completion.md), [signed scoped resources](TIP-056-completion.md) | Physical restart/concurrency/load qualification deferred |
 | 061B / 063 | DONE: [guarded writer](TIP-061B-completion.md), [real Git worktrees](TIP-063-worktrees-completion.md) | Physical multi-client/worktree execution deferred |
-| 064 | [Composition/startup](TIP-064-completion.md) implemented; final exact-candidate CI pending | User tests after [source handover](source-handover.md) |
+| 064 | DONE source: [composition/startup](TIP-064-completion.md), complete Linux/Windows workflow and [handover](source-handover.md); delivered head requires eight successful checks | User tests after source build |
 
-Concrete source and Builder tests are complete. [Contractor verification](source-update-verification.md) records the remaining exact-candidate integrated checks. New native/SDK effects remain gated by exact trusted physical evidence; source fixtures do not authorize them. The following status/history records earlier milestones and does not supersede this current source table.
+Concrete source and Builder tests are complete. [Contractor verification](source-update-verification.md) records the delivered-head acceptance criteria and retained checkpoint receipts. New native/SDK effects remain gated by exact trusted physical evidence; source fixtures do not authorize them. The following status/history records earlier milestones and does not supersede this current source table.
 
 Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual local enrollment/backup/reload/inventory resource qualification verified. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment checkpoint](TIP-055A-enrollment-qualification.md).
 

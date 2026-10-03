@@ -58,7 +58,7 @@ Later physical work is described in [TIP-061A-057N-qualification.md](TIP-061A-05
 
 ## Owned checkpoint
 
-Canonical relative-path-to-SHA256-map bundle: `a2f44a77ce85a18c772693b2299b9a6409f0ddad8c070e30cdcbdcf44528bae7`.
+Current canonical relative-path-to-SHA256-map bundle: `992a97f4ea4d86c3ac5159413d3315c30d4d4823a02b6f761832a6b61047855c`.
 
 | File | SHA256 |
 | --- | --- |
@@ -70,7 +70,7 @@ Canonical relative-path-to-SHA256-map bundle: `a2f44a77ce85a18c772693b2299b9a640
 | `app/vibemql5/core/compiler.py` | `df3a3019dbd79a6081cf3df2bf2e1f3d7211a12bc53c5557033bb59e642d4589` |
 | `app/vibemql5/core/tester.py` | `e8548bdd4aafd51589708676823164a78fcc1e265e2a1f73432990a757f7fa5a` |
 | `app/vibemql5/core/native_ownership.py` | `857bef23426df32fbc41ae58e456a869c6533d3ab59b3dc2f6eba034cad20e87` |
-| `tests/unit/test_tip061a_057n.py` | `30daf82bdf90b167b7eb93361925107a1326642fde2233de20812dc8a08ee8d3` |
+| `tests/unit/test_tip061a_057n.py` | `034758ca46b73e8c66807edf50e76120f1c03fa3f2eb4fb3b2f6bfe504f1dcb2` |
 | `tests/unit/test_tip057n_qualification.py` | `0cede7fa987edd8ab29caa41e396b0b9e0601f27b925d4033b00d33f857c360e` |
 | `tests/unit/test_tip057n_windows_owned_process.py` | `4d34604cc59ffb0b113490c6f2a8247abb9aa94f6ea3fa42b21599b2b0be2b74` |
 | `docs/fleet-v1/TIP-061A-057N-qualification.md` | `f33ba5d22873ef438d00fb11a2caa45f2d99faae9876bc510251922ad7c290d8` |
@@ -80,3 +80,7 @@ Canonical relative-path-to-SHA256-map bundle: `a2f44a77ce85a18c772693b2299b9a640
 Windows CI candidate `3b955d6` exposed stable-file reads rejected by fd/path stat comparisons and STRICT fixtures using POSIX-only canonical paths. M2 now reuses the shared retained-file helper: same native file identity/size/times are checked through the original read handle and a concrete reopened path while that handle stays open. Windows retains read sharing only and denies write/delete sharing, reparse redirection and nonregular files. Trusted approval reads still require owner/mode/ACL checks before and after the bounded read. Byte limits and exact SHA comparisons remain unchanged. Frozen input and snapshot checks reuse this bounded reader instead of unbounded source reads. STRICT fixture paths use canonical host absolute paths; product completeness requirements remain unchanged.
 
 Four added temporary-file cases check exact bounds, oversize refusal and path replacement or Windows sharing refusal. Linux source tests do not establish that the Windows fix passed; the Contractor's next exact candidate Windows CI provides that evidence. Actual VM/MT5/SDK qualification remains deferred.
+
+## Windows parameter-ID fixture refinement
+
+Candidate `ebbb56c` exposed pytest exporting the default 262145-byte parameter representation through `PYTEST_CURRENT_TEST`, exceeding the Windows environment-value bound during setup/teardown. The duplicate-schema and oversize inputs now have short explicit IDs; their bytes and `FLEET_STATE_INVALID` negative assertions are unchanged. No product or deadline changes were made. The joint signed-roster/native/worktree focused diagnostic passed **141 tests, zero skips**, 14.07 seconds; log/JUnit are `evidence/tip060056-windows-fixture-refinement.txt`/`.xml`. The owned checkpoint above now identifies these current test bytes. Earlier diagnostic counts and the prior bundle `a2f44a77ce85a18c772693b2299b9a6409f0ddad8c070e30cdcbdcf44528bae7` remain historical evidence. Exact next-candidate Windows CI is required.

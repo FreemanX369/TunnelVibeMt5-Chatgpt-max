@@ -66,7 +66,7 @@ def test_signed_self_consistent_incomplete_or_extra_source_bundle_is_denied(tmp_
     elif change == "two_files":
         body["source_manifest"] = {k: v for k, v in manifest.items() if k.endswith(("pyproject.toml", "requirements-bootstrap.lock"))}
     elif change == "duplicate_alias":
-        manifest["C:/alternate/vibemql5/" + first.split("/vibemql5/", 1)[1]] = manifest[first]
+        manifest["C:/alternate/vibemql5/" + first.replace("\\", "/").split("/vibemql5/", 1)[1]] = manifest[first]
     else: manifest[first] = "a" * 64
     body["candidate_sha256"] = digest(body["source_manifest"])
     blobs = []

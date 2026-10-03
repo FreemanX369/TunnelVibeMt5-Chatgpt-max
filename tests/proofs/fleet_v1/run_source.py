@@ -8,10 +8,13 @@ import os
 import platform
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[3]
+FULL_UNIT_TIMEOUT_SECONDS = 600
+PROOF_TIMEOUT_SECONDS = 120
 
 
 def git_value(argument):
@@ -52,7 +55,8 @@ def main(argv=None):
     for name in ("TIP057RQ_EXPECTED_SHA", "TIP057RG03A_EXPECTED_SHA", "TIP057RB1_EXPECTED_SHA"):
         environment[name] = head
     cases = [
-        ("full-unit", ["-m", "pytest", "tests/unit", "-q", "--tb=short", "--junitxml=" + str(destination / "unit.junit.xml")]),
+        ("full-unit", ["-m", "pytest", "tests/unit", "-v", "--tb=short", "--durations=20",
+            "-o", "faulthandler_timeout=90", "--junitxml=" + str(destination / "unit.junit.xml")]),
         ("b1-portable", ["tests/proofs/tip057rb1/run_proof.py", "--portable", "--output", str(destination / "b1-portable")]),
     ]
     if os.name == "nt":
@@ -64,14 +68,20 @@ def main(argv=None):
     results = []
     for name, arguments in cases:
         command = [sys.executable, *arguments]
+        timeout = FULL_UNIT_TIMEOUT_SECONDS if name == "full-unit" else PROOF_TIMEOUT_SECONDS
+        begun, timed_out = time.monotonic(), False
         with (destination / (name + ".log")).open("w", encoding="utf-8") as log:
+            log.write(f"SOURCE_CASE_STARTED case={name} timeout_seconds={timeout}\n"); log.flush()
             try:
                 result = subprocess.run(command, cwd=ROOT, env=environment, stdout=log,
-                                        stderr=subprocess.STDOUT, timeout=300, check=False)
+                                        stderr=subprocess.STDOUT, timeout=timeout, check=False)
                 code = result.returncode
             except subprocess.TimeoutExpired:
-                code = 124
-        results.append({"case": name, "command": command, "exit_code": code})
+                code, timed_out = 124, True
+            elapsed = round(time.monotonic() - begun, 3)
+            log.write(f"\nSOURCE_CASE_FINISHED case={name} exit_code={code} timed_out={timed_out} elapsed_seconds={elapsed}\n")
+        results.append({"case": name, "command": command, "exit_code": code,
+            "timeout_seconds": timeout, "timed_out": timed_out, "elapsed_seconds": elapsed})
     after = source_manifest()
     passed = before == after and all(item["exit_code"] == 0 for item in results)
     summary = {"schema": "fleet.source-verification/1", "head_sha": head,

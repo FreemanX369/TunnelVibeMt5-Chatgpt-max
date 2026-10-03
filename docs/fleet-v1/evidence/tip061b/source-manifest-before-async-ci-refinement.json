@@ -17,8 +17,8 @@
     },
     {
       "path": "tests/unit/fleet_writer_fixture.py",
-      "bytes": 5930,
-      "sha256": "d299dbd073c47d599af60bacc2b25bdaed2a50fbe366dc3feedc6ac49448c79d"
+      "bytes": 5198,
+      "sha256": "1c19d59e1c97c8fd66b282d88bbf4829ef83cae8ff6ec982989381e6f1940d5e"
     },
     {
       "path": "tests/unit/test_tip061b_principals.py",
@@ -42,10 +42,9 @@
     },
     {
       "path": "docs/fleet-v1/TIP-061B-completion.md",
-      "bytes": 6108,
-      "sha256": "c046742e52a01f234ab08eead7e0a8eed3709f3484c769d9d970289b790801c6"
+      "bytes": 5608,
+      "sha256": "e15ae495ec6ae0ddf8f7d0e6c1a04abb20dc0bf520029f579427977780d03b85"
     }
   ],
-  "refinement_note": "Current file hashes after bounded async Windows CI fixture refinement. Previous manifest retained as source-manifest-before-async-ci-refinement.json. Historical M5 acceptance is unchanged; current focused Linux matrix and canonical candidate CI have separate scopes.",
-  "current_focused_receipt": "../tip064/async-ci-refinement-v1/receipt.json"
+  "refinement_note": "Current shared test fixture hashes after numeric IPv4/IP-SAN loopback refinement. Previous manifests and original test receipts remain retained; canonical integrated CI is pending."
 }

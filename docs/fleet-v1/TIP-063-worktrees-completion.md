@@ -57,11 +57,15 @@ The configured project baseline is frozen; this source has no automatic baseline
 
 The bundle below covers this Builder's product, focused tests, authorized joint-test refinement and operator handbook. It is a source checkpoint, not a physical installation approval. Shared authority/startup files are independently owned and reviewed by the Contractor.
 
-Bundle SHA256: `ac53102c418b1cbb7ccb77627559b5bfd026c686d2f457d2013ebb0cf094dc15`.
+Current bundle SHA256: `340c9664d8044df140099d90737d62e2e0b95799804b6d6e495b3d9d7ea71c7c`.
 
 | File | SHA256 |
 | --- | --- |
 | `app/vibemql5/fleet/worktrees.py` | `dbefac5d6be391e8b0acfb9368eed624b4edd3d58127dbf2cb7c9174d2fb3396` |
-| `tests/unit/test_tip063_worktrees.py` | `35a7280d063bf817583ab5f23150f3385931dd2aa52e2cea7e7605d6bc6dd61b` |
+| `tests/unit/test_tip063_worktrees.py` | `6156b0e99d4dbb50a69b4db1bdfba998a6d7759406f34fbbe517c2dd9be9eaa6` |
 | `tests/unit/test_tip060c_https_restore.py` | `c126e415dae9de63d71d598c3dd8b4a35dd133dbf2cb80901c5fe548b623a769` |
 | `docs/fleet-v1/TIP-063-worktrees-operator.md` | `4e3f68fc8a0c708619dbf1bb6fdc37fffda2e956d59886a0b9817ab6d570ceaa` |
+
+## Windows Git include fixture refinement
+
+Candidate `ebbb56c` exposed Windows backslashes written unescaped into the included-filter fixture's Git config. The fixture now writes POSIX path syntax and confirms Git reads `filter.bad.clean` from the include before applying the unchanged application rejection and no-execution/no-worktree assertions. Product Git policy and timeouts remain unchanged. The signed-roster/native/worktree joint diagnostic passed **141 tests, zero skips**, 14.07 seconds, recorded in `evidence/tip060056-windows-fixture-refinement.txt`/`.xml`. The table identifies current fixture bytes; earlier counts and prior bundle `ac53102c418b1cbb7ccb77627559b5bfd026c686d2f457d2013ebb0cf094dc15` retain their earlier snapshot meaning. Exact next-candidate Windows confirmation remains pending.
