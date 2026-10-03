@@ -1,5 +1,20 @@
 # Fleet v1 — Revised Task Graph
 
+## Continuous source execution — 2026-10-03
+
+The latest owner direction authorizes all source tasks through M5 and 064 handover without per-TIP approval pauses; see [continuous authorization](continuous-build-2026-10-03.md). Private VM/real SDK tests remain deferred. This section supersedes historical source-dispatch timing gates below, while retaining their receipts and physical capability gates.
+
+| Slice | Current source work | Physical acceptance |
+|---|---|---|
+| 058A | Durable gateway control implementation and independent fault/replay review | Actual singleton deployment/restore topology deferred |
+| 058B / 059 / 062A | [Authenticated HTTPS/outbound read-fleet contract](TIP-058B-059-062A-build.md), BUILD dispatched | Actual endpoint/two nodes/SDK reads deferred |
+| 061A / 057N | [Frozen project/STRICT/routed native contract](TIP-061A-057N-build.md), BUILD dispatched | Dedicated tester/process/session qualification deferred |
+| 060 / 056 | [Durable jobs/artifacts/resource contract](TIP-060-056-build.md), BUILD dispatched | Physical restart/concurrency/load qualification deferred |
+| 061B / 063 | [Guarded writer/worktree contract](TIP-061B-063-build.md), dependency integration follows 060 | Physical multi-client/worktree execution deferred |
+| 064 | Final integrated source review/checks/handover after refinements | User tests after build handover |
+
+DISPATCHED is not PASS. Acceptance waits for concrete source, integrated tests and Contractor review. New native/SDK effects remain gated by exact trusted physical evidence; source fixtures do not authorize them.
+
 Status: **ACTIVE / M0 PASS**; TIP-055A code, fixture/read acceptance and actual local enrollment/backup/reload/inventory resource qualification verified. Dependencies express capability gates, not a requirement to change all files in one PR. See the [approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment checkpoint](TIP-055A-enrollment-qualification.md).
 
 ## TIP scopes and dependencies

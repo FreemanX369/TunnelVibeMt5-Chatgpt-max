@@ -1,5 +1,20 @@
 # Fleet v1 — Requirements, RRI synthesis and decision ledger
 
+## Continuous source decisions — 2026-10-03
+
+Owner authorization at 02:57, reconfirmed 07:25 Asia/Saigon, covers the complete approved source update without per-TIP approval stops. [Continuous execution](continuous-build-2026-10-03.md) retains architecture and postpones physical VM/SDK testing until handover. Historical gate descriptions below retain their original evidence context.
+
+| Prior open item | Concrete source contract now dispatched | Remaining external facts |
+|---|---|---|
+| O-03 / O-05 | [058B/059/062A](TIP-058B-059-062A-build.md): exact signed audience/body, atomic pairing/replay, required policy, bounded target observations | Actual HTTPS origin/certs/node keys and two-node qualification |
+| O-06 | [061A/057N](TIP-061A-057N-build.md): node-owned frozen placement, STRICT matrix, versioned native identity/effect gates | Actual dedicated tester/session/root/build/history qualification |
+| O-07 / O-08 / O-09 | [060/056](TIP-060-056-build.md): durable states/mappings/witnesses, scoped artifacts, atomic resource reservations | Physical restart/lost-ACK/restore/concurrency/load evidence |
+| O-10 | [061B/063](TIP-061B-063-build.md): verified principal, two commit fences, node Git worktree | Actual multiple-client ownership and deployment protections |
+| O-12 | [057R SDK source](TIP-057R-SDK-build.md): owned isolated real worker behind exact signed operator qualification | Real Q2/no-start/SDK restrictions/descendant and persistent handoff qualification |
+| O-11 | [064 integration](TIP-064-integration-build.md): full source checks/refinement/config/migration/rollback handover | Owner's physical scope-bound tests after build |
+
+Source completion requires implemented integrated code/tests/reports; a dispatched contract alone is not completion. Required policy values are operator configuration. Mechanism ceilings prevent unbounded allocations and are not a qualified deployment profile. No fixture or signed operator statement is mislabeled as independent physical attestation.
+
 Status: **APPROVED DIRECTION / M0 QUALIFIED / TIP-057R CONTRACT PREPARED**, per the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment receipts](TIP-055A-enrollment-qualification.md). TIP-055B has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md). [Selected read contract](TIP-057R-contract.md) specifies schema/ACs and local soft budget; shared recovery and strict attach-only remain unresolved. No answer below is attributed to an interview that did not occur.
 
 ## Five-persona RRI synthesis
