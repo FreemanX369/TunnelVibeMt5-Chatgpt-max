@@ -1,0 +1,431 @@
+{
+  "required_controls_passed": false,
+  "variants": [
+    {
+      "variant": "plain_unrestricted_console",
+      "restricted": false,
+      "no_console": false,
+      "required_positive_control": true,
+      "control_passed": true,
+      "inherited_handles": "file-backed stdio only",
+      "parent_token_before": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "root_security": {
+        "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": false,
+          "defaulted": false,
+          "null_acl": true,
+          "label_aces": [],
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR"
+        }
+      },
+      "executable_security": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": false,
+          "defaulted": false,
+          "null_acl": true,
+          "label_aces": [],
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR"
+        }
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "stderr_tail": "",
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "writer_exit_diagnostic": {
+        "raw_exit": 0,
+        "raw_exit_hex": "0x00000000",
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE"
+      },
+      "parent_token_after": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "marker": {
+        "pid": 6340,
+        "positive_marker": true
+      },
+      "writer": {
+        "pid": 6340,
+        "write_success": true,
+        "write_stage": "COMPLETE",
+        "win32_error": 0,
+        "exit_error": 0,
+        "error_source": "NONE",
+        "crt_errno": 0,
+        "requested_bytes": 36,
+        "written_bytes": 36,
+        "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-mc54g1ok",
+        "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-mc54g1ok\\positive-marker.json",
+        "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-mc54g1ok",
+        "root_attributes": 16,
+        "root_error": 0,
+        "appcontainer": 0,
+        "integrity_rid": 12288,
+        "token_error": 0,
+        "policy_query_ok": 1,
+        "child_restricted": 0,
+        "path_limit_chars": 256
+      },
+      "cleanup_errors": []
+    },
+    {
+      "variant": "granted_unrestricted_console",
+      "restricted": false,
+      "no_console": false,
+      "required_positive_control": true,
+      "control_passed": false,
+      "inherited_handles": false,
+      "parent_token_before": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-1842758062-594596521-2761860120-2506130757-1759755431-680810619-1720007097)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 3,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "d46e032c013fe9fb4d0a9cf81fc09f46f11eb2fb4a7bcb6082f32072b1dc3472",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-1842758062-594596521-2761860120-2506130757-1759755431-680810619-1720007097)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 16,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "df32d7042b3365e9112279512521f74a4c2f8eff2162d042cbe949e8701c26b7",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "worker": {
+        "pid": 8632,
+        "creation_100ns": 134354155466883123,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-o2n39u8w\\fixture.exe"
+      },
+      "child_token_before_resume": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-4096",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "exit_code": 3843096581,
+      "exit_code_hex": "0xe5110005",
+      "writer_exit_diagnostic": {
+        "raw_exit": 3843096581,
+        "raw_exit_hex": "0xe5110005",
+        "disposition": "PARTIAL_PROTOCOL_SHAPED_DIAGNOSTIC_CANDIDATE_KNOWN_PROBE_ONLY",
+        "protocol": "tip057rq.writer-exit/1",
+        "inferred_writer_stage": "CREATE_FILE",
+        "inferred_win32_error_low16": 5,
+        "error_payload_bits": 16,
+        "emitter_rule": "KNOWN_STAGE_AND_NATIVE_ERROR_FITS_16_BITS",
+        "provenance": "NOT_AUTHENTICATED_BY_EXIT_ALONE",
+        "tag_collision_possible": true,
+        "qualification": "NONE"
+      },
+      "parent_token_after": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "exact_handle_exit": true,
+      "cleanup_errors": []
+    },
+    {
+      "variant": "granted_restricted_console",
+      "restricted": true,
+      "no_console": false,
+      "required_positive_control": true,
+      "control_passed": true,
+      "inherited_handles": false,
+      "parent_token_before": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-1527624036-1796543636-302627790-1869522955-713138673-3492086868-695960234)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 3,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "d46e032c013fe9fb4d0a9cf81fc09f46f11eb2fb4a7bcb6082f32072b1dc3472",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-1527624036-1796543636-302627790-1869522955-713138673-3492086868-695960234)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 16,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "df32d7042b3365e9112279512521f74a4c2f8eff2162d042cbe949e8701c26b7",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "worker": {
+        "pid": 7120,
+        "creation_100ns": 134354155467364680,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-da8v7sha\\fixture.exe"
+      },
+      "child_token_before_resume": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-4096",
+        "appcontainer": 1,
+        "elevated": 1
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "writer_exit_diagnostic": {
+        "raw_exit": 0,
+        "raw_exit_hex": "0x00000000",
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE"
+      },
+      "parent_token_after": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "marker": {
+        "pid": 7120,
+        "positive_marker": true
+      },
+      "writer": {
+        "pid": 7120,
+        "write_success": true,
+        "write_stage": "COMPLETE",
+        "win32_error": 0,
+        "exit_error": 0,
+        "error_source": "NONE",
+        "crt_errno": 0,
+        "requested_bytes": 36,
+        "written_bytes": 36,
+        "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-da8v7sha",
+        "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-da8v7sha\\positive-marker.json",
+        "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-da8v7sha",
+        "root_attributes": 16,
+        "root_error": 0,
+        "appcontainer": 1,
+        "integrity_rid": 4096,
+        "token_error": 0,
+        "policy_query_ok": 1,
+        "child_restricted": 1,
+        "path_limit_chars": 256
+      },
+      "exact_handle_exit": true,
+      "cleanup_errors": []
+    },
+    {
+      "variant": "granted_restricted_no_console",
+      "restricted": true,
+      "no_console": true,
+      "required_positive_control": false,
+      "control_passed": false,
+      "inherited_handles": false,
+      "parent_token_before": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-28182553-2162331070-409559783-3318704481-2781306179-764135161-1354335010)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 3,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "d46e032c013fe9fb4d0a9cf81fc09f46f11eb2fb4a7bcb6082f32072b1dc3472",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-28182553-2162331070-409559783-3318704481-2781306179-764135161-1354335010)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "present": true,
+          "defaulted": false,
+          "null_acl": false,
+          "label_aces": [
+            {
+              "index": 0,
+              "flags": 16,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "acl_bytes": 28,
+          "ace_count": 1,
+          "raw_acl_sha256": "df32d7042b3365e9112279512521f74a4c2f8eff2162d042cbe949e8701c26b7",
+          "parse_limit_aces": 64,
+          "truncated": false
+        }
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "worker": {
+        "pid": 9012,
+        "creation_100ns": 134354155467950084,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-59ca95ur\\fixture.exe"
+      },
+      "child_token_before_resume": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-4096",
+        "appcontainer": 1,
+        "elevated": 1
+      },
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "writer_exit_diagnostic": {
+        "raw_exit": 3221225794,
+        "raw_exit_hex": "0xc0000142",
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE"
+      },
+      "parent_token_after": {
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+        "integrity_sid": "S-1-16-12288",
+        "appcontainer": 0,
+        "elevated": 1
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3,
+        "flush_error": 0
+      },
+      "exact_handle_exit": true,
+      "cleanup_errors": []
+    }
+  ],
+  "qualification": "STARTUP_AND_MARKER_ONLY_NO_CHILD_DENIAL_CLAIM"
+}

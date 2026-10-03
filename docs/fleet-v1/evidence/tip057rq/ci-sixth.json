@@ -1,0 +1,22 @@
+{
+  "schema": "tip057rq.ci-receipt/1", "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "8f2a0d1d08dae0aad0409348f9c7320f0b24d45c",
+  "tree": "58b2afe3be6736ad0815ba5f47411729009d6bc8", "pr": 61,
+  "workflows": [
+    {"id": 37004481930, "name": "Verify TIP-027 Continuity Core", "conclusion": "success"},
+    {"id": 37004481947, "name": "Verify TIP-028 Idempotent Bindings", "conclusion": "success"},
+    {"id": 37004481994, "name": "Verify TIP-034 Bootstrap Completeness", "conclusion": "success"},
+    {"id": 37004481996, "name": "Verify TIP-053 Deep Update", "conclusion": "success"},
+    {"id": 37004481970, "name": "Verify TIP-057R-Q1 isolated Windows proof", "conclusion": "failure"}
+  ],
+  "dedicated_job": 110829439538,
+  "result": {"status": "FAIL", "tests_run": 16, "failures": 1, "errors": 0, "skips": 0, "full_suite_attempted": true, "elapsed_ms": 13453},
+  "required_checkpoint": "PASS actual labels/tokens/writers/markers/cleanup",
+  "passed_windows_methods": ["Q01", "Q02 exit-between-discovery-and-launch", "Q04 five faults", "Q05", "Q06", "Q07", "Q08"],
+  "remaining_failure": "Q02_Q03 restricted worker entry present but raw0xc0000008 before started; borrowed-handle probe hypothesis",
+  "breakaway_control": {"error": 5, "causal_qualification": "OPEN_CONTROL_NOT_QUALIFIED"},
+  "artifact": {"id": 11224633998, "size_bytes": 9344, "zip_sha256": "20627556a457c728c2dfa127953aaf2183a71bdb40b709933a886ea9ea12706e", "retained_files": ["sixth-8f2a0d1/summary.json", "sixth-8f2a0d1/proof.log", "sixth-8f2a0d1/compiler.log"]},
+  "production_and_sdk": "OPEN",
+  "next_authorized_action": "safe native borrowed-handle probe refinement preserving actual rejection evidence and all positive controls"
+}

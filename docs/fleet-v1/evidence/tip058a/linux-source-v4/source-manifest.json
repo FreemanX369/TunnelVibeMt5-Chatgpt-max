@@ -1,0 +1,40 @@
+{
+  "scope": "SOURCE_ONLY_LOCAL_LINUX_NO_MT5",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip058a_gateway_control.py",
+    "tests/unit/test_tip057rc1.py",
+    "tests/unit/test_tip057rg03a_native_ownership.py",
+    "tests/unit/test_tip055a_runtime_forensics_identity.py",
+    "tests/unit/test_tip055b_runtime_forensics_release.py",
+    "-q",
+    "--tb=short",
+    "--junitxml=/workspace/scratch/250985b4823e/fleet-update-build/docs/fleet-v1/evidence/tip058a/linux-source-v4/focused.junit.xml"
+  ],
+  "exit_code": 0,
+  "before": {
+    "app/vibemql5/fleet/gateway_control.py": "21d0dd452fbce40cf6eee8e30aedd6f77e17b96bd1b062c47e1e075566789939",
+    "tests/unit/test_tip058a_gateway_control.py": "42fb7cdd29a94e29ef79e0b2a03773cb541a37d30f29bd5ac94c0b2352e303f4",
+    "app/vibemql5/core/facade.py": "692dd3d33b7ed7bbbe09eeb3729b43c0235662adffe4e0d0c9068e92bc69e12b",
+    "app/vibemql5/adapters/mcp.py": "de83c6fb5e11c107812e1f8b82e64f6fa5708bc7bf0cd7b81b72a159ac213e3c",
+    "app/vibemql5/fleet/reads.py": "5cfa9e08ccdce9a274aa298dfb237b5e316b0e1da2f90bc25c966a6d442c07c5",
+    "app/vibemql5/fleet/identity.py": "1d234b30e532dd352256010db393ff39f5f39d46d324f6c47ab6539365f459cc",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039"
+  },
+  "after": {
+    "app/vibemql5/fleet/gateway_control.py": "21d0dd452fbce40cf6eee8e30aedd6f77e17b96bd1b062c47e1e075566789939",
+    "tests/unit/test_tip058a_gateway_control.py": "42fb7cdd29a94e29ef79e0b2a03773cb541a37d30f29bd5ac94c0b2352e303f4",
+    "app/vibemql5/core/facade.py": "692dd3d33b7ed7bbbe09eeb3729b43c0235662adffe4e0d0c9068e92bc69e12b",
+    "app/vibemql5/adapters/mcp.py": "de83c6fb5e11c107812e1f8b82e64f6fa5708bc7bf0cd7b81b72a159ac213e3c",
+    "app/vibemql5/fleet/reads.py": "5cfa9e08ccdce9a274aa298dfb237b5e316b0e1da2f90bc25c966a6d442c07c5",
+    "app/vibemql5/fleet/identity.py": "1d234b30e532dd352256010db393ff39f5f39d46d324f6c47ab6539365f459cc",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039"
+  },
+  "unchanged_during_run": true
+}

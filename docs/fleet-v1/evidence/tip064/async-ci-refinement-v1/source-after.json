@@ -1,0 +1,15 @@
+{
+  "owned_source_sha256": {
+    "tests/unit/test_tip064_integration.py": "42112366299d0ad9bbdd02f1ee4f2804980e12221b514541575f4a4490be39c3",
+    "tests/unit/fleet_writer_fixture.py": "d299dbd073c47d599af60bacc2b25bdaed2a50fbe366dc3feedc6ac49448c79d",
+    "tests/proofs/fleet_v1/run_source.py": "507b0eaa92a5ca5ca832461b195ba88a372e3ed34e4306dfb9800632cd3f9748",
+    "tests/unit/test_fleet_source_runner.py": "f1b00d64f6301430852318d6a83275b667445e2830d4c388576de095e5882a38"
+  },
+  "unchanged_product_sha256": {
+    "app/vibemql5/fleet/domain.py": "20aa7e67f8b7cbb3d18709de819ccc8bad95fb0f92290d8ab15b1002d7b35500",
+    "app/vibemql5/fleet/transport.py": "1ffdc7b733214d44871621443c47e2ac4a42aac2268aabcef1bb3c1373883fbc",
+    "app/vibemql5/adapters/fleet_cli.py": "7e1d7e6aa2e3b1bf62ad30b90b9aa6c4f4b8074f0726c359cbbd8f3c4c2a65b8",
+    "app/vibemql5/fleet/native_authorization.py": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5",
+    "app/vibemql5/fleet/job_journal.py": "fa6fbe895655c2cd2bc5bf0898d189398da7102a28e8b1dd1a619b8302c1e54a"
+  }
+}

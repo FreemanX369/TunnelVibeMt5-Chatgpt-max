@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Iterator
 
 from .jobs import _exclusive_file_lock, _pid_exists, _read_json_object
+from .native_ownership import OwnershipAuthority, ObservedProcess, OwnershipBlocked, _identity_valid, current_identity
 
 _SCHEMA_VERSION = "1.0"
 _CURRENT_ACTOR: contextvars.ContextVar[dict[str, Any] | None] = contextvars.ContextVar(
@@ -157,6 +158,8 @@ class _QueuedFileLease:
         self.wait_elapsed_seconds = 0.0
         self.released = False
         self._release_lock = threading.Lock()
+        self.identity = current_identity() if namespace == "native" else None
+        self.authority = OwnershipAuthority(self.root) if namespace == "native" else None
 
     def _owner_payload(self) -> dict[str, Any]:
         return {
@@ -168,6 +171,7 @@ class _QueuedFileLease:
             "kind": self.kind,
             "actor": self.actor,
             "acquired_at": self.acquired_at,
+            **({"identity": self.identity} if self.identity is not None else {}),
         }
 
     def _next_sequence(self) -> int:
@@ -207,11 +211,22 @@ class _QueuedFileLease:
             "queued_at": _now_iso(),
         }
         fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        self.ticket_path = path  # exact ownership is known immediately after O_EXCL.
         try:
-            os.write(fd, _json_bytes(payload))
-            os.fsync(fd)
-        finally:
-            os.close(fd)
+            try:
+                os.write(fd, _json_bytes(payload))
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+        except BaseException:
+            # Close before unlink for Windows sharing semantics. Keep the exact path
+            # available to acquire's cleanup if the first removal itself is unavailable.
+            try:
+                path.unlink(missing_ok=True)
+                self.ticket_path = None
+            except OSError:
+                pass
+            raise
         return path
 
     def _cleanup_dead_waiters(self) -> None:
@@ -237,14 +252,30 @@ class _QueuedFileLease:
         return items[0] if items else None
 
     def _cleanup_stale_lock(self) -> bool:
+        if self.authority is not None:
+            with self.authority.transaction():
+                self.authority.require_closed()
+                return self._remove_dead_owner()
+        return self._remove_dead_owner()
+
+    def _remove_dead_owner(self) -> bool:
         if not self.lock_path.exists():
             return True
         try:
-            data = json.loads(self.lock_path.read_text(encoding="utf-8"))
+            data = _read_json_object(self.lock_path, attempts=1)
             pid = int(data.get("pid") or 0)
-        except Exception:
+        except (OSError, ValueError, TypeError):
             return False
-        if pid > 0 and not _pid_exists(pid):
+        stale = pid > 0 and not _pid_exists(pid)
+        if (not stale and self.namespace == "native" and _identity_valid(data.get("identity"))
+                and data["identity"]["pid"] == pid):
+            # A live reused PID is stale only after an independent live observation.
+            try:
+                with ObservedProcess(pid) as process:
+                    stale = process.identity() != data["identity"]
+            except OwnershipBlocked:
+                pass
+        if stale:
             try:
                 self.lock_path.unlink(missing_ok=True)
                 return True
@@ -252,34 +283,58 @@ class _QueuedFileLease:
                 return False
         return False
 
+    def _try_acquire(self, *, first: bool) -> bool:
+        # Only read/CAS/O_EXCL under this guard. No FIFO wait or effect callback.
+        if self.authority is not None:
+            with self.authority.transaction():
+                self.authority.require_closed()
+                return self._publish_owner() if first else False
+        return self._publish_owner() if first else False
+
+    def _publish_owner(self) -> bool:
+        try:
+            fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            self._remove_dead_owner()
+            return False
+        self.acquired_at = _now_iso()
+        try:
+            try:
+                os.write(fd, _json_bytes(self._owner_payload()))
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+        except BaseException:
+            # This O_EXCL owner was created by this attempt and no lease/effect has
+            # been returned. Native cleanup stays inside the admission transaction.
+            try:
+                self.lock_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+            raise
+        return True
+
     def acquire(self) -> "_QueuedFileLease":
         start = time.monotonic()
         deadline = start + self.wait_seconds
-        self.ticket_path = self._new_ticket()
-        self.lock_path.parent.mkdir(parents=True, exist_ok=True)
+        # Fast denial keeps reads/recovery bounded even if unrelated queue metadata
+        # is damaged. The winning decision below still checks under the same guard.
+        if self.authority is not None:
+            with self.authority.transaction():
+                self.authority.require_closed()
         try:
+            self.ticket_path = self._new_ticket()
+            self.lock_path.parent.mkdir(parents=True, exist_ok=True)
             while True:
                 first = self._first_ticket()
-                if first == self.ticket_path:
+                if self._try_acquire(first=first == self.ticket_path):
+                    self.wait_elapsed_seconds = round(time.monotonic() - start, 6)
                     try:
-                        fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-                    except FileExistsError:
-                        self._cleanup_stale_lock()
-                    else:
-                        self.acquired_at = _now_iso()
-                        payload = _json_bytes(self._owner_payload())
-                        try:
-                            os.write(fd, payload)
-                            os.fsync(fd)
-                        finally:
-                            os.close(fd)
-                        self.wait_elapsed_seconds = round(time.monotonic() - start, 6)
-                        try:
-                            self.ticket_path.unlink(missing_ok=True)
-                        except OSError:
-                            pass
-                        self.ticket_path = None
-                        return self
+                        self.ticket_path.unlink(missing_ok=True)
+                    except OSError:
+                        pass
+                    self.ticket_path = None
+                    return self
                 if time.monotonic() >= deadline:
                     raise TimeoutError(
                         f"CONCURRENCY_{self.namespace.upper()}_WAIT_TIMEOUT: operation={self.operation_id}"
@@ -549,6 +604,7 @@ class ConcurrencyManager:
             "mutation_waiters": self._waiter_count(self.state_root / "mutation-waiters"),
             "native_lock": self._read_lock(self.root / "runs" / ".active.lock"),
             "native_waiters": self._waiter_count(self.state_root / "native-waiters"),
+            "native_ownership": OwnershipAuthority(self.root).status(),
             "attribution": {
                 "model": "MCP_REQUEST_PLUS_PROJECT_ITERATION_WORKSTREAM",
                 "authenticated_account_identity": False,

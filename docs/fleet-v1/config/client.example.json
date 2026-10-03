@@ -1,0 +1,26 @@
+{
+  "schema": "fleet.client-config/1",
+  "origin": "https://fleet.example.test:8443",
+  "ca_file": "/srv/fleet/secrets/operator-ca.pem",
+  "fleet_policy": {
+    "max_body_bytes": 1048576,
+    "max_response_bytes": 1048576,
+    "http_timeout_ms": 5000,
+    "max_pending_reads": 128,
+    "max_retained_results": 4096,
+    "max_targets": 64,
+    "max_poll_commands": 4,
+    "read_deadline_ms": 10000,
+    "session_timeout_ms": 30000,
+    "heartbeat_interval_ms": 1000,
+    "poll_interval_ms": 100,
+    "freshness_ms": 5000,
+    "max_clock_future_ms": 0,
+    "max_rows": 4096,
+    "max_owner_token_bytes": 128,
+    "max_operation_id_bytes": 128
+  },
+  "owner_token_file": "/srv/fleet/secrets/owner-token.txt",
+  "principal_key_file": null,
+  "principal_credential_file": null
+}

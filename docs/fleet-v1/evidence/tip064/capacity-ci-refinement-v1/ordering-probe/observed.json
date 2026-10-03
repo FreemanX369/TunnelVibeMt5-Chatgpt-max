@@ -1,0 +1,26 @@
+{
+  "gateway_states": [
+    "UNKNOWN",
+    "SUCCEEDED",
+    "QUEUED"
+  ],
+  "node_states": [
+    "UNKNOWN",
+    "SUCCEEDED"
+  ],
+  "callback_count": 2,
+  "expired_callback_count": 1,
+  "pending_futures": 0,
+  "pending_native_records": 0,
+  "release_set": true,
+  "scope_states": [
+    {
+      "status": "UNKNOWN",
+      "phase": "ARMED"
+    },
+    {
+      "status": "RELEASED",
+      "phase": "CLOSED"
+    }
+  ]
+}

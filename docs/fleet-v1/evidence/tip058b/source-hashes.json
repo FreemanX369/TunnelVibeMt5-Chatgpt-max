@@ -1,0 +1,18 @@
+{
+  "runtime": {
+    "python": "3.12.14",
+    "cryptography": "50.0.2",
+    "pytest": "9.1.1"
+  },
+  "sha256": {
+    "app/vibemql5/fleet/wire.py": "48b3d18123e93735107360e899af893abd0bc606a179793dc085b973ae1f398e",
+    "app/vibemql5/fleet/node_keys.py": "ae73b65f2e08dd87caa5269ccee06fecf011b064744d9b147f17047f1e8afba4",
+    "app/vibemql5/fleet/read_broker.py": "ff8bd5fd74955be4cdc6f94732bf8c65f255b81cb307ff5f9b1965a23ad5e8e4",
+    "app/vibemql5/fleet/transport.py": "1ffdc7b733214d44871621443c47e2ac4a42aac2268aabcef1bb3c1373883fbc",
+    "app/vibemql5/fleet/node_transport_journal.py": "4f570add909181e14df717438e484b614934fa011d23cb23f0fac4100135060a",
+    "tests/unit/test_tip058b_transport.py": "65291f5ffff532dfeb8a994a382def3bd873ad086f6b7c7685a2aafb6ea26967",
+    "tests/unit/test_tip059_read_broker.py": "b34e2522cae1d4e18611a461c78bda8765952048b22b06eb7f9d53c91a77d470",
+    "tests/unit/test_tip060c_node_transport.py": "47b95f7c3bc66f8592517a5221f015adbb33f7d5cf3d12b6dff3824ebb64114b",
+    "pyproject.toml": "adf740ee0cad93de88fcb74f61d1ea3042e453d486007343e7da55a3c482984a"
+  }
+}

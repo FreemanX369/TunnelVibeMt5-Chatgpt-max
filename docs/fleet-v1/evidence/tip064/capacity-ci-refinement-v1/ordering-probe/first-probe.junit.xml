@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.658" timestamp="2026-10-03T15:18:28.213266+05:30" hostname="2e045d6bf7c9"><testcase classname="capacity-hold-ordering-probe.test_capacity_hold_ordering" name="test_original_hold_expiry_before_release_is_retained" time="8.499"><failure message="AssertionError: assert ['UNKNOWN', 'SUCCEEDED'] == ['UNKNOWN', 'UNKNOWN']&#10;  &#10;  At index 1 diff: 'SUCCEEDED' != 'UNKNOWN'&#10;  Use -v to get more diff">../capacity-hold-ordering-probe/test_capacity_hold_ordering.py:177: in test_original_hold_expiry_before_release_is_retained
+    assert snapshot['gateway_states'][:2]==['UNKNOWN','UNKNOWN']
+E   AssertionError: assert ['UNKNOWN', 'SUCCEEDED'] == ['UNKNOWN', 'UNKNOWN']
+E     
+E     At index 1 diff: 'SUCCEEDED' != 'UNKNOWN'
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

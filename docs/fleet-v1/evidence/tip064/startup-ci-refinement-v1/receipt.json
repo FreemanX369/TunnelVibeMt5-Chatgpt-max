@@ -1,0 +1,83 @@
+{
+  "artifacts": {
+    "focused.junit.xml": "ce5b1a7af30583adaac6aae9bd0cd311e1b6783037312b042646838af3623b0c",
+    "focused.log": "fe457171d867a8d165ebf253c46a72650b4066cbde7eaa5240f79a5ebccfb6d1",
+    "source-after.json": "c328292e0d13cfc9d75f6dc68f8eb5c0c5f0d8ec3d1a3af1bbfaf9811063a8d8",
+    "source-before.json": "c328292e0d13cfc9d75f6dc68f8eb5c0c5f0d8ec3d1a3af1bbfaf9811063a8d8"
+  },
+  "builder": "windows_fixture_final",
+  "command": "PYTHONPATH=<cached dependencies>:app:tests/unit python -m pytest -q --tb=short tests/unit/test_fleet_gateway_fixture.py tests/unit/test_fleet_source_runner.py tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip064_writer_resolution_https.py tests/unit/test_tip061b_principals.py tests/unit/test_tip061b_writers.py tests/unit/test_tip061b_absence.py tests/unit/test_tip063_worktrees.py tests/unit/test_tip058b_transport.py --junitxml=<receipt-directory>/focused.junit.xml",
+  "date": "2026-10-03",
+  "deferred": [
+    "private VM",
+    "MT5",
+    "physical SDK qualification",
+    "merge",
+    "deployment"
+  ],
+  "errors": 0,
+  "failed": 0,
+  "observed_source_count": 44,
+  "owned_sources": {
+    "tests/unit/fleet_writer_fixture.py": "b92647d64b17cacd54fec921e8ecb0a089c7a3878c1775da5a9824ac983eec56",
+    "tests/unit/test_fleet_gateway_fixture.py": "526ec67b5fa6de8cbf9ea617c6968b9da376ebb93f07783d15d8cfc51b590198",
+    "tests/unit/test_tip064_integration.py": "b47059c73a8ffb19c34278c2353a43c33da17e274471bb1662280871fbf69ba8"
+  },
+  "passed": 191,
+  "previous_canonical_head": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+  "previous_canonical_tree": "baadc33d2cbfe40428c5f564f011f763200c929d",
+  "production_python_count": 88,
+  "production_python_matches_previous_canonical": true,
+  "refinement": {
+    "authority_ttl_or_explicit_absolute_deadline_changed": false,
+    "base_transport_fixture_http_timeout_ms": 1000,
+    "positive_writer_fixture_http_timeout_ms": 5000,
+    "product_code_changed": false,
+    "startup_observer_timeout_seconds": 10,
+    "timeout_diagnostic": "thread liveness, failure queue count, bounded frame file/function/line; no locals/credentials/body",
+    "transport_retries_added": 0
+  },
+  "runtime": {
+    "cryptography": "50.0.2",
+    "dependency_scope": "cached Linux worktree diagnostic",
+    "platform": "linux",
+    "pytest": "9.1.1",
+    "python": "3.12.14"
+  },
+  "schema": "fleet.fixture-refinement-evidence/1",
+  "seconds": 29.1,
+  "skipped": [
+    {
+      "reason": "Actual retained-handle numeric ACL fixture requires Windows",
+      "test": "test_windows_private_acl_roundtrip_reports_public_semantics"
+    },
+    {
+      "reason": "Actual retained-handle Windows ownership fixture requires Windows",
+      "test": "test_windows_private_key_foreign_owner_denied_on_retained_handle"
+    },
+    {
+      "reason": "Actual protected staging-directory handle fixture requires Windows",
+      "test": "test_windows_staging_directory_cannot_be_renamed_while_held"
+    }
+  ],
+  "source_before_after_equal": true,
+  "source_findings": {
+    "protected_startup_failure": {
+      "clean_teardown_join_budget_seconds": 3,
+      "exact_slow_stage": "UNPROVEN",
+      "observation_timeout_seconds": 5,
+      "reachable_synchronous_stages": [
+        "HTTPServer.server_bind/socket.getfqdn",
+        "controller_factory ledger initialization"
+      ]
+    },
+    "writer_admit_failure": {
+      "cause_type": "TimeoutError",
+      "elapsed_ms": 1016,
+      "http_timeout_ms": 1000,
+      "server_failure_count": 0,
+      "server_thread_alive": true
+    }
+  },
+  "status": "FOCUSED_LINUX_PASS_EXACT_NEXT_CANDIDATE_WINDOWS_CI_REQUIRED"
+}

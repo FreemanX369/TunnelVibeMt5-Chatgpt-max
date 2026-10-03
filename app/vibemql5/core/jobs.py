@@ -755,6 +755,25 @@ class JobManager:
         requirement = self._cancel_restore_requirement(job_id)
         if requirement.get("complete"):
             return requirement
+        # Both IPC probing and restart require compatible common admission. An
+        # existing/self-held lease is pending, never recursively waited or borrowed.
+        from .concurrency import acquire_native_execution
+        from .native_ownership import OwnershipBlocked
+        try:
+            lease = acquire_native_execution(self.root, f"CANCEL-RESTORE-{job_id}",
+                kind="cancel_terminal_restore", wait_seconds=0)
+        except (RuntimeError, TimeoutError, OSError) as exc:
+            reason = (exc.reason if isinstance(exc, OwnershipBlocked) else
+                      "NATIVE_LEASE_BUSY" if isinstance(exc, TimeoutError) else "NATIVE_LEASE_UNAVAILABLE")
+            return {**requirement, "complete": False, "recovery_attempted": False,
+                    "reason": "NATIVE_OWNERSHIP_RESTORE_PENDING", "error": "LIVE_RECOVERY_REQUIRED",
+                    "ownership_reason": reason}
+        try:
+            return self._restore_cancel_terminal_with_lease(job_id, requirement)
+        finally:
+            lease.release()
+
+    def _restore_cancel_terminal_with_lease(self, job_id: str, requirement: dict[str, Any]) -> dict[str, Any]:
         handoff = dict(requirement.get("handoff") or {})
         job = self.store.load(job_id)
         try:

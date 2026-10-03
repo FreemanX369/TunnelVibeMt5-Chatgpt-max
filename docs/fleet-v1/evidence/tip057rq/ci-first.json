@@ -1,0 +1,74 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+  "tree": "2be3d098f38bcf1320eeced3e7ee264d594c83bb",
+  "pr": 61,
+  "remote_blob_comparison": {
+    "count": 191,
+    "baseline_unchanged": 177,
+    "existing_docs_changed": 7,
+    "new_files": 7
+  },
+  "workflows": [
+    {
+      "id": 36979951816,
+      "name": "Verify TIP-027 Continuity Core",
+      "head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36979951816"
+    },
+    {
+      "id": 36979952026,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36979952026"
+    },
+    {
+      "id": 36979951811,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36979951811"
+    },
+    {
+      "id": 36979951792,
+      "name": "Verify TIP-053 Deep Update",
+      "head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36979951792"
+    },
+    {
+      "id": 36979951789,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/36979951789"
+    }
+  ],
+  "dedicated_job": 110751975744,
+  "result": "BLOCKED_COMPILER_INVOCATION_BEFORE_TESTS",
+  "artifact": {
+    "id": 11214762919,
+    "size_bytes": 1235,
+    "zip_sha256": "f945ec121b872c99b5e6be76e225cea7c41c96f35b6c1681967bc7754e5f1713",
+    "retained_files": [
+      "first-a93e4b9/summary.json",
+      "first-a93e4b9/compiler.log"
+    ]
+  },
+  "source_hash_difference": "All four raw CI hashes independently reproduced by LF-to-CRLF checkout conversion",
+  "open": [
+    "Q03 broker/SDK/uncontained launch",
+    "Q2 actual MT5 compatibility",
+    "G03 product common-acquisition integration",
+    "G04 actual SDK strict no-start"
+  ]
+}

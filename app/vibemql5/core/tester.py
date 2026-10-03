@@ -64,12 +64,21 @@ class TesterDriver:
     def __init__(self, root: Path | None = None):
         self.root=Path(root or default_root()); self.inventory=TerminalInventory(self.root); self.workspace=WorkspaceManager(self.root)
 
-    def _copy_set(self, workspace:str, set_rel:str|None, terminal_alias:str, job_id:str)->str|None:
+    def _copy_set(self, workspace:str, set_rel:str|None, terminal_alias:str, job_id:str, before_effect=None, frozen_set_bytes=None, after_effect=None)->str|None:
         if not set_rel:return None
-        src=self.workspace.resolve(workspace,set_rel,must_exist=True);t=self.inventory.get(terminal_alias);name=f"VibeMQL5-{job_id}.set";destinations=[Path(t.terminal_path).parent/"MQL5"/"Profiles"/"Tester"/name,Path(t.data_root)/"MQL5"/"Profiles"/"Tester"/name];copied=False
+        src=self.workspace.resolve(workspace,set_rel,must_exist=frozen_set_bytes is None);t=self.inventory.get(terminal_alias);name=f"VibeMQL5-{job_id}.set";destinations=[Path(t.terminal_path).parent/"MQL5"/"Profiles"/"Tester"/name,Path(t.data_root)/"MQL5"/"Profiles"/"Tester"/name];copied=False
         for dst in destinations:
-            try: dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst);copied=True
+            if before_effect: before_effect("tester_set_prepare")
+            try: dst.parent.mkdir(parents=True,exist_ok=True)
+            except OSError: continue
+            if after_effect: after_effect("tester_set_prepare")
+            if before_effect: before_effect("tester_set_copy")
+            try:
+                shutil.copy2(src,dst) if frozen_set_bytes is None else dst.write_bytes(frozen_set_bytes)
+                copied=True
             except OSError: pass
+            else:
+                if after_effect: after_effect("tester_set_copy")
         if not copied: raise OSError("Could not deploy ExpertParameters .set to terminal tester profile")
         return name
 
@@ -197,10 +206,17 @@ class TesterDriver:
         out.sort(key=lambda x:x["mtime"],reverse=True);return out[:40]
 
     @staticmethod
-    def _prepare_report_targets(candidates:list[Path])->None:
+    def _prepare_report_targets(candidates:list[Path], before_effect=None, after_effect=None)->None:
         for p in candidates:
-            try:p.parent.mkdir(parents=True,exist_ok=True);p.exists() and p.unlink()
+            if before_effect: before_effect("tester_report_prepare")
+            try:p.parent.mkdir(parents=True,exist_ok=True)
+            except OSError:continue
+            if after_effect: after_effect("tester_report_prepare")
+            if before_effect: before_effect("tester_report_reset")
+            try:p.exists() and p.unlink()
             except OSError:pass
+            else:
+                if after_effect: after_effect("tester_report_reset")
 
     @staticmethod
     def _copy_report(actual_report:Path,run_dir:Path)->Path:
@@ -214,8 +230,11 @@ class TesterDriver:
     def _native_period_from_parsed_logs(logs:dict)->dict:
         evidence=dict(logs.get("execution_evidence") or {});return dict(evidence.get("selected_period") or {"status":"UNVERIFIED","from_date":None,"to_date":None})
 
-    def run(self,job_id:str,workspace:str,source_rel:str,terminal_alias:str,expert_name:str,preset:str,run_dir:Path,set_rel:str|None=None,overrides:dict|None=None,timeout:int=0,mock:bool=False,on_pid:Callable[[int],None]|None=None,login:int|None=None,on_event:Callable[[str,dict],None]|None=None,resolved_config:dict|None=None,request_normalization:dict|None=None,should_cancel:Callable[[],bool]|None=None)->dict:
-        run_dir.mkdir(parents=True,exist_ok=True);started_wall=time.time();started=time.monotonic();request_normalization=dict(request_normalization or {});emitted=set()
+    def run(self,job_id:str,workspace:str,source_rel:str,terminal_alias:str,expert_name:str,preset:str,run_dir:Path,set_rel:str|None=None,overrides:dict|None=None,timeout:int=0,mock:bool=False,on_pid:Callable[[int],None]|None=None,login:int|None=None,on_event:Callable[[str,dict],None]|None=None,resolved_config:dict|None=None,request_normalization:dict|None=None,should_cancel:Callable[[],bool]|None=None,owned_launch=None,before_effect=None,frozen_set_bytes=None,after_effect=None)->dict:
+        if before_effect: before_effect("tester_run_prepare")
+        run_dir.mkdir(parents=True,exist_ok=True)
+        if after_effect: after_effect("tester_run_prepare")
+        started_wall=time.time();started=time.monotonic();request_normalization=dict(request_normalization or {});emitted=set()
         def emit(kind,payload=None,*,once_key=None):
             key=once_key or ""
             if key and key in emitted:return
@@ -223,12 +242,18 @@ class TesterDriver:
             if on_event:on_event(kind,dict(payload or {}))
         if mock:
             ini,resolved=render_tester_ini(self.root,run_dir,expert_name,preset,set_rel,overrides,report_path=run_dir/"report.json",resolved_config=resolved_config);report={"strategy":{"trades":27,"net_profit":421.31,"profit_factor":1.31,"max_drawdown_pct":4.8}};(run_dir/"report.json").write_text(json.dumps(report,indent=2),encoding="utf-8");(run_dir/"tester.log").write_text("VibeMQL5 mock tester completed successfully\n",encoding="utf-8");parsed=parse_report(run_dir/"report.json");logs=parse_tester_log(run_dir/"tester.log");emit("TESTER_NATIVE_FINISHED",{"mock":True},once_key="finished");return {"status":"COMPLETED","execution_status":"PASSED","report_status":"PARSED","duration_seconds":round(time.monotonic()-started,3),"process_exit_code":0,"report":parsed,"logs":logs,"preset":resolved,"tester_ini":str(ini),"mock":True,"diagnostics":[],"request_normalization":request_normalization,"native_selected_period":{"status":"MOCK",**(request_normalization.get("effective_period") or {})},"period_conformance":{"status":"PASS","basis":"mock_effective_period"},"executed_coverage":{"status":"MOCK_COMPLETED"},"completion_reason":"MOCK_COMPLETED"}
-        t=self.inventory.get(terminal_alias);set_name=self._copy_set(workspace,set_rel,terminal_alias,job_id);install_dir=Path(t.terminal_path).parent;data_root=Path(t.data_root);execution_context=self._execution_context()
+        t=self.inventory.get(terminal_alias);set_name=(self._copy_set(workspace,set_rel,terminal_alias,job_id,before_effect=before_effect,frozen_set_bytes=frozen_set_bytes,after_effect=after_effect) if before_effect or frozen_set_bytes is not None else self._copy_set(workspace,set_rel,terminal_alias,job_id));install_dir=Path(t.terminal_path).parent;data_root=Path(t.data_root);execution_context=self._execution_context()
         if os.name=="nt" and execution_context.get("interactive_session") is False:
             diagnostic={"code":"MT5_INTERACTIVE_SESSION_REQUIRED","message":"Native MT5 execution was requested from Windows Session 0. Install/start the VibeMQL5 tunnel Scheduled Task with Interactive logon so MetaTrader, report generation and GUI/profile operations run in the logged-in desktop session.","execution_context":execution_context};emit("TESTER_PRESTART_FAILED",diagnostic,once_key="prestart-failed");return {"status":"FAILED","execution_status":"NOT_RUN","report_status":"NOT_RUN","duration_seconds":round(time.monotonic()-started,3),"process_exit_code":None,"report":{"status":"NOT_RUN","metrics":{}},"logs":{"native_test_started":False,"native_test_finished":False,"native_test_passed":False},"preset":dict(resolved_config or overrides or {}),"tester_ini":None,"mock":False,"diagnostics":[diagnostic],"execution_context":execution_context,"request_normalization":request_normalization,"native_selected_period":{"status":"NOT_RUN"},"period_conformance":{"status":"NOT_RUN"},"executed_coverage":{"status":"NOT_RUN"},"completion_reason":"PRESTART_FAILED"}
-        report_stem=f"VibeMQL5-{job_id}";report_candidates=self._report_candidates(install_dir,data_root,job_id);self._prepare_report_targets(report_candidates);ini,resolved=render_tester_ini(self.root,run_dir,expert_name,preset,set_name,overrides,report_value=report_stem,shutdown_terminal=True,tester_login=login,resolved_config=resolved_config);log_cursors=self._snapshot_log_lengths(terminal_alias);(run_dir/"tester.log").write_text("",encoding="utf-8");cmd=[t.terminal_path]
+        report_stem=f"VibeMQL5-{job_id}";report_candidates=self._report_candidates(install_dir,data_root,job_id);(self._prepare_report_targets(report_candidates,before_effect=before_effect,after_effect=after_effect) if before_effect else self._prepare_report_targets(report_candidates))
+        if before_effect: before_effect("tester_ini_prepare")
+        ini,resolved=render_tester_ini(self.root,run_dir,expert_name,preset,set_name,overrides,report_value=report_stem,shutdown_terminal=True,tester_login=login,resolved_config=resolved_config);log_cursors=self._snapshot_log_lengths(terminal_alias);(run_dir/"tester.log").write_text("",encoding="utf-8");cmd=[t.terminal_path]
+        if after_effect: after_effect("tester_ini_prepare")
         if login:cmd.append(f"/login:{int(login)}")
-        cmd.append(f"/config:{ini}");proc=subprocess.Popen(cmd,cwd=str(install_dir),stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        cmd.append(f"/config:{ini}")
+        if before_effect and owned_launch is None: before_effect("tester_process_create")
+        proc=(owned_launch or subprocess.Popen)(cmd,cwd=str(install_dir),stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        if after_effect and owned_launch is None: after_effect("tester_process_create")
         if on_pid:on_pid(proc.pid)
         emit("TESTER_PROCESS_STARTED",{"pid":proc.pid,"timeout_seconds":int(timeout)},once_key="process-started")
         actual_report=None;explicit_deadline=(time.monotonic()+int(timeout)) if int(timeout)>0 else None;report_grace_seconds=60.0;no_activity_notice_seconds=600.0;last_size=None;stable_since=None;terminal_exit_at=None;native_finished_at=None;last_activity=time.monotonic();last_progress=None;fatal_count=0;completion_reason=None;timed_out=False;log_receipts=[]
@@ -238,7 +263,9 @@ class TesterDriver:
                 try:cancel_now=bool(should_cancel())
                 except Exception:cancel_now=False
                 if cancel_now:completion_reason="CANCEL_REQUESTED_AFTER_NATIVE_FINISH" if native_finished_at is not None else "CANCEL_REQUESTED";emit("TESTER_CANCEL_OBSERVED",{"process_alive":proc.poll() is None,"after_native_finish":native_finished_at is not None},once_key="cancel-observed");break
+            if before_effect: before_effect("tester_capture")
             changed,receipts=self._capture_log_deltas(terminal_alias,run_dir,log_cursors,since=started_wall)
+            if after_effect: after_effect("tester_capture")
             if receipts:log_receipts.extend(receipts)
             if changed:last_activity=now
             logs_live=parse_tester_log(run_dir/"tester.log");progress=logs_live.get("progress_pct")
@@ -266,14 +293,25 @@ class TesterDriver:
             if explicit_deadline is not None and now>=explicit_deadline:timed_out=True;completion_reason="EXPLICIT_OPERATOR_TIMEOUT";emit("TESTER_EXPLICIT_TIMEOUT",{"timeout_seconds":int(timeout)},once_key="explicit-timeout");break
             if now-last_activity>=no_activity_notice_seconds:emit("TESTER_NO_RECENT_PROGRESS",{"inactive_seconds":round(now-last_activity,1),"process_alive":proc.poll() is None},once_key=f"no-progress-{int((now-started)//no_activity_notice_seconds)}")
             time.sleep(0.5)
-        time.sleep(0.5);_,receipts=self._capture_log_deltas(terminal_alias,run_dir,log_cursors,since=started_wall)
+        time.sleep(0.5)
+        if before_effect: before_effect("tester_capture")
+        _,receipts=self._capture_log_deltas(terminal_alias,run_dir,log_cursors,since=started_wall)
+        if after_effect: after_effect("tester_capture")
         if receipts:log_receipts.extend(receipts)
         if actual_report is None:actual_report=self._find_report(report_candidates,started_wall)
         launcher_code=proc.poll()
         if proc.poll() is None and completion_reason is not None:
-            try:proc.terminate();proc.wait(timeout=10)
+            if before_effect: before_effect("tester_terminate")
+            try:
+                proc.terminate()
+                if after_effect: after_effect("tester_terminate")
+                proc.wait(timeout=10)
             except Exception:
-                try:proc.kill();proc.wait(timeout=5)
+                if before_effect: before_effect("tester_terminate")
+                try:
+                    proc.kill()
+                    if after_effect: after_effect("tester_terminate")
+                    proc.wait(timeout=5)
                 except Exception:pass
         code=proc.returncode if proc.returncode is not None else launcher_code;logs=parse_tester_log(run_dir/"tester.log");diagnostics=list(logs.get("diagnostics",[]));native_pass=bool(logs.get("native_test_passed"));native_period=self._native_period_from_parsed_logs(logs);effective_period=dict(request_normalization.get("effective_period") or {})
         if native_period.get("status")=="OBSERVED":
@@ -281,7 +319,10 @@ class TesterDriver:
         else:period_conformance={"status":"UNVERIFIED","effective_period":effective_period,"native_selected_period":native_period};diagnostics_period={"code":"NATIVE_PERIOD_UNVERIFIED","message":"Native tester period could not be proven from the captured MT5 journal","effective_period":effective_period}
         normalized_xml=None
         if actual_report is not None:
-            captured_report=self._copy_report(actual_report,run_dir);parsed=parse_report(captured_report);report_status=parsed.get("status","UNKNOWN")
+            if before_effect: before_effect("tester_report_capture")
+            captured_report=self._copy_report(actual_report,run_dir)
+            if after_effect: after_effect("tester_report_capture")
+            parsed=parse_report(captured_report);report_status=parsed.get("status","UNKNOWN")
             if parsed.get("status")=="PARSED":
                 try:normalized_xml=write_normalized_report_xml(run_dir,captured_report,parsed.get("metrics") or {})
                 except Exception as exc:diagnostics.append({"code":"RELEASE_XML_DERIVATION_FAILED","message":str(exc)})
@@ -301,4 +342,6 @@ class TesterDriver:
         executed_coverage=self._classify_executed_coverage(logs=logs,effective_period=effective_period,native_period=native_period,completion_reason=completion_reason,timed_out=timed_out,log_receipts=log_receipts)
         if executed_coverage.get("status")=="EARLY_TERMINATION":diagnostics.append({"code":"NATIVE_EARLY_TERMINATION","message":"Native execution ended before the effective selected-period end","executed_coverage":executed_coverage})
         elif executed_coverage.get("status")=="UNVERIFIED" and status=="COMPLETED":diagnostics.append({"code":"EXECUTED_COVERAGE_UNVERIFIED","message":"Generic native finish/report evidence is insufficient to prove full selected-period execution","executed_coverage":executed_coverage})
+        if before_effect: before_effect("tester_result_publish")
+        if after_effect: after_effect("tester_result_publish")
         return {"status":status,"execution_status":execution_status,"report_status":report_status,"duration_seconds":round(time.monotonic()-started,3),"process_exit_code":code,"launcher_exit_code":launcher_code,"report":parsed,"logs":logs,"preset":resolved,"tester_ini":str(ini),"command":cmd,"source":"windows_native_mt5_strategy_tester" if os.name=="nt" else "native_mt5_strategy_tester_nonwindows","mock":False,"diagnostics":diagnostics,"terminal_report_path":str(actual_report) if actual_report else str(report_candidates[0]),"report_candidates":[str(x) for x in report_candidates],"report_value":report_stem,"report_scan":self._report_scan(report_candidates,started_wall),"execution_context":execution_context,"normalized_xml":normalized_xml,"request_normalization":request_normalization,"requested_period":request_normalization.get("requested_period"),"effective_period":request_normalization.get("effective_period"),"native_selected_period":native_period,"period_conformance":period_conformance,"executed_coverage":executed_coverage,"completion_reason":completion_reason,"explicit_timeout_seconds":int(timeout),"log_capture":{"cursor_path":"tester-log-cursor.json","receipts":log_receipts[-100:]}}

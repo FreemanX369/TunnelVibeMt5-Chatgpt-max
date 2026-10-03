@@ -1,0 +1,284 @@
+{
+  "schema": "fleet.ci-checkpoint/1",
+  "status": "FAILED_OVERALL_WITH_INTEGRATED_SOURCE_PASS",
+  "head_sha": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+  "tree_sha": "baadc33d2cbfe40428c5f564f011f763200c929d",
+  "checkout_merge_sha": "0480f6d6bf8e83f71217071fbd2eba35f2c1d6a0",
+  "merge_vs_source_diff": [],
+  "workflow_runs": [
+    {
+      "id": 37110971138,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 10,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971138/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971138/logs",
+      "workflow_id": 373332157
+    },
+    {
+      "id": 37110971139,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 23,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971139/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971139/logs",
+      "workflow_id": 372895546
+    },
+    {
+      "id": 37110971157,
+      "name": "Verify Fleet v1 integrated source",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 3,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971157/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971157/logs",
+      "workflow_id": 373695570
+    },
+    {
+      "id": 37110971166,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 70,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971166/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971166/logs",
+      "workflow_id": 369987372
+    },
+    {
+      "id": 37110971209,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 173,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971209/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971209/logs",
+      "workflow_id": 358366702
+    },
+    {
+      "id": 37110971150,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 186,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971150/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971150/logs",
+      "workflow_id": 357139482
+    },
+    {
+      "id": 37110971165,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 185,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971165/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971165/logs",
+      "workflow_id": 357167822
+    },
+    {
+      "id": 37110971144,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 14,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971144/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37110971144/logs",
+      "workflow_id": 373216678
+    }
+  ],
+  "workflow_success": 7,
+  "workflow_failed": 1,
+  "platforms": {
+    "linux": {
+      "artifact_id": 11269907426,
+      "zip_sha256": "1a049aa0b5960c69a494d025474a19a32f10dacc5978acc4d3495c00cfb120a7",
+      "zip_bytes": 59954,
+      "head_sha": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+      "tree_sha": "baadc33d2cbfe40428c5f564f011f763200c929d",
+      "status": "PASS",
+      "unit": {
+        "tests": 1132,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 14,
+        "passed": 1118,
+        "seconds": 129.387
+      },
+      "manifest_files": 205,
+      "manifest_verified": true,
+      "source_unchanged": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 131.641
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.567
+        }
+      ]
+    },
+    "windows": {
+      "artifact_id": 11269073928,
+      "zip_sha256": "31df0410994217e1501f5be0c9430f70090e38ff38bce5bfe12a9d7fedb1b38b",
+      "zip_bytes": 258309,
+      "head_sha": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+      "tree_sha": "baadc33d2cbfe40428c5f564f011f763200c929d",
+      "status": "PASS",
+      "unit": {
+        "tests": 1132,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 10,
+        "passed": 1122,
+        "seconds": 215.75
+      },
+      "skips": [
+        {
+          "test": "test_tip040_live_mt5_2_account_chart_and_png",
+          "reason": "No deployed MT5-2 root"
+        },
+        {
+          "test": "test_tip041_live_each_open_chart_16_9_and_exact_layout_rollback",
+          "reason": "No deployed MT5-2 root"
+        },
+        {
+          "test": "test_ac08_observable_symlink_hardlink_and_symlink_retarget",
+          "reason": "POSIX symlink fixture; Windows junction evidence is a separate gate"
+        },
+        {
+          "test": "test_ac11_nonobservable_windows_roots_never_claim_qualification",
+          "reason": "Windows paths are observable only in the Windows deployment gate"
+        },
+        {
+          "test": "test_bounded_retained_read_rejects_fifo_without_waiting_for_writer",
+          "reason": "POSIX FIFO regression requires mkfifo"
+        },
+        {
+          "test": "test_installed_trust_and_approval_require_protected_owner_files[writable_trust]",
+          "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+        },
+        {
+          "test": "test_installed_trust_and_approval_require_protected_owner_files[public_approval]",
+          "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+        },
+        {
+          "test": "test_installed_trust_and_approval_require_protected_owner_files[symlink_trust]",
+          "reason": "POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate"
+        },
+        {
+          "test": "test_symlink_spelling_cannot_bypass_singleton_lock",
+          "reason": "POSIX symlink spelling; Windows real cooperative writer test is platform-neutral"
+        },
+        {
+          "test": "test_operator_config_writable_or_symlink_rejected_before_https",
+          "reason": "POSIX writable-mode rejection; Windows protected-owner/ACL positive is tested separately"
+        }
+      ],
+      "critical_windows_cases": {
+        "test_windows_private_acl_roundtrip_reports_public_semantics": "PASS",
+        "test_windows_private_key_foreign_owner_denied_on_retained_handle": "PASS",
+        "test_windows_staging_directory_cannot_be_renamed_while_held": "PASS",
+        "test_actual_suspended_bind_resume_descendant_boundary_and_exact_exit": "PASS",
+        "test_fault_before_resume_keeps_bound_authority_until_exact_owned_cleanup": "PASS",
+        "test_actual_parent_crash_contains_worker_but_never_claims_durable_closure": "PASS",
+        "test_expiry_during_durable_create_attempt_blocks_actual_create_and_retains_fence": "PASS",
+        "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable": "PASS"
+      },
+      "manifest_files": 205,
+      "manifest_verified": true,
+      "source_unchanged": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 216.719
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.484
+        },
+        {
+          "case": "q1-harmless",
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 10.656
+        },
+        {
+          "case": "g03a-harmless",
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.157
+        },
+        {
+          "case": "b1-harmless",
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 4.468
+        }
+      ],
+      "proofs": {
+        "b1-portable": {
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "passed": 39,
+          "skipped": 0,
+          "head_verified": true
+        },
+        "q1-harmless": {
+          "status": "FIXTURE_PASS_Q03_OPEN",
+          "passed": 16,
+          "skipped": 0,
+          "head_verified": true
+        },
+        "g03a-harmless": {
+          "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+          "passed": 8,
+          "skipped": 0,
+          "head_verified": true
+        },
+        "b1-harmless": {
+          "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+          "passed": 10,
+          "skipped": 0,
+          "head_verified": true
+        }
+      }
+    }
+  },
+  "deep": {
+    "job_id": 111168649681,
+    "passed": 1120,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 10,
+    "seconds": 322.85,
+    "raw_sha256": "619f0f683974cd1bf2e139beac36d9f2e7c2c1d7388c0b90fca5215d3e1eab32",
+    "gzip_sha256": "48f88673720e7571f8861bce23220e1147d53db39ddf98a1f5bd29f815a15ca7",
+    "failures_summary": [
+      "worktree-config positive admission: TimeoutError after1016ms within1000ms fixture HTTPbudget; live server, zero queued server failures.",
+      "protected gateway startup: ready Queue empty after5s; no diagnostic startup stack retained."
+    ]
+  },
+  "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "notes": [
+    "Both integrated artifacts pass and match all205 frozen source hashes.",
+    "Deep failed and must be corrected; integrated success does not claim eight-workflow acceptance.",
+    "All prior receipts retained; next candidate must obtain its own complete acceptance."
+  ]
+}
