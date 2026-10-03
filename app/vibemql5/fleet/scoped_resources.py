@@ -12,6 +12,7 @@ import os
 import ntpath
 import re
 import sqlite3
+import stat
 import time
 import uuid
 from contextlib import contextmanager
@@ -51,19 +52,79 @@ def _relative(root, relative):
     return path
 
 
-def _read_bounded(path, maximum):
+def _open_retained_read(path):
+    """One read-only regular file; no final symlink/reparse redirection."""
     path = Path(path)
+    if path.is_symlink(): raise OSError()
+    if os.name != "nt":
+        return os.open(path, os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0))
+    import ctypes as C
+    from ctypes import wintypes as W
+    import msvcrt
+    if any(getattr(part.lstat(), "st_file_attributes", 0) & 0x400 for part in (path, *path.parents)):
+        raise OSError()
+    kernel = C.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [W.LPCWSTR, W.DWORD, W.DWORD, C.c_void_p, W.DWORD, W.DWORD, W.HANDLE]
+    kernel.CreateFileW.restype = W.HANDLE
+    kernel.CloseHandle.argtypes, kernel.CloseHandle.restype = [W.HANDLE], W.BOOL
+    # No write/delete sharing keeps the short bounded read immutable. Scoped
+    # transactions checkpoint and close their DB before the worker reads it.
+    handle = kernel.CreateFileW(str(path.absolute()), 0x80000000, 1, None, 3, 0x00200000, None)
+    if handle == C.c_void_p(-1).value: raise C.WinError(C.get_last_error())
     try:
-        if path.is_symlink(): raise OSError()
-        with path.open("rb") as stream:
-            before = os.fstat(stream.fileno())
-            if before.st_size > maximum: raise OSError()
+        return msvcrt.open_osfhandle(int(handle), os.O_RDONLY | os.O_BINARY | os.O_NOINHERIT)
+    except BaseException:
+        kernel.CloseHandle(handle); raise
+
+
+def retained_file_metadata(fd):
+    """Stable identity/size/times from the retained file, not host stat aliases."""
+    if os.name != "nt":
+        record = os.fstat(fd)
+        if not stat.S_ISREG(record.st_mode): raise OSError()
+        return (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
+    import ctypes as C
+    from ctypes import wintypes as W
+    import msvcrt
+    class FileId(C.Structure):
+        _fields_ = [("volume", C.c_ulonglong), ("identifier", C.c_ubyte * 16)]
+    class Basic(C.Structure):
+        _fields_ = [("creation", C.c_longlong), ("access", C.c_longlong), ("write", C.c_longlong),
+                    ("change", C.c_longlong), ("attributes", W.DWORD)]
+    class Standard(C.Structure):
+        _fields_ = [("allocation", C.c_longlong), ("size", C.c_longlong), ("links", W.DWORD),
+                    ("delete_pending", C.c_ubyte), ("directory", C.c_ubyte)]
+    kernel = C.WinDLL("kernel32", use_last_error=True)
+    kernel.GetFileInformationByHandleEx.argtypes = [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
+    kernel.GetFileInformationByHandleEx.restype = W.BOOL
+    handle = msvcrt.get_osfhandle(fd)
+    identity, basic, standard = FileId(), Basic(), Standard()
+    for kind, record in ((18, identity), (0, basic), (1, standard)):
+        if not kernel.GetFileInformationByHandleEx(handle, kind, C.byref(record), C.sizeof(record)):
+            raise C.WinError(C.get_last_error())
+    if basic.attributes & (0x10 | 0x400) or standard.directory or standard.delete_pending or standard.size < 0:
+        raise OSError()
+    return (identity.volume, bytes(identity.identifier), standard.size, basic.write, basic.change, basic.creation, basic.attributes)
+
+
+def assert_retained_path(path, fd, expected):
+    """Reopen the current name while retaining its original read handle."""
+    if retained_file_metadata(fd) != expected: raise OSError()
+    current = _open_retained_read(path)
+    try:
+        if retained_file_metadata(current) != expected: raise OSError()
+    finally:
+        os.close(current)
+
+
+def _read_bounded(path, maximum):
+    try:
+        with os.fdopen(_open_retained_read(path), "rb") as stream:
+            before = retained_file_metadata(stream.fileno())
+            if before[2] > maximum: raise OSError()
             raw = stream.read(maximum + 1)
-            after = os.fstat(stream.fileno())
-        current = path.stat()
-        signature = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
-        if len(raw) > maximum or len(raw) != before.st_size or signature(before) != signature(after) or signature(after) != signature(current):
-            raise OSError()
+            if len(raw) > maximum or len(raw) != before[2]: raise OSError()
+            assert_retained_path(path, stream.fileno(), before)
         return raw
     except OSError: raise JournalError("SCOPED_INPUT_INVALID") from None
 

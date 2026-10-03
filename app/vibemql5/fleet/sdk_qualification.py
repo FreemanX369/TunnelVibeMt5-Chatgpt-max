@@ -38,27 +38,31 @@ def canonical_path(path):
 
 
 def file_hash(path, *, max_bytes=512 * 1024 * 1024):
+    """Hash the exact retained regular file and re-opened pathname identity.
+
+    Windows handle/path stat aliases are not comparable on Python 3.12. Reuse
+    the owned Win32 metadata reader; no write/delete sharing or reparse follows.
+    """
+    from .scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
     path = Path(path)
     if not path.is_file() or path.is_symlink():
         raise QualificationError()
     value, total = hashlib.sha256(), 0
-    with path.open("rb") as stream:
-        before = os.fstat(stream.fileno())
-        if before.st_size > max_bytes:
-            raise QualificationError()
-        while True:
-            chunk = stream.read(min(1024 * 1024, max_bytes - total + 1))
-            if not chunk:
-                break
-            total += len(chunk)
-            if total > max_bytes:
+    try:
+        with os.fdopen(_open_retained_read(path), "rb") as stream:
+            before = retained_file_metadata(stream.fileno())
+            if before[2] > max_bytes:
                 raise QualificationError()
-            value.update(chunk)
-        after = os.fstat(stream.fileno())
-        current = path.stat()
-        identity = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
-        if identity(before) != identity(after) or identity(after) != identity(current) or total != after.st_size:
-            raise QualificationError()
+            while True:
+                chunk = stream.read(min(1024 * 1024, max_bytes - total + 1))
+                if not chunk: break
+                total += len(chunk)
+                if total > max_bytes: raise QualificationError()
+                value.update(chunk)
+            if total != before[2]: raise QualificationError()
+            assert_retained_path(path, stream.fileno(), before)
+    except OSError:
+        raise QualificationError() from None
     return value.hexdigest()
 
 

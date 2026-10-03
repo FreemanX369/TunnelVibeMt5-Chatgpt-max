@@ -37,7 +37,11 @@ Builder original configured HTTPS restore checkpoint: **3 passed**, preserving e
 PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest tests/unit/test_tip060c_https_restore.py -q
 ```
 
-The authority Builder subsequently added two read-only EMPTY_ABSENCE variants to the shared HTTPS restore test, bringing that file to five variants. The Contractor reports the later authority checkpoint as **145 passed in the authority-owned scope, 188 tests total in the shared checkpoint**. These follow-up results are separate from this Builder's historical 47-case, 152-pass and three-variant checkpoints above. The source table below now binds the current shared test bytes; worktree product and focused test bytes are unchanged.
+The authority Builder subsequently added two read-only EMPTY_ABSENCE variants to the shared HTTPS restore test, bringing that file to five variants. The Contractor reports the later authority checkpoint as **145 passed in the authority-owned scope, 188 tests total in the shared checkpoint**. These follow-up results are separate from this Builder's historical 47-case, 152-pass and three-variant checkpoints above. At that authority checkpoint only the shared test changed; the historical worktree product and focused test bytes were unchanged.
+
+Windows source-CI parser refinement after candidate `3b955d6`: drive-less malformed Git paths could raise WORKTREE_PATH_INVALID on Windows before the unknown-field check, while Linux returned GIT_OUTPUT_UNPROVEN. Parser-internal rejected path/HEAD observations now consistently return GIT_OUTPUT_UNPROVEN. Accepted absolute/canonical/no-symlink grammar is unchanged. Added relative-path and invalid-HEAD output negatives. The updated focused Linux run passed **49 cases**; compile and diff checks passed. This is a portable source regression checkpoint; combined Windows CI on the new candidate remains authoritative.
+
+The QA Builder later changed only actual HTTPS fixture origins to numeric IPv4 with a matching certificate SAN, preserving the exact signed audience. Its reported worktree/writer/060C/064 diagnostic checkpoint passed **107 cases**. This shared-test follow-up is distinct from the worktree checkpoints above; the source table includes the current authorized joint test bytes.
 
 Python compilation of product and tests and `git diff --check` passed. The joint restore test refinement was explicitly handed off by the authority Builder; principal, coordinator, CLI and transport code remain owned by their respective Builders.
 
@@ -53,11 +57,11 @@ The configured project baseline is frozen; this source has no automatic baseline
 
 The bundle below covers this Builder's product, focused tests, authorized joint-test refinement and operator handbook. It is a source checkpoint, not a physical installation approval. Shared authority/startup files are independently owned and reviewed by the Contractor.
 
-Bundle SHA256: `264017150d8cacb9fda95d70ea7aac8bd3310586243a8eec10dff82d7d06a9d3`.
+Bundle SHA256: `ac53102c418b1cbb7ccb77627559b5bfd026c686d2f457d2013ebb0cf094dc15`.
 
 | File | SHA256 |
 | --- | --- |
-| `app/vibemql5/fleet/worktrees.py` | `83f224606ee4d75539f073ec6f083e1685e4660a84edebf1ea06e39d03a3c0ee` |
-| `tests/unit/test_tip063_worktrees.py` | `f5954fd9681beb31ba3b83271eac2fe00bdee585e4c99c75b710e86f805bb647` |
-| `tests/unit/test_tip060c_https_restore.py` | `11c0aa70155acaba9abe0608bfe7b55868192ed65b4fdf5ac1bfa2ceb899f2b3` |
+| `app/vibemql5/fleet/worktrees.py` | `dbefac5d6be391e8b0acfb9368eed624b4edd3d58127dbf2cb7c9174d2fb3396` |
+| `tests/unit/test_tip063_worktrees.py` | `35a7280d063bf817583ab5f23150f3385931dd2aa52e2cea7e7605d6bc6dd61b` |
+| `tests/unit/test_tip060c_https_restore.py` | `c126e415dae9de63d71d598c3dd8b4a35dd133dbf2cb80901c5fe548b623a769` |
 | `docs/fleet-v1/TIP-063-worktrees-operator.md` | `4e3f68fc8a0c708619dbf1bb6fdc37fffda2e956d59886a0b9817ab6d570ceaa` |

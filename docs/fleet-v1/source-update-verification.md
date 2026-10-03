@@ -36,6 +36,10 @@ The isolated final-source Linux run passed **1076 tests with 33 explicit platfor
 
 ## Completed Contractor refinements
 
+Canonical candidate `3b955d6121bcc1758740e97989fb69754ae8f51f` matched tree `4e4f35675d2d71c5ee5db3573ace3a6c10d93abb`, but integrated CI failed. [The retained receipt](evidence/tip064/ci-3b955d6/receipt.json) records five successful workflows and three failed workflows, original artifact ZIP hashes, exact source manifests and lossless raw logs. Linux executed PowerShell cases absent locally: 1091 passed, 5 failed, 13 skipped. Windows full source had 945 passed, 63 failed, 93 setup errors and 9 skips; many setup errors shared the same early transport or metadata failure. Q1 16/16, G03-A 8/8, B1 10/10 and portable B1 39/39 passed. These failed results are superseded checkpoints, not source acceptance.
+
+Concrete follow-up corrections preserve existing authority and qualification requirements: [PowerShell JSON timestamp strings](TIP-054-PowerShell-CI-refinement.md), native Win32 retained file identity instead of Python fd/path stat aliases, numeric retained ACL facts, an expired-connect fence before sending an HTTP body, [numeric temporary listener origins](TIP-064-CI-refinement.md), host-canonical STRICT fixtures, normal recovery fixture budgets and bounded malformed Git output errors. Current report hashes are recomputed after the corrections. A new exact-head Linux/Windows run remains required.
+
 * Normal backup fixtures now use a 1000 ms test deadline; independent 100 ms contention/timeout cases and product deadline policy remain preserved.
 * Native phase/effect authorization and immutable predecessor receipts pass through the heartbeat owner. STOP_PENDING keeps current RPC, progress, exact cancel and final ACK drainage alive, including retained native handles.
 * Reads revalidate the exact current command before SDK observation. Installed SDK/native implementations require sealed exact physical qualification; synthetic or legacy-positive routes cannot select them.
@@ -49,7 +53,7 @@ The isolated final-source Linux run passed **1076 tests with 33 explicit platfor
 
 The independently generated actual MCP schema still has 85 tools. Canonical SHA-256 values: names `915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef`; all schemas `64337437115a20a8555cc1214706a503b985195dbdbd219de2adfa35e2c8134d`; the other 83 unchanged schemas `16ceef873678e7d7598874c6e612393e23de35c934f18ab6a31b09ad15bd7541`. The optional fleet client exposes a separate finite 31-tool catalog. Legacy/null native behavior and historical jobs/evidence remain retained.
 
-SDK, native/project and worktree report file/hash rows were independently recomputed. Their source bundles matched `773b3201489dff7327a4065956f40428ff0d052bad8349044efcba6e9a212e12`, `cd2dee85cb1aeeb9a7608ee8ed79ee2fb2914bc2cc1ceaf6ef973c8ad118353f` and `264017150d8cacb9fda95d70ea7aac8bd3310586243a8eec10dff82d7d06a9d3` respectively. The worktree bundle refresh includes the authority Builder's two additional read-only restore cases; its historical three-case receipt is retained. Final full-source workflow manifests cover shared modules, tests, dependencies, workflows and operator templates together.
+SDK, native/project and worktree report file/hash rows were independently recomputed after CI refinements. Their source bundles matched `75e7ca4e2263159615d90f898b0cfc042e9e42bd451479f40d2670c60235d836`, `a2f44a77ce85a18c772693b2299b9a6409f0ddad8c070e30cdcbdcf44528bae7` and `ac53102c418b1cbb7ccb77627559b5bfd026c686d2f457d2013ebb0cf094dc15` respectively. Historical receipts are retained with their original hashes. Final full-source workflow manifests cover shared modules, tests, dependencies, workflows, operator templates and the 21 PowerShell runtime scripts together.
 
 ## Remaining physical qualification
 

@@ -72,7 +72,7 @@ def capacity_service(tmp_path, tls_files):
     owner_public = owner_key.public_key().public_bytes_raw().hex()
     policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144)
     def factory(address):
-        origin = 'https://localhost:' + str(address[1])
+        origin = 'https://127.0.0.1:' + str(address[1])
         control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
             policy=replace(control_policy(), max_operations=1000, max_nonces=1000))
         jobs = GatewayJobJournal(tmp_path / 'capacity-jobs.sqlite', initialize=True,
@@ -89,7 +89,7 @@ def capacity_service(tmp_path, tls_files):
         except BaseException as error: failures.put(error)
     thread = threading.Thread(target=run, daemon=True); thread.start()
     address = ready.get(timeout=5)
-    http = HttpsClient('https://localhost:' + str(address[1]), policy, cafile=str(ca))
+    http = HttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca))
     yield http, OwnerClient(http, TOKEN), signer_key, owner_key, policy
     stopped.set(); thread.join(timeout=3)
     assert not thread.is_alive()

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import os
-import re
 import stat
 from pathlib import Path
 from cryptography.hazmat.primitives import serialization
@@ -10,15 +9,15 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from .wire import WireError
 
 
-def _windows_validate_acl(sddl, current_sid, owner_sid):
+def _windows_validate_acl(control, aces, current_sid, owner_sid):
     # A foreign owner can later rewrite a restrictive DACL. Both facts must be
     # obtained from the same retained handle before reading private bytes.
     if owner_sid not in {current_sid, "S-1-5-18"}:
         raise WireError("NODE_KEY_STORAGE_INVALID")
-    aces = re.findall(r"\([^)]*\)", sddl)
-    sid_alias = {"S-1-5-18":"SY", "S-1-5-19":"LS", "S-1-5-20":"NS"}.get(current_sid,current_sid)
-    expected_aces = {"(A;;FA;;;SY)", "(A;;FA;;;" + sid_alias + ")"}
-    if not sddl.startswith("D:P") or len(aces) != len(expected_aces) or set(aces) != expected_aces:
+    expected_aces = {(0, 0, 0x001F01FF, "S-1-5-18"), (0, 0, 0x001F01FF, current_sid)}
+    # Inspect actual ACE type/flags/mask/SID, independent of SDDL aliases and
+    # rights rendering. DACL_PRESENT and DACL_PROTECTED are both mandatory.
+    if control & 0x1004 != 0x1004 or len(aces) != len(expected_aces) or set(aces) != expected_aces:
         raise WireError("NODE_KEY_STORAGE_INVALID")
 
 
@@ -37,9 +36,12 @@ def _windows_acl(fd, *, set_restrictive=False):
         (adv, "ConvertSidToStringSidW", [pointer, C.POINTER(W.LPWSTR)], W.BOOL),
         (adv, "ConvertStringSecurityDescriptorToSecurityDescriptorW", [W.LPCWSTR, W.DWORD, C.POINTER(pointer), pointer], W.BOOL),
         (adv, "GetSecurityDescriptorDacl", [pointer, C.POINTER(W.BOOL), C.POINTER(pointer), C.POINTER(W.BOOL)], W.BOOL),
+        (adv, "GetSecurityDescriptorControl", [pointer, C.POINTER(W.WORD), C.POINTER(W.DWORD)], W.BOOL),
+        (adv, "GetAclInformation", [pointer, pointer, W.DWORD, C.c_int], W.BOOL),
+        (adv, "GetAce", [pointer, W.DWORD, C.POINTER(pointer)], W.BOOL),
+        (adv, "IsValidSid", [pointer], W.BOOL), (adv, "GetLengthSid", [pointer], W.DWORD),
         (adv, "SetSecurityInfo", [W.HANDLE, C.c_int, W.DWORD, pointer, pointer, pointer, pointer], W.DWORD),
-        (adv, "GetSecurityInfo", [W.HANDLE, C.c_int, W.DWORD, pointer, pointer, pointer, pointer, C.POINTER(pointer)], W.DWORD),
-        (adv, "ConvertSecurityDescriptorToStringSecurityDescriptorW", [pointer, W.DWORD, W.DWORD, C.POINTER(W.LPWSTR), C.POINTER(W.DWORD)], W.BOOL)]
+        (adv, "GetSecurityInfo", [W.HANDLE, C.c_int, W.DWORD, pointer, pointer, pointer, pointer, C.POINTER(pointer)], W.DWORD)]
     for dll, name, arguments, result in specs:
         function = getattr(dll, name); function.argtypes, function.restype = arguments, result
     def require(value):
@@ -74,7 +76,7 @@ def _windows_acl(fd, *, set_restrictive=False):
                 raise WireError("NODE_KEY_STORAGE_INVALID")
         finally:
             kernel.LocalFree(descriptor)
-    descriptor, owner, rendered, size = pointer(), pointer(), W.LPWSTR(), W.DWORD()
+    descriptor, owner = pointer(), pointer()
     if adv.GetSecurityInfo(handle, 1, 5, C.byref(owner), None, None, None, C.byref(descriptor)):
         raise WireError("NODE_KEY_STORAGE_INVALID")
     try:
@@ -86,11 +88,36 @@ def _windows_acl(fd, *, set_restrictive=False):
             owner_sid = owner_text.value
         finally:
             kernel.LocalFree(C.cast(owner_text, pointer))
-        require(adv.ConvertSecurityDescriptorToStringSecurityDescriptorW(descriptor, 1, 4, C.byref(rendered), C.byref(size)))
-        try:
-            _windows_validate_acl(rendered.value, sid, owner_sid)
-        finally:
-            kernel.LocalFree(C.cast(rendered, pointer))
+        control, revision = W.WORD(), W.DWORD()
+        require(adv.GetSecurityDescriptorControl(descriptor,C.byref(control),C.byref(revision)))
+        present, defaulted, acl = W.BOOL(), W.BOOL(), pointer()
+        require(adv.GetSecurityDescriptorDacl(descriptor,C.byref(present),C.byref(acl),C.byref(defaulted)))
+        if not present.value or not acl.value:raise WireError("NODE_KEY_STORAGE_INVALID")
+        class AclSize(C.Structure):
+            _fields_=[("count",W.DWORD),("in_use",W.DWORD),("free",W.DWORD)]
+        class AceHeader(C.Structure):
+            _fields_=[("type",W.BYTE),("flags",W.BYTE),("size",W.WORD)]
+        size=AclSize();require(adv.GetAclInformation(acl,C.byref(size),C.sizeof(size),2))
+        if size.count>2:raise WireError("NODE_KEY_STORAGE_INVALID")
+        aces=[]
+        for index in range(size.count):
+            ace=pointer();require(adv.GetAce(acl,index,C.byref(ace)))
+            header=C.cast(ace,C.POINTER(AceHeader)).contents
+            if header.type!=0 or header.size<12:raise WireError("NODE_KEY_STORAGE_INVALID")
+            mask=C.cast(ace.value+4,C.POINTER(W.DWORD)).contents.value
+            trustee=pointer(ace.value+8)
+            require(adv.IsValidSid(trustee))
+            if adv.GetLengthSid(trustee)!=header.size-8:raise WireError("NODE_KEY_STORAGE_INVALID")
+            trustee_text=W.LPWSTR();require(adv.ConvertSidToStringSidW(trustee,C.byref(trustee_text)))
+            try:aces.append((header.type,header.flags,mask,trustee_text.value))
+            finally:kernel.LocalFree(C.cast(trustee_text,pointer))
+        try:_windows_validate_acl(control.value,aces,sid,owner_sid)
+        except WireError as exc:
+            # Bounded public ACL evidence helps platform fixtures; product
+            # error handlers expose only the unchanged finite failure code.
+            exc.add_note("retained ACL: "+repr({"control":control.value,"aces":aces,"current_sid":sid,"owner_sid":owner_sid})[:1024])
+            raise
+        return {"control":control.value,"aces":aces,"current_sid":sid,"owner_sid":owner_sid}
     finally:
         kernel.LocalFree(descriptor)
 

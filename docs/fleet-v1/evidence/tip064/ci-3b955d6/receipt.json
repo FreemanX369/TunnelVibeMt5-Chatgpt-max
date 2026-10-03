@@ -1,0 +1,147 @@
+{
+  "schema": "fleet.canonical-ci-receipt/1",
+  "head_sha": "3b955d6121bcc1758740e97989fb69754ae8f51f",
+  "tree_sha": "4e4f35675d2d71c5ee5db3573ace3a6c10d93abb",
+  "status": "FAIL_SUPERSEDED_CANDIDATE_REFINEMENT_PENDING",
+  "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "runs": [
+    {
+      "id": 37098848174,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 184,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848174/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848174/logs",
+      "workflow_id": 357139482
+    },
+    {
+      "id": 37098848160,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 183,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848160/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848160/logs",
+      "workflow_id": 357167822
+    },
+    {
+      "id": 37098848156,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 12,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848156/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848156/logs",
+      "workflow_id": 373216678
+    },
+    {
+      "id": 37098848142,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 21,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848142/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848142/logs",
+      "workflow_id": 372895546
+    },
+    {
+      "id": 37098848183,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 8,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848183/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848183/logs",
+      "workflow_id": 373332157
+    },
+    {
+      "id": 37098848139,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 171,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848139/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848139/logs",
+      "workflow_id": 358366702
+    },
+    {
+      "id": 37098848214,
+      "name": "Verify Fleet v1 integrated source",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 1,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848214/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848214/logs",
+      "workflow_id": 373695570
+    },
+    {
+      "id": 37098848141,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 68,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848141/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37098848141/logs",
+      "workflow_id": 369987372
+    }
+  ],
+  "merge_checkout": "3334cf56254af875024e1d5180f7c4cd05e635b8",
+  "merge_compare_files": [],
+  "linux_unit": {
+    "passed": 1091,
+    "failed": 5,
+    "skipped": 13,
+    "duration_seconds": 83.38
+  },
+  "windows_source_unit": {
+    "passed": 945,
+    "failed": 63,
+    "errors": 93,
+    "skipped": 9,
+    "duration_seconds": 255.92
+  },
+  "windows_deep_unit": {
+    "passed": 940,
+    "failed": 63,
+    "errors": 98,
+    "skipped": 9,
+    "duration_seconds": 315.63
+  },
+  "windows_bootstrap_unit": {
+    "passed": 951,
+    "failed": 63,
+    "errors": 87,
+    "skipped": 9,
+    "duration_seconds": 266.27
+  },
+  "required_independent_windows": {
+    "q1": {
+      "passed": 16,
+      "skipped": 0
+    },
+    "g03a": {
+      "passed": 8,
+      "skipped": 0
+    },
+    "b1": {
+      "passed": 10,
+      "skipped": 0
+    },
+    "b1_portable": {
+      "passed": 39,
+      "skipped": 0
+    }
+  },
+  "log_encoding": "Raw API UTF-8 logs are preserved as verified lossless gzip; original artifact ZIPs preserve full unit logs/JUnit/proof receipts.",
+  "refinements": [
+    "pwsh 7.5 JSON timestamps remain strings through actual reader",
+    "retained native Windows FileId/metadata/path reopen replaces fd/path stat alias comparisons",
+    "exact numeric ACL current/SYSTEM rights and owner admission",
+    "connect-before-body deadline fence and exact numeric temporary loopback origins/IP SAN",
+    "host canonical STRICT fixture paths and pure portable DTO roots",
+    "normal recovery backup fixture deadline; short deliberate contention retained",
+    "malformed Git output error normalization"
+  ]
+}

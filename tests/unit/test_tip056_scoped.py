@@ -3,6 +3,8 @@ import threading
 import time
 import multiprocessing
 import os
+import subprocess
+import sys
 
 import pytest
 
@@ -176,3 +178,69 @@ def test_scoped_resource_identity_drift_and_missing_source_candidate_fail_closed
         ScopedResourceCoordinator._for_fixture(tmp_path, candidate)
     from vibemql5.fleet.scoped_resources import _profile
     with pytest.raises(JournalError): _profile(candidate, tmp_path, physical=True)
+
+
+def test_bounded_retained_read_accepts_actual_platform_file_and_denies_oversize(tmp_path):
+    from vibemql5.fleet.scoped_resources import _read_bounded, _open_retained_read, retained_file_metadata, assert_retained_path
+    path = tmp_path / 'bounded.bin'; path.write_bytes(b'bounded-fixture')
+    fd = _open_retained_read(path)
+    try:
+        expected = retained_file_metadata(fd)
+        assert expected[2] == len(b'bounded-fixture')
+        assert_retained_path(path, fd, expected)
+        assert _read_bounded(path, expected[2]) == b'bounded-fixture'
+        with pytest.raises(JournalError, match='SCOPED_INPUT_INVALID'):
+            _read_bounded(path, expected[2] - 1)
+    finally: os.close(fd)
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX FIFO regression requires mkfifo")
+def test_bounded_retained_read_rejects_fifo_without_waiting_for_writer(tmp_path):
+    path = tmp_path / "input.fifo"
+    os.mkfifo(path)
+    code = """
+import sys
+from vibemql5.fleet.job_journal import JournalError
+from vibemql5.fleet.scoped_resources import _read_bounded
+try:
+    _read_bounded(sys.argv[1], 100)
+except JournalError as error:
+    assert str(error) == "SCOPED_INPUT_INVALID", str(error)
+else:
+    raise AssertionError("FIFO admitted as a regular file")
+"""
+    result = subprocess.run([sys.executable, "-c", code, str(path)], capture_output=True, text=True, timeout=5)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_retained_read_denies_path_replacement_or_windows_write_delete_access(tmp_path):
+    from vibemql5.fleet.scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
+    path = tmp_path / 'retained.bin'; path.write_bytes(b'original')
+    fd = _open_retained_read(path)
+    try:
+        expected = retained_file_metadata(fd)
+        if os.name == 'nt':
+            with pytest.raises(OSError):
+                replacement_fd = os.open(path, os.O_WRONLY)
+                os.close(replacement_fd)
+            with pytest.raises(OSError): path.rename(tmp_path / 'moved.bin')
+            assert_retained_path(path, fd, expected)
+        else:
+            path.rename(tmp_path / 'moved.bin'); path.write_bytes(b'original')
+            with pytest.raises(OSError): assert_retained_path(path, fd, expected)
+    finally: os.close(fd)
+
+
+def test_retained_read_denies_in_place_mutation_or_windows_write_access(tmp_path):
+    from vibemql5.fleet.scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
+    path = tmp_path / 'mutation.bin'; path.write_bytes(b'original')
+    fd = _open_retained_read(path)
+    try:
+        expected = retained_file_metadata(fd)
+        if os.name == 'nt':
+            with pytest.raises(OSError): path.write_bytes(b'changed-size')
+            assert_retained_path(path, fd, expected)
+        else:
+            path.write_bytes(b'changed-size')
+            with pytest.raises(OSError): assert_retained_path(path, fd, expected)
+    finally: os.close(fd)

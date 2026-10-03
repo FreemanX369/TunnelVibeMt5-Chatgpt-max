@@ -10,6 +10,7 @@ import hashlib
 import json
 import ntpath
 import os
+import posixpath
 import re
 import sqlite3
 import threading
@@ -64,7 +65,7 @@ def _integer(value, *, positive=True):
 def _absolute_path(value):
     return (isinstance(value, str) and 0 < len(value) <= 32768
         and not any(ord(c) < 32 or ord(c) == 127 for c in value)
-        and (os.path.isabs(value) or (ntpath.isabs(value) and bool(ntpath.splitdrive(value)[0]))))
+        and (posixpath.isabs(value) or (ntpath.isabs(value) and bool(ntpath.splitdrive(value)[0]))))
 
 
 def _identity_valid(value):

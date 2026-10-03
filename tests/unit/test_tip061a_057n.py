@@ -15,7 +15,7 @@ from vibemql5.core.jobs import _sha256_json
 from vibemql5.core.native_ownership import current_identity
 from vibemql5.core.project_sessions import ProjectSessionManager
 from vibemql5.core.revisions import RevisionManager
-from vibemql5.fleet.identity import IdentityRegistry
+from vibemql5.fleet.identity import IdentityRegistry, normalize_path
 from vibemql5.fleet.project_targets import FleetProjectError, FleetProjectStore
 from vibemql5.fleet.strict_baseline import FIELDS, strict_compare
 from vibemql5.fleet.native import NativeRouteError, RoutedNativeAdapter, SyntheticNativeAdapter, native_request, native_request_hash
@@ -106,7 +106,7 @@ def test_same_node_source_executor_and_frozen_session_checkpoint_integrity(node)
 def fingerprint():
     value = {"target": {"schema": "fleet.target/1", "device_id": "dev_" + "1" * 32,
                         "terminal_id": "term_" + "2" * 32, "terminal_generation": 1},
-        "binding": {"executable": "/fixture/terminal64.exe", "data_root": "/fixture/data"},
+        "binding": {"executable": normalize_path(str(Path.cwd() / "fixture/terminal64.exe")), "data_root": normalize_path(str(Path.cwd() / "fixture/data"))},
         "logical_config": logical_fixture(), "effective_period": {"from_date": "2026.09.01", "to_date": "2026.09.30"},
         "history_evidence": {"status": "AVAILABLE", "sha256": "f" * 64}}
     value.update(source_sha256="a" * 64, terminal_build=6230, compiler_build=6230, tester_model=4,
@@ -132,7 +132,7 @@ def test_strict_matrix_reports_each_missing_and_mismatched_field(field):
     assert result["status"] == "UNVERIFIED" and field in result["missing_fields"]
     candidate = fingerprint()
     if field == "target": candidate[field]["terminal_generation"] = 2
-    elif field == "binding": candidate[field]["data_root"] = "/fixture/other"
+    elif field == "binding": candidate[field]["data_root"] = normalize_path(str(Path.cwd() / "fixture/other"))
     elif field == "logical_config": candidate[field]["config"]["symbol"] = "XAUUSD"
     elif field == "effective_period": candidate[field]["from_date"] = "2026.08.01"
     elif field == "history_evidence": candidate[field]["sha256"] = "0" * 64

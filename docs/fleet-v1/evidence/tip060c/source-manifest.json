@@ -22,18 +22,19 @@
     },
     {
       "path": "tests/unit/test_tip060c_restore.py",
-      "bytes": 11082,
-      "sha256": "187573c5c25d7b37ca9946165996277e60415cc11faed80c0fc2b0b8075af5f5"
+      "bytes": 11234,
+      "sha256": "2641da7ab35579ce1fdd2d4805fe9bfc3eda723c619c13e5626f6984dfd3edde"
     },
     {
       "path": "tests/unit/test_tip060c_https_restore.py",
       "bytes": 16243,
-      "sha256": "11c0aa70155acaba9abe0608bfe7b55868192ed65b4fdf5ac1bfa2ceb899f2b3"
+      "sha256": "c126e415dae9de63d71d598c3dd8b4a35dd133dbf2cb80901c5fe548b623a769"
     },
     {
       "path": "docs/fleet-v1/TIP-060C-completion.md",
-      "bytes": 4586,
-      "sha256": "5816e1c97337a43f7e08d645326d02221a7d6c1db5095aab6840d2cc9f13ffee"
+      "bytes": 5176,
+      "sha256": "835c5e22cd8dc48b90e2ee52680dedca96f19783e58cf1a75a5dd9f73e9f7a9c"
     }
-  ]
+  ],
+  "refinement_note": "Current shared test fixture hashes after numeric IPv4/IP-SAN loopback refinement. Previous manifests and original test receipts remain retained; canonical integrated CI is pending."
 }

@@ -236,8 +236,9 @@ class RoutedNativeAdapter:
             try:
                 path = workspace / relative
                 path.resolve(strict=True).relative_to(workspace)
-                if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents)) or not path.is_file() or path.stat().st_size != item["bytes"] or item["bytes"] > MAX_FILE_BYTES: raise ValueError()
-                if hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]: raise ValueError()
+                if item["bytes"] > MAX_FILE_BYTES: raise ValueError()
+                raw = read_blob(path, MAX_FILE_BYTES)
+                if len(raw) != item["bytes"] or hashlib.sha256(raw).hexdigest() != item["sha256"]: raise ValueError()
             except Exception:
                 raise NativeRouteError("NATIVE_INPUT_CHANGED") from None
         return sets[0] if sets else None
@@ -249,18 +250,11 @@ class RoutedNativeAdapter:
         for item in request["input_manifest"]:
             relative = item["path"].replace("\\", "/")
             path = root / relative
-            before = path.stat(follow_symlinks=False)
-            if path.is_symlink() or getattr(before, "st_file_attributes", 0) & 0x400: raise NativeRouteError("NATIVE_INPUT_CHANGED")
-            with path.open("rb") as stream:
-                held_before = os.fstat(stream.fileno())
-                raw = stream.read(MAX_FILE_BYTES + 1)
-                held_after = os.fstat(stream.fileno())
-            after = path.stat(follow_symlinks=False)
-            metadata = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
-            if metadata(before) != metadata(held_before) or metadata(held_before) != metadata(held_after) or metadata(held_after) != metadata(after) or path.is_symlink(): raise NativeRouteError("NATIVE_INPUT_CHANGED")
-            path.resolve(strict=True).relative_to(root.resolve())
-            if len(raw) != item["bytes"] or hashlib.sha256(raw).hexdigest() != item["sha256"]:
-                raise NativeRouteError("NATIVE_INPUT_CHANGED")
+            try:
+                path.resolve(strict=True).relative_to(root.resolve())
+                raw = read_blob(path, MAX_FILE_BYTES)
+                if len(raw) != item["bytes"] or hashlib.sha256(raw).hexdigest() != item["sha256"]: raise ValueError()
+            except Exception: raise NativeRouteError("NATIVE_INPUT_CHANGED") from None
             verified[relative] = raw
         return verified
 
@@ -275,7 +269,7 @@ class RoutedNativeAdapter:
         for relative, raw in values.items():
             snapshot = run_dir / "source_snapshot" / relative
             if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (snapshot, *snapshot.parents)): raise NativeRouteError("NATIVE_INPUT_CHANGED")
-            if snapshot.exists() and (snapshot.stat().st_size != len(raw) or snapshot.read_bytes() != raw): raise NativeRouteError("NATIVE_INPUT_CHANGED")
+            if snapshot.exists() and read_blob(snapshot, MAX_FILE_BYTES) != raw: raise NativeRouteError("NATIVE_INPUT_CHANGED")
             if not snapshot.exists(): _atomic_write_bytes(snapshot, raw)
         receipt = self._snapshot_receipt(request)
         _atomic_write_json(run_dir / "input-snapshot.json", receipt)
@@ -287,11 +281,7 @@ class RoutedNativeAdapter:
             if read_record(run_dir / "input-snapshot.json") != self._snapshot_receipt(request): raise ValueError()
             for relative, raw in pin.values.items():
                 path = run_dir / "source_snapshot" / relative
-                if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents)): raise ValueError()
-                with path.open("rb") as stream:
-                    before = os.fstat(stream.fileno()); observed = stream.read(MAX_FILE_BYTES + 1); after = os.fstat(stream.fileno())
-                metadata = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
-                if observed != raw or metadata(before) != metadata(after) or metadata(after) != metadata(path.stat()): raise ValueError()
+                if read_blob(path, MAX_FILE_BYTES) != raw: raise ValueError()
         except Exception: raise NativeRouteError("NATIVE_INPUT_CHANGED") from None
 
     @contextmanager

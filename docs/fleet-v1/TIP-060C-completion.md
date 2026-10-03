@@ -19,6 +19,7 @@ TEST RESULTS:
 - 20 TIP-060C coordinator tests PASS, including denial of an unknown nested job field before persistence.
 - 5 genuine HTTPS all-journal restore tests PASS: empty persisted journals, completed source/session operation, configured temporary Git worktree with complete closed process receipts, read-only absence success, and inactive-writer denial.
 - Combined retained A plus recovery: 145 PASS, zero skips on Linux. Logs and JUnit are retained under `evidence/tip060c`.
+- Windows candidate `3b955d6` recorded 12 setup errors when normal control backup/restore exceeded the fixture's 25 ms SQLite budget. The normal recovery fixture now uses 1000 ms control singleton/SQLite budgets, matching the portable ordinary-operation budget; product source is unchanged. The real bounded SQLite contention test keeps its explicit 100 ms profile. The post-refinement retained A/coordinator run passes 140 tests on Linux; rerun of the canonical Windows candidate is pending, so this is not a Windows pass claim. Raw failing CI evidence remains retained by the Contractor.
 
 ISSUES / LIMITS:
 

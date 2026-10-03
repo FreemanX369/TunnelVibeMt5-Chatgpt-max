@@ -167,3 +167,34 @@ def test_installed_trust_and_approval_require_protected_owner_files(approval_fix
     else:
         alternate=root/"config/alternate-native-trust.json";trust.rename(alternate);trust.symlink_to(alternate);path=trust
     with pytest.raises(QualificationError,match="^NATIVE_QUALIFICATION_UNAVAILABLE$"):_read_installed(path)
+
+
+@pytest.mark.parametrize("reader", ["blob", "hash"])
+def test_retained_candidate_reads_accept_exact_bound_and_deny_oversize(tmp_path, reader):
+    from vibemql5.fleet.project_targets import read_blob, FleetProjectError
+    path = tmp_path / "bounded.bin"
+    path.write_bytes(b"abcd")
+    read = read_blob if reader == "blob" else file_hash
+    expected = b"abcd" if reader == "blob" else hashlib.sha256(b"abcd").hexdigest()
+    assert read(path, 4) == expected
+    path.write_bytes(b"abcde")
+    with pytest.raises((FleetProjectError, QualificationError)):
+        read(path, 4)
+
+
+@pytest.mark.parametrize("reader", ["blob", "hash"])
+def test_retained_candidate_reads_deny_replaced_name_or_sharing_refusal(tmp_path, monkeypatch, reader):
+    from vibemql5.fleet import scoped_resources
+    from vibemql5.fleet.project_targets import read_blob, FleetProjectError
+    path = tmp_path / "candidate.bin"
+    path.write_bytes(b"original")
+    verify = scoped_resources.assert_retained_path
+    def replace_name(held_path, descriptor, metadata):
+        # POSIX can replace the name while the original is retained. Windows
+        # refuses that replacement because the read handle shares no deletion.
+        Path(held_path).rename(tmp_path / "retained-original.bin")
+        Path(held_path).write_bytes(b"replacement")
+        verify(held_path, descriptor, metadata)
+    monkeypatch.setattr(scoped_resources, "assert_retained_path", replace_name)
+    with pytest.raises((FleetProjectError, QualificationError)):
+        (read_blob if reader == "blob" else file_hash)(path)

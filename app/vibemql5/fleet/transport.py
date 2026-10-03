@@ -369,6 +369,14 @@ class HttpsClient:
                 self.fp = io.BufferedReader(DeadlineResponseInput(self.fp, protected))
         connection.response_class = DeadlineResponse
         try:
+            # Keep stdlib address-family order and TLS hostname verification,
+            # but never send an authority request after connect/TLS used its
+            # complete absolute budget (for example a slow family fallback).
+            connection.connect()
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise WireError("HTTP_DEADLINE_EXCEEDED")
+            connection.sock.settimeout(remaining)
             connection.request("POST", path, body=body, headers={"Content-Type": "application/json", **supplied})
             remaining = deadline - time.monotonic()
             if remaining <= 0:

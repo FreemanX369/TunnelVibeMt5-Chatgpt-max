@@ -95,7 +95,7 @@ def test_actual_protected_gateway_factory_and_owner_client_startup(tmp_path, tls
     from vibemql5.adapters.fleet_client_tools import operator_configuration
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 0)); port = probe.getsockname()[1]
-    origin = 'https://localhost:' + str(port)
+    origin = 'https://127.0.0.1:' + str(port)
     private_dir = tmp_path / 'secrets'
     authority = Ed25519PrivateKey.generate()
     protected_file(private_dir / 'authority.pem', authority.private_bytes(serialization.Encoding.PEM,
@@ -351,7 +351,7 @@ def composed_service(tmp_path, tls_files, request):
     signing_key = Ed25519PrivateKey.generate()
     authorization_ms = getattr(request, "param", 2000)
     def factory(address):
-        origin = 'https://localhost:' + str(address[1])
+        origin = 'https://127.0.0.1:' + str(address[1])
         policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
         store = GatewayControlStore.initialize(tmp_path / 'composed-control.sqlite', policy=policy)
         jobs = GatewayJobJournal(tmp_path / 'composed-jobs.sqlite', initialize=True,
@@ -374,7 +374,7 @@ def composed_service(tmp_path, tls_files, request):
         except BaseException as error: failures.put(error)
     thread = threading.Thread(target=run, daemon=True); thread.start()
     address = ready.get(timeout=5)
-    http = HttpsClient('https://localhost:' + str(address[1]), fleet_policy(), cafile=str(ca))
+    http = HttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca))
     yield http, OwnerClient(http, TOKEN), signing_key
     stopped.set(); thread.join(timeout=3)
     assert not thread.is_alive()

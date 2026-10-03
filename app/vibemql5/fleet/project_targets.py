@@ -33,18 +33,20 @@ def canonical(value):
 
 
 def read_blob(path, maximum=262144):
+    from .scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
     path = Path(path)
-    if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents)):
-        raise FleetProjectError("FLEET_STATE_INVALID")
-    with path.open("rb") as stream:
-        before = os.fstat(stream.fileno())
-        if before.st_size > maximum: raise FleetProjectError("FLEET_STATE_INVALID")
-        body = stream.read(maximum + 1)
-        after = os.fstat(stream.fileno())
-    metadata = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns)
-    if len(body) > maximum or metadata(before) != metadata(after) or metadata(after) != metadata(path.stat()):
-        raise FleetProjectError("FLEET_STATE_INVALID")
-    return body
+    try:
+        if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents)):
+            raise OSError()
+        with os.fdopen(_open_retained_read(path), "rb") as stream:
+            before = retained_file_metadata(stream.fileno())
+            if before[2] > maximum: raise OSError()
+            body = stream.read(maximum + 1)
+            if len(body) > maximum or len(body) != before[2]: raise OSError()
+            assert_retained_path(path, stream.fileno(), before)
+        return body
+    except OSError:
+        raise FleetProjectError("FLEET_STATE_INVALID") from None
 
 
 def read_record(path):

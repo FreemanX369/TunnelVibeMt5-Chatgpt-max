@@ -28,7 +28,7 @@ Status: SOURCE_COMPLETE / PREPARED_NATIVE_ADAPTER / PHYSICAL_QUALIFICATION_DEFER
 
 ## Verification
 
-Owned M2 suites: **78 placement/native tests and 24 qualifier tests passed**. Four actual harmless Windows Job Object cases are platform-skipped on Linux. Prior related source/regression checkpoint: **340 passed, 7 platform skips**, in 19.22 seconds. After the retained-handle STOP refinement, current owned suites are **102 passed, 4 Windows skips** in 5.20 seconds. M3/064 recovery-projection integration is separately verified by its owners; an intermediate related run exposed three integration failures during those edits, which were reported for correction. Python compileall for owned source/tests and `git diff --check` passed.
+Current M2 subset: **78 placement/native tests and 28 qualifier/retained-file cases passed**, with four actual harmless Windows Job Object cases platform-skipped on Linux. The current M2 + scoped/roster + historical/HTTPS recovery command returned **158 passed, 4 Windows skips in 10.46 seconds**. Prior related source/regression checkpoint: **340 passed, 7 platform skips**, in 19.22 seconds. M3/064 recovery-projection integration is separately verified by its owners; an intermediate related run exposed three integration failures during those edits, which were reported for correction. Python compileall for owned source/tests and `git diff --check` passed.
 
 The verification covers defaults/freeze/reopen/CAS/drift, actual immutable histories, typed STRICT fields/calendar/hash validation, bounded malformed state and duplicate JSON, native input/copy windows/EX5 drift, no effects on unqualified target, interrupted reserved publication, common/scoped ownership, two prepared concurrent producers, source advancement while running, signed process mismatch, consumed completion after TTL, lost grant after launch retaining ACTIVE/handles, explicit final promotion and historical closure corruption. Positive driver/signature/scoped source fixtures are explicitly synthetic seam evidence; they do not certify physical MT5 or install qualification.
 
@@ -58,19 +58,25 @@ Later physical work is described in [TIP-061A-057N-qualification.md](TIP-061A-05
 
 ## Owned checkpoint
 
-Canonical relative-path-to-SHA256-map bundle: `cd2dee85cb1aeeb9a7608ee8ed79ee2fb2914bc2cc1ceaf6ef973c8ad118353f`.
+Canonical relative-path-to-SHA256-map bundle: `a2f44a77ce85a18c772693b2299b9a6409f0ddad8c070e30cdcbdcf44528bae7`.
 
 | File | SHA256 |
 | --- | --- |
-| `app/vibemql5/fleet/project_targets.py` | `1c60f34fa4fcd4c2d865532b4d18c8277512c849ae264089b9f2d68ef05e0d86` |
+| `app/vibemql5/fleet/project_targets.py` | `58be1ae756056104538e314a39406533e1c8903ed75f81591b936e74882eb0e3` |
 | `app/vibemql5/fleet/strict_baseline.py` | `db196ab0be627fb743e0e8d6365e034ee8ed062348794d6d52c0551ca1228802` |
-| `app/vibemql5/fleet/native.py` | `48deaddd80324e67b14d1b63c0809a1bf6b449c66a4014c538a60d4862b2db6b` |
-| `app/vibemql5/fleet/native_qualification.py` | `6f5f6f628d03727991c3e0b150f58e4cc4d93ab9e5c1b46bc1c4183441d16ab2` |
+| `app/vibemql5/fleet/native.py` | `1c096fc6e10aa0b4e16a2964fce973bedd2fad7405294e516ff1cb70da5cdb33` |
+| `app/vibemql5/fleet/native_qualification.py` | `5af42f7d7922e57f1c5781d4da0df45597f29ae10d1b9035aed9cf24b51b2f55` |
 | `app/vibemql5/fleet/native_process.py` | `d61eb43c3fd9a143a53c9b8e813fcde20bb834f0a5c5da197d07a862662d8122` |
 | `app/vibemql5/core/compiler.py` | `df3a3019dbd79a6081cf3df2bf2e1f3d7211a12bc53c5557033bb59e642d4589` |
 | `app/vibemql5/core/tester.py` | `e8548bdd4aafd51589708676823164a78fcc1e265e2a1f73432990a757f7fa5a` |
 | `app/vibemql5/core/native_ownership.py` | `857bef23426df32fbc41ae58e456a869c6533d3ab59b3dc2f6eba034cad20e87` |
-| `tests/unit/test_tip061a_057n.py` | `9c64338cb23e17bb77924a68d5b86e73a8f344ac44b06fcbb4b703a062cafdbd` |
-| `tests/unit/test_tip057n_qualification.py` | `7df0106f9f62ef4b9ac43dc5c6fb06259425a2dcc7cf0db863b5bd9a77a54c28` |
+| `tests/unit/test_tip061a_057n.py` | `30daf82bdf90b167b7eb93361925107a1326642fde2233de20812dc8a08ee8d3` |
+| `tests/unit/test_tip057n_qualification.py` | `0cede7fa987edd8ab29caa41e396b0b9e0601f27b925d4033b00d33f857c360e` |
 | `tests/unit/test_tip057n_windows_owned_process.py` | `4d34604cc59ffb0b113490c6f2a8247abb9aa94f6ea3fa42b21599b2b0be2b74` |
 | `docs/fleet-v1/TIP-061A-057N-qualification.md` | `f33ba5d22873ef438d00fb11a2caa45f2d99faae9876bc510251922ad7c290d8` |
+
+## Windows retained-file portability refinement
+
+Windows CI candidate `3b955d6` exposed stable-file reads rejected by fd/path stat comparisons and STRICT fixtures using POSIX-only canonical paths. M2 now reuses the shared retained-file helper: same native file identity/size/times are checked through the original read handle and a concrete reopened path while that handle stays open. Windows retains read sharing only and denies write/delete sharing, reparse redirection and nonregular files. Trusted approval reads still require owner/mode/ACL checks before and after the bounded read. Byte limits and exact SHA comparisons remain unchanged. Frozen input and snapshot checks reuse this bounded reader instead of unbounded source reads. STRICT fixture paths use canonical host absolute paths; product completeness requirements remain unchanged.
+
+Four added temporary-file cases check exact bounds, oversize refusal and path replacement or Windows sharing refusal. Linux source tests do not establish that the Windows fix passed; the Contractor's next exact candidate Windows CI provides that evidence. Actual VM/MT5/SDK qualification remains deferred.

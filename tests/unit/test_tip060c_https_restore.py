@@ -48,9 +48,9 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
     def controller(control,domains,jobs,principals,origin,recovery=None):
         return GatewayController(control,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=GatewayDomain(control,domains,jobs,principal_authority=principals,recovery=recovery,start_authorization_ms=2000))
     def initial(address):
-        origin='https://localhost:'+str(address[1])
+        origin='https://127.0.0.1:'+str(address[1])
         return controller(GatewayControlStore.initialize(original/'control.db',policy=control_policy()),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
-    stop,thread,address=start(initial);origin='https://localhost:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+    stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
     transport=NodeTransportJournal.initialize(tmp_path/'node-transport.db',TransportPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50),device_id=device,public_key=nodekey.public_key().public_bytes_raw().hex(),audience=origin)
     node=NodeClient(http,nodekey,device,0,transport)
     nodejobs=NodeJobJournal(tmp_path/'node-jobs.db',initialize=True,**jp)

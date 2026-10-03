@@ -18,7 +18,7 @@
     {
       "path": "tests/unit/fleet_writer_fixture.py",
       "bytes": 5198,
-      "sha256": "5de6b9497a1243d62851f070afb6e952703bc7767b70990889c3d4e55d9390e8"
+      "sha256": "1c19d59e1c97c8fd66b282d88bbf4829ef83cae8ff6ec982989381e6f1940d5e"
     },
     {
       "path": "tests/unit/test_tip061b_principals.py",
@@ -45,5 +45,6 @@
       "bytes": 5608,
       "sha256": "e15ae495ec6ae0ddf8f7d0e6c1a04abb20dc0bf520029f579427977780d03b85"
     }
-  ]
+  ],
+  "refinement_note": "Current shared test fixture hashes after numeric IPv4/IP-SAN loopback refinement. Previous manifests and original test receipts remain retained; canonical integrated CI is pending."
 }

@@ -403,7 +403,7 @@ class NodeWorktrees:
                     elif key in {b"detached", b"bare"} and field != key: raise ValueError()
                 if b"HEAD" not in seen and b"bare" not in seen: raise ValueError()
             return paths
-        except (UnicodeError, TypeError, ValueError): raise WorktreeError("GIT_OUTPUT_UNPROVEN") from None
+        except (UnicodeError, TypeError, ValueError, WorktreeError): raise WorktreeError("GIT_OUTPUT_UNPROVEN") from None
 
     def _worktree_list(self, repo):
         raw, _ = self._git(repo, "worktree", "list", "--porcelain", "-z")

@@ -17,7 +17,9 @@ AUDIENCE = "https://fixture.invalid"
 @pytest.fixture
 def recovery(tmp_path):
     key, operator = Ed25519PrivateKey.generate(), Ed25519PrivateKey.generate()
-    policy = Policy(singleton_wait_ms=25, sqlite_busy_timeout_ms=25, grant_ttl_ms=1000,
+    # Normal backup/restore setup needs a portable disk budget. Deliberate
+    # contention/deadline cases retain their short policies in TIP-058A.
+    policy = Policy(singleton_wait_ms=1000, sqlite_busy_timeout_ms=1000, grant_ttl_ms=1000,
         clock_skew_ms=100, nonce_retention_ms=300, grant_secret_bytes=32,
         max_devices=8, max_grants=16, max_nonces=16, max_operations=32,
         max_nonce_bytes=128, max_operation_id_bytes=128)

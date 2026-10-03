@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import ipaddress
 import os
 import socket
 import ssl
@@ -89,12 +90,27 @@ def test_private_key_explicit_exclusive_restrictive(tmp_path):
 def test_windows_owner_and_protected_acl_contract():
     from vibemql5.fleet.node_keys import _windows_validate_acl
     sid="S-1-5-21-100-200-300-1001"
-    acl="D:P(A;;FA;;;SY)(A;;FA;;;"+sid+")"
-    _windows_validate_acl(acl,sid,sid)
-    _windows_validate_acl(acl,sid,"S-1-5-18")
-    with pytest.raises(WireError):_windows_validate_acl(acl,sid,"S-1-5-32-544")
-    with pytest.raises(WireError):_windows_validate_acl(acl+"(A;;FR;;;WD)",sid,sid)
-    with pytest.raises(WireError):_windows_validate_acl(acl.replace("D:P","D:"),sid,sid)
+    aces=[(0,0,0x001F01FF,"S-1-5-18"),(0,0,0x001F01FF,sid)]
+    _windows_validate_acl(0x1004,aces,sid,sid)
+    _windows_validate_acl(0x1404,list(reversed(aces)),sid,"S-1-5-18")
+    _windows_validate_acl(0x1004,[aces[0]],"S-1-5-18","S-1-5-18")
+    with pytest.raises(WireError):_windows_validate_acl(0x1004,aces,sid,"S-1-5-32-544")
+    with pytest.raises(WireError):_windows_validate_acl(0x1004,aces+[(0,0,0x00120089,"S-1-1-0")],sid,sid)
+    with pytest.raises(WireError):_windows_validate_acl(4,aces,sid,sid)
+    with pytest.raises(WireError):_windows_validate_acl(0x1004,[aces[0],(0,0x10,0x001F01FF,sid)],sid,sid)
+    with pytest.raises(WireError):_windows_validate_acl(0x1004,[aces[0],(0,0,0x00120089,sid)],sid,sid)
+
+@pytest.mark.skipif(os.name!="nt",reason="Actual retained-handle numeric ACL fixture requires Windows")
+def test_windows_private_acl_roundtrip_reports_public_semantics(tmp_path):
+    from vibemql5.fleet.node_keys import _windows_acl,_windows_create,_windows_validate_acl
+    directory=tmp_path/"secrets";directory.mkdir();path=directory/"public-fixture.txt"
+    fd=_windows_create(path)
+    try:
+        evidence=_windows_acl(fd,set_restrictive=True)
+        _windows_validate_acl(evidence["control"],evidence["aces"],evidence["current_sid"],evidence["owner_sid"])
+        assert _windows_acl(fd)==evidence,evidence
+        print("WINDOWS_ACL_PUBLIC_EVIDENCE",evidence)
+    finally:os.close(fd)
 
 @pytest.mark.skipif(os.name!="nt",reason="Actual retained-handle Windows ownership fixture requires Windows")
 def test_windows_private_key_foreign_owner_denied_on_retained_handle(tmp_path):
@@ -157,7 +173,7 @@ def tls_files(tmp_path):
     leaf=(x509.CertificateBuilder().subject_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME,"localhost")]))
         .issuer_name(name).public_key(server_key.public_key()).serial_number(x509.random_serial_number())
         .not_valid_before(now-timedelta(days=1)).not_valid_after(now+timedelta(days=1))
-        .add_extension(x509.SubjectAlternativeName([x509.DNSName("localhost")]),critical=False).sign(key,hashes.SHA256()))
+        .add_extension(x509.SubjectAlternativeName([x509.DNSName("localhost"),x509.IPAddress(ipaddress.ip_address("127.0.0.1"))]),critical=False).sign(key,hashes.SHA256()))
     ca_path=tmp_path/"ca.pem";certificate=tmp_path/"server.pem";private=tmp_path/"server-key.pem"
     ca_path.write_bytes(ca.public_bytes(serialization.Encoding.PEM));certificate.write_bytes(leaf.public_bytes(serialization.Encoding.PEM))
     private.write_bytes(server_key.private_bytes(serialization.Encoding.PEM,serialization.PrivateFormat.PKCS8,serialization.NoEncryption()))
@@ -169,13 +185,13 @@ def service(tmp_path,tls_files):
     stopping=threading.Event();ready=Queue();failures=Queue()
     def factory(address):
         store=GatewayControlStore.initialize(tmp_path/"control.sqlite",policy=control_policy())
-        origin="https://localhost:"+str(address[1])
+        origin="https://127.0.0.1:"+str(address[1])
         return GatewayController(store,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),broker=ReadBroker.for_synthetic_tests(fleet_policy()))
     def run():
         try:serve_gateway(("127.0.0.1",0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
         except BaseException as exc:failures.put(exc)
     thread=threading.Thread(target=run,daemon=True);thread.start();address=ready.get(timeout=5)
-    http=HttpsClient("https://localhost:"+str(address[1]),fleet_policy(),cafile=str(ca))
+    http=HttpsClient("https://127.0.0.1:"+str(address[1]),fleet_policy(),cafile=str(ca))
     yield http,OwnerClient(http,TOKEN),address,stopping,thread
     stopping.set();thread.join(timeout=3)
     assert not thread.is_alive()
@@ -232,14 +248,47 @@ def test_https_read_attribution_once_lost_ack_and_partial_snapshot(service,tmp_p
     assert partial["coverage"]=={"requested":2,"succeeded":1,"failed":1}
     assert partial["rows"][1]["account"] is None and "total" not in partial
 
-def test_tls_hostname_and_ca_are_verified(service):
+def test_tls_hostname_and_ca_are_verified(service,monkeypatch):
     http,owner,address,*_=service
-    with pytest.raises(WireError,match="HTTPS_UNAVAILABLE"):
-        HttpsClient("https://127.0.0.1:"+str(address[1]),fleet_policy(),ssl_context=http.context).post("/fleet/v1/read-status",{"schema":"fleet.read-status-request/1","command_id":"read_x"},{"Authorization":"Bearer "+TOKEN})
+    resolve=socket.getaddrinfo
+    # Route this mismatched IP to the genuine local TLS fixture; verification
+    # still receives the original127.0.0.2 name absent from its certificate.
+    with monkeypatch.context() as fixture:
+        fixture.setattr(socket,"getaddrinfo",lambda host,*args,**kwargs:resolve("127.0.0.1" if host=="127.0.0.2" else host,*args,**kwargs))
+        with pytest.raises(WireError,match="HTTPS_UNAVAILABLE"):
+            HttpsClient("https://127.0.0.2:"+str(address[1]),fleet_policy(),ssl_context=http.context).post("/fleet/v1/read-status",{"schema":"fleet.read-status-request/1","command_id":"read_x"},{"Authorization":"Bearer "+TOKEN})
     with pytest.raises(WireError,match="HTTPS_UNAVAILABLE"):
         HttpsClient(http.origin,fleet_policy()).post("/fleet/v1/read-status",{"schema":"fleet.read-status-request/1","command_id":"read_x"},{"Authorization":"Bearer "+TOKEN})
     context=ssl._create_unverified_context()
     with pytest.raises(WireError,match="TLS_VERIFICATION_REQUIRED"):HttpsClient(http.origin,fleet_policy(),ssl_context=context)
+
+def test_delayed_wrong_family_cannot_send_expired_authority_and_numeric_fixture_needs_no_extra_budget(service,monkeypatch):
+    http,owner,address,*_=service
+    resolve,connect,clock=socket.getaddrinfo,socket.socket.connect,time.monotonic
+    elapsed=[0.0];attempts=[]
+    def dual(host,port,*args,**kwargs):
+        if host=="localhost":
+            return [(socket.AF_INET6,socket.SOCK_STREAM,6,"",("::1",port,0,0)),
+                (socket.AF_INET,socket.SOCK_STREAM,6,"",("127.0.0.1",port))]
+        return resolve(host,port,*args,**kwargs)
+    def delayed(protected,destination):
+        attempts.append(protected.family)
+        if protected.family==socket.AF_INET6:
+            elapsed[0]+=http.policy.http_timeout_ms/1000+.001
+            raise ConnectionRefusedError("fixture delayed IPv6 refusal")
+        return connect(protected,destination)
+    with monkeypatch.context() as fixture:
+        fixture.setattr(socket,"getaddrinfo",dual);fixture.setattr(socket.socket,"connect",delayed)
+        fixture.setattr(time,"monotonic",lambda:clock()+elapsed[0])
+        old=OwnerClient(HttpsClient("https://localhost:"+str(address[1]),fleet_policy(),ssl_context=http.context),TOKEN)
+        request={"device_id":DEVICE,"public_key":ed25519.Ed25519PrivateKey.generate().public_key().public_bytes_raw().hex(),
+            "operation_id":"expired-before-send","expected_revision":1,"expected_route_generation":None}
+        with pytest.raises(WireError,match="HTTP_DEADLINE_EXCEEDED"):old.admin("grant",request)
+    assert attempts==[socket.AF_INET6,socket.AF_INET]
+    # Revision1 proves the late connection sent no prior owner mutation. The
+    # same policy budget now succeeds using exact fixture IP and verified SAN.
+    receipt=owner.admin("grant",{**request,"operation_id":"numeric-fixture"})
+    assert receipt["receipt"]["revision"]==2 and http.policy.http_timeout_ms==1000
 
 def test_slow_fragmented_headers_cannot_renew_total_budget(service):
     http,owner,address,*_=service
@@ -538,7 +587,7 @@ def test_server_context_uses_loaded_identity_without_reopening_paths(tmp_path,tl
     ready=Queue();errors=Queue();stop=threading.Event()
     def factory(address):
         store=GatewayControlStore.initialize(tmp_path/"context-control.sqlite",policy=control_policy())
-        return GatewayController(store,fleet_policy(),audience="https://localhost:"+str(address[1]),
+        return GatewayController(store,fleet_policy(),audience="https://127.0.0.1:"+str(address[1]),
             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest())
     def run():
         try:serve_gateway(("127.0.0.1",0),ssl_context=context,controller_factory=factory,stop_event=stop,started=ready.put)
@@ -546,7 +595,7 @@ def test_server_context_uses_loaded_identity_without_reopening_paths(tmp_path,tl
     thread=threading.Thread(target=run,daemon=True);thread.start()
     try:
         address=ready.get(timeout=3)
-        owner=OwnerClient(HttpsClient("https://localhost:"+str(address[1]),fleet_policy(),cafile=str(ca)),TOKEN)
+        owner=OwnerClient(HttpsClient("https://127.0.0.1:"+str(address[1]),fleet_policy(),cafile=str(ca)),TOKEN)
         with pytest.raises(WireError,match="READ_INTERRUPTED"):owner.read_status("read_unknown")
     finally:
         stop.set();thread.join(timeout=3)

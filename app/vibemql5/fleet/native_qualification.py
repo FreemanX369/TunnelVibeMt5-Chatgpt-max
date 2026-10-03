@@ -31,24 +31,25 @@ class QualificationError(RuntimeError):
 
 
 def file_hash(path, maximum=512 * 1024 * 1024):
+    from .scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
     path = Path(path)
     try:
         def unsafe():
             return any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents))
         if unsafe() or not path.is_file(): raise ValueError()
         result, total = hashlib.sha256(), 0
-        with path.open("rb") as stream:
-            before = os.fstat(stream.fileno())
-            if before.st_size > maximum: raise ValueError()
+        with os.fdopen(_open_retained_read(path), "rb") as stream:
+            before = retained_file_metadata(stream.fileno())
+            if before[2] > maximum: raise ValueError()
             while True:
                 chunk = stream.read(min(1024 * 1024, maximum - total + 1))
                 if not chunk: break
                 total += len(chunk)
                 if total > maximum: raise ValueError()
                 result.update(chunk)
-            after = os.fstat(stream.fileno())
-        metadata = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
-        if total != before.st_size or metadata(before) != metadata(after) or metadata(after) != metadata(path.stat()) or unsafe(): raise ValueError()
+            if total != before[2]: raise ValueError()
+            assert_retained_path(path, stream.fileno(), before)
+        if unsafe(): raise ValueError()
         return result.hexdigest()
     except Exception: raise QualificationError() from None
 
@@ -226,21 +227,21 @@ def _read_installed(path):
     try:
         from .node_keys import _check
         from .wire import decode_body
+        from .scoped_resources import _open_retained_read, retained_file_metadata, assert_retained_path
         path = Path(path)
         if any(part.is_symlink() or (part.exists() and getattr(part.stat(), "st_file_attributes", 0) & 0x400) for part in (path, *path.parents)): raise ValueError()
-        descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NOINHERIT", 0))
+        descriptor = _open_retained_read(path)
         _check(descriptor)
-        before = os.fstat(descriptor)
-        if before.st_size > 262144: raise ValueError()
+        before = retained_file_metadata(descriptor)
+        if before[2] > 262144: raise ValueError()
         raw = bytearray()
         while len(raw) <= 262144:
             block = os.read(descriptor, min(65536, 262145 - len(raw)))
             if not block: break
             raw.extend(block)
         _check(descriptor)
-        after = os.fstat(descriptor)
-        metadata = lambda record: (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
-        if len(raw) > 262144 or metadata(before) != metadata(after) or metadata(after) != metadata(path.stat()) or path.is_symlink(): raise ValueError()
+        if len(raw) > 262144 or len(raw) != before[2]: raise ValueError()
+        assert_retained_path(path, descriptor, before)
         return decode_body(bytes(raw), 262144)
     except Exception: raise QualificationError() from None
     finally:

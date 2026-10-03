@@ -1,0 +1,38 @@
+{
+  "schema": "fleet.ci-refinement/1",
+  "failed_candidate": "3b955d6121bcc1758740e97989fb69754ae8f51f",
+  "failed_receipts": {
+    "summary.json": "22973dc8a010ce292cd451f407a629fef4e9d3df359e1472a3e6a4bf8060e38e",
+    "full-unit.log": "de7d215c829ee10e46dd114c9be078b1c616956d7ff8a36147f46a0b55cf495a",
+    "unit.junit.xml": "59e7d9709ffb8eebc6f7852d12960ce51301bbb4b3531fd99c1ffc74b939d790"
+  },
+  "owned_source_before": {
+    "ops/windows/VibeMQL5.AtomicFile.ps1": "61bab16ab6268a3108881aa27df5d7ded8bf0e3d107337e1cc9a1ddf1bbb06d2",
+    "tests/unit/test_tip054_windows_health_guards.py": "01e153af3bf4d25fe596b70f1f679ae8ecd6f6d33eee2a88550c4bdc5abb6e4f",
+    "tests/proofs/fleet_v1/run_source.py": "bbdde265c115688c46ed612b5807d53e2bf6ed2672118341c0b2b73f3dc9a801"
+  },
+  "owned_source_after": {
+    "ops/windows/VibeMQL5.AtomicFile.ps1": "61bab16ab6268a3108881aa27df5d7ded8bf0e3d107337e1cc9a1ddf1bbb06d2",
+    "tests/unit/test_tip054_windows_health_guards.py": "01e153af3bf4d25fe596b70f1f679ae8ecd6f6d33eee2a88550c4bdc5abb6e4f",
+    "tests/proofs/fleet_v1/run_source.py": "bbdde265c115688c46ed612b5807d53e2bf6ed2672118341c0b2b73f3dc9a801"
+  },
+  "source_unchanged": true,
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip054_windows_health_guards.py",
+    "tests/unit/test_tip054_deep_audit_guards.py",
+    "-q",
+    "--tb=short",
+    "--junitxml=/workspace/scratch/250985b4823e/fleet-update-build/docs/fleet-v1/evidence/tip054-pwsh-json-v1/focused.junit.xml"
+  ],
+  "exit_code": 0,
+  "passed": 15,
+  "skipped": 23,
+  "failures": 0,
+  "power_shell_runtime": "NOT_AVAILABLE_LOCAL",
+  "actual_power_shell_qualification": "PENDING_EXACT_CI",
+  "manifest_powershell_paths_count": 21,
+  "physical_qualification": "NOT_RUN"
+}

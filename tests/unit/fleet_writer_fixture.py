@@ -34,7 +34,7 @@ def writer_fixture(project_node,tls_files,tmp_path):
     root=project_node['root']; device=project_node['registry']['device_id']
     target={**project_node['project']['default_target'],'route_generation':1}
     def factory(address):
-        origin='https://localhost:'+str(address[1])
+        origin='https://127.0.0.1:'+str(address[1])
         control=GatewayControlStore.initialize(tmp_path/'gateway'/'control.sqlite',policy=control_policy())
         domains=DomainJournal(tmp_path/'gateway'/'domains.sqlite',policy=DomainPolicy(max_records=100,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000),role='GATEWAY',initialize=True)
         native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
@@ -45,7 +45,7 @@ def writer_fixture(project_node,tls_files,tmp_path):
         try: serve_gateway(('127.0.0.1',0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
         except BaseException as error: failures.put(error)
     thread=threading.Thread(target=run,daemon=True);thread.start();address=ready.get(timeout=5)
-    http=HttpsClient('https://localhost:'+str(address[1]),fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+    http=HttpsClient('https://127.0.0.1:'+str(address[1]),fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
     grant=owner.admin('grant',{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'operation_id':'grant','expected_revision':1,'expected_route_generation':None})
     node=NodeClient(http,nodekey,device,0);node.pair(grant_id=grant['receipt']['grant_id'],secret=grant['secret'],operation_id='pair',expected_revision=2)
     node.heartbeat('node-session')

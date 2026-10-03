@@ -369,6 +369,6 @@ def test_native_git_path_variants_use_canonical_filesystem_comparison(worktrees)
     assert target in f['worktrees']._listed_worktree_paths(('worktree '+variant+'\0HEAD '+f['base']+'\0\0').encode())
 
 
-@pytest.mark.parametrize('raw',[b'',b'warning: hidden stale worktree\nworktree /tmp/a\0HEAD '+b'a'*40+b'\0\0',b'worktree /tmp/a\0unknown-field\0\0'])
+@pytest.mark.parametrize('raw',[b'',b'warning: hidden stale worktree\nworktree /tmp/a\0HEAD '+b'a'*40+b'\0\0',b'worktree /tmp/a\0unknown-field\0\0',b'worktree relative/path\0HEAD '+b'a'*40+b'\0\0',b'worktree /tmp/a\0HEAD invalid\0\0'])
 def test_malformed_git_listing_cannot_prove_retired_absence(raw):
     with pytest.raises(WorktreeError,match='GIT_OUTPUT_UNPROVEN'):NodeWorktrees._listed_worktree_paths(raw)

@@ -682,3 +682,58 @@ def test_scoped_worker_bound_snapshot_uses_only_read_only_files_and_memory_sqlit
         assert observed == bound and connections == [":memory:"]
         assert coordinator.path.read_bytes() == before
         marker.unlink()  # Remove only this deliberately unsigned disposable fixture.
+
+
+def test_sdk_hash_rejects_or_prevents_actual_path_replacement(tmp_path, monkeypatch):
+    """Real temporary filesystem race; no SDK/qualification installation."""
+    import os
+    import hashlib
+    from vibemql5.fleet import scoped_resources as scoped
+    from vibemql5.fleet.sdk_qualification import file_hash
+    path, replacement = tmp_path / 'runtime.bin', tmp_path / 'replacement.bin'
+    path.write_bytes(b'original'); replacement.write_bytes(b'changed!')
+    original_check, prevented = scoped.assert_retained_path, []
+    def race(value, fd, expected):
+        try: replacement.replace(path)
+        except OSError:
+            assert os.name == 'nt'  # The retained Windows read denies delete sharing.
+            prevented.append(True)
+        original_check(value, fd, expected)
+    monkeypatch.setattr(scoped, 'assert_retained_path', race)
+    if os.name == 'nt':
+        assert file_hash(path) == hashlib.sha256(b'original').hexdigest()
+        assert prevented and path.read_bytes() == b'original'
+    else:
+        with pytest.raises(QualificationError): file_hash(path)
+        assert path.read_bytes() == b'changed!'
+
+
+def test_sdk_hash_cumulative_cap_rejects_or_prevents_actual_growth(tmp_path, monkeypatch):
+    """Growth happens after the first read; initial size alone cannot pass it."""
+    import os
+    import hashlib
+    from vibemql5.fleet.sdk_qualification import file_hash
+    path = tmp_path / 'runtime.bin'; path.write_bytes(b'12345')
+    original_fdopen, prevented = os.fdopen, []
+    class GrowingStream:
+        def __init__(self, stream): self.stream, self.first = stream, True
+        def __enter__(self): self.stream.__enter__(); return self
+        def __exit__(self, *args): return self.stream.__exit__(*args)
+        def fileno(self): return self.stream.fileno()
+        def read(self, maximum):
+            value = self.stream.read(maximum)
+            if self.first:
+                self.first = False
+                try:
+                    with path.open('ab') as writer: writer.write(b'6')
+                except OSError:
+                    assert os.name == 'nt'  # FILE_SHARE_READ refuses this writer.
+                    prevented.append(True)
+            return value
+    monkeypatch.setattr(os, 'fdopen', lambda *args, **kwargs: GrowingStream(original_fdopen(*args, **kwargs)))
+    if os.name == 'nt':
+        assert file_hash(path, max_bytes=5) == hashlib.sha256(b'12345').hexdigest()
+        assert prevented and path.read_bytes() == b'12345'
+    else:
+        with pytest.raises(QualificationError): file_hash(path, max_bytes=5)
+        assert path.read_bytes() == b'123456'

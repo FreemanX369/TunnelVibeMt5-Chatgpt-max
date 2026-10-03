@@ -18,15 +18,21 @@ Status: SOURCE_COMPLETE / PHYSICAL_SDK_QUALIFICATION_DEFERRED. No actual SDK, pr
 
 ## Verification
 
-Focused product SDK suite: **57 passed, 1 skipped**. The skip is actual Win32 API/structure construction on Linux; no Windows or SDK qualification is implied. The focused suite covers malformed/bounded protocol data, frozen request mutation, masking and field/count limits, false/raised initialization and shutdown, binding/deadline failures, categorical synthetic/signature rejection, SDK import-origin pins, ACL write rejection, owned lifecycle fault windows, real disposable scoped SQLite zero-attempt/UNKNOWN restart exclusion, read-only BOUND snapshot I/O, two-binding catalog selection, first-error retention and actual common lease release.
+Historical focused product SDK checkpoint: **57 passed, 1 skipped**. The skip is actual Win32 API/structure construction on Linux; no Windows or SDK qualification is implied. The focused suite covers malformed/bounded protocol data, frozen request mutation, masking and field/count limits, false/raised initialization and shutdown, binding/deadline failures, categorical synthetic/signature rejection, SDK import-origin pins, ACL write rejection, owned lifecycle fault windows, real disposable scoped SQLite zero-attempt/UNKNOWN restart exclusion, read-only BOUND snapshot I/O, two-binding catalog selection, first-error retention and actual common lease release.
 
-Final retained/integration checkpoint: **216 passed, 1 skipped, 97 subtests passed**, using:
+Historical retained/integration checkpoint: **216 passed, 1 skipped, 97 subtests passed**, using:
 
 ```bash
 PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest tests/unit/test_tip057r_sdk.py tests/unit/test_tip057rc1.py tests/unit/test_tip056_scoped.py tests/unit/test_tip059_read_broker.py tests/unit/test_tip064_integration.py tests/proofs/tip057rb1/test_portable.py tests/proofs/tip057rb1/test_controller.py -q
 ```
 
-Python compileall for the five source files and focused suite passed. `git diff --check` passed. Frozen proof source was reused by extraction only; this Builder did not edit proof files. Portable fixtures and memory snapshots grant no operator/physical capability. A later shared scoped-store provenance refinement required the focused test to explicitly reject synthetic BOUND records and label the positive read-only signed-protocol claim fixture. The five SDK product sources and operator handbook were unchanged; the updated focused and retained suites above passed.
+Python compileall for the five source files and focused suite passed. `git diff --check` passed. Frozen proof source was reused by extraction only; this Builder did not edit proof files. Portable fixtures and memory snapshots grant no operator/physical capability. A later shared scoped-store provenance refinement required the focused test to explicitly reject synthetic BOUND records and label the positive read-only signed-protocol claim fixture. At that shared provenance refinement, the five SDK product sources and operator handbook were unchanged; the focused and retained suites above passed.
+
+## Windows retained-file metadata refinement
+
+After source-CI candidate `3b955d6`, the shared scoped reader exposed a Python 3.12 Windows handle/path stat alias mismatch. SDK file_hash used the same tuple comparison and could deny valid unchanged source/runtime/module files. This one function now reuses the approved shared retained read/metadata/current-path helper: exact Windows FileId/basic/standard observations, original read handle retained through pathname reopening, no write/delete sharing, no symlink/reparse following. Cumulative per-file cap and exact size remain. Signature, current installation, SDK gate, AppContainer/ownership and physical Q2 requirements are unchanged.
+
+Updated focused SDK checkpoint: **59 passed, 1 skipped**. The two added actual temporary-file race cases replace the pathname or grow the file after the first read: Linux rejects the changed hash; the Windows source-CI branch must demonstrate the retained read sharing prevents those mutations. No SDK installation or qualified production fixture was used. Combined SDK/scoped checkpoint: **75 passed, 1 skipped**. Compilation and diff checks passed. Combined Windows CI on the new candidate remains authoritative; no physical qualification follows from this portable result.
 
 ## API handoff
 
@@ -38,14 +44,14 @@ Python compileall for the five source files and focused suite passed. `git diff 
 
 ## Source checkpoint
 
-Bundle SHA256 (canonical relative-path-to-hash map below): `773b3201489dff7327a4065956f40428ff0d052bad8349044efcba6e9a212e12`. This is a source checkpoint, not a physical qualification or an installation candidate approval. Other Builders may change shared product sources before the Contractor's final whole-build checkpoint; every real installation must bind the final complete deployed payload.
+Bundle SHA256 (canonical relative-path-to-hash map below): `75e7ca4e2263159615d90f898b0cfc042e9e42bd451479f40d2670c60235d836`. This is a source checkpoint, not a physical qualification or an installation candidate approval. Other Builders may change shared product sources before the Contractor's final whole-build checkpoint; every real installation must bind the final complete deployed payload.
 
 | File | SHA256 |
 | --- | --- |
 | `app/vibemql5/fleet/sdk_protocol.py` | `e64d4f06aa031425b3a816062ad46746d4b551c0a0faf43dd6f06cb031588f52` |
 | `app/vibemql5/fleet/sdk_worker.py` | `08d226bc8e805654560d6ea0fd7df1f8750f9a21bbc372b75a0d7a14869bbc18` |
-| `app/vibemql5/fleet/sdk_qualification.py` | `b79885bb1daf9ba08b1adf3b15c7dffefa54123516b99442d445434b0a622bdf` |
+| `app/vibemql5/fleet/sdk_qualification.py` | `4181262dc8ebaaeea307f45f443306704dcf67e3dc2c50ccc8901530c2ebee91` |
 | `app/vibemql5/fleet/sdk_controller.py` | `debcb7a3bc057935a7f11f4a70b1da00e52195f5ad6d2adb0223921005d932ce` |
 | `app/vibemql5/core/isolated_sdk.py` | `471f4760161d019c8c83032a2207a1be06f08b2823b14d624e43bbf32b2ee46c` |
-| `tests/unit/test_tip057r_sdk.py` | `f22656b96610348cca90d63a8736fd1c22c604cdc661e313941b2612ace9d14d` |
-| `docs/fleet-v1/TIP-057R-SDK-qualification.md` | `d9c5636b80798b7b6fb720a4d404da4f8a49f4ec3f819608b2ebb9d0e1be7451` |
+| `tests/unit/test_tip057r_sdk.py` | `449558c0f8441003f03c4b605bf7dbc9af7366609064ebf9e35c5626c415d06a` |
+| `docs/fleet-v1/TIP-057R-SDK-qualification.md` | `b4b1824679d219e5f9811f41c951dddd11985cee4e254e87b30cc08a48402619` |
