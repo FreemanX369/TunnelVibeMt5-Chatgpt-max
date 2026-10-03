@@ -24,7 +24,7 @@ MCP_SCHEMAS_C1_SHA256 = "64337437115a20a8555cc1214706a503b985195dbdbd219de2adfa3
 @pytest.fixture
 def policy():
     # Synthetic capacities/time profile required explicitly by every constructor.
-    return Policy(singleton_wait_ms=25, sqlite_busy_timeout_ms=25, grant_ttl_ms=1000,
+    return Policy(singleton_wait_ms=25, sqlite_busy_timeout_ms=1000, grant_ttl_ms=1000,
         clock_skew_ms=100, nonce_retention_ms=300, grant_secret_bytes=32,
         max_devices=8, max_grants=16, max_nonces=16, max_operations=32,
         max_nonce_bytes=64, max_operation_id_bytes=64)
@@ -245,19 +245,23 @@ def test_actual_cooperative_writer_denied_then_crash_releases_os_lock(tmp_path, 
         queue.close()
 
 
-def test_sqlite_busy_wait_is_bounded_and_does_not_partially_issue(store):
-    before = store.snapshot()
-    database = sqlite3.connect(store.path, isolation_level=None)
-    try:
-        database.execute("BEGIN IMMEDIATE")
-        started = time.monotonic()
-        expect("CONTROL_TRANSACTION_FAILED", lambda: issue(store))
-        assert time.monotonic() - started < 2
-    finally:
-        database.rollback()
-        database.close()
-    assert store.snapshot() == before
-    assert issue(store)["receipt"]["revision"] == 2
+def test_sqlite_busy_wait_is_bounded_and_does_not_partially_issue(tmp_path, policy):
+    # Normal snapshot budget tolerates loaded Windows CI. Contention has its own
+    # explicit short profile and still exercises the real SQLite timeout.
+    with GatewayControlStore.initialize(tmp_path / "busy.sqlite",
+            policy=replace(policy, sqlite_busy_timeout_ms=100)) as store:
+        before = store.snapshot()
+        database = sqlite3.connect(store.path, isolation_level=None)
+        try:
+            database.execute("BEGIN IMMEDIATE")
+            started = time.monotonic()
+            expect("CONTROL_TRANSACTION_FAILED", lambda: issue(store))
+            assert time.monotonic() - started < 2
+        finally:
+            database.rollback()
+            database.close()
+        assert store.snapshot() == before
+        assert issue(store)["receipt"]["revision"] == 2
 
 
 @pytest.mark.parametrize("operation", ["snapshot", "close"])

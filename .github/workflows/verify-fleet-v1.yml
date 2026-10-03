@@ -1,0 +1,47 @@
+name: Verify Fleet v1 integrated source
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-harmless-fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked source test dependencies
+        run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Verify Linux source and portable fixtures
+        if: runner.os == 'Linux'
+        run: python tests/proofs/fleet_v1/run_source.py --output fleet-v1-source
+      - name: Verify Windows source and required harmless process fixtures
+        if: runner.os == 'Windows'
+        run: python tests/proofs/fleet_v1/run_source.py --require-windows --output fleet-v1-source
+      - name: Preserve exact-checkout source manifests, unit JUnit and proof logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-v1-source-${{ matrix.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: fleet-v1-source/
+          retention-days: 14
+          if-no-files-found: error

@@ -19,3 +19,9 @@ YAGNI-3: remote mutation and multiple agents require a writer fence and isolated
 * Tests use temporary real Git repos/worktrees for isolation, clean/dirty/base drift, stale owner/epoch, path traversal, competing assignment, commit interruption/replay and no unintended main checkout modification. No external repo deploy/merge action.
 
 Each report maps actual source and tests to its TIP. Source-qualified authentication/worktree behavior is distinct from later physical client/process qualification.
+
+## Contractor implementation decision — 2026-10-03 continuation
+
+A static signed credential cannot establish current revocation across a disconnected node. Use the finite signed node route `/fleet/v1/writers/authorize` for fresh proofs bound to the exact principal, assignment, writer epoch, operation, intent hash and phase. The node verifies both its locally installed signed writer fence and the gateway proof before the source commit and again before the session commit. Persist issued phases and their exact acknowledgments; lost acknowledgment never permits another source effect.
+
+Revoke/release blocks new admissions immediately, then remains `DRAINING` until the node acknowledges the signed replacement fence and every issued pending phase is reconciled. Only then publish `REVOKED`/`RELEASED` and allow a successor. TTL, heartbeat or a caller label cannot reclaim ownership. A crash between commits may reconcile only the original bytes, operation and owner epoch; ambiguous outcome blocks successors. This makes the distributed revocation boundary explicit without changing the approved singleton gateway or node-owned source architecture. Include principal/assignment/phase heads in the joint recovery checkpoint.

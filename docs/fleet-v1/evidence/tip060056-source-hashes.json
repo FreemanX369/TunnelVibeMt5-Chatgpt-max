@@ -1,0 +1,29 @@
+{
+  "builder": "fleet_transport_build",
+  "date": "2026-10-03",
+  "files": {
+    "app/vibemql5/fleet/artifact_proxy.py": "87504cedd16e65032f8b1c72263022ef69df5024685a7e070138ca7c01816893",
+    "app/vibemql5/fleet/job_journal.py": "166a4d37221ceb3e5a31fa87a234036c7656c57361b0173cc05568af097ca543",
+    "app/vibemql5/fleet/native_authorization.py": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5",
+    "app/vibemql5/fleet/resources.py": "e3b7cfff663518312648c07ecad605734b6d35129ff519c3b0b018917a0bb492",
+    "app/vibemql5/fleet/scoped_resources.py": "cd1158f33d4a203dcf1409a0fd82c2b804a8c0167d9609fdc628c43fb48e6f33",
+    "docs/fleet-v1/TIP-056-completion.md": "c476a8537a06b784284b03dd6dbe8913dbb4d2591639536a1cb5dd57dfcea0c4",
+    "docs/fleet-v1/TIP-060-completion.md": "fcf758bc6f347d531c36912dc0ff34a46c945974176472650f73353ca263b372",
+    "tests/unit/test_tip056_gateway_capacity.py": "021cfb1707a6be814d6374b9bd5928b29ec4e4c883f985c9ed49b4bbe8bc747e",
+    "tests/unit/test_tip056_resources.py": "01abaf99f6a8b61cbf73e0da562f14e523df49f7818690d87d0e5f466084010a",
+    "tests/unit/test_tip056_scoped.py": "3ef937ae87db371a3df483d44e7d7432e62db9d26cb0da23d29f5e29a8d4b2e2",
+    "tests/unit/test_tip056_signed_roster.py": "4a15b64096ba25686660413157523ea710cd7b0927df38e1f4534a635e439de1",
+    "tests/unit/test_tip057r_sdk.py": "f22656b96610348cca90d63a8736fd1c22c604cdc661e313941b2612ace9d14d",
+    "tests/unit/test_tip060_artifacts.py": "548ed2721b50d827e7923ee961e318cd802c819cae3238e852092c465e8016d0",
+    "tests/unit/test_tip060_authorization.py": "91fe1952c22dea917ad931730562d0eb20bf652ed4eaff80646c6489626c147e",
+    "tests/unit/test_tip060_historical.py": "ac3f5c16483d4a1ff64215d4a6aa177263d958340fab793a73f50794b8e016fb",
+    "tests/unit/test_tip060_journal.py": "358e8fd09c062a6c2c698ab0a186ed434cc2b63cb86a68f01c442d242317d727",
+    "tests/unit/test_tip064_capacity_https.py": "92436706a7b5263a108568aa3db27b85ca7c8aae39cae7fae5e9cd87d1bc3388"
+  },
+  "junit_sha256": "779c3bf1adf4f5eb1c3b6fd154e9dc1d93767f7097b0785a5f70591fd8da1609",
+  "passed": 378,
+  "schema": "fleet.builder-source-evidence/1",
+  "skipped": 7,
+  "status": "BUILDER_SOURCE_SNAPSHOT_PASS_FINAL_ROOT_MATRIX_REQUIRED",
+  "test_command": "PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest -q tests/unit/test_tip060_journal.py tests/unit/test_tip060_historical.py tests/unit/test_tip060_authorization.py tests/unit/test_tip060_artifacts.py tests/unit/test_tip056_resources.py tests/unit/test_tip056_scoped.py tests/unit/test_tip056_signed_roster.py tests/unit/test_tip056_gateway_capacity.py tests/unit/test_tip057r_sdk.py tests/unit/test_tip061a_057n.py tests/unit/test_tip057n_qualification.py tests/unit/test_tip057n_windows_owned_process.py tests/unit/test_tip058b_transport.py tests/unit/test_tip060c_restore.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip060c_node_transport.py tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py --junitxml=docs/fleet-v1/evidence/tip060056-source-matrix.xml"
+}

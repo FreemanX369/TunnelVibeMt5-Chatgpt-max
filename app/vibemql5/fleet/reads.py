@@ -1,7 +1,8 @@
-"""Explicit local read validation; targeted IPC remains unavailable until qualified.
+"""Local attribution and an explicit trusted installed SDK integration.
 
-Inventory resolution supplies attribution only. There is no observation, success,
-worker/proof import or capability-enable branch in this source slice.
+Inventory resolution supplies attribution. With no installed qualification, the
+C1 admission remains unavailable. Positive gateway routes use the separately
+authenticated outbound-node adapter.
 """
 from __future__ import annotations
 
@@ -47,9 +48,25 @@ def _inventory_rows(root):
     return rows
 
 
-def targeted_read(root, concurrency, operation, target, *, clock=None):
+def targeted_read(root, concurrency, operation, target, *, clock=None, sdk_installation=None):
     if operation not in ("get_terminal_live_state", "get_account_snapshot"):
         raise ValueError("UNSUPPORTED_READ_OPERATION")
+    if sdk_installation is not None:
+        # Only a trusted local operator loader can construct the sealed installed
+        # qualification. Dispatch before the C1 lease: read_local owns one common
+        # native lease covering validation, worker lifetime and exact closure.
+        from .sdk_controller import read_local
+        from .sdk_qualification import QualifiedSdkInstallation, QualificationError
+        if type(sdk_installation) is not QualifiedSdkInstallation:
+            raise QualificationError()
+        try:
+            selected = _target(target)
+        except IdentityError:
+            selected = None
+        # Legacy/local callers have no authenticated current gateway route. A
+        # positive route can only reach the separate signed outbound-node path.
+        if selected is not None and selected.get("route_generation") is None:
+            return read_local(root, concurrency, operation, target, sdk_installation)
     clock = clock or time.monotonic
     started = clock()
     answer = {"schema": "fleet.read/1", "operation": operation, "status": "FAILED",

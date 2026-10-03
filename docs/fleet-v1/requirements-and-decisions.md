@@ -54,6 +54,22 @@ This compressed RRI reuses the supplied requirements rather than repeating a lar
 
 ## Proposed decisions linked to the original D-01 → D-12
 
+### Continuous-build implementation decisions
+
+These Contractor decisions make the approved authority boundaries executable; they add no new product scope or physical qualification. They supersede historical build-timing statements in the original register.
+
+| Decision | Concrete behavior | Verification |
+|---|---|---|
+| C-01 | Distinct native effect steps receive finite signed proofs; completed consumed effects may finish after proof expiry, while lost/unconsumed steps remain blocked | Ordered durable step/predecessor and actual HTTPS tests |
+| C-02 | Guarded writer revoke/release enters DRAINING until exact node fence and pending phase acknowledgments reconcile | Revoke between source/session commits; owner-approved completion of the same old intent only |
+| C-03 | Supported restore includes configured transport/job/domain/principal heads; finite same-checkpoint reapproval may resume a fenced interrupted finalization | Real TLS independent operator/node witnesses and expiry after each publication step |
+| C-04 | Signed shared native runtime plus deterministic per-target qualification supports the approved finite capacity roster; source capture releases the global mutation resource before long execution | Same-source manifest, two scoped orchestration workers and concurrent source update; physical load test remains deferred |
+| C-05 | Historical terminal recovery after an admitted replacement session is read-only and quarantined; original job target/outcome and uncertain capacity remain immutable | Exact same-device challenge/witness, complete closed terminal evidence, no pending step/cancel and zero new execution |
+| C-06 | Principal-only clients hold their Ed25519 key and public credential without the owner's administrative token | Real TLS principal operation and owner-operation denial before HTTP |
+| C-07 | Trust-bearing startup configuration is protected independently of ordinary public request JSON; stopping admission retains the outbound owner loop while existing work drains | Writable/symlink configuration denial, finite STOP_PENDING lifecycle and no authority release during active work |
+
+Per-TIP Completion Reports and the [cumulative source verification](source-update-verification.md) record the resulting evidence; none of these decisions replaces the owner's later physical tests.
+
 D entries establish the approved direction and choices within the recorded approval scope; O entries list details still required at the affected milestone. The approval record binds the original package to its exact reviewed commit. Future milestone details remain gated rather than invented.
 
 | ID | Proposed choice | Reason and boundary | Affects |

@@ -253,6 +253,11 @@ class OwnershipAuthority:
         return state
 
     def require_closed(self) -> dict[str, Any]:
+        # An installed scoped producer must use its verified coordinator. Presence
+        # alone blocks legacy admission, including corrupt/partial marker files.
+        scoped = self.root / "state" / "fleet" / "scoped-install.json"
+        if scoped.exists() or scoped.is_symlink():
+            raise OwnershipBlocked("SCOPED_OWNERSHIP_REQUIRED")
         state = self.load()
         if state["disposition"] != "CLOSED":
             raise OwnershipBlocked("ACTIVE_RECOVERY_REQUIRED")

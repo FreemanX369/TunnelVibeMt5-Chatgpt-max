@@ -18,6 +18,7 @@ from ..core.jobs import _exclusive_file_lock
 from ..errors import VibeMQL5Error
 
 SCHEMA = "fleet.gateway.control/1"
+RECOVERY_SCHEMA = "fleet.gateway.control/2"
 _MAX = (1 << 63) - 1
 _DEVICE = re.compile(r"dev_[a-f0-9]{32}\Z")
 _KEY = re.compile(r"[a-f0-9]{64}\Z")
@@ -127,6 +128,7 @@ _SCHEMA_OBJECTS = {
     **{("index", "sqlite_autoindex_" + name + "_1"): (name, None)
        for name in ("devices", "grants", "nonces", "operations")},
 }
+_RECOVERY_SQL = "CREATE TABLE recovery (singleton INTEGER PRIMARY KEY CHECK(singleton=1), record TEXT NOT NULL)"
 _RECEIPT_FIELDS = {"schema", "operation_id", "operation", "revision", "device_id",
                    "route_generation", "public_key", "grant_id", "expires_ms", "state",
                    "evidence", "authentication", "dispatch_enabled"}
@@ -369,22 +371,26 @@ class GatewayControlStore:
         try:
             if self._db.execute("PRAGMA quick_check").fetchone()[0] != "ok":
                 _fail("CONTROL_CORRUPT")
-            if self._db.execute("PRAGMA user_version").fetchone()[0] != 1:
+            version = self._db.execute("PRAGMA user_version").fetchone()[0]
+            if version not in {1, 2}:
                 _fail("CONTROL_CORRUPT")
             tables = {row[0] for row in self._db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-            if tables != _TABLES:
+            if tables != _TABLES | ({"recovery"} if version == 2 else set()):
                 _fail("CONTROL_CORRUPT")
             objects = {(row["type"], row["name"]): (row["tbl_name"], row["sql"])
                        for row in self._db.execute("SELECT type,name,tbl_name,sql FROM sqlite_master")}
-            if objects != _SCHEMA_OBJECTS:
+            expected_objects = {**_SCHEMA_OBJECTS, **({("table", "recovery"): ("recovery", _RECOVERY_SQL)} if version == 2 else {})}
+            if objects != expected_objects:
                 _fail("CONTROL_CORRUPT")
             if self._db.execute("SELECT count(*) FROM control").fetchone()[0] != 1:
                 _fail("CONTROL_CORRUPT")
             control = self._control()
-            if control["schema"] != SCHEMA or control["status"] not in {"READY_CONTROL_ONLY", "RECONCILIATION_REQUIRED"}:
+            if control["schema"] != (SCHEMA if version == 1 else RECOVERY_SCHEMA) or control["status"] not in {"READY_CONTROL_ONLY", "RECONCILIATION_REQUIRED"}:
                 _fail("CONTROL_CORRUPT")
             _integer(control["revision"], positive=True, code="CONTROL_CORRUPT")
             _integer(control["last_wall_ms"], code="CONTROL_CORRUPT")
+            if version == 2:
+                self._validate_recovery_record(control)
             if control["policy"] != _json(asdict(self.policy)):
                 try:
                     parsed = json.loads(control["policy"])
@@ -525,7 +531,7 @@ class GatewayControlStore:
             self._db.execute("BEGIN")
             self._validate()
             control = self._control()
-            result = {"schema": SCHEMA, "revision": control["revision"],
+            result = {"schema": control["schema"], "revision": control["revision"],
                       "status": control["status"], "policy": asdict(self.policy),
                       "last_wall_ms": control["last_wall_ms"],
                       "evidence": "CONTROL_STATE_ONLY", "authentication": "NOT_VERIFIED",
@@ -545,6 +551,118 @@ class GatewayControlStore:
         except BaseException:
             self._rollback()
             raise
+
+    def control_head(self):
+        """Exact ledger head, excluding recovery/runtime status metadata."""
+        value = self.snapshot()
+        ledger = {key: value[key] for key in ("revision", "policy", "last_wall_ms",
+                                              "devices", "grants", "nonces", "operations")}
+        ledger["schema"] = "fleet.control-ledger/1"
+        return {"schema": "fleet.control-head/1", "revision": value["revision"],
+                "sha256": _digest(ledger)}
+
+    def _recovery_record(self):
+        if self._db.execute("PRAGMA user_version").fetchone()[0] != 2:
+            _fail("CONTROL_RECONCILIATION_REQUIRED")
+        rows = self._db.execute("SELECT record FROM recovery WHERE singleton=1").fetchall()
+        if len(rows) != 1:
+            _fail("CONTROL_CORRUPT")
+        value = json.loads(rows[0]["record"])
+        if rows[0]["record"] != _json(value):
+            _fail("CONTROL_CORRUPT")
+        return value
+
+    def _validate_recovery_record(self, control):
+        value = self._recovery_record()
+        fields = {"schema", "anchor", "anchor_wall_ms", "phase", "coordination_sha256", "control_commit_revision", "ready_revision"}
+        if type(value) is not dict or set(value) != fields or value["schema"] != "fleet.control-recovery/1":
+            _fail("CONTROL_CORRUPT")
+        anchor = value["anchor"]
+        if type(anchor) is not dict or set(anchor) != {"schema", "revision", "sha256"} or anchor["schema"] != "fleet.control-head/1":
+            _fail("CONTROL_CORRUPT")
+        _integer(anchor["revision"], positive=True); _match(anchor["sha256"], _KEY)
+        _integer(value["anchor_wall_ms"])
+        if value["anchor_wall_ms"] > control["last_wall_ms"]:
+            _fail("CONTROL_CORRUPT")
+        if anchor["revision"] >= control["revision"]:
+            _fail("CONTROL_CORRUPT")
+        if value["phase"] not in {"FENCED", "CONTROL_RECONCILIATION_COMMITTED", "CONTROL_READY"}:
+            _fail("CONTROL_CORRUPT")
+        if value["phase"] == "FENCED":
+            if value["control_commit_revision"] is not None or value["ready_revision"] is not None:
+                _fail("CONTROL_CORRUPT")
+        else:
+            _integer(value["control_commit_revision"], positive=True)
+            if value["control_commit_revision"] > control["revision"]:
+                _fail("CONTROL_CORRUPT")
+            _match(value["coordination_sha256"], _KEY)
+        if value["coordination_sha256"] is not None:
+            _match(value["coordination_sha256"], _KEY)
+        if value["phase"] == "CONTROL_READY":
+            _integer(value["ready_revision"], positive=True)
+            if not value["control_commit_revision"] < value["ready_revision"] <= control["revision"] or control["status"] != "READY_CONTROL_ONLY":
+                _fail("CONTROL_CORRUPT")
+        elif control["status"] != "RECONCILIATION_REQUIRED" or value["ready_revision"] is not None:
+            _fail("CONTROL_CORRUPT")
+
+    def restored_control_anchor(self):
+        self._open()
+        self._validate()
+        return dict(self._recovery_record()["anchor"])
+
+    def assert_restored_ledger(self):
+        value, record = self.snapshot(), self._recovery_record()
+        ledger = {key: value[key] for key in ("revision", "policy", "last_wall_ms",
+                                              "devices", "grants", "nonces", "operations")}
+        ledger.update(schema="fleet.control-ledger/1", revision=record["anchor"]["revision"],
+                      last_wall_ms=record["anchor_wall_ms"])
+        if _digest(ledger) != record["anchor"]["sha256"]:
+            _fail("CONTROL_RECONCILIATION_REQUIRED")
+        return record["anchor"]
+
+    def recovery_state(self):
+        self._open()
+        self._validate()
+        if self._db.execute("PRAGMA user_version").fetchone()[0] == 1:
+            return None
+        return self._recovery_record()
+
+    def commit_coordinated_recovery(self, coordinator):
+        from .restore_coordination import RestoreCoordinator
+        if type(coordinator) is not RestoreCoordinator:
+            _fail("CONTROL_RECONCILIATION_REQUIRED")
+        scope_sha = coordinator.assert_control_commit(self)
+        with self._transaction("commit_coordinated_recovery"):
+            value = self._recovery_record()
+            if value["coordination_sha256"] not in {None, scope_sha}:
+                _fail("CONTROL_OPERATION_CONFLICT")
+            if value["phase"] == "FENCED":
+                revision = self._control()["revision"] + 1
+                if revision > _MAX:
+                    _fail("CONTROL_CAPACITY")
+                value.update(phase="CONTROL_RECONCILIATION_COMMITTED", coordination_sha256=scope_sha,
+                             control_commit_revision=revision)
+                self._db.execute("UPDATE recovery SET record=? WHERE singleton=1", (_json(value),))
+                self._db.execute("UPDATE control SET revision=? WHERE singleton=1", (revision,))
+        return self.recovery_state()
+
+    def complete_coordinated_recovery(self, coordinator):
+        from .restore_coordination import RestoreCoordinator
+        if type(coordinator) is not RestoreCoordinator:
+            _fail("CONTROL_RECONCILIATION_REQUIRED")
+        scope_sha = coordinator.assert_control_ready(self)
+        with self._transaction("complete_coordinated_recovery"):
+            value = self._recovery_record()
+            if value["coordination_sha256"] != scope_sha or value["phase"] == "FENCED":
+                _fail("CONTROL_RECONCILIATION_REQUIRED")
+            if value["phase"] != "CONTROL_READY":
+                revision = self._control()["revision"] + 1
+                if revision > _MAX:
+                    _fail("CONTROL_CAPACITY")
+                value.update(phase="CONTROL_READY", ready_revision=revision)
+                self._db.execute("UPDATE recovery SET record=? WHERE singleton=1", (_json(value),))
+                self._db.execute("UPDATE control SET status='READY_CONTROL_ONLY',revision=? WHERE singleton=1", (revision,))
+        return self.recovery_state()
 
     def get_route(self, device_id):
         """Return control inventory for signature lookup, never admission authority."""
@@ -908,6 +1026,11 @@ class GatewayControlStore:
         # Source copy is cooperative, validated and stable while copied. All
         # destination state is fenced before its first canonical publication.
         with cls.open_existing(backup_path, policy=policy) as source:
+            # Explicit supported restore records the source ledger head before
+            # adding its fence/revision. Opening an old v1 store never upgrades.
+            anchor = source.control_head()
+            if source._control()["status"] != "READY_CONTROL_ONLY":
+                _fail("CONTROL_RECONCILIATION_REQUIRED")
             path, lock = cls._acquire(destination, policy)
             temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.restore")
             db = None
@@ -922,7 +1045,15 @@ class GatewayControlStore:
                 with store._transaction("restore", faults=False):
                     if store._control()["revision"] == _MAX:
                         _fail("CONTROL_CAPACITY")
-                    db.execute("UPDATE control SET status='RECONCILIATION_REQUIRED',revision=revision+1 WHERE singleton=1")
+                    if db.execute("PRAGMA user_version").fetchone()[0] == 1:
+                        db.execute(_RECOVERY_SQL)
+                        db.execute("PRAGMA user_version=2")
+                    record = {"schema": "fleet.control-recovery/1", "anchor": anchor,
+                              "anchor_wall_ms": source._control()["last_wall_ms"],
+                              "phase": "FENCED", "coordination_sha256": None,
+                              "control_commit_revision": None, "ready_revision": None}
+                    db.execute("INSERT OR REPLACE INTO recovery VALUES (1,?)", (_json(record),))
+                    db.execute("UPDATE control SET schema=?,status='RECONCILIATION_REQUIRED',revision=revision+1 WHERE singleton=1", (RECOVERY_SCHEMA,))
                     store._inject("restore:before_commit")
                 store._validate()
                 db.execute("PRAGMA wal_checkpoint(TRUNCATE)")

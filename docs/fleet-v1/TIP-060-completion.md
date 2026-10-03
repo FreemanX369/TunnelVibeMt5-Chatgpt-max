@@ -1,0 +1,38 @@
+# TIP-060 — Durable job, authority and artifact completion evidence
+
+Builder: `fleet_transport_build`. Date: 2026-10-03. Status: source implemented and combined source matrix passed. Physical Windows/native/SDK qualification and activation remain deferred. No live node, account, VPS, deployment, merge or real MT5 action was used.
+
+## Scope and YAGNI-3
+
+Remote native effects need durable identity before delivery and before an actual effect. This implementation reuses SQLite WAL/FULL, the canonical OS file lock, the existing local JobStore, immutable artifact primitives and the common native ownership boundary. It adds finite job/step/recovery journals, Ed25519 phase proofs and registered artifact reads. It provides no generic worker, shell operation, repository transfer or pool scheduler.
+
+## Implemented contract
+
+| Acceptance | Source/evidence |
+| --- | --- |
+| Immutable operation → global job → exact frozen node/terminal → local job mapping | `job_journal.py`; same operation/request replays its original mapping after restart; changed request conflicts. `fleet.native/1` stays separate from the unchanged legacy hash namespace. |
+| Durable native intent before effects | Node reservation and STARTING commit precede adapter callbacks. Reopening RESERVED/STARTING makes UNKNOWN, never another start. Source interruption fixtures cover callback, transaction and step boundaries. |
+| Fresh exact signed authority | `native_authorization.py`; actual Ed25519 signature covers audience, request, target, job/local/node IDs, session, phase, event, sequence, challenge and nullable exact process digest. Sealed proof rechecks freshness at the concrete effect boundary. |
+| Distinct effects after long native waits | Finite event graph and bounded ordinals; INTENT then verified CONSUMED before action. Actual completion can be recorded after the consumed grant expires. The next distinct effect needs a fresh grant and the exact bounded predecessor receipt. Unknown/lost/unconsumed steps cannot advance or renew. |
+| Bound cancellation and live progress | Actual BOUND process publication precedes resume; gateway must acknowledge that exact progress before issuing cancellation authority. Reused PID with changed creation identity, stale compiler identity, wrong route, lost ACK and changed proof deny. Cancellation has a separate intent lane and never unlocks uncertain native ownership. |
+| Durable results and lost ACK | Exact repeated progress or terminal payload returns its original receipt. Changed same sequence conflicts. Late revoked evidence is quarantined. Real synchronous outcomes remain terminal or UNKNOWN; fixture callbacks remain explicitly synthetic. |
+| Supported coordinated restore | Scoped challenge and signed complete witnesses, exact state/sequence/local-ID adoption, PREPARED/FINALIZED hooks and sealed control commit. Exact witness retry preserves sequence/high-water. `recovery_head()` streams the full authoritative state; pending steps/cancel intents fence a witness. No boolean clear-ready method exists. |
+| Pure bounded witness admission | `validate_recovery_witness` rejects unknown top-level and nested ownership/resource fields before the coordinator persists an envelope. Recovery carries exact `fleet.native-outcome-evidence/1` state/evidence/original-receipt digest/process projection plus separate actual closure. Rich private results remain immutable node-local evidence; restore adopts an honest reference and preserves an already-known matching result. Windows process/path DTOs validate on the gateway without claiming local process authority. |
+| Historical terminal receipt after session replacement | A separate durable challenge freezes both original identity and the current admitted same-device route/session. The node signs and journals one read-only terminal witness with exact closed ownership evidence. Gateway returns an immutable HISTORICAL_QUARANTINED reference and does not mutate the original job, target, request, UNKNOWN state or capacity. Unknown/nonterminal/pending/missing closure/wrong-key/old-route/cross-device evidence denies. |
+| Immutable scoped artifact access | `artifact_proxy.py`; registered IDs bind node, installation origin, global/local jobs, exact target, hash and byte length. Bounded chunks validate ranges and actual bytes. Traversal, changed data, wrong scope and corrupt chunks deny. Evidence reads do not restore jobs or hand off native work. |
+
+## Public integration seams
+
+Gateway owns `submit`, `get_operation`, `poll_for_node`, `authorize_start`, `commit_node_result`, restore hooks, `recovery_head`, `request_terminal_recovery`, `poll_terminal_recoveries` and `commit_terminal_recovery`. Node owns `receive`, `execute`, `publish_bound_process`, `begin_effect`, `complete_effect`, `result_payload`, `observe_result`, `cancel`, signed restore witnesses and `terminal_recovery_witness`.
+
+The trusted producer receives only local callbacks: `begin_effect(phase,event)` returns a sealed proof; `complete_effect(phase,event,proof,outcome,evidence)` records the actual completed/not-attempted action. They cannot be selected by MCP input. The fixed HTTPS effect path is `/fleet/v1/native/start`; historical recovery uses owner `/fleet/v1/jobs/recover` and signed node `/fleet/v1/jobs/recovery-witness`.
+
+## Validation and limits
+
+Tests use the cached MCP 2.1.1 runtime with `PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit`. The cache has cryptography 50.0.2; the repository lock remains 50.0.1. No physical result is inferred from that source runtime.
+
+The Builder's combined source snapshot passed **378 tests with 7 Windows-only skips** in 22.23 seconds. Its 18 selected suites cover owned job/authority/artifact/resource/capacity tests plus SDK, native qualifications and Windows launch seams, transport, coordinated restore and full HTTPS composition. Earlier focused recovery/history/composition and owned/recovery matrices passed 73 and 119 tests. JUnit evidence is `evidence/tip060056-source-matrix.xml`; owned source hashes and the command are recorded in `evidence/tip060056-source-hashes.json` and `evidence/tip060056-source-matrix.txt`. The integration owner subsequently added CLI pairing-failure assertions; the root's final exact-candidate matrix controls acceptance of those later changes.
+
+Tests include actual temporary-CA TLS sockets, actual competing OS writers, transaction/lost-response faults, TTL-crossing harmless effects, signature/body/scope tampering, reopened replay, restore and path/hash corruption. The new HTTPS capacity fixture registers a signed complete-source roster, holds two actual scoped harmless reservations concurrently, keeps heartbeat/status available, fences a conflicting third job and executes it only after closure. Synthetic callbacks and signed protocol claims are explicitly labeled; they are not physical MT5/SDK passes.
+
+Revoke linearizes against gateway authorization. An already authorized in-flight action on a disconnected node can remain unresolved; neither route revocation nor grant expiry proves instantaneous physical stop. Journals reject capacity exhaustion without eviction. Unknown ownership is retained, with no TTL reclaim, timeout retry, force reset or automatic native restart. Final acceptance requires the root integrated source matrix; physical activation requires the separately approved owner-run qualification receipts.
