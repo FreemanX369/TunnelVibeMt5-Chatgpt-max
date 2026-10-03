@@ -1,0 +1,11 @@
+# TIP-056 — Qualified scoped native source extension
+
+Status: DISPATCHED after review of the serialized 056 foundation. Default production remains capacity 1; the approved M4 goal requires executable qualified scoped concurrency source rather than permanent rejection of every capacity above 1.
+
+YAGNI-3: independent terminal workloads require one capacity/resource authority; reuse durable SQLite/process ownership and exact native launch/closure; add one scoped coordinator and installed signed capacity profile, no pool scheduler.
+
+* Signed installed `fleet.capacity-profile/1` requires configured owner trust anchor, exact candidate/source/runtime hashes, installation epoch/device, terminal executable/data/include/agent roots and physical identities, capacity, conflict matrix, independent measured CPU/RAM/latency/load evidence and exact descendant/closure policy. Values/limits/receipts are required, not guessed production defaults. Profile signature authenticates operator approval; physical facts require later user qualification.
+* Atomically reserve full physical sets plus device slot FIFO in one coordinator. Persist producer ARMED/CREATE_ATTEMPT/BOUND and exact retained OS identity before resume. Qualified closure needs actual exact worker exit and descendant boundary; unknown outcomes retain capacity/resource fence. Never reclaim via TTL/heartbeat/free-RAM.
+* M2 driver and SDK controller consume sealed scoped lease/authority derived internally from the verified roster. SDK IPC remains serialized per node and conflicts with the actual selected native roots. Caller target/namespace/capacity flags cannot select an independent lock domain.
+* Absent installation marker preserves existing global authority/capacity 1. Valid installed scoped mode makes every legacy/routed admission consult the same authority. Unsupported legacy producers fail closed before effects; malformed marker fails closed, never means uninstalled. Do not double-book MT5-2 with another namespace. Document this explicit post-qualification migration behavior.
+* Source includes meaningful concurrent harmless fixtures, overlap/hardlink/canonical-resource conflicts, fairness, capacity, durable phase faults and closure tests. Physical independence/load/actual MT5 activation remains deferred. Default code must retain old tests/catalog/hash contracts.

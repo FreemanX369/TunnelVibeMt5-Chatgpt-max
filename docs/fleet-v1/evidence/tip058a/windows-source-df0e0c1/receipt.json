@@ -1,0 +1,37 @@
+{
+  "schema": "fleet.source-ci/1",
+  "source_head": "df0e0c1d62fe22704e51a3c46a8caab1ddbb0368",
+  "source_tree": "949719c954a81413062a543a5425ec31aae63106",
+  "status": "FAIL_TEST_REFINEMENT_REQUIRED",
+  "scope": "SOURCE_NO_MT5_OR_VM",
+  "runs": [
+    {
+      "run_id": 37083579738,
+      "job_id": 111089119060,
+      "result": {
+        "passed": 604,
+        "failed": 1,
+        "skipped": 5,
+        "seconds": 72.62
+      }
+    },
+    {
+      "run_id": 37083579750,
+      "job_id": 111089119289,
+      "result": {
+        "passed": 604,
+        "failed": 1,
+        "skipped": 5,
+        "seconds": 52.59
+      }
+    }
+  ],
+  "failure": "Test attempted to read the Windows mandatory-locked owner byte while store was open; database secrecy checks passed before that scan. Refine test to inspect database/WAL while open and owner lock after close.",
+  "skip_scope": "Four retained baseline skips plus one intentional POSIX symlink-spelling case on Windows.",
+  "decoded_logs": {
+    "bootstrap-unit.log": "dc074b17980dda52f225a868492c68c92c0c0996876636e413869eab465fad31",
+    "deep-unit.log": "d80d37cd1d7c918a8ec293a80340f6d4807bd83e8d1af3d9badc1044cbb25044"
+  },
+  "checkout_merge_sha": "ecd849feeffc47f535d715285b9c8058577e9ec4",
+  "checkout_source_files_equal": true
+}

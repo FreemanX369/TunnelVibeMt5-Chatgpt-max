@@ -303,10 +303,16 @@ def test_grant_secret_is_initial_only_never_in_db_snapshot_or_public_receipt(tmp
         assert_no_secret(issued["receipt"], secret)
         assert_no_secret(store.snapshot(), secret)
         for file in tmp_path.iterdir():
-            if file.is_file(): assert secret.encode() not in file.read_bytes()
+            # Windows enforces the owner's locked byte while this writer lives.
+            # Inspect database/WAL now and the lifetime lock after actual close.
+            if file.is_file() and not file.name.endswith(".owner.lock"):
+                assert secret.encode() not in file.read_bytes()
         paired_receipt = consume(store, issued)
         assert paired_receipt["receipt"]["route_generation"] == 1
         snapshot = store.snapshot()
+    for file in tmp_path.iterdir():
+        if file.is_file() and file.name.endswith(".owner.lock"):
+            assert secret.encode() not in file.read_bytes()
     with GatewayControlStore.open_existing(path, policy=policy) as store:
         replay = issue(store, revision=1, now=1500)
         assert replay["idempotent_recovered"] is True
