@@ -1,11 +1,11 @@
 """Actual TLS and scoped concurrency; signed claims remain synthetic, no MT5 PASS."""
 from __future__ import annotations
+import json
+from pathlib import Path
 
 import base64
 import copy
 import hashlib
-import json
-import re
 import threading
 import time
 from dataclasses import replace
@@ -98,8 +98,7 @@ def capacity_service(tmp_path, tls_files):
     if not failures.empty(): raise failures.get()
 
 
-@pytest.mark.parametrize('observation_order', ['normal', 'delayed-release-and-completion'])
-def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued(project_node, capacity_service, observation_order):
+def test_original_hold_expiry_before_release_is_retained(project_node, capacity_service):
     http, owner, signer_key, owner_key, policy = capacity_service
     root, device = project_node['root'], project_node['registry']['device_id']
     signed, load, closure, requests = signed_roster(project_node, owner_key)
@@ -108,8 +107,7 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
     # These actual harmless scopes have private test provenance and no marker.
     coordinator = ScopedResourceCoordinator._for_fixture(root, signed['body'], initialize=True)
     entered, release, calls = Queue(), threading.Event(), []
-    completion, timers = threading.Event(), []
-    if observation_order == 'normal': completion.set()
+    expired = Queue()
     class ScopedHarmlessAdapter:
         def reserve(self, request, operation, exact_fence):
             assert type(exact_fence['authorization']) is NativeAuthorization
@@ -120,11 +118,9 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
             with coordinator.execution(local_job_id, kind='tester', terminal_id=selected['terminal_id'],
                     terminal_generation=selected['terminal_generation'], wait_ms=1000) as scope:
                 armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
-                # One finite harmless hold budget includes test observations
-                # and the controlled delayed-completion regression barrier.
-                hold_deadline = time.monotonic() + 20
-                assert release.wait(max(0, hold_deadline - time.monotonic()))
-                assert completion.wait(max(0, hold_deadline - time.monotonic()))
+                if not release.wait(5):
+                    expired.put(local_job_id)
+                    raise AssertionError("HARMLESS_FIXTURE_HOLD_EXPIRED")
                 scope.close_zero_attempt(armed)
             return {'schema': 'fleet.native.effect/1', 'phase': 'start', 'evidence': 'SYNTHETIC_NATIVE_ONLY',
                 'payload': {'execution': {'status': 'COMPLETED'}, 'process': current_identity()}}
@@ -166,56 +162,24 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
         assert time.monotonic() - began < 1.5
         assert len(calls) == 2 and facade.get_job(third['global_job_id'])['state'] == 'QUEUED'
         assert all(facade.get_job(row['global_job_id'])['state'] == 'STARTING' for row in launched)
-        if observation_order != 'normal':
-            # Force observations past the former five-second worker watchdog.
-            observed = threading.Event()
-            timer = threading.Timer(5.2, observed.set); timers.append(timer); timer.start()
-            pump(agent, observed.is_set, seconds=10)
-            assert not release.is_set() and len(calls) == 2
-            assert facade.get_job(third['global_job_id'])['state'] == 'QUEUED'
-            assert all(facade.get_job(row['global_job_id'])['state'] == 'STARTING' for row in launched)
-            # Keep actual callbacks blocked past the old aggregate three-second
-            # observation budget while the control owner continues stepping.
-            timer = threading.Timer(3.2, completion.set); timers.append(timer); timer.start()
-        latest = []
-        def summary(row):
-            result = row.get('result') or {}
-            nested = result.get('result') if isinstance(result, dict) else None
-            reason = (nested if isinstance(nested, dict) else result).get('reason_code') if isinstance(result, dict) else None
-            return {'state': row['state'], 'sequence': row.get('sequence'),
-                    'reason_code': reason if isinstance(reason, str) and re.fullmatch('[A-Z0-9_]{1,80}', reason) else None}
-        def completed():
-            latest[:] = [summary(facade.get_job(row['global_job_id'])) for row in launched + [third]]
-            if any(row['state'] in {'FAILED', 'CANCELLED', 'UNKNOWN', 'RECOVERY_REQUIRED'} for row in latest):
-                pytest.fail('capacity fixture terminal outcome ' + json.dumps(latest, sort_keys=True))
-            return all(row['state'] == 'SUCCEEDED' for row in latest) and not dispatcher.has_pending_work()
-        def diagnostic():
-            value = {'gateway_jobs': latest, 'node_jobs': [], 'callback_count': len(calls),
-                     'release_set': release.is_set(), 'completion_set': completion.is_set(),
-                     'pending_futures': len(dispatcher._futures), 'pending_native_records': len(dispatcher._native_records)}
-            for row in launched + [third]:
-                try: value['node_jobs'].append(summary(jobs.get(row['global_job_id'])))
-                except Exception as error: value['node_jobs'].append({'lookup_error_type': type(error).__name__})
-            try:
-                with coordinator.transaction() as db:
-                    value['scopes'] = [{'status': item['status'], 'phase': item['phase']} for item in
-                        (_decode(row[0]) for row in db.execute('SELECT record FROM reservations'))]
-            except Exception as error: value['scope_lookup_error_type'] = type(error).__name__
-            return value
+        assert expired.get(timeout=6)
         release.set()
-        try:
-            pump(agent, completed, seconds=10)
-        except BaseException as error:
-            error.add_note('CAPACITY_HTTPS_FIXTURE ' + json.dumps(diagnostic(), sort_keys=True))
-            raise
-        assert len(calls) == 3
-        for row in launched + [third]:
-            assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
+        with pytest.raises(pytest.fail.Exception, match='bounded fixture did not reach expected state'):
+            pump(agent, lambda: all(facade.get_job(row['global_job_id'])['state'] == 'SUCCEEDED' for row in launched + [third]))
+        snapshot = {'gateway_states':[facade.get_job(row['global_job_id'])['state'] for row in launched+[third]],
+                    'node_states':[jobs.get(row['global_job_id'])['state'] for row in launched],
+                    'callback_count':len(calls), 'expired_callback_count':expired.qsize()+1,
+                    'pending_futures':len(dispatcher._futures),'pending_native_records':len(dispatcher._native_records),
+                    'release_set':release.is_set()}
+        with coordinator.transaction() as db:
+            snapshot['scope_states']=[{'status':_decode(row[0])['status'],'phase':_decode(row[0])['phase']} for row in db.execute('SELECT record FROM reservations')]
+        Path('/workspace/scratch/250985b4823e/capacity-hold-ordering-probe/observed.json').write_text(json.dumps(snapshot,indent=2)+'\n')
+        assert 'UNKNOWN' in snapshot['gateway_states'][:2]
+        assert snapshot['gateway_states'][2]=='QUEUED'
+        assert snapshot['callback_count']==2
+
         assert not (root / 'state' / 'fleet' / 'scoped-install.json').exists()
     finally:
-        release.set(); completion.set()
-        for timer in timers:
-            timer.cancel(); timer.join(timeout=1)
-            assert not timer.is_alive()
-        pump(agent, lambda: not dispatcher.has_pending_work(), seconds=10)
+        release.set()
+        pump(agent, lambda: not dispatcher.has_pending_work())
         dispatcher.close(); jobs.close(); domains.close(); transport.close()

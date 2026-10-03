@@ -1,5 +1,6 @@
 """Actual TLS and scoped concurrency; signed claims remain synthetic, no MT5 PASS."""
 from __future__ import annotations
+from pathlib import Path
 
 import base64
 import copy
@@ -98,8 +99,8 @@ def capacity_service(tmp_path, tls_files):
     if not failures.empty(): raise failures.get()
 
 
-@pytest.mark.parametrize('observation_order', ['normal', 'delayed-release-and-completion'])
-def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued(project_node, capacity_service, observation_order):
+@pytest.mark.parametrize('observation_order', ['normal'])
+def test_refined_forced_hold_expiry_reports_unknown_without_retry(project_node, capacity_service, observation_order):
     http, owner, signer_key, owner_key, policy = capacity_service
     root, device = project_node['root'], project_node['registry']['device_id']
     signed, load, closure, requests = signed_roster(project_node, owner_key)
@@ -108,6 +109,7 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
     # These actual harmless scopes have private test provenance and no marker.
     coordinator = ScopedResourceCoordinator._for_fixture(root, signed['body'], initialize=True)
     entered, release, calls = Queue(), threading.Event(), []
+    expired = Queue()
     completion, timers = threading.Event(), []
     if observation_order == 'normal': completion.set()
     class ScopedHarmlessAdapter:
@@ -122,8 +124,10 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
                 armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
                 # One finite harmless hold budget includes test observations
                 # and the controlled delayed-completion regression barrier.
-                hold_deadline = time.monotonic() + 20
-                assert release.wait(max(0, hold_deadline - time.monotonic()))
+                hold_deadline = time.monotonic() + 5
+                if not release.wait(max(0, hold_deadline - time.monotonic())):
+                    expired.put(local_job_id)
+                    raise AssertionError("HARMLESS_FIXTURE_HOLD_EXPIRED")
                 assert completion.wait(max(0, hold_deadline - time.monotonic()))
                 scope.close_zero_attempt(armed)
             return {'schema': 'fleet.native.effect/1', 'phase': 'start', 'evidence': 'SYNTHETIC_NATIVE_ONLY',
@@ -202,15 +206,21 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
                         (_decode(row[0]) for row in db.execute('SELECT record FROM reservations'))]
             except Exception as error: value['scope_lookup_error_type'] = type(error).__name__
             return value
+        assert expired.get(timeout=6)
         release.set()
-        try:
-            pump(agent, completed, seconds=10)
-        except BaseException as error:
-            error.add_note('CAPACITY_HTTPS_FIXTURE ' + json.dumps(diagnostic(), sort_keys=True))
-            raise
-        assert len(calls) == 3
-        for row in launched + [third]:
-            assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
+        begun = time.monotonic()
+        with pytest.raises(pytest.fail.Exception, match='capacity fixture terminal outcome') as caught:
+            try:
+                pump(agent, completed, seconds=10)
+            except BaseException as error:
+                error.add_note('CAPACITY_HTTPS_FIXTURE ' + json.dumps(diagnostic(), sort_keys=True))
+                raise
+        observation = {'elapsed_seconds':time.monotonic()-begun,'diagnostic':caught.value.__notes__[0],
+                       'callback_count':len(calls),'expired_callback_count':expired.qsize()+1}
+        Path('/workspace/scratch/250985b4823e/capacity-hold-ordering-probe/refined-observed.json').write_text(json.dumps(observation,indent=2)+'\n')
+        assert 'UNKNOWN' in observation['diagnostic'] and 'CAPACITY_HTTPS_FIXTURE' in observation['diagnostic']
+        assert observation['elapsed_seconds'] < 3 and len(calls)==2
+
         assert not (root / 'state' / 'fleet' / 'scoped-install.json').exists()
     finally:
         release.set(); completion.set()

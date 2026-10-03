@@ -1,0 +1,117 @@
+{
+  "artifacts": {
+    "focused.junit.xml": "f90f3c9b6e79bfc2677d7c2cc69b418cf8a3f2e79e313176d07f846357e49db8",
+    "focused.log": "e9340d4216279fff139f7e8358637c25cfea758494c16e2af6e1ef6e739ca938",
+    "ordering-probe/first-observed.json": "e77e2b5d420d2fe21f90bc29fdafc68799ad08b57afd80ae9cb81460ea8ba4cf",
+    "ordering-probe/first-probe.junit.xml": "1c0ad39a30c331c68c63055e2f054a39619ef52ec1ea7c87acf79ec2ac2d0cc9",
+    "ordering-probe/first-probe.log": "11975d55f71a39b75b7f3612a2d71a71fd5a19df897dbf06d3497744d7702429",
+    "ordering-probe/first-source-identity.json": "cb5986ffed6cb579cade33087bc42d3d1d94846ec23f8eea66d6b2713539738b",
+    "ordering-probe/first-test_capacity_hold_ordering.py": "fbf2496401d24523ac0512984b272524d00ea2b11b82375c0becbe04c4d10a43",
+    "ordering-probe/observed.json": "e77e2b5d420d2fe21f90bc29fdafc68799ad08b57afd80ae9cb81460ea8ba4cf",
+    "ordering-probe/probe.junit.xml": "dcea8545d5d95abab57a3f897000cda0196831e2d5b08fd4d56dd99b062fd5f9",
+    "ordering-probe/probe.log": "f7e3bf0e371c6deae18eec0c56bf0cfa977c77e59287ad472e30c64351374670",
+    "ordering-probe/refined-observed.json": "ba0460393fdf0c73c9f707eb89113b2cd851a8ac2f71fd43d0c835a3f92aa31c",
+    "ordering-probe/refined-probe.junit.xml": "531c83a747a617412d95aa7041ead96c8a5584aaf1b651b2987e52662c132b7b",
+    "ordering-probe/refined-probe.log": "775d2ef69444525645d89faad70fe0fb42a05344751b27fbdf68e6c2f7524fb6",
+    "ordering-probe/refined-source-identity.json": "27d1b284d14bc5a7842bfb5d32f6fd9cd768282f3f0ff19adc755c806ca38cbe",
+    "ordering-probe/source-identity.json": "0f11ccde1a916f9be7c45b2b5963a2e4736f11bac17a834f7da2446ada49ea78",
+    "ordering-probe/test_capacity_hold_ordering.py": "1ac1487a1184f888368d4d1a94c9642aa609752810b2a9e3125ce0f752638bf2",
+    "ordering-probe/test_capacity_refined_unknown.py": "3f026db5781842476803335f26869b2629db966f6e13e46f0b6d0a029eb08840",
+    "source-after.json": "ff5ef9e1deddb0835cb166f015ee30e9bbdbec85149ecb2313ccc844508a386d",
+    "source-before.json": "ff5ef9e1deddb0835cb166f015ee30e9bbdbec85149ecb2313ccc844508a386d"
+  },
+  "builder": "windows_fixture_final",
+  "command": "PYTHONPATH=<cached dependencies>:app:tests/unit python -m pytest -q --tb=short tests/unit/test_tip064_capacity_https.py tests/unit/test_tip056_scoped.py tests/unit/test_tip056_signed_roster.py tests/unit/test_tip056_gateway_capacity.py tests/unit/test_tip064_integration.py tests/unit/test_tip058b_transport.py --junitxml=<receipt-directory>/focused.junit.xml",
+  "date": "2026-10-03",
+  "deferred": [
+    "private VM",
+    "MT5",
+    "actual SDK qualification",
+    "merge",
+    "deployment"
+  ],
+  "errors": 0,
+  "failures": 0,
+  "observed_source_count": 39,
+  "original_fixture_sha256": "f607707a0335035e09c77ffcf604d6656cdcb5e52e600a239f34e56bec8a125d",
+  "owned_sources": {
+    "tests/unit/test_tip064_capacity_https.py": "5bf28290d7a9e203dfdbd23b6ab03781aebebd7a974ec35c8fe659d4988366da"
+  },
+  "passed": 118,
+  "previous_canonical_head": "154e954aa631c63c39db639aa93a529e9807f42c",
+  "previous_canonical_tree": "2d29bc02cb7fc13dabeb32c886f3fa8e3a705561",
+  "production_python_count": 88,
+  "production_python_matches_previous_canonical": true,
+  "refinement": {
+    "aggregate_completion_and_normal_owner_drain_seconds": 10,
+    "control_three_steps_bound_seconds": 1.5,
+    "controlled_positive_delay_seconds": {
+      "before_completion": 3.2,
+      "before_release": 5.2
+    },
+    "grant_ttl_ms": 2000,
+    "harmless_callback_absolute_hold_watchdog_seconds": 20,
+    "http_request_timeout_ms": 1000,
+    "no_added_retry_or_clear": true,
+    "product_code_changed": false,
+    "terminal_non_success_states_fail_immediately": true
+  },
+  "runtime": {
+    "cryptography": "50.0.2",
+    "dependency_scope": "cached Linux worktree diagnostic",
+    "platform": "linux",
+    "pytest": "9.1.1",
+    "python": "3.12.14"
+  },
+  "schema": "fleet.fixture-refinement-evidence/1",
+  "seconds": 20.28,
+  "skipped": [
+    {
+      "reason": "Actual retained-handle numeric ACL fixture requires Windows",
+      "test": "test_windows_private_acl_roundtrip_reports_public_semantics"
+    },
+    {
+      "reason": "Actual retained-handle Windows ownership fixture requires Windows",
+      "test": "test_windows_private_key_foreign_owner_denied_on_retained_handle"
+    },
+    {
+      "reason": "Actual protected staging-directory handle fixture requires Windows",
+      "test": "test_windows_staging_directory_cannot_be_renamed_while_held"
+    }
+  ],
+  "source_before_after_equal": true,
+  "source_findings": {
+    "original_ci": "Integrated Windows final three-job all-SUCCEEDED pump exceeded3second observation; no finalstates retained, causeunproven",
+    "original_ordering_probe": {
+      "callback_count": 2,
+      "expected_fault": "force at least one original5second callback hold to expire before release",
+      "gateway_states": [
+        "UNKNOWN",
+        "SUCCEEDED",
+        "QUEUED"
+      ],
+      "initial_probe_note": "First probe incorrectly asserted both callbacks had expired simultaneously. Its failedsource/log/JUnit/observation remain under first-*; correctedprobe requires at leastoneexpiry because callbackentry timesdiffer.",
+      "node_states": [
+        "UNKNOWN",
+        "SUCCEEDED"
+      ],
+      "passed": 1,
+      "pending_futures": 0,
+      "pending_native_records": 0,
+      "scope_states": [
+        "UNKNOWN/ARMED",
+        "RELEASED/CLOSED"
+      ],
+      "seconds": 8.93
+    },
+    "refined_negative_probe": {
+      "expected_fault": "force original5second hold expiry against new terminal diagnostics",
+      "passed": 1,
+      "retry_clear_resubmit": false,
+      "seconds": 5.79,
+      "terminal_failure_elapsed_seconds": 0.1010656450002898,
+      "unknown_reason": "EXECUTION_OUTCOME_UNKNOWN"
+    }
+  },
+  "status": "FOCUSED_LINUX_PASS_EXACT_NEXT_CANDIDATE_WINDOWS_CI_REQUIRED"
+}

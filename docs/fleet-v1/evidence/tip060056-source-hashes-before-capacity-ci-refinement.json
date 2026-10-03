@@ -1,16 +1,5 @@
 {
   "builder": "fleet_transport_build",
-  "capacity_fixture_refinement": {
-    "builder": "windows_fixture_final",
-    "passed": 118,
-    "product_code_changed": false,
-    "receipt": "docs/fleet-v1/evidence/tip064/capacity-ci-refinement-v1/receipt.json",
-    "receipt_sha256": "63bc7d860814768742c8230b8f572506a89d3960e4d899f7789c5a51b1316401",
-    "seconds": 20.28,
-    "skipped": 3,
-    "source_sha256": "5bf28290d7a9e203dfdbd23b6ab03781aebebd7a974ec35c8fe659d4988366da",
-    "status": "FOCUSED_LINUX_PASS_EXACT_NEXT_CANDIDATE_WINDOWS_CI_REQUIRED"
-  },
   "date": "2026-10-03",
   "files": {
     "app/vibemql5/fleet/artifact_proxy.py": "87504cedd16e65032f8b1c72263022ef69df5024685a7e070138ca7c01816893",
@@ -29,9 +18,9 @@
     "tests/unit/test_tip060_authorization.py": "91fe1952c22dea917ad931730562d0eb20bf652ed4eaff80646c6489626c147e",
     "tests/unit/test_tip060_historical.py": "ac3f5c16483d4a1ff64215d4a6aa177263d958340fab793a73f50794b8e016fb",
     "tests/unit/test_tip060_journal.py": "358e8fd09c062a6c2c698ab0a186ed434cc2b63cb86a68f01c442d242317d727",
-    "tests/unit/test_tip064_capacity_https.py": "5bf28290d7a9e203dfdbd23b6ab03781aebebd7a974ec35c8fe659d4988366da"
+    "tests/unit/test_tip064_capacity_https.py": "f607707a0335035e09c77ffcf604d6656cdcb5e52e600a239f34e56bec8a125d"
   },
-  "files_snapshot_note": "Current owned file bytes after capacity TLS fixture observation refinement. Originalmatrix/fifo/Windowsportability receipts and their nested file maps retain historical meaning; capacity_fixture_refinement records new focused source diagnostics.",
+  "files_snapshot_note": "Current owned file bytes after retained Win32 metadata, POSIX FIFO refinement and Windows fixture portability refinement. Historical 378/7, 105/1 and 214/1 receipts describe their original earlier runs; windows_fixture_refinement records the later focused Linux run.",
   "final_refinement": {
     "builder": "final_refinement_builder",
     "fifo_regression": {

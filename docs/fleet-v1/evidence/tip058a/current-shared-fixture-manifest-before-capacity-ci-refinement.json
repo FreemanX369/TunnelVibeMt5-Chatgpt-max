@@ -6,7 +6,7 @@
   "windows_runtime": "PRIOR_CANONICAL_RUN_COMPLETE_NEW_FIXTURE_BYTES_PENDING",
   "frozen_tip058a_receipt": "linux-source-v4/source-manifest.json",
   "current_control_manifest": "../tip060c/source-manifest.json",
-  "current_focused_receipt": "../tip064/capacity-ci-refinement-v1/receipt.json",
+  "current_focused_receipt": "../tip064/startup-ci-refinement-v1/receipt.json",
   "files": [
     {
       "path": "tests/unit/test_tip064_integration.py",
@@ -32,12 +32,7 @@
       "path": "tests/unit/test_fleet_gateway_fixture.py",
       "bytes": 3291,
       "sha256": "526ec67b5fa6de8cbf9ea617c6968b9da376ebb93f07783d15d8cfc51b590198"
-    },
-    {
-      "path": "tests/unit/test_tip064_capacity_https.py",
-      "bytes": 15193,
-      "sha256": "5bf28290d7a9e203dfdbd23b6ab03781aebebd7a974ec35c8fe659d4988366da"
     }
   ],
-  "refinement_note": "Current sharedfixture pointer after capacity TLS observation refinement. Previouspointer retained as current-shared-fixture-manifest-before-capacity-ci-refinement.json; previousstartup and Windowsacceptance evidence stayshistorical. Product runtime and authority/negative budgets areunchanged."
+  "refinement_note": "Fixture-only bounded positive admission/startup observer refinement. Prior manifest retained as current-shared-fixture-manifest-before-final-startup-refinement.json. Actual prior canonical Windows source proof passes but Deep reports two scheduling fixture failures; exact new candidate CI is separate. Product deadlines, negative budgets, authority TTLs and runtime source bytes are unchanged."
 }
