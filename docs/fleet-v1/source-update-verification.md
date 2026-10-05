@@ -55,6 +55,12 @@ Checkpoint `3e402db86b9e6f9cc53489a6b0b88f97cdb516e5`, tree `baadc33d2cbfe40428c
 
 Checkpoint `154e954aa631c63c39db639aa93a529e9807f42c`, tree `2d29bc02cb7fc13dabeb32c886f3fa8e3a705561`, passed seven workflows, including both Deep and Bootstrap after the [bounded startup/admission fixture refinement](TIP-064-startup-CI-refinement.md). [Its receipt](evidence/tip064/ci-154e954/receipt.json) preserves both original integrated ZIPs and all 206 source hashes. Linux passed **1121 / 14 skips**. Integrated Windows completed with **1124 passed, one failure, 10 skips**, no setup errors or harness timeout; all independent required proofs passed. The remaining two-slot capacity fixture did not observe all three jobs at `SUCCEEDED` during the shared pump's three-second window. Its actual terminal states were not recorded, so a product cause or specific slow stage is not inferred. The original JUnit and lossless unit log remain retained; the next candidate must pass this boundary and all eight checks.
 
+## Continuation from 8019a52
+
+Head `8019a52b136d0aae71c1a0235e224557d0e9a1a9`, tree `55985ff5f11af083a1c00780f0196eea50c25cfb`, passed seven of eight workflows. [Fresh metadata and retained original logs/ZIPs](evidence/tip064/ci-8019a52/receipt.json) preserve Deep Update's 1125 passed / one failed / ten skipped owner-grant `HTTPS_UNAVAILABLE`; integrated Linux 1122 / fourteen skips and Windows 1126 / ten skips passed. Both ZIP digests and all 206 source hashes were independently compared with the exact Git blobs, with unchanged before/after manifests and zero JUnit failures/errors. These successes do not substitute for the failed eighth gate.
+
+The [bounded diagnostic continuation](TIP-064-transport-diagnostics.md) changes only the transport fixture. It preserves suppressed cause/timing/lifecycle facts, verifies distinct controlled faults and proves a timed-out response can follow an already committed grant without replay. The original incident cause remains OPEN/UNKNOWN; neither a controlled mechanism nor a green new candidate is described as its root-cause fix. Production transport, policies and all authority/UNKNOWN semantics remain unchanged. The newly delivered candidate still requires all eight checks and its own complete integrated artifacts. Draft #65's current description and the external handover identify the final exact-head receipt; no later source change inherits a previous head's gate.
+
 ## Legacy compatibility evidence
 
 
