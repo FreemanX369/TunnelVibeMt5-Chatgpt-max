@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "/workspace/scratch/1818a0d45fa0/tip065-long-fixture-investigation-20261005/test_investigation.py",
+    "-q",
+    "--tb=short",
+    "--durations=10",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-long-fixture-investigation-20261005/investigation.junit.xml"
+  ],
+  "elapsed_seconds": 18.980864329001633,
+  "exit_code": 0,
+  "head": "30bcc584953b29a8564bff717b3b4d5819a02798",
+  "physical_qualification": "NOT_RUN",
+  "python": "3.12.14",
+  "source_entries": 211,
+  "source_unchanged": true,
+  "tree": "b84c1f196461f49e852bb4cc9230a4b4da663bb3"
+}

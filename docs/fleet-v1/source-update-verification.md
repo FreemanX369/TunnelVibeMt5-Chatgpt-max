@@ -1,5 +1,26 @@
 # Fleet v1 — Continuous source verification
 
+Parent `30bcc584953b29a8564bff717b3b4d5819a02798`, tree
+`b84c1f196461f49e852bb4cc9230a4b4da663bb3`, completed **7/8 on attempt 1**.
+Its [retained receipt](evidence/tip065/ci-30bcc58/metadata/verification-receipt.json)
+binds five original ZIPs, exact unchanged 211-entry manifests, complete JUnit and
+nine harmless proofs. Bootstrap recorded **1219 PASS/1 FAIL/12 skips**: the long
+synthetic phase fixture exhausted its five-second aggregate observation. Deep
+passed 1220/12, integrated Windows 1220/12 and Linux 1214/18. All 43 prior required
+Windows controls passed. These successes do not replace the failed workflow.
+
+The subsequent [four controlled investigations](evidence/tip065/long-fixture-investigation/InvestigationReport.md)
+prove that a valid finite phase schedule can exceed the positive aggregate
+watchdog while every authorization RPC remains below its unchanged deadline;
+they also prove the fixture loses original callback exception identity. They do
+not establish the historical Bootstrap cause, which remains UNKNOWN. The
+[one-file refinement contract](TIP-065-long-fixture-observation.md) permits only a
+ten-second positive aggregate observation and original worker failure propagation,
+with every product byte, individual request/authority/cleanup budget and original
+success assertion preserved. This new source must pass its own 8/8/artifact gate.
+Deployment remains blocked pending that gate; full Fleet activation and physical
+VM/MT5/SDK qualification remain OPEN/NOT_RUN.
+
 Rejected parent `81d458ffce7a856a94aae3fb2166d0a9943fba7e`, tree
 `e1ed18128f047baab88f0c5efa2bc0159289de83`, completed **6/8 on original attempt 1**.
 Its [immutable receipt](evidence/tip065/ci-81d458f/metadata/verification-receipt.json)

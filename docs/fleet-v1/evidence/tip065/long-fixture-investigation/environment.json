@@ -1,0 +1,9 @@
+{
+  "PYTHONPATH": "app:tests/unit",
+  "packages": {
+    "cryptography": "50.0.1",
+    "mcp": "2.1.1",
+    "pytest": "9.1.1"
+  },
+  "python": "3.12.14"
+}

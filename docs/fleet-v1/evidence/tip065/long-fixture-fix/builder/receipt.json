@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "-q",
+    "--tb=short",
+    "--durations=15",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-long-fixture-fix-20261005/focused.junit.xml"
+  ],
+  "PYTHONPATH": "app:tests/unit",
+  "elapsed_seconds": 34.77149147900002,
+  "exit_code": 0,
+  "head": "30bcc584953b29a8564bff717b3b4d5819a02798",
+  "source_entries": 211,
+  "source_unchanged_during_test": true,
+  "scope": "TEST_ONLY_CANDIDATE_NOT_PUBLISHED",
+  "physical_qualification": "NOT_RUN"
+}
