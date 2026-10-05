@@ -1,9 +1,18 @@
 # Fleet v1 — Continuous source verification
 
-Current continuation: the [two-file CI refinement](TIP-065-CI-refinement-completion.md)
-has independent 163 PASS/5 platform skips and unchanged product/overlay bytes.
-The new canonical head in Draft #65 requires eight successful workflows and exact
-artifacts before deployment. The rejected checkpoint below remains retained.
+Current continuation: candidate `f2b65c3`, tree `825af88b97eca3b1a8f32749c4614f140e167d96`,
+completed 6/8 on attempt 1. The [retained receipt](evidence/tip065/ci-f2b65c3/metadata/verification-receipt.json)
+preserves five original ZIPs, exact 210-file manifests, JUnit/nine harmless proofs,
+full Bootstrap failure and integrated Windows unit log. The [two-file refinement](TIP-065-CI-refinement-completion.md)
+and required TIP-065 Windows controls passed; product/overlay bytes remain frozen.
+Bootstrap recorded 1182 PASS/two failures/12 skips; integrated Windows 1183/one/12,
+Linux 1180/zero/16 and Deep 1184/zero/12. The capacity three-step aggregate 1.5-second
+assertion and owner grant/cleanup COMMIT response timeouts require independent
+diagnosis. No deployment, rerun or budget relaxation occurred. Original storage/
+scheduling causes and physical qualification remain OPEN. The [missing-COMMIT
+observability/control](TIP-065-COMMIT-diagnostics-completion.md) passed independent
+151/5 fixture verification with unchanged product/assertion/budget bytes; its new
+canonical head requires its own eight successful workflows and exact artifacts.
 
 TIP-065 candidate `ec9180e`, tree `66022a510d6d59285c9250d75aa83e038cad24b0`,
 completed seven of eight workflows on attempt 1. Bootstrap failed two fixtures

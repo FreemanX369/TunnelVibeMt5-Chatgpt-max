@@ -7,13 +7,15 @@ import http.client as http_client
 import ipaddress
 import os
 import socket
+import sqlite3
 import ssl
 import threading
 import time
 from dataclasses import replace
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from queue import Queue
-from fleet_gateway_fixture import gateway_thread_stack
+from fleet_gateway_fixture import gateway_thread_stack, preserve_fixture_failure, stop_gateway_fixture
 
 import pytest
 from cryptography import x509
@@ -70,6 +72,103 @@ class FixtureHttpsClient(HttpsClient):
                 "server_failure_count": self.failures.qsize(), "cause_stack": stack,
                 "server_stack": gateway_thread_stack(self.server_thread)}))
             raise
+
+
+class ControlPostObservation:
+    """Finite route/timing facts only; original calls and errors stay intact."""
+    ROUTES = {"/fleet/v1/heartbeat": "HEARTBEAT", "/fleet/v1/poll": "POLL",
+              "/fleet/v1/native/start": "NATIVE_AUTHORIZE", "/fleet/v1/results": "RESULT",
+              "/fleet/v1/writers/authorize": "WRITER_AUTHORIZE"}
+
+    def __init__(self, original):
+        self.original, self.rows, self.count, self.seconds = original, [], 0, 0.0
+
+    def post(self, *args, **kwargs):
+        began, outcome = time.monotonic(), "RETURNED"
+        try:
+            return self.original(*args, **kwargs)
+        except BaseException as error:
+            outcome = "WIRE_ERROR" if isinstance(error, WireError) else "OTHER_ERROR"
+            raise
+        finally:
+            elapsed = max(0, time.monotonic() - began)
+            self.count += 1; self.seconds += elapsed
+            if len(self.rows) < 32:
+                path = args[0] if args else kwargs.get("path")
+                route = self.ROUTES.get(path, "OTHER") if type(path) is str else "OTHER"
+                self.rows.append({"route": route,
+                                  "elapsed_ms": round(elapsed * 1000), "outcome": outcome})
+
+    def summary(self, elapsed):
+        return {"elapsed_ms": round(elapsed * 1000), "post_count": self.count,
+                "post_elapsed_ms": round(self.seconds * 1000),
+                "outside_observed_posts_ms": round(max(0, elapsed - self.seconds) * 1000),
+                "rows_truncated": self.count > len(self.rows), "posts": list(self.rows)}
+
+
+@contextmanager
+def observe_control_posts(http):
+    present, prior = "post" in vars(http), vars(http).get("post")
+    observation = ControlPostObservation(http.post)
+    http.post = observation.post
+    try:
+        yield observation
+    finally:
+        if present: http.post = prior
+        else: del http.post
+
+
+@pytest.mark.parametrize("raises", [False, True])
+@pytest.mark.parametrize("instance_override", [False, True])
+def test_control_post_observation_preserves_original_call_error_and_restoration(raises, instance_override):
+    marker = "fixture-sensitive-path-body-header-exception"
+    error = WireError("HTTPS_UNAVAILABLE"); error.add_note(marker)
+    calls, returned = [], object()
+    class Http:
+        def post(self, *args, **kwargs):
+            calls.append((args, kwargs))
+            if raises: raise error
+            return returned
+    http = Http()
+    if instance_override: http.post = http.post
+    before = dict(vars(http)); body, headers = {"secret": marker}, {"Authorization": marker}
+    with observe_control_posts(http) as observed:
+        if raises:
+            with pytest.raises(WireError) as caught:
+                http.post(marker, body, headers, deadline_monotonic=123)
+            assert caught.value is error and error.__notes__ == [marker]
+        else:
+            assert http.post(marker, body, headers, deadline_monotonic=123) is returned
+    assert vars(http) == before
+    assert calls == [((marker, body, headers), {"deadline_monotonic": 123})]
+    assert calls[0][0][1] is body and calls[0][0][2] is headers
+    report = observed.summary(observed.seconds)
+    assert marker not in str(report)
+    assert report["posts"][0]["route"] == "OTHER"
+    assert report["posts"][0]["outcome"] == ("WIRE_ERROR" if raises else "RETURNED")
+    assert set(report["posts"][0]) == {"route", "elapsed_ms", "outcome"}
+
+
+def test_control_post_observation_caps_rows_without_replaying_calls():
+    calls = []
+    observed = ControlPostObservation(lambda *args, **kwargs: calls.append(args) or {})
+    for _ in range(35): observed.post("/fleet/v1/heartbeat", {})
+    report = observed.summary(observed.seconds)
+    assert len(calls) == report["post_count"] == 35
+    assert len(report["posts"]) == 32 and report["rows_truncated"]
+    assert {row["route"] for row in report["posts"]} == {"HEARTBEAT"}
+
+
+def test_control_post_observation_invalid_unhashable_route_cannot_mask_original_error():
+    calls, path = [], {"secret": "fixture-sensitive-invalid-route"}
+    error = WireError("WIRE_INVALID"); error.add_note("ORIGINAL_INVALID_ROUTE")
+    def rejected(*args, **kwargs):
+        calls.append(args); raise error
+    observed = ControlPostObservation(rejected)
+    with pytest.raises(WireError) as caught: observed.post(path, {})
+    assert caught.value is error and error.__notes__ == ["ORIGINAL_INVALID_ROUTE"]
+    assert len(calls) == 1 and calls[0][0] is path
+    assert observed.rows[0]["route"] == "OTHER" and "fixture-sensitive-invalid-route" not in str(observed.summary(observed.seconds))
 
 def signed(key, body, *, nonce="1"*48, route=1, path="/fleet/v1/heartbeat", origin="https://localhost", timestamp=100):
     raw = encode_body(body,32768)
@@ -328,6 +427,94 @@ def test_transport_fixture_timeout_can_follow_committed_grant_without_replay(ser
     with pytest.raises(WireError, match="CONTROL_REVISION_CONFLICT"):
         owner.admin("grant", {**request, "operation_id": "confirm-retained-revision"})
     assert calls == [2]
+
+
+def test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect(service, tmp_path, monkeypatch):
+    http, owner, _, stopped, thread = service
+    entered, release, committed, handler_finished = (threading.Event() for _ in range(4))
+    facts, owners, calls = {"grant_delegations": 0}, [], []
+    original = GatewayController.handle
+    request = {"device_id": DEVICE,
+        "public_key": ed25519.Ed25519PrivateKey.generate().public_key().public_bytes_raw().hex(),
+        "operation_id": "pending-commit-grant", "expected_revision": 1, "expected_route_generation": None}
+    class PendingGrantCommit:
+        def __init__(self, connection, path):
+            self.connection, self.path, self.calls = connection, path, 0
+        def __getattr__(self, name): return getattr(self.connection, name)
+        def commit(self):
+            self.calls += 1
+            if self.calls != 2:
+                return self.connection.commit()
+            # The first actual commit retained observed wall time. Hold the
+            # grant COMMIT call before delegating to this same FULL/WAL handle.
+            facts.update(synchronous=self.connection.execute("PRAGMA synchronous").fetchone()[0],
+                journal_mode=self.connection.execute("PRAGMA journal_mode").fetchone()[0],
+                transaction_pending=self.connection.in_transaction,
+                pending_revision=self.connection.execute("SELECT revision FROM control").fetchone()[0])
+            reader = sqlite3.connect(self.path.as_uri() + "?mode=ro", uri=True,
+                timeout=control_policy().sqlite_busy_timeout_ms / 1000, isolation_level=None)
+            try:
+                revision, wall = reader.execute("SELECT revision,last_wall_ms FROM control").fetchone()
+                facts.update(committed_revision_before=revision,
+                    wall_persisted=wall > 0 and wall == self.connection.execute("SELECT last_wall_ms FROM control").fetchone()[0],
+                    committed_grants_before=reader.execute("SELECT count(*) FROM grants").fetchone()[0],
+                    committed_operations_before=reader.execute("SELECT count(*) FROM operations").fetchone()[0])
+            finally: reader.close()
+            entered.set()
+            assert release.wait(timeout=3)
+            facts["grant_delegations"] += 1
+            result = self.connection.commit()
+            facts["transaction_pending_after"] = self.connection.in_transaction
+            committed.set()
+            return result
+    def hold_actual_commit(controller, method, path, headers, body):
+        if path != "/fleet/v1/admin/grant":
+            return original(controller, method, path, headers, body)
+        calls.append("grant"); owners.append(controller.store)
+        connection = controller.store._db
+        assert type(connection) is sqlite3.Connection
+        facts["owner_thread_matches"] = threading.get_ident() == controller._owner_thread
+        proxy = PendingGrantCommit(connection, controller.store.path)
+        controller.store._db = proxy
+        try:
+            return original(controller, method, path, headers, body)
+        finally:
+            facts["same_connection"] = controller.store._db is proxy and proxy.connection is connection
+            facts["commit_calls"] = proxy.calls
+            if controller.store._db is proxy: controller.store._db = connection
+            handler_finished.set()
+    with monkeypatch.context() as fixture:
+        fixture.setattr(GatewayController, "handle", hold_actual_commit)
+        try:
+            with pytest.raises(WireError, match="HTTPS_UNAVAILABLE") as caught:
+                owner.admin("grant", request)
+            assert entered.is_set() and not release.is_set() and not committed.is_set()
+            assert facts["grant_delegations"] == 0 and facts["transaction_pending"]
+            assert facts["synchronous"] == 2 and facts["journal_mode"] == "wal"
+            assert facts["committed_revision_before"] == 1 and facts["pending_revision"] == 2
+            assert facts["wall_persisted"] and facts["committed_grants_before"] == facts["committed_operations_before"] == 0
+            assert isinstance(caught.value.__context__, TimeoutError)
+            diagnostic = ast.literal_eval(caught.value.__notes__[0].removeprefix("TRANSPORT_HTTPS_FIXTURE "))
+            assert diagnostic["http_timeout_ms"] == 1000 and diagnostic["server_thread_alive"]
+            assert any(frame["file"] == "test_tip058b_transport.py" and frame["function"] == "commit" for frame in diagnostic["server_stack"])
+            caught.value.add_note("PENDING_COMMIT_FIXTURE " + str(dict(facts)))
+            assert TOKEN not in str(caught.value.__notes__) and request["public_key"] not in str(caught.value.__notes__)
+            print(caught.value.__notes__[-1])
+        finally:
+            with preserve_fixture_failure():
+                release.set()
+                stop_gateway_fixture(stopped, thread, http.failures)
+    assert handler_finished.is_set() and committed.is_set() and not thread.is_alive()
+    assert facts["grant_delegations"] == 1 and facts["commit_calls"] == 2 and facts["same_connection"]
+    assert facts["owner_thread_matches"] and not facts["transaction_pending_after"]
+    assert calls == ["grant"] and len(owners) == 1 and owners[0]._db is None
+    # Reopen only after the real event owner closed the actual database/lock.
+    with GatewayControlStore.open_existing(tmp_path / "control.sqlite", policy=control_policy()) as reopened:
+        state = reopened.snapshot()
+        assert state["revision"] == 2 and len(state["grants"]) == len(state["operations"]) == 1
+        assert not state["devices"] and not state["nonces"] and not state["grants"][0]["consumed"]
+        assert state["operations"][0]["receipt"]["operation"] == "ISSUE_GRANT"
+    print("CONTROLLED_PENDING_GRANT_COMMIT_EXACTLY_ONE_DURABLE_EFFECT", facts)
 
 def positive(command):
     result=unavailable(command,"fixture")

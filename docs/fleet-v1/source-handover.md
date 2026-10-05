@@ -1,8 +1,11 @@
 # Fleet v1 — Complete source handover
 
-The [bounded fixture correction](TIP-065-CI-refinement-completion.md) follows the
-retained ec9180e 7/8 failure. Product/overlay bytes remain frozen; the current
-Draft #65 head needs its own 8/8 gate before the authorized diagnostic deployment.
+The [bounded fixture correction](TIP-065-CI-refinement-completion.md) passed its
+Windows controls, but candidate f2b65c3 completed only 6/8. Its failed receipts
+are retained. [Capacity/pending-COMMIT diagnostics](TIP-065-COMMIT-diagnostics.md)
+add missing evidence while retaining all assertions/budgets and frozen product/
+overlay bytes. Each newly published Draft #65 head needs its own complete 8/8
+gate before the authorized diagnostic deployment; original timeout causes stay OPEN.
 
 Current deployment direction (2026-10-05): the owner has authorized tests and
 deployment. This supersedes the historical deployment deferral below, without

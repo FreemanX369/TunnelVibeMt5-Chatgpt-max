@@ -14,7 +14,7 @@ from queue import Queue
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
-from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files, FixtureHttpsClient
+from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files, FixtureHttpsClient, observe_control_posts
 from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
 from test_tip061a_057n import node as project_node, freeze, logical_fixture
 from test_tip055a_runtime_forensics_identity import ref
@@ -159,9 +159,17 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
             active = [_decode(row[0]) for row in db.execute('SELECT record FROM reservations')]
             assert len(active) == 2 and all(row['phase'] == 'ARMED' and row['status'] == 'ACQUIRED' for row in active)
         third = facade.launch_job('capacity-conflicting-third', requests[0])
-        began = time.monotonic()
-        for _ in range(3): agent.step()
-        assert time.monotonic() - began < 1.5
+        with observe_control_posts(http) as observed:
+            began = time.monotonic()
+            try:
+                for _ in range(3): agent.step()
+                assert time.monotonic() - began < 1.5
+            except BaseException as error:
+                facts = {**observed.summary(time.monotonic() - began), "callback_count": len(calls),
+                         "release_set": release.is_set(), "completion_set": completion.is_set(),
+                         "pending_worker_count": len(dispatcher._futures)}
+                error.add_note('CAPACITY_CONTROL_FIXTURE ' + json.dumps(facts, sort_keys=True))
+                raise
         assert len(calls) == 2 and facade.get_job(third['global_job_id'])['state'] == 'QUEUED'
         assert all(facade.get_job(row['global_job_id'])['state'] == 'STARTING' for row in launched)
         if observation_order != 'normal':
