@@ -13,6 +13,7 @@ import time
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from queue import Queue
+from fleet_gateway_fixture import gateway_thread_stack
 
 import pytest
 from cryptography import x509
@@ -66,7 +67,8 @@ class FixtureHttpsClient(HttpsClient):
                 "elapsed_ms": round((time.monotonic() - begun) * 1000),
                 "http_timeout_ms": self.policy.http_timeout_ms,
                 "server_thread_alive": self.server_thread.is_alive(),
-                "server_failure_count": self.failures.qsize(), "cause_stack": stack}))
+                "server_failure_count": self.failures.qsize(), "cause_stack": stack,
+                "server_stack": gateway_thread_stack(self.server_thread)}))
             raise
 
 def signed(key, body, *, nonce="1"*48, route=1, path="/fleet/v1/heartbeat", origin="https://localhost", timestamp=100):
@@ -315,6 +317,9 @@ def test_transport_fixture_timeout_can_follow_committed_grant_without_replay(ser
             assert 1 <= len(diagnostic["cause_stack"]) <= 8
             assert any(frame["function"] == "getresponse" for frame in diagnostic["cause_stack"])
             assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["cause_stack"])
+            assert 1 <= len(diagnostic["server_stack"]) <= 12
+            assert any(frame["function"] == "hold_response" for frame in diagnostic["server_stack"])
+            assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["server_stack"])
             assert TOKEN not in note and request["public_key"] not in note
             print(note)
         finally:

@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 from fleet_writer_fixture import wait_gateway_started
-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
 from test_tip058b_transport import TOKEN, control_policy, fleet_policy, tls_files
 from vibemql5.fleet.gateway_control import GatewayControlStore
 from vibemql5.fleet.transport import GatewayController, HttpsClient, OwnerClient, serve_gateway
@@ -155,3 +155,59 @@ def test_stop_observer_records_real_gateway_close_stage_and_retains_uncertainty(
     finally:
         release.set(); http.server_thread.join(timeout=3)
         assert not http.server_thread.is_alive() and http.failures.empty()
+
+
+def test_start_observer_preserves_actual_factory_failure_and_closes_thread(tls_files):
+    _, certificate, private = tls_files
+    failures, calls, threads = Queue(), [], []
+    error = ValueError('CONTROLLED_STARTUP_FACTORY_ERROR')
+    def failed_factory(address):
+        calls.append(address)
+        threads.append(threading.current_thread())
+        raise error
+    with pytest.raises(ValueError, match='CONTROLLED_STARTUP_FACTORY_ERROR') as caught:
+        start_gateway_fixture(('127.0.0.1', 0), certificate=certificate, key_file=private,
+            controller_factory=failed_factory, failures=failures)
+    assert caught.value is error and len(calls) == 1
+    assert not threads[0].is_alive() and failures.empty()
+    print('CONTROLLED_FACTORY_EXCEPTION_PRESERVED_THREAD_CLOSED_NO_RETRY')
+
+
+def test_start_timeout_preserves_live_factory_stage_and_cleanup_uncertainty(tmp_path, tls_files, monkeypatch):
+    import fleet_writer_fixture
+    _, certificate, private = tls_files
+    entered, release, failures, threads = threading.Event(), threading.Event(), Queue(), []
+    observer = fleet_writer_fixture.wait_gateway_started
+    def held_factory(address):
+        threads.append(threading.current_thread())
+        entered.set()
+        assert release.wait(timeout=10)
+        store = GatewayControlStore.initialize(tmp_path / 'controlled-start.sqlite', policy=control_policy())
+        return GatewayController(store, fleet_policy(), audience='https://127.0.0.1:' + str(address[1]),
+            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest())
+    def established_observer(ready, failures, thread, *, timeout):
+        assert entered.wait(timeout=5)
+        return observer(ready, failures, thread, timeout=timeout)
+    monkeypatch.setattr(fleet_writer_fixture, 'wait_gateway_started', established_observer)
+    try:
+        with pytest.raises(BaseExceptionGroup) as caught:
+            start_gateway_fixture(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=held_factory, failures=failures, startup_timeout=.05, stop_timeout=.05)
+        primary, cleanup = caught.value.exceptions
+        assert isinstance(primary, TimeoutError) and str(primary) == 'GATEWAY_STARTUP_FIXTURE_TIMEOUT'
+        assert isinstance(cleanup, TimeoutError) and str(cleanup) == 'GATEWAY_STOP_FIXTURE_TIMEOUT'
+        assert threads[0].is_alive() and failures.empty()
+        for error in (primary, cleanup):
+            note = error.__notes__[0]
+            diagnostic = ast.literal_eval(note)
+            assert diagnostic['server_thread_alive'] is True
+            assert 1 <= len(diagnostic['stack']) <= 12
+            assert any(frame['function'] == 'held_factory' for frame in diagnostic['stack'])
+            assert all('/' not in frame['file'] and '\\' not in frame['file'] for frame in diagnostic['stack'])
+            assert TOKEN not in note and str(tmp_path) not in note
+            print('CONTROLLED_START_AND_STOP_UNCERTAINTY ' + note)
+    finally:
+        release.set()
+        if threads:
+            threads[0].join(timeout=5)
+            assert not threads[0].is_alive() and failures.empty()

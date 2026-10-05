@@ -15,7 +15,7 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files, FixtureHttpsClient
-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
 from test_tip061a_057n import node as project_node, freeze, logical_fixture
 from test_tip055a_runtime_forensics_identity import ref
 from test_tip064_integration import domain_policy, pump
@@ -30,7 +30,7 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal, Transpor
 from vibemql5.fleet.read_broker import ReadBroker
 from vibemql5.fleet.resources import physical_resources
 from vibemql5.fleet.scoped_resources import CONFLICT_MATRIX, DOMAIN, ScopedResourceCoordinator, capacity_source_manifest, verify_capacity_roster
-from vibemql5.fleet.transport import GatewayController, NodeClient, OutboundNode, OwnerClient, serve_gateway
+from vibemql5.fleet.transport import GatewayController, NodeClient, OutboundNode, OwnerClient
 from vibemql5.fleet.wire import WireError
 
 
@@ -70,7 +70,7 @@ def signed_roster(node, owner_key):
 @pytest.fixture
 def capacity_service(tmp_path, tls_files):
     ca, certificate, private = tls_files
-    stopped, ready, failures = threading.Event(), Queue(), Queue()
+    failures = Queue()
     signer_key, owner_key = Ed25519PrivateKey.generate(), Ed25519PrivateKey.generate()
     owner_public = owner_key.public_key().public_bytes_raw().hex()
     policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144)
@@ -85,13 +85,8 @@ def capacity_service(tmp_path, tls_files):
             max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
         return GatewayController(control, policy, audience=origin,
             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
-    def run():
-        try:
-            serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
-                controller_factory=factory, stop_event=stopped, started=ready.put)
-        except BaseException as error: failures.put(error)
-    thread = threading.Thread(target=run, daemon=True); thread.start()
-    address = ready.get(timeout=5)
+    stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
+        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),
         server_thread=thread, failures=failures)
     try:

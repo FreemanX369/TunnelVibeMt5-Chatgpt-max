@@ -3,14 +3,16 @@ import hashlib
 import base64
 import copy
 import shutil
+from dataclasses import replace
+from contextlib import closing
 from pathlib import Path
 import pytest
-import threading
 import time
 from queue import Queue
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from fleet_writer_fixture import project_node,tls_files,principal_policy,writer_policy
+from fleet_gateway_fixture import start_gateway_fixture
 from test_tip058b_transport import TOKEN,control_policy,fleet_policy
 from vibemql5.fleet.domain import DomainJournal,DomainPolicy,GatewayDomain,NodeDomainDispatcher
 from vibemql5.fleet.gateway_control import GatewayControlStore
@@ -19,12 +21,18 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal,Transport
 from vibemql5.fleet.principals import GatewayPrincipalAuthority,PATHS,sign_principal_request
 from vibemql5.fleet.wire import encode_body, sign_request, WireError
 from vibemql5.fleet.restore_coordination import RestoreCoordinator,RestorePolicy,DOMAIN
-from vibemql5.fleet.transport import GatewayController,HttpsClient,OwnerClient,NodeClient,serve_gateway
+from vibemql5.fleet.transport import GatewayController,HttpsClient,OwnerClient,NodeClient
 from vibemql5.fleet.writers import NodePrincipalRuntime, WriterError, empty_writer_witness
 from vibemql5.fleet.worktrees import NodeWorktrees
 from test_tip063_worktrees import git, policy as worktree_policy
 from vibemql5.adapters.fleet_cli import NodeRuntime
 from vibemql5.fleet.transport import OutboundNode
+
+
+def restore_control_policy():
+    # Ordinary consistent backup/restore, like the existing TIP-058A/060C
+    # healthy-backup fixtures; deliberate transport/contention budgets stay.
+    return replace(control_policy(), sqlite_busy_timeout_ms=1000)
 
 
 @pytest.mark.parametrize("nonempty",[False,True,"worktree","readonly","readonly-inactive"])
@@ -37,19 +45,16 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
     retained=tmp_path/'retained';retained.mkdir()
     dp=DomainPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000)
     jp=dict(max_records=20,max_payload_bytes=32768,wait_ms=50)
+    cp=restore_control_policy()
     failures=Queue()
     def start(factory,address=('127.0.0.1',0)):
-        stop,ready=threading.Event(),Queue()
-        def run():
-            try:serve_gateway(address,certificate=certificate,key_file=private,controller_factory=factory,stop_event=stop,started=ready.put)
-            except BaseException as error:failures.put(error)
-        thread=threading.Thread(target=run,daemon=True);thread.start();bound=ready.get(timeout=5)
-        return stop,thread,bound
+        return start_gateway_fixture(address,certificate=certificate,key_file=private,
+            controller_factory=factory,failures=failures,startup_timeout=5,stop_timeout=5)
     def controller(control,domains,jobs,principals,origin,recovery=None):
         return GatewayController(control,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=GatewayDomain(control,domains,jobs,principal_authority=principals,recovery=recovery,start_authorization_ms=2000))
     def initial(address):
         origin='https://127.0.0.1:'+str(address[1])
-        return controller(GatewayControlStore.initialize(original/'control.db',policy=control_policy()),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
+        return controller(GatewayControlStore.initialize(original/'control.db',policy=cp),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
     stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
     transport=NodeTransportJournal.initialize(tmp_path/'node-transport.db',TransportPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50),device_id=device,public_key=nodekey.public_key().public_bytes_raw().hex(),audience=origin)
     node=NodeClient(http,nodekey,device,0,transport)
@@ -101,15 +106,19 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
         nodedomains.close();stop.set();thread.join(timeout=5)
     assert not thread.is_alive()
     if not failures.empty():raise failures.get()
-    control=GatewayControlStore.open_existing(original/'control.db',policy=control_policy())
-    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()
-    jobs=GatewayJobJournal(original/'jobs.db',**jp);mapping=jobs.mapping_sha256();jobs.backup(retained/'jobs-backup.db');jobs.close()
-    domains=DomainJournal(original/'domains.db',policy=dp,role='GATEWAY');domainhead=domains.control_head();domains.close()
-    principals=GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy());principalhead=principals.control_head();principals.close()
+
+    with GatewayControlStore.open_existing(original/'control.db',policy=cp) as control:
+        snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db')
+    with GatewayJobJournal(original/'jobs.db',**jp) as jobs:
+        mapping=jobs.mapping_sha256();jobs.backup(retained/'jobs-backup.db')
+    with closing(DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')) as domains:
+        domainhead=domains.control_head()
+    with closing(GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())) as principals:
+        principalhead=principals.control_head()
     facts={'schema':'fleet.quiescent-checkpoint/1','audience':origin,'control_head':head,'control_wall_ms':snapshot['last_wall_ms'],'devices':[{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'route_generation':1,'state':'ACTIVE','registry_sha256':registrysha,'session_id':session,'worktree_head':worktree_head}],'job_export_generation':1,'job_mapping_sha256':mapping,'domain_head':domainhead,'principal_head':principalhead}
     checkpoint=retained/'checkpoint.json';checkpoint.write_bytes(canonical(facts));scopequeue=Queue()
     def recovery_service(address):
-        control=GatewayControlStore.restore(retained/'control-backup.db',restored/'control.db',policy=control_policy())
+        control=GatewayControlStore.restore(retained/'control-backup.db',restored/'control.db',policy=cp)
         jobs=GatewayJobJournal.restore_backup(retained/'jobs-backup.db',restored/'jobs.db',devices=[device],export_generation=1,**jp)
         domains=DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')
         principals=GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())
@@ -182,3 +191,44 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
         nodejobs.close();nodedomains.close();transport.close();stop.set();thread.join(timeout=5)
     assert not thread.is_alive()
     if not failures.empty():raise failures.get()
+
+
+@pytest.mark.parametrize('sqlite_budget_ms', [100, 1000])
+def test_healthy_backup_progress_deadline_is_explicit_and_has_no_sqlite_contention(tmp_path, monkeypatch, sqlite_budget_ms):
+    import sqlite3
+    from types import SimpleNamespace
+    import vibemql5.fleet.gateway_control as control_module
+    events, clock = [], [0.0]
+    policy = control_policy() if sqlite_budget_ms == 100 else restore_control_policy()
+    assert policy.sqlite_busy_timeout_ms == sqlite_budget_ms
+    with GatewayControlStore.initialize(tmp_path / 'control.db', policy=policy) as store:
+        source = store._db
+        class ObservedBackup:
+            def __getattr__(self, name):
+                return getattr(source, name)
+            def backup(self, destination, *, pages, progress, sleep):
+                def observed(status, remaining, total):
+                    events.append({'status': status, 'remaining': remaining})
+                    progress(status, remaining, total)
+                source.backup(destination, pages=pages, progress=observed, sleep=sleep)
+        def delayed_clock():
+            clock[0] += .15
+            return clock[0]
+        destination = tmp_path / 'backup.db'
+        with monkeypatch.context() as fault:
+            fault.setattr(store, '_db', ObservedBackup())
+            fault.setattr(control_module, 'time', SimpleNamespace(monotonic=delayed_clock))
+            if sqlite_budget_ms == 100:
+                with pytest.raises(control_module.GatewayControlError, match='CONTROL_BUSY'):
+                    store.backup(destination)
+                assert not destination.exists()
+            else:
+                assert store.backup(destination)['evidence'] == 'CONSISTENT_SQLITE_SNAPSHOT'
+                assert destination.exists()
+        assert events and all(row == {'status': sqlite3.SQLITE_DONE, 'remaining': 0} for row in events)
+        assert store.snapshot()['revision'] == 1
+        print('CONTROLLED_HEALTHY_BACKUP_PROGRESS ' + str({'sqlite_budget_ms': sqlite_budget_ms,
+            'elapsed_between_clock_reads_ms': 150, 'sqlite_progress': events}))
+    # Independent ownership observation after closure; do not replay backup.
+    with GatewayControlStore.open_existing(tmp_path / 'control.db', policy=policy) as reopened:
+        assert reopened.snapshot()['revision'] == 1

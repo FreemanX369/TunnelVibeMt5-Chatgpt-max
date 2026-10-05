@@ -13,7 +13,7 @@ import pytest
 
 from test_tip057rc1 import fixture as local_identity
 from test_tip058b_transport import control_policy, fleet_policy, tls_files, positive, TOKEN, FixtureHttpsClient
-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
 from vibemql5.adapters.fleet_client_tools import FleetClientFacade, FLEET_TOOL_NAMES
 from vibemql5.adapters.fleet_mcp import create_server
 from vibemql5.core.facade import ToolFacade
@@ -348,7 +348,7 @@ from queue import Queue
 @pytest.fixture
 def composed_service(tmp_path, tls_files, request):
     ca, certificate, private = tls_files
-    stopped, ready, failures = threading.Event(), Queue(), Queue()
+    failures = Queue()
     signing_key = Ed25519PrivateKey.generate()
     authorization_ms = getattr(request, "param", 2000)
     def factory(address):
@@ -368,13 +368,8 @@ def composed_service(tmp_path, tls_files, request):
         return GatewayController(store, fleet_policy(), audience=origin,
             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
             broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
-    def run():
-        try:
-            serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
-                controller_factory=factory, stop_event=stopped, started=ready.put)
-        except BaseException as error: failures.put(error)
-    thread = threading.Thread(target=run, daemon=True); thread.start()
-    address = ready.get(timeout=5)
+    stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
+        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca),
         server_thread=thread, failures=failures)
     try:

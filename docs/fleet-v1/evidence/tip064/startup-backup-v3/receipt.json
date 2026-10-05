@@ -1,0 +1,50 @@
+{
+  "schema": "fleet.startup-backup-verification/1",
+  "starting_head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+  "starting_tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+  "scope": "SOURCE_FIXTURE_ONLY",
+  "corrected_defects": [
+    "STARTUP_OWNER_NOT_RETURNED_OR_CLEANED_ON_FAILURE",
+    "HEALTHY_BACKUP_USED_SHORT_CONTROL_PROFILE",
+    "CHECKPOINT_OPEN_OWNER_LEAK_ON_BACKUP_FAILURE"
+  ],
+  "production_files_unchanged": 88,
+  "production_changes": [],
+  "physical_qualification": "NOT_RUN",
+  "incident_causes": "UNRESOLVED",
+  "contractor_junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "3",
+    "tests": "251",
+    "time": "24.821",
+    "timestamp": "2026-10-05T14:00:27.600715+09:00",
+    "hostname": "4452c5f65e61"
+  },
+  "source_sha256": {
+    "tests/unit/fleet_gateway_fixture.py": "7063ff1843d8bd5f1e864d85def4d0692f50028ce68d9688921fcf3045522270",
+    "tests/unit/test_fleet_gateway_fixture.py": "cf970b8db2ea03dd811e56a84c2d8626029a8a625d48a593b2fb3269721b932c",
+    "tests/unit/test_tip058b_transport.py": "89617263f67930dbbda0c18114380d851a9b6726f231fbd2429cf5754a433746",
+    "tests/unit/test_tip060c_https_restore.py": "55eb7d723b2cc97dbd363e08dc9f85b03e51b6fe04afa9cc73728fe898337d78",
+    "tests/unit/test_tip064_capacity_https.py": "a4a15438447d505c82eb34cf77473868e53628a04f897df0e08cb870a50cacb5",
+    "tests/unit/test_tip064_integration.py": "b8fd8faa529378e37b79ddf775edb839cf5fc8696c50540356c79edbed45afba"
+  },
+  "evidence_sha256": {
+    "contractor/source-after.sha256": "3a94b2a36b4cc73315533d8b3707b5819288442848d92e98774a00ba29cba100",
+    "contractor/focused-final.log": "2fb04a950b6de4fe0e861c41c9b9dcaedfa61fb4f6bfab2bffdd3655657d6087",
+    "contractor/source-before.sha256": "3a94b2a36b4cc73315533d8b3707b5819288442848d92e98774a00ba29cba100",
+    "contractor/focused-final.junit.xml": "75e41eea33e1d06f45c40668aeaa60427f533be988f2a9ed1b082434d55e7b1c",
+    "builder/controls.log": "ec965790154b5cb03d784739b44582746b4ce2f1dac999863548f521aa3fd7cd",
+    "builder/dependencies.txt": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db",
+    "builder/receipt.json": "847456f814a934d58b729dba5d0334faae07ffacd2a560ea0182983a9866c816",
+    "builder/startup.junit.xml": "4bca526235e38c0ddfaca5766a0a900d7ee379b32721ab0f745f956da7ae2282",
+    "builder/source-after.sha256": "3a94b2a36b4cc73315533d8b3707b5819288442848d92e98774a00ba29cba100",
+    "builder/focused-final.log": "18682b5fbe0129d8a6c31b1089b3bd24405008131ecfd674af49580f8b082219",
+    "builder/source-final.patch": "659de2e7f89e327e45cd3083e71afcf73dc4164c701576fda11386b517779cc6",
+    "builder/startup.log": "8d9526ab5b82af71d7410295b554c8ae5c2be7d23a55f1292185d295be37a300",
+    "builder/source-before.sha256": "3a94b2a36b4cc73315533d8b3707b5819288442848d92e98774a00ba29cba100",
+    "builder/focused-final.junit.xml": "47d531a8d3f04dc5a104ea5ca6baaf28c1845b571b8e96397b8ce3f72bddeef0",
+    "builder/controls.junit.xml": "fcf787d7fde672e45eeaacf93ab2aae9147afcaab567e860733490bde44166b8"
+  }
+}

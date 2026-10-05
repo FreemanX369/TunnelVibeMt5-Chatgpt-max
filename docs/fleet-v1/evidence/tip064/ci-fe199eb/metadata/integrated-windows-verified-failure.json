@@ -1,0 +1,209 @@
+{
+  "artifact_id": 11326590777,
+  "bytes": 260905,
+  "sha256": "f27fbaafe8dacb52def02a2861156b5a54bc5fea9b11fd18d179721db2186649",
+  "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+  "tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+  "status": "FAIL",
+  "source_entries_verified": 207,
+  "junit": [
+    {
+      "name": "pytest",
+      "errors": "2",
+      "failures": "3",
+      "skipped": "10",
+      "tests": "1146",
+      "time": "522.907",
+      "timestamp": "2026-10-05T04:41:54.704129+00:00",
+      "hostname": "runnervmfi6oq"
+    }
+  ],
+  "cases": [
+    {
+      "case": "full-unit",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "-m",
+        "pytest",
+        "tests/unit",
+        "-v",
+        "--tb=short",
+        "--durations=20",
+        "-o",
+        "faulthandler_timeout=90",
+        "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+      ],
+      "exit_code": 1,
+      "timeout_seconds": 600,
+      "timed_out": false,
+      "elapsed_seconds": 525.062
+    },
+    {
+      "case": "b1-portable",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "tests/proofs/tip057rb1/run_proof.py",
+        "--portable",
+        "--output",
+        "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 2.391
+    },
+    {
+      "case": "q1-harmless",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "tests/proofs/tip057rq/run_proof.py",
+        "--require-windows",
+        "--output",
+        "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 14.656
+    },
+    {
+      "case": "g03a-harmless",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "tests/proofs/tip057rg03a/run_windows.py",
+        "--require-windows",
+        "--output",
+        "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 1.688
+    },
+    {
+      "case": "b1-harmless",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "tests/proofs/tip057rb1/run_proof.py",
+        "--require-windows",
+        "--output",
+        "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 7.5
+    }
+  ],
+  "failures": [
+    {
+      "test": {
+        "classname": "tests.unit.test_tip060c_https_restore",
+        "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[False]",
+        "time": "1.500"
+      },
+      "errors": [
+        {
+          "tag": "failure",
+          "type": null,
+          "message": "vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY",
+          "text": "tests\\unit\\test_tip060c_https_restore.py:105: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\napp\\vibemql5\\fleet\\gateway_control.py:991: in backup\n    self._bounded_backup(db)\napp\\vibemql5\\fleet\\gateway_control.py:1021: in _bounded_backup\n    self._db.backup(destination, pages=64, progress=progress,\napp\\vibemql5\\fleet\\gateway_control.py:1020: in progress\n    _fail(\"CONTROL_BUSY\")\napp\\vibemql5\\fleet\\gateway_control.py:45: in _fail\n    raise GatewayControlError(code)\nE   vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY"
+        }
+      ]
+    },
+    {
+      "test": {
+        "classname": "tests.unit.test_tip060c_https_restore",
+        "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[worktree]",
+        "time": "3.874"
+      },
+      "errors": [
+        {
+          "tag": "failure",
+          "type": null,
+          "message": "vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY",
+          "text": "tests\\unit\\test_tip060c_https_restore.py:105: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\napp\\vibemql5\\fleet\\gateway_control.py:991: in backup\n    self._bounded_backup(db)\napp\\vibemql5\\fleet\\gateway_control.py:1021: in _bounded_backup\n    self._db.backup(destination, pages=64, progress=progress,\napp\\vibemql5\\fleet\\gateway_control.py:1020: in progress\n    _fail(\"CONTROL_BUSY\")\napp\\vibemql5\\fleet\\gateway_control.py:45: in _fail\n    raise GatewayControlError(code)\nE   vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY"
+        }
+      ]
+    },
+    {
+      "test": {
+        "classname": "tests.unit.test_tip060c_https_restore",
+        "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[readonly]",
+        "time": "5.936"
+      },
+      "errors": [
+        {
+          "tag": "failure",
+          "type": null,
+          "message": "_queue.Empty",
+          "text": "tests\\unit\\test_tip060c_https_restore.py:121: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    stop,thread,_=start(recovery_service,address)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_tip060c_https_restore.py:46: in start\n    thread=threading.Thread(target=run,daemon=True);thread.start();bound=ready.get(timeout=5)\n                                                                         ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+        }
+      ]
+    },
+    {
+      "test": {
+        "classname": "tests.unit.test_tip064_integration",
+        "name": "test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history",
+        "time": "7.578"
+      },
+      "errors": [
+        {
+          "tag": "error",
+          "type": null,
+          "message": "failed on setup with \"_queue.Empty\"",
+          "text": "tests\\unit\\test_tip064_integration.py:377: in composed_service\n    address = ready.get(timeout=5)\n              ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+        }
+      ]
+    },
+    {
+      "test": {
+        "classname": "tests.unit.test_tip064_integration",
+        "name": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none]",
+        "time": "12.073"
+      },
+      "errors": [
+        {
+          "tag": "error",
+          "type": null,
+          "message": "failed on setup with \"_queue.Empty\"",
+          "text": "tests\\unit\\test_tip064_integration.py:377: in composed_service\n    address = ready.get(timeout=5)\n              ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+        }
+      ]
+    }
+  ],
+  "proofs": [
+    {
+      "name": "b1-harmless/summary.json",
+      "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+      "executed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "b1-portable/summary.json",
+      "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+      "executed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "g03a-harmless/summary.json",
+      "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+      "executed": null,
+      "failures": 0,
+      "errors": 0,
+      "skipped": null
+    },
+    {
+      "name": "q1-harmless/summary.json",
+      "status": "FIXTURE_PASS_Q03_OPEN",
+      "executed": null,
+      "failures": 0,
+      "errors": 0,
+      "skipped": null
+    }
+  ]
+}
