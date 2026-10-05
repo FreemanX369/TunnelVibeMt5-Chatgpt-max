@@ -1,5 +1,17 @@
 # Fleet v1 — Revised Task Graph
 
+## Deployment continuation — 2026-10-05
+
+The owner now authorizes tests and deployment, superseding the earlier deployment
+deferral. The accepted `f25ec99` source checkpoint passed eight workflows; 31 new
+modules were staged with create-only CAS while the live TIP-053 adapter remained
+unchanged. [TIP-065](TIP-065-deployment-preflight.md) adds narrowly necessary
+read-only ownership/dependency observations through existing interfaces. Its own
+delivered candidate still requires eight successful checks and independent artifacts.
+The bounded legacy diagnostic overlay is a separate deployment slice. Full Fleet
+activation remains gated by actual migration, protected configuration, process and
+connector registration, and deferred physical MT5/SDK qualification.
+
 ## Continuous source execution — 2026-10-03
 
 The latest owner direction authorizes all source tasks through M5 and 064 handover without per-TIP approval pauses; see [continuous authorization](continuous-build-2026-10-03.md). Private VM/real SDK tests remain deferred. This section supersedes historical source-dispatch timing gates below, while retaining their receipts and physical capability gates.

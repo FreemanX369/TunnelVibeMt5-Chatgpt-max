@@ -1,5 +1,15 @@
 # Fleet v1 — Continuous source verification
 
+2026-10-05 continuation: accepted head `f25ec99` completed all eight workflows
+on attempt 1; original five ZIP digests, 207 source hashes, JUnit and harmless
+proofs were independently verified. The owner's later instruction authorizes tests
+and deployment. The resulting 31-module staging did not activate the Fleet source
+adapter. [TIP-065](TIP-065-deployment-preflight.md) continues with bounded read-only
+preflight observations and a separate legacy MCP overlay; every new source head
+requires its own complete eight-workflow gate. Physical qualification stays OPEN,
+and the original masked owner-grant incident remains UNKNOWN. The current exact-head
+and deployment receipts in Draft #65 supersede historical deferral/status text below.
+
 Status: **M1–M5 AND TIP-064 SOURCE IMPLEMENTED**. This is the cumulative Contractor review under the [continuous authorization](continuous-build-2026-10-03.md). All included source tasks have Builder reports and reviewed tests. Acceptance of the delivered [Draft #65](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/65) head requires all eight workflow checks to succeed on that same head. Its integrated Linux/Windows artifacts must contain matching head/tree, unchanged source manifests and complete unit/proof results. Historical checkpoint evidence below does not substitute for those checks. Physical MT5, SDK, private VM, deployment and actual client acceptance remain deferred.
 
 ## Requirement coverage

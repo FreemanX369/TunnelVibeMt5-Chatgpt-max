@@ -216,17 +216,32 @@ class OwnershipAuthority:
             raise OwnershipBlocked("INSTALL_MISSING") from exc
         except (OSError, ValueError, TypeError) as exc:
             raise OwnershipBlocked("INSTALL_INVALID") from exc
-        if (marker.get("schema") != INSTALL_SCHEMA or not isinstance(marker.get("epoch"), str)
-                or not marker["epoch"].strip() or marker.get("disposition") not in ("MIGRATING", "READY")):
-            raise OwnershipBlocked("INSTALL_INVALID")
-        if marker["disposition"] != "READY":
-            raise OwnershipBlocked("INSTALL_MIGRATING")
+        self.validate_marker(marker)
         try:
             state = _read_json_object(self.path, attempts=1)
         except FileNotFoundError as exc:
             raise OwnershipBlocked("AUTHORITY_MISSING") from exc
         except (OSError, ValueError, TypeError) as exc:
             raise OwnershipBlocked("AUTHORITY_INVALID") from exc
+        return self.validate_snapshot(marker, state)
+
+    @staticmethod
+    def validate_marker(marker: dict[str, Any]) -> None:
+        """Validate supplied installation bytes without filesystem or admission effects."""
+        if not isinstance(marker, dict):
+            raise OwnershipBlocked("INSTALL_INVALID")
+        if (marker.get("schema") != INSTALL_SCHEMA or not isinstance(marker.get("epoch"), str)
+                or not marker["epoch"].strip() or marker.get("disposition") not in ("MIGRATING", "READY")):
+            raise OwnershipBlocked("INSTALL_INVALID")
+        if marker["disposition"] != "READY":
+            raise OwnershipBlocked("INSTALL_MIGRATING")
+
+    @staticmethod
+    def validate_snapshot(marker: dict[str, Any], state: dict[str, Any]) -> dict[str, Any]:
+        """Share record validation with read-only observers; never grant admission."""
+        OwnershipAuthority.validate_marker(marker)
+        if not isinstance(state, dict):
+            raise OwnershipBlocked("AUTHORITY_INVALID")
         try:
             valid = (state.get("schema") == SCHEMA and _positive(state.get("generation"))
                      and isinstance(state.get("epoch"), str) and bool(state["epoch"].strip())

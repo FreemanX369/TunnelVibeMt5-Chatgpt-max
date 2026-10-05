@@ -1,5 +1,16 @@
 # Fleet v1 — Complete source handover
 
+Current deployment direction (2026-10-05): the owner has authorized tests and
+deployment. This supersedes the historical deployment deferral below, without
+waiving physical qualification. Accepted source checkpoint `f25ec99` passed all
+eight workflows. Thirty-one new modules were staged with create-only CAS; the live
+TIP-053/0.2.42 adapter retained its original behavior and 85-tool catalog.
+[TIP-065](TIP-065-deployment-preflight.md) prepares a read-only diagnostic overlay
+to observe ownership and dependency blockers. Its candidate gate, exact overlay
+hashes and actual live observations are recorded in the current PR description and
+deployment receipt; earlier source CI cannot qualify that new candidate. Full Fleet
+activation and private VM/MT5/SDK qualification remain OPEN.
+
 Status: SOURCE BUILD COMPLETE for M1–M5 and TIP-064 under the owner's continuous authorization. The delivered source is the current head of [Draft #65](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/65); source acceptance requires all eight workflow checks on that same head, including complete Linux/Windows integrated artifacts. [Source verification](source-update-verification.md) preserves the review and historical receipts. Private VM, real MT5/SDK qualification and production deployment remain for the owner after build.
 
 ## Included update

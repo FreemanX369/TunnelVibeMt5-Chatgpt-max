@@ -22,6 +22,7 @@ from ..core.facade import ToolFacade
 from ..core.concurrency import actor_from_mcp_context, actor_scope
 from ..core import workspace as workspace_module
 from ..core.provenance import load_bridge_provenance, sha256_file
+from ..core.deployment_preflight import deployment_preflight
 from .ex5_widget import EX5_INGRESS_WIDGET_HTML, EX5_INGRESS_WIDGET_SCHEMA_VERSION, EX5_INGRESS_WIDGET_URI
 from .live_chart_widget import LIVE_CHART_WIDGET_HTML, LIVE_CHART_WIDGET_SCHEMA_VERSION, LIVE_CHART_WIDGET_URI
 
@@ -163,6 +164,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "generic_shell_exposed": True,
             "startup_cancel_recovery": startup_cancel_recovery,
             "runtime_provenance": _runtime_provenance(root),
+            "deployment_preflight": deployment_preflight(root),
         }
 
     @server.tool(annotations=read_only_local)
