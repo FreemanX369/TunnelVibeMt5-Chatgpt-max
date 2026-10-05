@@ -1,13 +1,16 @@
 """Bounded startup observation; no runtime authority or physical qualification."""
 import hashlib
+import ast
 import socket
 import threading
 import time
 from queue import Queue
+from types import SimpleNamespace
 
 import pytest
 
 from fleet_writer_fixture import wait_gateway_started
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
 from test_tip058b_transport import TOKEN, control_policy, fleet_policy, tls_files
 from vibemql5.fleet.gateway_control import GatewayControlStore
 from vibemql5.fleet.transport import GatewayController, HttpsClient, OwnerClient, serve_gateway
@@ -70,3 +73,85 @@ def test_observer_timeout_reports_sanitized_live_stage_and_does_not_claim_closur
     finally:
         release.set(); thread.join(timeout=1)
         assert not thread.is_alive()
+
+
+def test_cleanup_preserves_primary_notes_and_cleanup_failure():
+    primary = pytest.fail.Exception('controlled-primary')
+    primary.add_note('CAPACITY_HTTPS_FIXTURE {"state": "UNKNOWN"}')
+    cleanup = WireError('HTTPS_UNAVAILABLE')
+    with pytest.raises(BaseExceptionGroup) as caught:
+        try:
+            raise primary
+        finally:
+            with preserve_fixture_failure():
+                raise cleanup
+    assert caught.value.exceptions == (primary, cleanup)
+    assert primary.__notes__ == ['CAPACITY_HTTPS_FIXTURE {"state": "UNKNOWN"}']
+    print('CONTROLLED_PRIMARY_AND_CLEANUP_PRESERVED')
+
+
+def test_cleanup_only_error_is_not_suppressed():
+    error = WireError('DOMAIN_WORKERS_ACTIVE')
+    with pytest.raises(WireError, match='DOMAIN_WORKERS_ACTIVE') as caught:
+        with preserve_fixture_failure():
+            raise error
+    assert caught.value is error
+
+
+def test_proven_idle_cleanup_closes_without_new_control_call():
+    events = []
+    dispatcher = SimpleNamespace(has_pending_work=lambda: False, close=lambda: events.append('closed'))
+    def unexpected_control(*args, **kwargs):
+        raise AssertionError('idle cleanup emitted new HTTPS authority')
+    close_dispatcher_fixture(None, dispatcher, unexpected_control)
+    assert events == ['closed']
+    print('CONTROLLED_IDLE_CLEANUP_NO_HTTPS_CALL')
+
+
+def test_uncertain_drain_failure_does_not_close_or_claim_idle():
+    events = []
+    dispatcher = SimpleNamespace(has_pending_work=lambda: True, close=lambda: events.append('closed'))
+    error = WireError('HTTPS_UNAVAILABLE')
+    def failed_control(*args, **kwargs):
+        events.append('drain-attempted')
+        raise error
+    with pytest.raises(WireError, match='HTTPS_UNAVAILABLE') as caught:
+        close_dispatcher_fixture(None, dispatcher, failed_control)
+    assert caught.value is error and events == ['drain-attempted']
+    assert dispatcher.has_pending_work()
+
+
+def test_stop_observer_records_real_gateway_close_stage_and_retains_uncertainty(tmp_path, tls_files, monkeypatch):
+    import test_tip064_integration as integration
+    from vibemql5.fleet.domain import GatewayDomain
+    entered, release = threading.Event(), threading.Event()
+    original_close = GatewayDomain.close
+    def held_close(domain):
+        entered.set()
+        assert release.wait(timeout=10)
+        original_close(domain)
+    def bounded_stop(stopped, thread, failures):
+        stopped.set()
+        assert entered.wait(timeout=3)
+        stop_gateway_fixture(stopped, thread, failures, timeout=.1)
+    monkeypatch.setattr(GatewayDomain, 'close', held_close)
+    monkeypatch.setattr(integration, 'stop_gateway_fixture', bounded_stop)
+    service = integration.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+    http, owner, _ = next(service)
+    try:
+        with pytest.raises(WireError, match='READ_INTERRUPTED'):
+            owner.read_status('controlled-absent-command')
+        with pytest.raises(TimeoutError, match='GATEWAY_STOP_FIXTURE_TIMEOUT') as caught:
+            next(service)
+        assert entered.is_set() and http.server_thread.is_alive()
+        note = caught.value.__notes__[0]
+        diagnostic = ast.literal_eval(note)
+        assert diagnostic['server_thread_alive'] is True and diagnostic['timeout_seconds'] == .1
+        assert 1 <= len(diagnostic['stack']) <= 12
+        assert any(frame['function'] == 'held_close' for frame in diagnostic['stack'])
+        assert all('/' not in frame['file'] and '\\' not in frame['file'] for frame in diagnostic['stack'])
+        assert 'controlled-absent-command' not in note and TOKEN not in note
+        print('CONTROLLED_GATEWAY_STOP ' + note)
+    finally:
+        release.set(); http.server_thread.join(timeout=3)
+        assert not http.server_thread.is_alive() and http.failures.empty()

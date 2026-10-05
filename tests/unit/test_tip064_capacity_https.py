@@ -14,7 +14,8 @@ from queue import Queue
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
-from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files
+from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files, FixtureHttpsClient
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
 from test_tip061a_057n import node as project_node, freeze, logical_fixture
 from test_tip055a_runtime_forensics_identity import ref
 from test_tip064_integration import domain_policy, pump
@@ -29,7 +30,7 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal, Transpor
 from vibemql5.fleet.read_broker import ReadBroker
 from vibemql5.fleet.resources import physical_resources
 from vibemql5.fleet.scoped_resources import CONFLICT_MATRIX, DOMAIN, ScopedResourceCoordinator, capacity_source_manifest, verify_capacity_roster
-from vibemql5.fleet.transport import GatewayController, HttpsClient, NodeClient, OutboundNode, OwnerClient, serve_gateway
+from vibemql5.fleet.transport import GatewayController, NodeClient, OutboundNode, OwnerClient, serve_gateway
 from vibemql5.fleet.wire import WireError
 
 
@@ -91,11 +92,13 @@ def capacity_service(tmp_path, tls_files):
         except BaseException as error: failures.put(error)
     thread = threading.Thread(target=run, daemon=True); thread.start()
     address = ready.get(timeout=5)
-    http = HttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca))
-    yield http, OwnerClient(http, TOKEN), signer_key, owner_key, policy
-    stopped.set(); thread.join(timeout=3)
-    assert not thread.is_alive()
-    if not failures.empty(): raise failures.get()
+    http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),
+        server_thread=thread, failures=failures)
+    try:
+        yield http, OwnerClient(http, TOKEN), signer_key, owner_key, policy
+    finally:
+        with preserve_fixture_failure():
+            stop_gateway_fixture(stopped, thread, failures)
 
 
 @pytest.mark.parametrize('observation_order', ['normal', 'delayed-release-and-completion'])
@@ -213,9 +216,10 @@ def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflictin
             assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert not (root / 'state' / 'fleet' / 'scoped-install.json').exists()
     finally:
-        release.set(); completion.set()
-        for timer in timers:
-            timer.cancel(); timer.join(timeout=1)
-            assert not timer.is_alive()
-        pump(agent, lambda: not dispatcher.has_pending_work(), seconds=10)
-        dispatcher.close(); jobs.close(); domains.close(); transport.close()
+        with preserve_fixture_failure():
+            release.set(); completion.set()
+            for timer in timers:
+                timer.cancel(); timer.join(timeout=1)
+                assert not timer.is_alive()
+            close_dispatcher_fixture(agent, dispatcher, pump, seconds=10)
+            jobs.close(); domains.close(); transport.close()

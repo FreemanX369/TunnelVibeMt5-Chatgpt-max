@@ -12,7 +12,8 @@ from pathlib import Path
 import pytest
 
 from test_tip057rc1 import fixture as local_identity
-from test_tip058b_transport import control_policy, fleet_policy, tls_files, positive, TOKEN
+from test_tip058b_transport import control_policy, fleet_policy, tls_files, positive, TOKEN, FixtureHttpsClient
+from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
 from vibemql5.adapters.fleet_client_tools import FleetClientFacade, FLEET_TOOL_NAMES
 from vibemql5.adapters.fleet_mcp import create_server
 from vibemql5.core.facade import ToolFacade
@@ -374,11 +375,13 @@ def composed_service(tmp_path, tls_files, request):
         except BaseException as error: failures.put(error)
     thread = threading.Thread(target=run, daemon=True); thread.start()
     address = ready.get(timeout=5)
-    http = HttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca))
-    yield http, OwnerClient(http, TOKEN), signing_key
-    stopped.set(); thread.join(timeout=3)
-    assert not thread.is_alive()
-    if not failures.empty(): raise failures.get()
+    http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca),
+        server_thread=thread, failures=failures)
+    try:
+        yield http, OwnerClient(http, TOKEN), signing_key
+    finally:
+        with preserve_fixture_failure():
+            stop_gateway_fixture(stopped, thread, failures)
 
 
 def runtime(project_node, composed_service, *, adapter=None):
@@ -819,6 +822,7 @@ def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_g
         assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert not dispatcher._native_records and not dispatcher._acked
     finally:
-        release_return.set()
-        pump(agent, lambda: not dispatcher.has_pending_work())
-        dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+        with preserve_fixture_failure():
+            release_return.set()
+            close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+            dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()

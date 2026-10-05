@@ -1,0 +1,53 @@
+{
+  "schema": "fleet.fixture-cleanup-verification/1",
+  "starting_head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+  "scope": "SOURCE_FIXTURE_ONLY",
+  "physical_qualification": "NOT_RUN",
+  "incident_cause": "UNKNOWN",
+  "corrected_defects": [
+    "NO_EXTRA_CONTROL_AFTER_PROVEN_DRAIN",
+    "PRESERVE_PRIMARY_AND_CLEANUP_FAILURE"
+  ],
+  "production_files_unchanged": 88,
+  "production_changes": [],
+  "contractor_junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "3",
+    "tests": "102",
+    "time": "19.780",
+    "timestamp": "2026-10-05T13:39:03.924158+09:00",
+    "hostname": "4452c5f65e61"
+  },
+  "source_sha256": {
+    "tests/unit/fleet_gateway_fixture.py": "3a33daa39174f7cee90c95df5eaf3d300a1e486e5810d8c26d4e9a749279053c",
+    "tests/unit/test_fleet_gateway_fixture.py": "d3e6cd53233a8bdbd07bdba63ca08dadbbed51ceec9cec8f3b1686e8c775abe4",
+    "tests/unit/test_tip064_capacity_https.py": "6a5befd2a403012268f6b9d5b434b4ee245eb5c5f5bb428d385aa02a21bac514",
+    "tests/unit/test_tip064_integration.py": "eb6849f713434d2226a1084483b873c765038c1a07ed93c9e88489ca41553e2c"
+  },
+  "evidence_sha256": {
+    "builder/controls-final.junit.xml": "8ac6d4c9880961e5b7b09bd5abb46ea141121360c1be6e331cab03760f6b3734",
+    "builder/controls-final.log": "f7d5572ca2838859baff471b5e1913aba4baa9a699e52c14a8f568fba6e1487c",
+    "builder/controls.junit.xml": "3223d11f9c8a0ae10af0c70987f0d56a81f53c6c7242d33fe2c71ff62e9aea57",
+    "builder/controls.log": "b99c76b133982e8409fdfa2f4c0f1f622460d5f92f14d7ef448ab944a3ae25de",
+    "builder/focused-final.junit.xml": "2caa0b8665802ab8013534d31113959e9ef64aa353656e0a03d398cdb4b53053",
+    "builder/focused-final.log": "31c283bbdf21ffb809281b438549de887618a4411c3e95dae36922bf532b25ed",
+    "builder/focused.junit.xml": "d3ad409ae6a53ba53f1cef99ce5155306d9e2079f37a2d373288a29c269a4030",
+    "builder/focused.log": "9e4314d286b4caffb5e515422fda0d4f9d8cff7415fad5aa1955fdea36c1f56d",
+    "builder/source-after.sha256": "ea34dfd6f85e2138cff06888939d9da030d71ede348633a2ade4ba2905bad7ce",
+    "builder/source-before.sha256": "ea34dfd6f85e2138cff06888939d9da030d71ede348633a2ade4ba2905bad7ce",
+    "builder/source-final-after.sha256": "a4e41e9f31d4f47f7868a10f133a777b2e48cd55cbeaad68859033eb3ad9bea8",
+    "builder/source-final-before.sha256": "a4e41e9f31d4f47f7868a10f133a777b2e48cd55cbeaad68859033eb3ad9bea8",
+    "builder/source-final.patch": "ec7299930fd2d40f34ded9976f952142d9e034301d7bb0ff43e2d59722c62c4a",
+    "builder/source.patch": "9e7b544faf45323a3ade9ecba8548449d86c223ded4e25b7b0caa9dff2dfc63e",
+    "contractor/focused-final.junit.xml": "2182b7184c7a1e1df0639cdd54a114df3221af80d5862cc76daadc7fe417785b",
+    "contractor/focused-final.log": "829ba086e84e8f25b553c461f50b7f6dec58bcba86705140ea6ec7d858980b9c",
+    "contractor/focused.junit.xml": "a999c03c4b6b80b0f7ece03986a719a78ab0134bd55b2243c5e911dac76b5d8f",
+    "contractor/focused.log": "578cb68248718504609a7124e4f73adaac8634da07d4ef6ad233180249d48c49",
+    "contractor/source-after.sha256": "ea34dfd6f85e2138cff06888939d9da030d71ede348633a2ade4ba2905bad7ce",
+    "contractor/source-before.sha256": "ea34dfd6f85e2138cff06888939d9da030d71ede348633a2ade4ba2905bad7ce",
+    "contractor/source-final-after.sha256": "a4e41e9f31d4f47f7868a10f133a777b2e48cd55cbeaad68859033eb3ad9bea8",
+    "contractor/source-final-before.sha256": "a4e41e9f31d4f47f7868a10f133a777b2e48cd55cbeaad68859033eb3ad9bea8"
+  }
+}
