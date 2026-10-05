@@ -1,0 +1,35 @@
+{
+  "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+  "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip061a_057n.py::test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure",
+    "-v",
+    "--tb=short",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-failure-preservation-20261005/control-final.xml"
+  ],
+  "cwd": "/workspace/scratch/1818a0d45fa0/repo",
+  "environment_overrides": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "harness_timeout_seconds": 60,
+  "exit_code": 0,
+  "elapsed_seconds": 0.433,
+  "source_count": 210,
+  "source_unchanged_during_run": true,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "1",
+    "time": "0.163",
+    "timestamp": "2026-10-05T18:29:37.329906+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "log_sha256": "822d5d489abfd21bc128bc2ff8861a61079cb4ca9b9542d1fdda29e10f494858",
+  "junit_sha256": "89c209a3ab112cbc6b7b84f6fd8b7ddf8b22d1aac4a1e1ad840eab47fbc1b193",
+  "physical_qualification": "NOT_RUN"
+}

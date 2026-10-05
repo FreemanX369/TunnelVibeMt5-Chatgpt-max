@@ -20,6 +20,7 @@ from vibemql5.core.facade import ToolFacade
 from vibemql5.fleet.domain import DomainJournal, DomainPolicy, GatewayDomain, NodeDomainDispatcher
 from vibemql5.fleet.sdk_qualification import QualificationError, QualifiedSdkInstallation
 from vibemql5.fleet.wire import WireError
+from vibemql5.fleet.job_journal import STATES
 
 
 def domain_policy():
@@ -414,6 +415,108 @@ def pump(agent, predicate, *, seconds=3):
     pytest.fail('bounded fixture did not reach expected state')
 
 
+class NativeDenialObservation:
+    """Keep finite facts from the original predicate reads; issue no new reads."""
+    def __init__(self, read):
+        self.read, self.count, self.last = read, 0, None
+
+    def __call__(self):
+        row = self.read()
+        self.count = min(self.count + 1, 2147483647)
+        if type(row) is dict:
+            state, sequence = row.get('state'), row.get('sequence')
+            result = row.get('result')
+            nested = result.get('result') if type(result) is dict else None
+            reason = nested.get('reason_code') if type(nested) is dict else None
+            self.last = {
+                'state': state if type(state) is str and state in STATES else 'OTHER',
+                'sequence': sequence if type(sequence) is int and 0 <= sequence <= 2147483647 else None,
+                'reason_code': reason if type(reason) is str and reason in {
+                    'NATIVE_QUALIFICATION_UNAVAILABLE', 'NATIVE_RECOVERY_REQUIRED'} else None if reason is None else 'OTHER'}
+        else:
+            self.last = {'state': 'OTHER', 'sequence': None, 'reason_code': 'OTHER'}
+        return row['state'] == 'FAILED'
+
+    def snapshot(self):
+        return {'predicate_reads': self.count, 'last_returned_job': self.last}
+
+
+def pump_native_denial_fixture(agent, observation):
+    try: pump(agent, observation)  # Keep the original three-second pump budget.
+    except BaseException as error:
+        error.add_note('NATIVE_DENIAL_FIXTURE ' + json.dumps(observation.snapshot(), sort_keys=True))
+        raise
+
+
+def close_native_denial_fixture(resources):
+    with preserve_fixture_failure():
+        errors = []
+        for resource in resources:
+            try: resource.close()
+            except BaseException as error: errors.append(error)
+        if len(errors) == 1: raise errors[0]
+        if errors: raise BaseExceptionGroup('native denial fixture cleanup failed', errors)
+
+
+def test_native_denial_observation_retains_only_original_reads_and_safe_last_state():
+    marker = 'sensitive-job-id-path-body-reason'
+    rows = [
+        {'state': 'STARTING', 'sequence': 4, 'result': None, 'global_job_id': marker},
+        {'state': 'FAILED', 'sequence': 5, 'result': {'result': {'reason_code': 'NATIVE_QUALIFICATION_UNAVAILABLE'}}},
+        {'state': marker, 'sequence': True, 'result': {'result': {'reason_code': marker}}}]
+    calls = []
+    def read():
+        calls.append('read'); return rows[len(calls) - 1]
+    observation = NativeDenialObservation(read)
+    assert observation() is False and observation.snapshot() == {
+        'predicate_reads': 1, 'last_returned_job': {'state': 'STARTING', 'sequence': 4, 'reason_code': None}}
+    assert observation() is True and observation.snapshot()['last_returned_job']['reason_code'] == 'NATIVE_QUALIFICATION_UNAVAILABLE'
+    assert observation() is False
+    assert calls == ['read'] * 3 and marker not in json.dumps(observation.snapshot())
+    assert observation.snapshot()['last_returned_job'] == {'state': 'OTHER', 'sequence': None, 'reason_code': 'OTHER'}
+
+
+def test_native_denial_original_predicate_failure_and_cleanup_identity_are_preserved(monkeypatch):
+    from types import SimpleNamespace
+    primary = WireError('HTTPS_UNAVAILABLE'); primary.add_note('retained original note')
+    first, second = RuntimeError('first cleanup'), RuntimeError('second cleanup')
+    calls, databases = [], [sqlite3.connect(':memory:'), sqlite3.connect(':memory:')]
+    def read():
+        calls.append('read'); raise primary
+    observation = NativeDenialObservation(read)
+    monkeypatch.setitem(pump_native_denial_fixture.__globals__, 'pump', lambda agent, predicate: predicate())
+    def close(index, error):
+        calls.append(index); databases[index].close(); raise error
+    try:
+        with pytest.raises(BaseExceptionGroup) as caught:
+            try: pump_native_denial_fixture(None, observation)
+            finally:
+                close_native_denial_fixture([SimpleNamespace(close=lambda: close(0, first)),
+                                            SimpleNamespace(close=lambda: close(1, second))])
+        assert caught.value.exceptions[0] is primary
+        assert caught.value.exceptions[1].exceptions == (first, second)
+        assert primary.__notes__[0] == 'retained original note'
+        assert observation.snapshot() == {'predicate_reads': 0, 'last_returned_job': None}
+        assert calls == ['read', 0, 1]
+        for db in databases:
+            with pytest.raises(sqlite3.ProgrammingError): db.execute('SELECT 1')
+    finally:
+        for db in databases: db.close()
+
+
+def test_native_denial_timeout_retains_last_predicate_state_without_additional_read(monkeypatch):
+    primary = AssertionError('controlled bounded timeout')
+    calls = []
+    observation = NativeDenialObservation(lambda: calls.append('read') or {'state': 'STARTING', 'sequence': 4, 'result': None})
+    def timed_pump(agent, predicate):
+        assert not predicate(); raise primary
+    monkeypatch.setitem(pump_native_denial_fixture.__globals__, 'pump', timed_pump)
+    with pytest.raises(AssertionError) as caught: pump_native_denial_fixture(None, observation)
+    assert caught.value is primary and calls == ['read']
+    assert json.loads(primary.__notes__[0].split(' ', 1)[1]) == {
+        'predicate_reads': 1, 'last_returned_job': {'state': 'STARTING', 'sequence': 4, 'reason_code': None}}
+
+
 def discover(facade, client, agent):
     node = {'device_id': client.device_id, 'route_generation': client.route_generation}
     admitted = facade.inventory(node, 'inventory-composed')
@@ -446,7 +549,8 @@ def test_actual_tls_inventory_discovery_read_project_and_production_native_denia
         request = native_request(frozen, logical_fixture(), [{'path': 'Experts/DemoEA.mq5',
             'sha256': hashlib.sha256(source).hexdigest(), 'bytes': len(source)}])
         queued = facade.launch_job('native-denial', request)
-        pump(agent, lambda: facade.get_job(queued['global_job_id'])['state'] == 'FAILED')
+        observation = NativeDenialObservation(lambda: facade.get_job(queued['global_job_id']))
+        pump_native_denial_fixture(agent, observation)
         denied = facade.get_job(queued['global_job_id'])
         assert denied['result']['result']['reason_code'] == 'NATIVE_QUALIFICATION_UNAVAILABLE'
         assert not list((project_node['root'] / 'runs').glob('*/job.json'))
@@ -480,7 +584,7 @@ def test_actual_tls_inventory_discovery_read_project_and_production_native_denia
                 {**scope, 'local_job_id': 'BT-20261003-010000-ABC123', 'expected_sha256': manifest['sha256']})
 
     finally:
-        dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+        close_native_denial_fixture([dispatcher,dispatcher.principals,jobs,domains,transport])
 
 
 def composed_stop_runtime(agent, dispatcher, client, resources):

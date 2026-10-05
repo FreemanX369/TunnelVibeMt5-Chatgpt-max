@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import sys
 from dataclasses import replace
 from pathlib import Path
 
@@ -19,6 +20,95 @@ from vibemql5.fleet.identity import IdentityRegistry, normalize_path
 from vibemql5.fleet.project_targets import FleetProjectError, FleetProjectStore
 from vibemql5.fleet.strict_baseline import FIELDS, strict_compare
 from vibemql5.fleet.native import NativeRouteError, RoutedNativeAdapter, SyntheticNativeAdapter, native_request, native_request_hash
+from fleet_gateway_fixture import preserve_fixture_failure
+
+
+SCOPED_FIXTURE_STAGES = frozenset({"NOT_ENTERED", "START_RESERVED_ENTERED", "COMPILER_DRIVER_ENTERED",
+    "COMPILER_LAUNCHED", "TESTER_DRIVER_ENTERED", "TESTER_LAUNCHED", "BARRIER_ENTERED",
+    "BARRIER_PASSED", "RELEASE_OBSERVED", "DRIVER_RETURNED"})
+
+
+def scoped_fixture_stages(stages):
+    return [stage if type(stage) is str and stage in SCOPED_FIXTURE_STAGES else "UNOBSERVED"
+            for stage in stages[:2]]
+
+
+def collect_scoped_fixture_futures(futures, stages, *, timeout=10):
+    """Observe both original outcomes, even when the parent barrier failed."""
+    results, errors = [], []
+    for index, future in enumerate(futures):
+        try:
+            result = future.result(timeout=timeout)
+            results.append(result)
+            try:
+                status = result["payload"]["execution"]["status"]
+            except (KeyError, TypeError):
+                status = None
+            if status != "COMPLETED":
+                error = AssertionError("SCOPED_FIXTURE_WORKER_NOT_COMPLETED")
+                safe_status = status if type(status) is str and status in {"FAILED", "CANCELLED", "PASSED", "NOT_RUN"} else "OTHER"
+                error.add_note(str({"worker_index": index, "returned_status": safe_status,
+                                    "stages": scoped_fixture_stages(stages)}))
+                errors.append(error)
+        except BaseException as error:
+            error.add_note(str({"worker_index": index, "outcome": "RAISED",
+                                "stages": scoped_fixture_stages(stages)}))
+            errors.append(error)
+    if len(errors) == 1: raise errors[0]
+    if errors: raise BaseExceptionGroup("scoped fixture workers failed", errors)
+    return results
+
+
+def test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure():
+    import concurrent.futures
+    import threading
+    reached, released, worker_completed = threading.Barrier(2), threading.Event(), threading.Event()
+    worker_error = RuntimeError("controlled worker fault")
+    worker_error.add_note("retained original note")
+    def failed_worker():
+        raise worker_error
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(failed_worker)
+        future.add_done_callback(lambda completed: worker_completed.set())
+        with pytest.raises(BaseExceptionGroup) as caught:
+            try:
+                assert worker_completed.wait(10) and future.done()
+                reached.wait(timeout=.02)
+            finally:
+                parent_error = sys.exception()
+                released.set()
+                with preserve_fixture_failure():
+                    collect_scoped_fixture_futures([future], ["START_RESERVED_ENTERED"], timeout=.1)
+    parent, worker = caught.value.exceptions
+    assert parent is parent_error and isinstance(parent, threading.BrokenBarrierError)
+    assert worker is worker_error and worker.__notes__[0] == "retained original note"
+    assert released.is_set() and future.done()
+
+
+@pytest.mark.parametrize("returned_status", ["FAILED", "NOT_RUN", "CANCELLED"])
+def test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt(returned_status):
+    from concurrent.futures import Future
+    parent, first, second = (RuntimeError(name) for name in ("parent", "first", "second"))
+    futures = [Future(), Future()]
+    futures[0].set_exception(first); futures[1].set_exception(second)
+    with pytest.raises(BaseExceptionGroup) as caught:
+        try: raise parent
+        finally:
+            with preserve_fixture_failure():
+                collect_scoped_fixture_futures(futures, ["NOT_ENTERED", "NOT_ENTERED"])
+    assert caught.value.exceptions[0] is parent
+    assert caught.value.exceptions[1].exceptions == (first, second)
+    marker = "sensitive-path-token-worker-value"
+    failed, completed = Future(), Future()
+    failed.set_result({"payload": {"execution": {"status": returned_status, "detail": marker}}})
+    receipt = {"payload": {"execution": {"status": "COMPLETED"}}}
+    completed.set_result(receipt)
+    with pytest.raises(AssertionError, match="SCOPED_FIXTURE_WORKER_NOT_COMPLETED") as failed_outcome:
+        collect_scoped_fixture_futures([failed, completed], [marker, {"unhashable": marker}])
+    assert "'returned_status': '" + returned_status + "'" in str(failed_outcome.value.__notes__)
+    assert marker not in str(failed_outcome.value.__notes__)
+    assert collect_scoped_fixture_futures([completed, completed], ["DRIVER_RETURNED"] * 2) == [receipt, receipt]
+    assert collect_scoped_fixture_futures([completed], ["DRIVER_RETURNED"])[0] is receipt
 
 
 @pytest.fixture
@@ -610,24 +700,34 @@ def test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives
     job1=fixture.adapter.reserve(fixture.req,"node-fixture",fixture.reserve_fence)["local_job_id"]
     job2=adapter2.reserve(req2,"node-2",provide2("reserve",base2))["local_job_id"]
     requests={job1:fixture.req,job2:req2}; captured={}; reached=threading.Barrier(3); released=threading.Event()
+    worker_index={job1:0,job2:1};stages=["NOT_ENTERED","NOT_ENTERED"]
     def compile_exact(self,workspace,ea,alias,run_dir,**kwargs):
+        index=worker_index[run_dir.name];stages[index]="COMPILER_DRIVER_ENTERED"
         req=requests[run_dir.name];captured[run_dir.name]=dict(kwargs["frozen_inputs"])
         kwargs["before_effect"]("deploy_source_copy");kwargs["after_effect"]("deploy_source_copy")
         terminal=self.inventory.get(alias);kwargs["owned_launch"]([terminal.metaeditor_path],cwd=str(root))
+        stages[index]="COMPILER_LAUNCHED"
         output=(Path(terminal.data_root)/"MQL5/Experts/VibeMQL5"/workspace/Path(ea).relative_to("Experts")).with_suffix(".ex5")
         output.parent.mkdir(parents=True);output.write_bytes(b"SYNTHETIC_COMPILED_BYTES")
         immutable=run_dir/"compiled.ex5";immutable.write_bytes(output.read_bytes())
         return {"status":"PASSED","expert_name":"VibeMQL5\\"+workspace+"\\"+Path(ea).stem,"ex5_path":str(output),"immutable_ex5":{"path":str(immutable),"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"bytes":output.stat().st_size}}
     def simultaneous_test(self,job_id,workspace,ea,alias,*args,**kwargs):
+        index=worker_index[job_id];stages[index]="TESTER_DRIVER_ENTERED"
         kwargs["owned_launch"]([self.inventory.get(alias).terminal_path],cwd=str(root))
-        reached.wait(timeout=10);assert released.wait(10)
+        stages[index]="TESTER_LAUNCHED"
+        stages[index]="BARRIER_ENTERED";reached.wait(timeout=10);stages[index]="BARRIER_PASSED"
+        assert released.wait(10);stages[index]="RELEASE_OBSERVED"
         kwargs["before_effect"]("tester_capture");kwargs["after_effect"]("tester_capture")
+        stages[index]="DRIVER_RETURNED"
         return {"status":"COMPLETED","evidence":"SYNTHETIC_CONCURRENT_DRIVER_ONLY"}
     monkeypatch.setattr(fixture.native.CompilerDriver,"compile",compile_exact);monkeypatch.setattr(fixture.native.TesterDriver,"run",simultaneous_test)
     old_source=node["source"].read_bytes();old_frozen=copy.deepcopy(fixture.req["placement"])
+    def start_scoped(index,adapter,job,request,proof):
+        stages[index]="START_RESERVED_ENTERED"
+        return adapter.start_reserved(job,request,proof)
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
-        future1=pool.submit(fixture.adapter.start_reserved,job1,fixture.req,fixture.provide("start",fixture.base))
-        future2=pool.submit(adapter2.start_reserved,job2,req2,provide2("start",base2))
+        future1=pool.submit(start_scoped,0,fixture.adapter,job1,fixture.req,fixture.provide("start",fixture.base))
+        future2=pool.submit(start_scoped,1,adapter2,job2,req2,provide2("start",base2))
         try:
             reached.wait(timeout=10)  # Both long producers hold distinct scoped leases simultaneously.
             with fixture.adapter.concurrency.mutation("fleet_source_guard",resource="demo:Experts/DemoEA.mq5",wait_seconds=0):
@@ -638,9 +738,15 @@ def test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives
                 updated=node["projects"].advance_session("P",**args)
                 assert updated["placement_revision"]==2
                 assert node["projects"].advance_session("P",**args)["idempotent_recovered"]
-        finally: released.set()
-        assert future1.result(timeout=10)["payload"]["execution"]["status"]=="COMPLETED"
-        assert future2.result(timeout=10)["payload"]["execution"]["status"]=="COMPLETED"
+        finally:
+            primary=sys.exception()
+            if primary is not None:
+                primary.add_note("SCOPED_OVERLAP_FIXTURE "+str({"stages":scoped_fixture_stages(stages)}))
+            released.set()
+            with preserve_fixture_failure():
+                results=collect_scoped_fixture_futures([future1,future2],stages,timeout=10)
+        assert results[0]["payload"]["execution"]["status"]=="COMPLETED"
+        assert results[1]["payload"]["execution"]["status"]=="COMPLETED"
     assert captured[job1]["Experts/DemoEA.mq5"]==old_source
     assert (root/"runs"/job1/"source_snapshot/Experts/DemoEA.mq5").read_bytes()==old_source
     assert node["projects"].load_frozen(old_frozen["frozen_id"])==old_frozen

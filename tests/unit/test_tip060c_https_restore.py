@@ -3,6 +3,7 @@ import hashlib
 import base64
 import copy
 import shutil
+import sys
 from dataclasses import replace
 from contextlib import closing
 from pathlib import Path
@@ -12,8 +13,8 @@ from queue import Queue
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from fleet_writer_fixture import project_node,tls_files,principal_policy,writer_policy
-from fleet_gateway_fixture import start_gateway_fixture
-from test_tip058b_transport import TOKEN,control_policy,fleet_policy
+from fleet_gateway_fixture import start_gateway_fixture,preserve_fixture_failure,stop_gateway_fixture
+from test_tip058b_transport import TOKEN,control_policy,fleet_policy,FixtureHttpsClient
 from vibemql5.fleet.domain import DomainJournal,DomainPolicy,GatewayDomain,NodeDomainDispatcher
 from vibemql5.fleet.gateway_control import GatewayControlStore
 from vibemql5.fleet.job_journal import GatewayJobJournal,NodeJobJournal,canonical,digest
@@ -21,7 +22,7 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal,Transport
 from vibemql5.fleet.principals import GatewayPrincipalAuthority,PATHS,sign_principal_request
 from vibemql5.fleet.wire import encode_body, sign_request, WireError
 from vibemql5.fleet.restore_coordination import RestoreCoordinator,RestorePolicy,DOMAIN
-from vibemql5.fleet.transport import GatewayController,HttpsClient,OwnerClient,NodeClient
+from vibemql5.fleet.transport import GatewayController,OwnerClient,NodeClient
 from vibemql5.fleet.writers import NodePrincipalRuntime, WriterError, empty_writer_witness
 from vibemql5.fleet.worktrees import NodeWorktrees
 from test_tip063_worktrees import git, policy as worktree_policy
@@ -33,6 +34,84 @@ def restore_control_policy():
     # Ordinary consistent backup/restore, like the existing TIP-058A/060C
     # healthy-backup fixtures; deliberate transport/contention budgets stay.
     return replace(control_policy(), sqlite_busy_timeout_ms=1000)
+
+
+def close_restore_fixture(resources, stopped, thread, failures, *, retained_resources=()):
+    """Keep every cleanup failure and always observe the original server stop."""
+    primary_present = sys.exception() is not None
+    with preserve_fixture_failure():
+        errors = []
+        for resource in resources:
+            if resource is None: continue
+            try: resource.close()
+            except BaseException as error: errors.append(error)
+        try: stop_gateway_fixture(stopped, thread, failures, timeout=5)
+        except BaseException as error: errors.append(error)
+        if primary_present or errors:
+            # Only a successful first-phase handoff transfers these open owners.
+            for resource in retained_resources:
+                try: resource.close()
+                except BaseException as error: errors.append(error)
+        if len(errors) == 1: raise errors[0]
+        if errors: raise BaseExceptionGroup("restore fixture cleanup failed", errors)
+
+
+@pytest.mark.parametrize("primary_present", [False, True])
+def test_restore_cleanup_preserves_all_failures_and_closes_actual_resources(primary_present):
+    import sqlite3
+    import threading
+    from types import SimpleNamespace
+    primary = WireError("HTTPS_UNAVAILABLE"); primary.add_note("retained original note")
+    first, second, server, retained = (RuntimeError(name) for name in ("first", "second", "server", "retained"))
+    databases = [sqlite3.connect(":memory:") for _ in range(3)]
+    calls, stopped, failures = [], threading.Event(), Queue()
+    thread = threading.Thread(target=lambda: stopped.wait(5))
+    failures.put(server); thread.start()
+    def close(index, error):
+        calls.append(index); databases[index].close(); raise error
+    resources = [SimpleNamespace(close=lambda: close(0, first)), None,
+                 SimpleNamespace(close=lambda: close(1, second))]
+    retained_resources = [SimpleNamespace(close=lambda: close(2, retained))]
+    try:
+        with pytest.raises(BaseExceptionGroup) as caught:
+            if primary_present:
+                try: raise primary
+                finally: close_restore_fixture(resources, stopped, thread, failures, retained_resources=retained_resources)
+            else: close_restore_fixture(resources, stopped, thread, failures, retained_resources=retained_resources)
+        cleanup = caught.value
+        if primary_present:
+            assert cleanup.exceptions[0] is primary
+            cleanup = cleanup.exceptions[1]
+        assert cleanup.exceptions == (first, second, server, retained)
+        assert primary.__notes__ == ["retained original note"]
+        assert calls == [0, 1, 2] and stopped.is_set() and not thread.is_alive()
+        assert failures.empty()
+        for db in databases:
+            with pytest.raises(sqlite3.ProgrammingError): db.execute("SELECT 1")
+    finally:
+        stopped.set(); thread.join(timeout=5)
+        for db in databases: db.close()
+
+
+@pytest.mark.parametrize("primary_present", [False, True])
+def test_restore_handoff_retains_owners_only_after_success(primary_present, monkeypatch):
+    import sqlite3
+    primary = WireError("HTTPS_UNAVAILABLE")
+    db, calls = sqlite3.connect(":memory:"), []
+    monkeypatch.setitem(close_restore_fixture.__globals__, "stop_gateway_fixture",
+        lambda stopped, thread, failures, *, timeout: calls.append(timeout))
+    try:
+        if primary_present:
+            with pytest.raises(WireError) as caught:
+                try: raise primary
+                finally: close_restore_fixture([], None, None, None, retained_resources=[db])
+            assert caught.value is primary
+            with pytest.raises(sqlite3.ProgrammingError): db.execute("SELECT 1")
+        else:
+            close_restore_fixture([], None, None, None, retained_resources=[db])
+            assert db.execute("SELECT 1").fetchone() == (1,)
+        assert calls == [5]  # Exactly one unchanged stop observation per phase.
+    finally: db.close()
 
 
 @pytest.mark.parametrize("nonempty",[False,True,"worktree","readonly","readonly-inactive"])
@@ -55,7 +134,7 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
     def initial(address):
         origin='https://127.0.0.1:'+str(address[1])
         return controller(GatewayControlStore.initialize(original/'control.db',policy=cp),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
-    stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+    stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=FixtureHttpsClient(origin,fleet_policy(),cafile=str(ca),server_thread=thread,failures=failures);owner=OwnerClient(http,TOKEN)
     transport=NodeTransportJournal.initialize(tmp_path/'node-transport.db',TransportPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50),device_id=device,public_key=nodekey.public_key().public_bytes_raw().hex(),audience=origin)
     node=NodeClient(http,nodekey,device,0,transport)
     nodejobs=NodeJobJournal(tmp_path/'node-jobs.db',initialize=True,**jp)
@@ -101,11 +180,7 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
                 assert project_node['projects'].sessions.get('P')['revision_id']=='REV-000001'
             else:assert project_node['projects'].sessions.get('P')['revision_id']=='REV-000002'
     finally:
-        if worktrees is not None:worktrees.close()
-        if writers is not None:writers.close()
-        nodedomains.close();stop.set();thread.join(timeout=5)
-    assert not thread.is_alive()
-    if not failures.empty():raise failures.get()
+        close_restore_fixture([worktrees,writers,nodedomains],stop,thread,failures,retained_resources=[nodejobs,transport])
 
     with GatewayControlStore.open_existing(original/'control.db',policy=cp) as control:
         snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db')
@@ -128,6 +203,7 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
         scopequeue.put((recovery.scope(),jobs.restore_state(),recovery.record['coordination_sha256']))
         return controller(control,domains,jobs,principals,origin,recovery)
     stop,thread,_=start(recovery_service,address)
+    http.server_thread=thread  # The same TLS client now observes the actual replacement server.
     nodedomains=DomainJournal(tmp_path/'node-domains.db',policy=dp,role='NODE')
     writers=None if not has_writers else NodePrincipalRuntime(project_node['root'],gateway_public_key=gatewaykey.public_key().public_bytes_raw(),audience=origin,device_id=device,route_generation=1,session_id=session,policy=writer_policy())
     if writers is not None:nodedomains.bind_principal_authority(writers)
@@ -185,12 +261,7 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
             assert transport.witness(scope['challenge'])['pending_count']==0
             assert node.heartbeat(session)['transport']=='ONLINE'
     finally:
-        if recovery_dispatcher is not None:recovery_dispatcher.close()
-        if worktrees is not None:worktrees.close()
-        if writers is not None:writers.close()
-        nodejobs.close();nodedomains.close();transport.close();stop.set();thread.join(timeout=5)
-    assert not thread.is_alive()
-    if not failures.empty():raise failures.get()
+        close_restore_fixture([recovery_dispatcher,worktrees,writers,nodejobs,nodedomains,transport],stop,thread,failures)
 
 
 @pytest.mark.parametrize('sqlite_budget_ms', [100, 1000])

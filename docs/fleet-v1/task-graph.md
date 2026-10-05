@@ -2,6 +2,14 @@
 
 ## Deployment continuation — 2026-10-05
 
+Candidate b9a6cb4 also completed 6/8 on attempt 1; its [failed receipt](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
+retains complete exact-head source/artifact evidence. Fourteen required Windows
+controls passed. [Three-file failure preservation](TIP-065-failure-preservation-completion.md)
+is independently reviewed: retrieve worker outcomes despite a parent
+barrier failure, retain reconcile HTTPS facts and capture already-read predicate
+state. Original causes stay OPEN/UNKNOWN; all product/overlay bytes and budgets
+remain frozen. The new candidate's complete 8/8 gate precedes diagnostic deployment.
+
 [TIP-065 fixture refinement](TIP-065-CI-refinement-completion.md): corrected
 Windows controls PASS; candidate f2b65c3 rejected at 6/8. The next bounded
 [COMMIT diagnostics](TIP-065-COMMIT-diagnostics.md) retain the capacity assertion

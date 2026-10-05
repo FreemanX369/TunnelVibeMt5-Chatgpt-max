@@ -1,5 +1,14 @@
 # Fleet v1 — Complete source handover
 
+Latest candidate b9a6cb4 completed **6/8**; [original failed evidence](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
+includes five independently verified ZIPs, all 210 unchanged source hashes, JUnit,
+nine harmless proofs and full decoded logs. Fourteen required Windows controls
+passed. The independently reviewed [failure preservation](TIP-065-failure-preservation-completion.md)
+repairs three concrete missing diagnostic boundaries without changing product,
+assertions or budgets. It does not identify historical worker/storage causes.
+No overlay deployment or restart occurred. The reviewed newly delivered candidate
+requires its own complete 8/8 and original artifacts; physical qualification remains OPEN.
+
 The [bounded fixture correction](TIP-065-CI-refinement-completion.md) passed its
 Windows controls, but candidate f2b65c3 completed only 6/8. Its failed receipts
 are retained. [Capacity/pending-COMMIT diagnostics](TIP-065-COMMIT-diagnostics.md)

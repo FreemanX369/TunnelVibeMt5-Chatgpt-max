@@ -1,6 +1,25 @@
 # Fleet v1 — Continuous source verification
 
-Current continuation: candidate `f2b65c3`, tree `825af88b97eca3b1a8f32749c4614f140e167d96`,
+Latest continuation: candidate `b9a6cb4`, tree `653ab3c2d4460d9b76bfc94f683c7786c0fac30a`,
+completed **6/8 on attempt 1**. Its [retained failed receipt](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
+binds five original ZIP digests/sizes, exact unchanged 210-file manifests, complete
+JUnit, nine harmless proofs and full decoded logs. Bootstrap recorded 1188 PASS,
+three FAIL, 12 skips; integrated Windows 1190/one/12, Linux 1187/zero/16 and Deep
+1191/zero/12. Fourteen required Windows controls passed, including both capacity
+cases and pending-COMMIT/finite POST diagnostics. The [bounded failure-preservation
+contract](TIP-065-failure-preservation.md) addresses missing worker, reconcile and
+predicate evidence. It does not establish a historical root cause or functional
+timeout repair. A reviewed new candidate requires its own eight workflows and
+independent artifacts. Product/overlay bytes and all budgets remain frozen; no
+deployment, restart, rerun, authority or UNKNOWN reset occurred.
+
+The [independent failure-preservation review](TIP-065-failure-preservation-completion.md)
+now passes: Builder 197/3 skips and Contractor 247/5 on pre-control-ordering bytes;
+the final changed worker control passed independently with its frozen 210-file
+manifest. All 89 app files and exact overlay payload remain unchanged. These
+overlapping local counts do not replace the newly published head's own 8/8 gate.
+
+Previous continuation: candidate `f2b65c3`, tree `825af88b97eca3b1a8f32749c4614f140e167d96`,
 completed 6/8 on attempt 1. The [retained receipt](evidence/tip065/ci-f2b65c3/metadata/verification-receipt.json)
 preserves five original ZIPs, exact 210-file manifests, JUnit/nine harmless proofs,
 full Bootstrap failure and integrated Windows unit log. The [two-file refinement](TIP-065-CI-refinement-completion.md)
