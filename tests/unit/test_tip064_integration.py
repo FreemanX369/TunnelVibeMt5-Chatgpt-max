@@ -673,6 +673,41 @@ def test_composed_stop_cleanup_retains_exact_failure_and_uncertain_resources(pri
     print('CONTROLLED_STOP_PRIMARY_AND_CLEANUP_UNCERTAINTY_RETAINED')
 
 
+def run_composed_lost_ack_once(stopping):
+    try: return stopping.run_once()
+    except WireError as error:
+        if error.code != 'FIXTURE_LOST_ACK': raise
+        assert stopping.close()['status'] == 'STOP_PENDING'
+
+
+@pytest.mark.parametrize('outcome', ['RETURNED', 'HTTPS_UNAVAILABLE', 'FIXTURE_LOST_ACK', 'CLOSE_WRONG_STATUS'])
+def test_composed_lost_ack_once_preserves_original_call_return_and_failure(outcome):
+    from types import SimpleNamespace
+    response = {'fixture': 'original response'}
+    error = WireError('HTTPS_UNAVAILABLE' if outcome == 'HTTPS_UNAVAILABLE' else 'FIXTURE_LOST_ACK')
+    error.add_note('retained original note')
+    calls = []
+    def run_once():
+        calls.append('run_once')
+        if outcome != 'RETURNED': raise error
+        return response
+    def close():
+        calls.append('close')
+        return {'status': 'CLOSED' if outcome == 'CLOSE_WRONG_STATUS' else 'STOP_PENDING'}
+    stopping = SimpleNamespace(run_once=run_once, close=close)
+    if outcome == 'RETURNED':
+        assert run_composed_lost_ack_once(stopping) is response
+    elif outcome == 'HTTPS_UNAVAILABLE':
+        with pytest.raises(WireError) as caught: run_composed_lost_ack_once(stopping)
+        assert caught.value is error
+    elif outcome == 'CLOSE_WRONG_STATUS':
+        with pytest.raises(AssertionError): run_composed_lost_ack_once(stopping)
+    else:
+        assert run_composed_lost_ack_once(stopping) is None
+    assert error.__notes__ == ['retained original note']
+    assert calls == (['run_once'] if outcome in {'RETURNED', 'HTTPS_UNAVAILABLE'} else ['run_once', 'close'])
+
+
 def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable(project_node, composed_service, monkeypatch):
     entered, cancelled = threading.Event(), threading.Event()
     calls = []
@@ -734,10 +769,7 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
         monkeypatch.setattr(client.http, 'post', lost_after_commit)
         deadline = time.monotonic() + 3
         while time.monotonic() < deadline:
-            try: stopping.run_once()
-            except WireError as error:
-                assert error.code == 'FIXTURE_LOST_ACK'
-                assert stopping.close()['status'] == 'STOP_PENDING'
+            run_composed_lost_ack_once(stopping)
             if facade.get_job(global_id)['state'] == 'CANCELLED' and facade.command_status(cancel['command_id'])['state'] == 'COMPLETED': break
             time.sleep(.005)
         else: pytest.fail('cancel/result did not complete')

@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "id": 11337212077,
+      "name": "fleet-v1-source-windows-latest-d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "size_in_bytes": 262285,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11337212077",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11337212077/zip",
+      "expired": false,
+      "created_at": "2026-10-05T09:43:00Z",
+      "expires_at": "2026-10-19T09:43:00Z",
+      "updated_at": "2026-10-05T09:43:00Z",
+      "digest": "sha256:d06c02fad350fa636196be2aea583d67c96609f6cb07eee9326878abeb82a2aa",
+      "workflow_run": {
+        "id": 37291278964,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/fleet-v1-continuous-source-20261003",
+        "head_sha": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf"
+      }
+    },
+    {
+      "id": 11336283614,
+      "name": "fleet-v1-source-ubuntu-latest-d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "size_in_bytes": 63372,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336283614",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336283614/zip",
+      "expired": false,
+      "created_at": "2026-10-05T09:39:30Z",
+      "expires_at": "2026-10-19T09:39:30Z",
+      "updated_at": "2026-10-05T09:39:30Z",
+      "digest": "sha256:fd597738f809dc3476ab3aeefbdc7c1ce3b41905b7246fc1be7363eb44e7a77f",
+      "workflow_run": {
+        "id": 37291278964,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/fleet-v1-continuous-source-20261003",
+        "head_sha": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf"
+      }
+    }
+  ]
+}

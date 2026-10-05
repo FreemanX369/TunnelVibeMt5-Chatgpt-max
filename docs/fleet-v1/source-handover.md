@@ -1,6 +1,14 @@
 # Fleet v1 — Complete source handover
 
-Latest candidate b9a6cb4 completed **6/8**; [original failed evidence](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
+Latest delivered candidate d9adc579 completed **7/8**; [original receipt](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
+retains five verified ZIPs, exact unchanged 210-file manifests, JUnit/nine proofs.
+Both integrated platforms and eleven new Windows preservation controls passed.
+Deep failed the blocked-native lost-ACK fixture; [the reviewed identity correction](TIP-065-lost-ack-identity-completion.md)
+preserves its unexpected transport error. It cannot repair or identify historical
+COMMIT latency. The reviewed new candidate still needs its own 8/8 before the
+authorized read-only overlay deployment. Physical acceptance remains OPEN.
+
+Previous candidate b9a6cb4 completed **6/8**; [original failed evidence](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
 includes five independently verified ZIPs, all 210 unchanged source hashes, JUnit,
 nine harmless proofs and full decoded logs. Fourteen required Windows controls
 passed. The independently reviewed [failure preservation](TIP-065-failure-preservation-completion.md)

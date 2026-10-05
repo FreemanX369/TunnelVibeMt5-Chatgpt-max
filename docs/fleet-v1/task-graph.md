@@ -2,6 +2,13 @@
 
 ## Deployment continuation — 2026-10-05
 
+Candidate d9adc579 passed seven workflows and both integrated platforms; Deep failed
+one real TLS fixture. [Its retained receipt](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
+verifies all five ZIPs, 210 unchanged source hashes, JUnit/nine harmless proofs and
+eleven new Windows preservation controls. [Lost-ACK exception identity](TIP-065-lost-ack-identity-completion.md)
+is independently reviewed. All application/payload bytes and budgets
+remain frozen; underlying COMMIT causes and physical qualification stay OPEN.
+
 Candidate b9a6cb4 also completed 6/8 on attempt 1; its [failed receipt](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
 retains complete exact-head source/artifact evidence. Fourteen required Windows
 controls passed. [Three-file failure preservation](TIP-065-failure-preservation-completion.md)

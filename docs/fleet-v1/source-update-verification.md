@@ -1,6 +1,22 @@
 # Fleet v1 — Continuous source verification
 
-Latest continuation: candidate `b9a6cb4`, tree `653ab3c2d4460d9b76bfc94f683c7786c0fac30a`,
+Latest delivered candidate `d9adc579`, tree `fd3edac1de610b821ca64044acd4fdfa1cc03192`,
+completed **7/8 on attempt 1**. [Original failure/artifact evidence](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
+binds five original ZIPs, unchanged exact 210-file manifests, complete JUnit and nine
+harmless proofs. Integrated Linux 1198/16 skips and Windows 1202/12 passed; Deep
+recorded 1201 PASS, one FAIL, 12 skips. All eleven new preservation controls passed
+on Windows. Its remaining lost-ACK test replaces an unexpected transport exception
+with an AssertionError. [The one-file identity correction](TIP-065-lost-ack-identity.md)
+keeps the original exception without changing transport/deadline behavior. Original
+COMMIT storage/scheduling causes remain OPEN/UNKNOWN. No overlay deployment/restart
+or workflow rerun occurred; the reviewed new source head needs its own 8/8 gate.
+
+The [one-file independent review](TIP-065-lost-ack-identity-completion.md) passes:
+Builder 48/zero skips, Contractor 156/5, full 210-file manifests unchanged. All 89
+app files, other 209 source entries and exact overlay payload remain frozen. This
+repairs primary exception identity only; it does not repair historical COMMIT latency.
+
+Previous continuation: candidate `b9a6cb4`, tree `653ab3c2d4460d9b76bfc94f683c7786c0fac30a`,
 completed **6/8 on attempt 1**. Its [retained failed receipt](evidence/tip065/ci-b9a6cb4/metadata/verification-receipt.json)
 binds five original ZIP digests/sizes, exact unchanged 210-file manifests, complete
 JUnit, nine harmless proofs and full decoded logs. Bootstrap recorded 1188 PASS,
