@@ -1,5 +1,22 @@
 # Fleet v1 — Continuous source verification
 
+Current continuation: the [two-file CI refinement](TIP-065-CI-refinement-completion.md)
+has independent 163 PASS/5 platform skips and unchanged product/overlay bytes.
+The new canonical head in Draft #65 requires eight successful workflows and exact
+artifacts before deployment. The rejected checkpoint below remains retained.
+
+TIP-065 candidate `ec9180e`, tree `66022a510d6d59285c9250d75aa83e038cad24b0`,
+completed seven of eight workflows on attempt 1. Bootstrap failed two fixtures
+with 1178 passed/12 skips; Deep and integrated Windows passed 1180/12 and Linux
+1176/16. [The retained receipt](evidence/tip065/ci-ec9180e/metadata/verification-receipt.json)
+preserves the five original ZIPs, exact 210-file verification, JUnit/proofs and full
+Bootstrap log. Both required TIP-065 Windows metadata controls executed PASS.
+[The bounded refinement](TIP-065-CI-refinement.md) corrects a positive fixture's
+ACTIVE overlap assumption and a manually constructed runtime's missing sentinel/
+masked cleanup error. Product denial and all budgets remain unchanged. The primary
+result-delivery TimeoutError's underlying mechanism remains OPEN; no overlay was
+deployed and the next candidate requires its own eight successful checks.
+
 2026-10-05 continuation: accepted head `f25ec99` completed all eight workflows
 on attempt 1; original five ZIP digests, 207 source hashes, JUnit and harmless
 proofs were independently verified. The owner's later instruction authorizes tests

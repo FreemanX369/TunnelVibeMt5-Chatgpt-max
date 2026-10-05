@@ -1,5 +1,9 @@
 # Fleet v1 — Complete source handover
 
+The [bounded fixture correction](TIP-065-CI-refinement-completion.md) follows the
+retained ec9180e 7/8 failure. Product/overlay bytes remain frozen; the current
+Draft #65 head needs its own 8/8 gate before the authorized diagnostic deployment.
+
 Current deployment direction (2026-10-05): the owner has authorized tests and
 deployment. This supersedes the historical deployment deferral below, without
 waiving physical qualification. Accepted source checkpoint `f25ec99` passed all

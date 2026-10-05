@@ -1,0 +1,287 @@
+{
+  "schema": "fleet.artifacts-independent-verification/1",
+  "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+  "tree": "66022a510d6d59285c9250d75aa83e038cad24b0",
+  "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "artifacts": [
+    {
+      "artifact_id": 11330794713,
+      "archive": "artifact-11330794713.zip",
+      "bytes": 8061,
+      "sha256": "834961607b80587f5e12ad44af15439b7530d89dbdea12b908d4d023e041b09a",
+      "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+      "run_id": 37279566832,
+      "proofs": [
+        {
+          "proof": "tip057rb1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 15
+        },
+        {
+          "proof": "tip057rb1-windows/summary.json",
+          "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+          "executed": 10,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 15
+        }
+      ]
+    },
+    {
+      "artifact_id": 11330954311,
+      "archive": "artifact-11330954311.zip",
+      "bytes": 8864,
+      "sha256": "35c2ec23d4cfbfddc8b6770a374c58a918f5c6c6a0d0d2be82c8e6fddc0d40c8",
+      "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+      "run_id": 37279566978,
+      "proofs": [
+        {
+          "proof": "summary.json",
+          "status": "FIXTURE_PASS_Q03_OPEN",
+          "executed": 16,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 4
+        }
+      ]
+    },
+    {
+      "artifact_id": 11331388939,
+      "archive": "artifact-11331388939.zip",
+      "bytes": 62455,
+      "sha256": "1c77af46fae2637d8beb0cb6f1cc45e0abe6a63d8a9070655d7d84701d728f56",
+      "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+      "run_id": 37279566893,
+      "proofs": [
+        {
+          "proof": "b1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 15
+        }
+      ],
+      "tree": "66022a510d6d59285c9250d75aa83e038cad24b0",
+      "source_entries": 210,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "16",
+        "tests": "1192",
+        "time": "99.096",
+        "timestamp": "2026-10-05T07:46:01.197401+00:00",
+        "hostname": "runnervm8df0l"
+      },
+      "passed": 1176,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "-m",
+            "pytest",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 100.196
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 0.615
+        }
+      ]
+    },
+    {
+      "artifact_id": 11331583122,
+      "archive": "artifact-11331583122.zip",
+      "bytes": 2315,
+      "sha256": "d2e4fca72a03c86e0b5e94343f79dc20bcdab909b8730a81dd62909b18212af6",
+      "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+      "run_id": 37279566817,
+      "proofs": [
+        {
+          "proof": "summary.json",
+          "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+          "executed": 8,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 8
+        }
+      ]
+    },
+    {
+      "artifact_id": 11331599215,
+      "archive": "artifact-11331599215.zip",
+      "bytes": 261498,
+      "sha256": "6657fde232f4e777a6168467d72ee0971d83ac1ab9c77b28d51c94f854efa6f8",
+      "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+      "run_id": 37279566893,
+      "proofs": [
+        {
+          "proof": "b1-harmless/summary.json",
+          "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+          "executed": 10,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 15
+        },
+        {
+          "proof": "b1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 15
+        },
+        {
+          "proof": "g03a-harmless/summary.json",
+          "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+          "executed": 8,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 8
+        },
+        {
+          "proof": "q1-harmless/summary.json",
+          "status": "FIXTURE_PASS_Q03_OPEN",
+          "executed": 16,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+          "verified_sources": 4
+        }
+      ],
+      "tree": "66022a510d6d59285c9250d75aa83e038cad24b0",
+      "source_entries": 210,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "12",
+        "tests": "1192",
+        "time": "317.243",
+        "timestamp": "2026-10-05T07:46:35.903175+00:00",
+        "hostname": "runnervmfi6oq"
+      },
+      "passed": 1180,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "-m",
+            "pytest",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 319.297
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 2.375
+        },
+        {
+          "case": "q1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rq/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 12.531
+        },
+        {
+          "case": "g03a-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rg03a/run_windows.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.469
+        },
+        {
+          "case": "b1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 6.906
+        }
+      ]
+    }
+  ]
+}

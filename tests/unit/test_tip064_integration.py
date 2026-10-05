@@ -483,8 +483,93 @@ def test_actual_tls_inventory_discovery_read_project_and_production_native_denia
         dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
 
 
-def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable(project_node, composed_service, monkeypatch):
+def composed_stop_runtime(agent, dispatcher, client, resources):
+    """Actual stop methods around the already composed harmless node fixture."""
     from vibemql5.adapters.fleet_cli import NodeRuntime
+    stopping = object.__new__(NodeRuntime)
+    stopping.agent, stopping.dispatcher, stopping.client = agent, dispatcher, client
+    stopping.policy, stopping.config = fleet_policy(), {'drain_timeout_ms': 1}
+    stopping._resources = resources
+    stopping._closed, stopping._stopping, stopping._drain_deadline = False, False, None
+    stopping._coordinator, stopping._capacity_registered = None, False
+    return stopping
+
+
+def close_composed_stop_runtime(stopping, cancelled):
+    with preserve_fixture_failure():
+        cancelled.set()
+        deadline = time.monotonic() + 2
+        while stopping.dispatcher.has_pending_work() and time.monotonic() < deadline:
+            try: stopping.run_once()
+            except WireError as error:
+                if error.code != 'FIXTURE_LOST_ACK': raise
+            time.sleep(.005)
+        assert stopping.close()['status'] == 'CLOSED'
+        assert stopping.close()['status'] == 'CLOSED'
+
+
+def test_composed_stop_fixture_initializes_normal_sentinels_and_closes_actual_resources():
+    from types import SimpleNamespace
+    events = []; cancelled = threading.Event(); db = sqlite3.connect(':memory:')
+    def no_registration(*args, **kwargs):
+        raise AssertionError('fixture must not register capacity or claim authority')
+    agent = SimpleNamespace(step=lambda **kwargs: events.append(('step', kwargs)) or {'fixture': True})
+    dispatcher = SimpleNamespace(has_pending_work=lambda: False, close=lambda: events.append('dispatcher-closed'))
+    resource = SimpleNamespace(close=lambda: events.append('resource-closed') or db.close())
+    stopping = composed_stop_runtime(agent, dispatcher,
+        SimpleNamespace(heartbeat=no_registration, register_capacity=no_registration), [resource])
+    try:
+        assert stopping._coordinator is None and stopping._capacity_registered is False
+        assert stopping.run_once() == {'fixture': True}
+        close_composed_stop_runtime(stopping, cancelled)
+        assert cancelled.is_set() and stopping._closed and stopping._resources == []
+        assert events == [('step', {}), 'dispatcher-closed', 'resource-closed']
+        with pytest.raises(sqlite3.ProgrammingError): db.execute('SELECT 1')
+    finally:
+        db.close()
+    print('CONTROLLED_STOP_FIXTURE_NO_REGISTRATION_AND_ACTUAL_RESOURCE_CLOSURE')
+
+
+@pytest.mark.parametrize('primary_present', [False, True])
+def test_composed_stop_cleanup_retains_exact_failure_and_uncertain_resources(primary_present):
+    from types import SimpleNamespace
+    primary, cleanup = WireError('HTTPS_UNAVAILABLE'), WireError('HTTPS_UNAVAILABLE')
+    primary.add_note('CONTROLLED_PRIMARY_TIMEOUT'); cleanup.add_note('CONTROLLED_CLEANUP_PENDING')
+    events = []; pending = [True]; cancelled = threading.Event(); db = sqlite3.connect(':memory:')
+    def failed_step(**kwargs):
+        events.append(('step', kwargs)); raise cleanup
+    def no_registration(*args, **kwargs):
+        raise AssertionError('fixture must not register capacity or claim authority')
+    dispatcher = SimpleNamespace(has_pending_work=lambda: pending[0], close=lambda: events.append('dispatcher-closed'))
+    resource = SimpleNamespace(close=lambda: events.append('resource-closed') or db.close())
+    stopping = composed_stop_runtime(SimpleNamespace(step=failed_step), dispatcher,
+        SimpleNamespace(heartbeat=no_registration, register_capacity=no_registration), [resource])
+    try:
+        if primary_present:
+            with pytest.raises(BaseExceptionGroup) as caught:
+                try: raise primary
+                finally: close_composed_stop_runtime(stopping, cancelled)
+            assert caught.value.exceptions == (primary, cleanup)
+        else:
+            with pytest.raises(WireError) as caught: close_composed_stop_runtime(stopping, cancelled)
+            assert caught.value is cleanup
+        assert primary.__notes__ == ['CONTROLLED_PRIMARY_TIMEOUT']
+        assert cleanup.__notes__ == ['CONTROLLED_CLEANUP_PENDING']
+        assert cancelled.is_set() and events == [('step', {})]
+        assert not stopping._closed and stopping._resources == [resource]
+        assert db.execute('SELECT 1').fetchone() == (1,)
+        assert stopping.close()['status'] == 'STOP_PENDING'
+        assert stopping._coordinator is None and stopping._capacity_registered is False
+    finally:
+        # Only this controlled dispatcher proves its work is actually gone.
+        pending[0] = False
+        assert stopping.close()['status'] == 'CLOSED'
+        db.close()
+    assert events == [('step', {}), 'dispatcher-closed', 'resource-closed']
+    print('CONTROLLED_STOP_PRIMARY_AND_CLEANUP_UNCERTAINTY_RETAINED')
+
+
+def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable(project_node, composed_service, monkeypatch):
     entered, cancelled = threading.Event(), threading.Event()
     calls = []
     class HarmlessBlockedAdapter:
@@ -507,12 +592,7 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
             return {'schema': 'fleet.native.effect/1', 'phase': phase, 'evidence': 'SYNTHETIC_NATIVE_ONLY',
                 'payload': {'status': 'SYNTHETIC_STOPPED'}, 'local_job_id': local_job_id, 'target': request['placement']['target']}
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service, adapter=HarmlessBlockedAdapter())
-    # Use the actual stop lifecycle around the already composed harmless node.
-    stopping = object.__new__(NodeRuntime)
-    stopping.agent, stopping.dispatcher, stopping.client = agent, dispatcher, client
-    stopping.policy, stopping.config = fleet_policy(), {'drain_timeout_ms': 1}
-    stopping._resources = [transport, domains, jobs, dispatcher.principals]
-    stopping._closed, stopping._stopping, stopping._drain_deadline = False, False, None
+    stopping = composed_stop_runtime(agent, dispatcher, client, [transport, domains, jobs, dispatcher.principals])
     try:
         node, selected = discover(facade, client, agent)
         frozen = freeze(project_node, target=selected)
@@ -564,14 +644,7 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
         assert stopping.stop_status()['status'] == 'DRAINED'
         assert transport._db.execute("SELECT count(*) FROM requests WHERE state='PENDING'").fetchone()[0] == 1
     finally:
-        cancelled.set()
-        deadline = time.monotonic() + 2
-        while dispatcher.has_pending_work() and time.monotonic() < deadline:
-            try: stopping.run_once()
-            except WireError as error: assert error.code == 'FIXTURE_LOST_ACK'
-            time.sleep(.005)
-        assert stopping.close()['status'] == 'CLOSED'
-        assert stopping.close()['status'] == 'CLOSED'
+        close_composed_stop_runtime(stopping, cancelled)
 
 
 def test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack(project_node, composed_service):

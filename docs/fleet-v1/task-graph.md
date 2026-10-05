@@ -2,6 +2,10 @@
 
 ## Deployment continuation — 2026-10-05
 
+[TIP-065 fixture refinement](TIP-065-CI-refinement-completion.md): Builder and
+independent verification DONE; candidate publication/8-workflow gate precede the
+legacy overlay deployment. Original timeout causes and physical acceptance stay OPEN.
+
 The owner now authorizes tests and deployment, superseding the earlier deployment
 deferral. The accepted `f25ec99` source checkpoint passed eight workflows; 31 new
 modules were staged with create-only CAS while the live TIP-053 adapter remained

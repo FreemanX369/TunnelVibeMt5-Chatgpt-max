@@ -1,0 +1,19 @@
+{
+  "schema": "tip065.actual-windows-ci-observation/1",
+  "head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+  "status": "PASS",
+  "required_cases": [
+    {
+      "classname": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_identity_positive_and_fresh_path_match",
+      "time": "0.039"
+    },
+    {
+      "classname": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_handle_rejects_fresh_path_replacement",
+      "time": "0.041"
+    }
+  ],
+  "scope": "HARMLESS_READ_ONLY_FILE_METADATA_FIXTURES",
+  "physical_qualification": "NOT_RUN"
+}
