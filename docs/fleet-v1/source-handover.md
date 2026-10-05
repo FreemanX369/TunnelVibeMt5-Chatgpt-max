@@ -1,6 +1,19 @@
 # Fleet v1 — Complete source handover
 
-Latest delivered candidate d9adc579 completed **7/8**; [original receipt](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
+Rejected parent `81d458ff` completed **6/8 on original attempt 1**. Its
+[retained receipt](evidence/tip065/ci-81d458f/metadata/verification-receipt.json)
+binds five original ZIPs, unchanged exact Git 210-entry manifests, complete JUnit,
+nine harmless proofs and lossless decoded logs. Linux passed 1202/16 skips;
+Windows had 1205 PASS/one setup ERROR/12 skips; Deep had 1205 PASS/one FAIL/12 skips.
+All 29 earlier required Windows controls passed. The independently reviewed [ABI reuse
+completion](TIP-065-windows-metadata-bindings-completion.md) removes repeated pure Windows
+metadata binding setup while preserving fresh buffers, OS queries and every
+file/path/hash/authority check. Historical timing causes remain unproven. The
+reviewed new source needs its own full 8/8/artifact gate before the authorized
+five-file legacy read-only overlay deployment. Full Fleet activation and physical
+VM/MT5/SDK qualification remain OPEN/NOT_RUN. No CI rerun or overlay restart occurred.
+
+Earlier candidate d9adc579 completed **7/8**; [original receipt](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
 retains five verified ZIPs, exact unchanged 210-file manifests, JUnit/nine proofs.
 Both integrated platforms and eleven new Windows preservation controls passed.
 Deep failed the blocked-native lost-ACK fixture; [the reviewed identity correction](TIP-065-lost-ack-identity-completion.md)

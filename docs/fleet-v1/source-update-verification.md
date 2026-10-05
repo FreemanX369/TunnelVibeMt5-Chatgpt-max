@@ -1,6 +1,29 @@
 # Fleet v1 — Continuous source verification
 
-Latest delivered candidate `d9adc579`, tree `fd3edac1de610b821ca64044acd4fdfa1cc03192`,
+Rejected parent `81d458ffce7a856a94aae3fb2166d0a9943fba7e`, tree
+`e1ed18128f047baab88f0c5efa2bc0159289de83`, completed **6/8 on original attempt 1**.
+Its [immutable receipt](evidence/tip065/ci-81d458f/metadata/verification-receipt.json)
+verifies five official ZIP digests/sizes, both unchanged exact Git 210-entry source
+manifests, complete JUnit and nine harmless proofs. Integrated Linux passed
+**1202/16 skips**. Windows had **1205 PASS/1 setup ERROR/12 skips**: ordinary
+control backup exceeded its existing 1000-ms progress deadline. Deep had
+**1205 PASS/1 FAIL/12 skips**: capacity delayed-release polling timed out at
+1000 ms while the sampled server rebuilt a Windows metadata ABI binding; cleanup
+separately timed out at job-result COMMIT. All 29 required earlier Windows controls,
+including four lost-ACK identity cases, passed. Full raw failures retain original
+BOM/CRLF. Neither local success nor those controls grants source acceptance.
+
+The independently reviewed [ABI reuse completion](TIP-065-windows-metadata-bindings-completion.md) under its [bounded contract](TIP-065-windows-metadata-bindings.md) removes
+repeated pure Windows metadata Structure/function-binding setup. It preserves
+fresh per-call buffers, all three OS queries, every path reopen/read/hash and both
+source verification passes. It introduces no file-data/authority/roster cache and
+changes no timeout, durable COMMIT, policy or admission decision. Underlying
+COMMIT/backup/storage/scheduling causes and the timing effect of this optimization
+remain unproven. The newly delivered source needs its own complete 8/8/artifact
+gate; no overlay deployment, restart or CI rerun has occurred. Physical acceptance
+and full Fleet configuration/registration remain OPEN/NOT_RUN.
+
+Earlier rejected candidate `d9adc579`, tree `fd3edac1de610b821ca64044acd4fdfa1cc03192`,
 completed **7/8 on attempt 1**. [Original failure/artifact evidence](evidence/tip065/ci-d9adc57/metadata/verification-receipt.json)
 binds five original ZIPs, unchanged exact 210-file manifests, complete JUnit and nine
 harmless proofs. Integrated Linux 1198/16 skips and Windows 1202/12 passed; Deep

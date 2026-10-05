@@ -16,7 +16,6 @@ import stat
 import time
 import uuid
 from contextlib import contextmanager
-from functools import lru_cache
 from pathlib import Path
 
 from cryptography.exceptions import InvalidSignature
@@ -78,11 +77,15 @@ def _open_retained_read(path):
         kernel.CloseHandle(handle); raise
 
 
-@lru_cache(maxsize=1)
-def _windows_metadata_bindings():
-    # Only constant ABI setup is retained, including its owning DLL reference.
+def retained_file_metadata(fd):
+    """Stable identity/size/times from the retained file, not host stat aliases."""
+    if os.name != "nt":
+        record = os.fstat(fd)
+        if not stat.S_ISREG(record.st_mode): raise OSError()
+        return (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
     import ctypes as C
     from ctypes import wintypes as W
+    import msvcrt
     class FileId(C.Structure):
         _fields_ = [("volume", C.c_ulonglong), ("identifier", C.c_ubyte * 16)]
     class Basic(C.Structure):
@@ -92,25 +95,12 @@ def _windows_metadata_bindings():
         _fields_ = [("allocation", C.c_longlong), ("size", C.c_longlong), ("links", W.DWORD),
                     ("delete_pending", C.c_ubyte), ("directory", C.c_ubyte)]
     kernel = C.WinDLL("kernel32", use_last_error=True)
-    query = kernel.GetFileInformationByHandleEx
-    query.argtypes = [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
-    query.restype = W.BOOL
-    return kernel, query, FileId, Basic, Standard
-
-
-def retained_file_metadata(fd):
-    """Stable identity/size/times from the retained file, not host stat aliases."""
-    if os.name != "nt":
-        record = os.fstat(fd)
-        if not stat.S_ISREG(record.st_mode): raise OSError()
-        return (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
-    import ctypes as C
-    import msvcrt
-    _kernel, query, FileId, Basic, Standard = _windows_metadata_bindings()
+    kernel.GetFileInformationByHandleEx.argtypes = [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
+    kernel.GetFileInformationByHandleEx.restype = W.BOOL
     handle = msvcrt.get_osfhandle(fd)
     identity, basic, standard = FileId(), Basic(), Standard()
     for kind, record in ((18, identity), (0, basic), (1, standard)):
-        if not query(handle, kind, C.byref(record), C.sizeof(record)):
+        if not kernel.GetFileInformationByHandleEx(handle, kind, C.byref(record), C.sizeof(record)):
             raise C.WinError(C.get_last_error())
     if basic.attributes & (0x10 | 0x400) or standard.directory or standard.delete_pending or standard.size < 0:
         raise OSError()

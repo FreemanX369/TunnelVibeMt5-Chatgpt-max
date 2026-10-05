@@ -1,0 +1,257 @@
+diff --git a/app/vibemql5/fleet/scoped_resources.py b/app/vibemql5/fleet/scoped_resources.py
+index db9da1c..59dad06 100644
+--- a/app/vibemql5/fleet/scoped_resources.py
++++ b/app/vibemql5/fleet/scoped_resources.py
+@@ -16,6 +16,7 @@ import stat
+ import time
+ import uuid
+ from contextlib import contextmanager
++from functools import lru_cache
+ from pathlib import Path
+ 
+ from cryptography.exceptions import InvalidSignature
+@@ -77,15 +78,11 @@ def _open_retained_read(path):
+         kernel.CloseHandle(handle); raise
+ 
+ 
+-def retained_file_metadata(fd):
+-    """Stable identity/size/times from the retained file, not host stat aliases."""
+-    if os.name != "nt":
+-        record = os.fstat(fd)
+-        if not stat.S_ISREG(record.st_mode): raise OSError()
+-        return (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
++@lru_cache(maxsize=1)
++def _windows_metadata_bindings():
++    # Only constant ABI setup is retained, including its owning DLL reference.
+     import ctypes as C
+     from ctypes import wintypes as W
+-    import msvcrt
+     class FileId(C.Structure):
+         _fields_ = [("volume", C.c_ulonglong), ("identifier", C.c_ubyte * 16)]
+     class Basic(C.Structure):
+@@ -95,12 +92,25 @@ def retained_file_metadata(fd):
+         _fields_ = [("allocation", C.c_longlong), ("size", C.c_longlong), ("links", W.DWORD),
+                     ("delete_pending", C.c_ubyte), ("directory", C.c_ubyte)]
+     kernel = C.WinDLL("kernel32", use_last_error=True)
+-    kernel.GetFileInformationByHandleEx.argtypes = [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
+-    kernel.GetFileInformationByHandleEx.restype = W.BOOL
++    query = kernel.GetFileInformationByHandleEx
++    query.argtypes = [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
++    query.restype = W.BOOL
++    return kernel, query, FileId, Basic, Standard
++
++
++def retained_file_metadata(fd):
++    """Stable identity/size/times from the retained file, not host stat aliases."""
++    if os.name != "nt":
++        record = os.fstat(fd)
++        if not stat.S_ISREG(record.st_mode): raise OSError()
++        return (record.st_dev, record.st_ino, record.st_size, record.st_mtime_ns, record.st_ctime_ns)
++    import ctypes as C
++    import msvcrt
++    _kernel, query, FileId, Basic, Standard = _windows_metadata_bindings()
+     handle = msvcrt.get_osfhandle(fd)
+     identity, basic, standard = FileId(), Basic(), Standard()
+     for kind, record in ((18, identity), (0, basic), (1, standard)):
+-        if not kernel.GetFileInformationByHandleEx(handle, kind, C.byref(record), C.sizeof(record)):
++        if not query(handle, kind, C.byref(record), C.sizeof(record)):
+             raise C.WinError(C.get_last_error())
+     if basic.attributes & (0x10 | 0x400) or standard.directory or standard.delete_pending or standard.size < 0:
+         raise OSError()
+diff --git a/workspace/scratch/1818a0d45fa0/repo/tests/unit/test_tip065_windows_metadata_bindings.py b/workspace/scratch/1818a0d45fa0/repo/tests/unit/test_tip065_windows_metadata_bindings.py
+new file mode 100644
+index 0000000..52079d4
+--- /dev/null
++++ b/workspace/scratch/1818a0d45fa0/repo/tests/unit/test_tip065_windows_metadata_bindings.py
+@@ -0,0 +1,191 @@
++"""Synthetic Windows ABI controls; actual file cases require Windows CI, no MT5/SDK."""
++import ctypes as C
++from ctypes import wintypes as W
++from concurrent.futures import ThreadPoolExecutor
++import gc
++import os
++import sys
++import threading
++from types import SimpleNamespace
++import weakref
++
++import pytest
++
++from vibemql5.fleet import scoped_resources as scoped
++
++
++class FakeWindowsMetadata:
++    """Controlled OS boundary with fresh handle facts and thread-local errors."""
++    def __init__(self):
++        self.rows, self.trace, self.records, self.libraries = {}, [], [], []
++        self.loads, self.symbols, self.failed_class = 0, 0, None
++        self.local, self.lock, self.barrier = threading.local(), threading.Lock(), None
++        boundary = self
++        class Query:
++            def __call__(self, handle, kind, buffer, size):
++                record = buffer._obj
++                layout = [(name, field.__name__, C.sizeof(field), getattr(type(record), name).offset)
++                          for name, field in record._fields_]
++                with boundary.lock:
++                    boundary.trace.append(('query', handle, kind, size, layout))
++                    boundary.records.append(record)  # Retain buffers to make identity checks meaningful.
++                    row = dict(boundary.rows.get(handle, {}))
++                if kind == boundary.failed_class:
++                    boundary.local.error = 1000 + kind
++                    return False
++                if kind == 18:
++                    record.volume = row.get('volume', handle)
++                    record.identifier[:] = row.get('identifier', bytes([handle % 256]) * 16)
++                elif kind == 0:
++                    for field, value in {'creation': handle + 1, 'access': handle + 2,
++                            'write': handle + 3, 'change': handle + 4, 'attributes': 0x20}.items():
++                        setattr(record, field, row.get(field, value))
++                elif kind == 1:
++                    for field, value in {'allocation': 4096, 'size': handle + 5, 'links': 1,
++                            'delete_pending': 0, 'directory': 0}.items():
++                        setattr(record, field, row.get(field, value))
++                else: raise AssertionError('unexpected information class')
++                if kind == 18 and boundary.barrier is not None:
++                    boundary.barrier.wait(timeout=10)
++                return True
++        self.query = Query()
++
++    def load(self, name, *, use_last_error):
++        assert (name, use_last_error) == ('kernel32', True)
++        self.loads += 1
++        boundary = self
++        class Kernel:
++            @property
++            def GetFileInformationByHandleEx(self):
++                boundary.symbols += 1
++                return boundary.query
++        kernel = Kernel(); self.libraries.append(weakref.ref(kernel)); return kernel
++
++    def get_handle(self, fd):
++        self.trace.append(('handle', fd))
++        if fd == -1: raise OSError(9, 'synthetic invalid descriptor')
++        return fd + 100
++
++    def last_error(self):
++        value = self.local.error
++        self.trace.append(('last_error', value)); return value
++
++    def win_error(self, value):
++        self.trace.append(('WinError', value))
++        return OSError(value, 'synthetic OS-query failure')
++
++    def install(self, monkeypatch):
++        monkeypatch.setattr(C, 'WinDLL', self.load, raising=False)
++        monkeypatch.setattr(C, 'get_last_error', self.last_error, raising=False)
++        monkeypatch.setattr(C, 'WinError', self.win_error, raising=False)
++        monkeypatch.setitem(sys.modules, 'msvcrt', SimpleNamespace(get_osfhandle=self.get_handle))
++
++
++@pytest.fixture
++def windows_metadata(monkeypatch):
++    boundary = FakeWindowsMetadata()
++    scoped._windows_metadata_bindings.cache_clear()
++    boundary.install(monkeypatch)
++    monkeypatch.setattr(scoped, 'os', SimpleNamespace(name='nt'))
++    try: yield boundary
++    finally: scoped._windows_metadata_bindings.cache_clear()
++
++
++def expected_metadata(handle, **changed):
++    defaults = {'volume': handle, 'identifier': bytes([handle % 256]) * 16, 'size': handle + 5,
++                'write': handle + 3, 'change': handle + 4, 'creation': handle + 1, 'attributes': 0x20}
++    defaults.update(changed)
++    return tuple(defaults[key] for key in ('volume', 'identifier', 'size', 'write', 'change', 'creation', 'attributes'))
++
++
++def test_synthetic_abi_reuse_keeps_three_fresh_queries_buffers_and_library_owner(windows_metadata):
++    boundary = windows_metadata
++    assert scoped.retained_file_metadata(1) == expected_metadata(101)
++    assert scoped.retained_file_metadata(2) == expected_metadata(102)
++    assert boundary.loads == boundary.symbols == 1
++    assert [(row[1], row[2]) for row in boundary.trace if row[0] == 'query'] == [
++        (101, 18), (101, 0), (101, 1), (102, 18), (102, 0), (102, 1)]
++    assert len({id(record) for record in boundary.records}) == 6
++    assert boundary.query.argtypes == [W.HANDLE, C.c_int, C.c_void_p, W.DWORD]
++    assert boundary.query.restype is W.BOOL
++    gc.collect()
++    assert boundary.libraries[0]() is not None
++
++
++def test_synthetic_changed_handle_metadata_is_observed_without_data_cache(windows_metadata):
++    boundary = windows_metadata
++    before = scoped.retained_file_metadata(7)
++    changed = {'volume': 9, 'identifier': b'R' * 16, 'size': 65537, 'write': 42,
++               'change': 43, 'creation': 44, 'attributes': 0x80}
++    boundary.rows[107] = changed
++    assert scoped.retained_file_metadata(7) == expected_metadata(107, **changed) != before
++    assert boundary.loads == 1 and len(boundary.records) == 6
++
++
++@pytest.mark.parametrize('failed_class', [18, 0, 1])
++def test_synthetic_query_failure_retains_current_last_error_and_never_prior_facts(windows_metadata, failed_class):
++    boundary = windows_metadata
++    assert scoped.retained_file_metadata(3) == expected_metadata(103)
++    boundary.trace.clear(); boundary.failed_class = failed_class
++    with pytest.raises(OSError) as caught: scoped.retained_file_metadata(3)
++    assert caught.value.errno == 1000 + failed_class
++    assert [row[2] for row in boundary.trace if row[0] == 'query'] == [18, 0, 1][: [18, 0, 1].index(failed_class) + 1]
++    assert boundary.trace[-2:] == [('last_error', 1000 + failed_class), ('WinError', 1000 + failed_class)]
++    assert boundary.loads == 1
++
++
++@pytest.mark.parametrize('changed', [
++    {'attributes': 0x10}, {'attributes': 0x400}, {'directory': 1}, {'delete_pending': 1}, {'size': -1}])
++def test_synthetic_invalid_current_metadata_still_fails_closed(windows_metadata, changed):
++    assert scoped.retained_file_metadata(4) == expected_metadata(104)
++    windows_metadata.rows[104] = changed
++    with pytest.raises(OSError): scoped.retained_file_metadata(4)
++    assert len(windows_metadata.records) == 6 and windows_metadata.loads == 1
++
++
++def test_synthetic_invalid_handle_is_not_satisfied_from_prior_metadata(windows_metadata):
++    assert scoped.retained_file_metadata(5) == expected_metadata(105)
++    with pytest.raises(OSError) as caught: scoped.retained_file_metadata(-1)
++    assert caught.value.errno == 9 and len(windows_metadata.records) == 3
++
++
++def test_synthetic_concurrent_handles_own_distinct_result_buffers(windows_metadata):
++    boundary = windows_metadata
++    scoped._windows_metadata_bindings()  # Warm only pure ABI setup, no file observation.
++    boundary.barrier = threading.Barrier(2)
++    with ThreadPoolExecutor(max_workers=2) as pool:
++        futures = [pool.submit(scoped.retained_file_metadata, fd) for fd in (11, 22)]
++        results = [future.result(timeout=10) for future in futures]
++    assert results == [expected_metadata(111), expected_metadata(122)]
++    assert len({id(record) for record in boundary.records}) == 6
++    for handle in (111, 122):
++        assert [row[2] for row in boundary.trace if row[0] == 'query' and row[1] == handle] == [18, 0, 1]
++    assert boundary.loads == 1
++
++
++@pytest.mark.skipif(os.name != 'nt', reason='Actual Win32 retained metadata requires Windows; no MT5/SDK')
++def test_actual_windows_retained_handles_have_current_handle_specific_identity(tmp_path):
++    paths = [tmp_path / 'first.bin', tmp_path / 'second.bin']
++    handles = []
++    try:
++        for path, raw in zip(paths, (b'abc', b'abcdef')):
++            path.write_bytes(raw); handles.append(scoped._open_retained_read(path))
++        first, second = (scoped.retained_file_metadata(fd) for fd in handles)
++        assert first[2] == 3 and second[2] == 6 and first[:2] != second[:2]
++        assert scoped.retained_file_metadata(handles[0]) == first
++    finally:
++        for fd in handles: os.close(fd)
++
++
++@pytest.mark.skipif(os.name != 'nt', reason='Actual Win32 changed file observation requires Windows; no MT5/SDK')
++def test_actual_windows_changed_file_is_reobserved_after_retained_handle_closes(tmp_path):
++    path = tmp_path / 'changed.bin'; path.write_bytes(b'first')
++    fd = scoped._open_retained_read(path)
++    try: before = scoped.retained_file_metadata(fd)
++    finally: os.close(fd)
++    path.write_bytes(b'second-is-longer')
++    fd = scoped._open_retained_read(path)
++    try:
++        after = scoped.retained_file_metadata(fd)
++        assert before[2] == 5 and after[2] == 16 and after != before
++    finally: os.close(fd)

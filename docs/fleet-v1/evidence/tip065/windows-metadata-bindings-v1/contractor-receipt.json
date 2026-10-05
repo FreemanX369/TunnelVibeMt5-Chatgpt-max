@@ -1,0 +1,65 @@
+{
+  "schema": "tip065.windows-metadata-contractor-review/1",
+  "base_head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+  "changed_source": [
+    "app/vibemql5/fleet/scoped_resources.py",
+    "tests/unit/test_tip065_windows_metadata_bindings.py"
+  ],
+  "source_entries": 211,
+  "source_unchanged_during_run": true,
+  "app_files": 89,
+  "unchanged_app_files": 88,
+  "other_209_base_sources_unchanged": true,
+  "all_other_product_ast_unchanged": true,
+  "ctypes_classes_exact_original_ast": true,
+  "posix_branch_exact_original_ast": true,
+  "overlay_payload_unchanged": true,
+  "overlay_payload_sha256": "0efadd3d855b602e6bd8d58cd7033f092395026b633bceb28629e75fe4003182",
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip065_windows_metadata_bindings.py",
+    "tests/unit/test_tip056_scoped.py",
+    "tests/unit/test_tip056_signed_roster.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip065_deployment_preflight.py",
+    "-v",
+    "--tb=short",
+    "--durations=12",
+    "-o",
+    "faulthandler_timeout=90",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-windows-metadata-bindings-20261005/contractor-focused.xml"
+  ],
+  "environment_overrides": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "harness_timeout_seconds": 240,
+  "exit_code": 0,
+  "elapsed_seconds": 7.587,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "7",
+    "tests": "148",
+    "time": "7.074",
+    "timestamp": "2026-10-05T19:32:13.090023+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "files": {
+    "app/vibemql5/fleet/scoped_resources.py": {
+      "bytes": 40595,
+      "sha256": "66b37c4ed06ec896e2c4792cf9d2e72db3a9867eeadcd09cba1e921d04d19f9e"
+    },
+    "tests/unit/test_tip065_windows_metadata_bindings.py": {
+      "bytes": 9218,
+      "sha256": "0f6a465abac076a0543ed657b25fb7e7f11929c98fd50ebe226196b52c361fe6"
+    }
+  },
+  "log_sha256": "7154b3e517b4aac7e360bb83c0a0915df37a5ec053c96939ead82932de0d40dc",
+  "junit_sha256": "e3a1b4edbb30f5ef588901b5bfa93e8265ec40efa65465b81503ec4f0dd83041",
+  "timing_effect": "UNMEASURED",
+  "historical_storage_backup_commit_causes": "OPEN",
+  "physical_qualification": "NOT_RUN"
+}
