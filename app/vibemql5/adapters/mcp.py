@@ -54,6 +54,7 @@ def _runtime_provenance(root: Path | None = None) -> dict[str, Any]:
 def create_server(root: Path, transport: str = "unknown"):
     try:
         from mcp.server.mcpserver import MCPServer, Context
+        from mcp.server.mcpserver.exceptions import ToolError
         from mcp.types import CallToolResult, ResourceLink, TextContent, ToolAnnotations
     except ImportError as exc:
         raise RuntimeError('MCP SDK v2 is required. Run: pip install -e ".[mcp]"') from exc
@@ -77,7 +78,18 @@ def create_server(root: Path, transport: str = "unknown"):
         actor = actor_from_mcp_context(ctx, transport=transport)
         actor["operation"] = operation
         with actor_scope(actor):
-            return fn()
+            try:
+                return fn()
+            except RuntimeError as exc:
+                if operation in {"get_terminal_live_state", "get_account_snapshot", "inspect_terminal"} and str(exc) in {
+                    "FIXED_TERMINAL_NOT_RUNNING",
+                    "MT5_LIVE_IPC_INITIALIZE_FAILED",
+                    "MT5_LIVE_TERMINAL_INFO_UNAVAILABLE",
+                    "MT5_LIVE_TERMINAL_BINDING_MISMATCH",
+                    "MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE",
+                }:
+                    raise ToolError(str(exc)) from exc
+                raise
 
     # TUN-11 startup recovery: converge durable cancel intents after MCP/controller
     # restart. Only cancel_requested jobs are touched and process signalling remains

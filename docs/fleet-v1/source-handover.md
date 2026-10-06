@@ -1,5 +1,16 @@
 # Fleet v1 — Complete source handover
 
+The 06/10 continuation dispatches [TIP-066](TIP-066-live-diagnostics.md), a bounded
+source correction for five anticipated legacy live-read errors masked by SDK 2.1.1.
+Only three existing MCP reads change their error boundary; catalog, input schemas,
+target denials, actor/native ownership and successful outputs stay unchanged.
+Its Builder/Contractor receipts and current Draft #65 description determine the new
+candidate gate. Accepted parent fe6ef1b remains historical 8/8 source acceptance;
+it cannot qualify a changed candidate. Fresh typed runtime observations remain
+MCP -32603, with current guards and old synchronous unit outcome UNKNOWN.
+No recovery, rerun, deployment or native test occurred in this continuation.
+Full Fleet physical qualification and production merge remain OPEN/NOT_RUN.
+
 Rejected parent `81d458ff` completed **6/8 on original attempt 1**. Its
 [retained receipt](evidence/tip065/ci-81d458f/metadata/verification-receipt.json)
 binds five original ZIPs, unchanged exact Git 210-entry manifests, complete JUnit,
