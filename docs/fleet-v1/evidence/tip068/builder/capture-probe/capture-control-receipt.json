@@ -1,0 +1,44 @@
+[
+  {
+    "capture": "fd",
+    "command": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "/workspace/scratch/b4674f0ac496/resume-20261006/tip068-investigation/test_control_dump.py",
+      "-v",
+      "--capture=fd",
+      "-o",
+      "faulthandler_timeout=0.1"
+    ],
+    "timeout_seconds": 1.2,
+    "exit_code": 124,
+    "timed_out": true,
+    "log_bytes": 4386,
+    "sha256": "6f8cf4efe322fb4b51341d8ced9d0e81dbe7b811d45ece097b77999a463b00bb",
+    "contains_timeout_dump": true,
+    "contains_control_frame": true,
+    "scope": "SCRATCH_SLEEP_FIXTURE_NOT_WINDOWS_QUALIFICATION"
+  },
+  {
+    "capture": "tee-sys",
+    "command": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "/workspace/scratch/b4674f0ac496/resume-20261006/tip068-investigation/test_control_dump.py",
+      "-v",
+      "--capture=tee-sys",
+      "-o",
+      "faulthandler_timeout=0.1"
+    ],
+    "timeout_seconds": 1.2,
+    "exit_code": 124,
+    "timed_out": true,
+    "log_bytes": 4386,
+    "sha256": "4e016a5f0ff0a71b237e699eba42fda2c38aed28efe418f9c0db844b0d16edd4",
+    "contains_timeout_dump": true,
+    "contains_control_frame": true,
+    "scope": "SCRATCH_SLEEP_FIXTURE_NOT_WINDOWS_QUALIFICATION"
+  }
+]

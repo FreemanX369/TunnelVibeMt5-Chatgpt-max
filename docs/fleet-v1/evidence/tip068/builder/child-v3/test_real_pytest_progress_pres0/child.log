@@ -1,0 +1,15 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 39, "test_elapsed_ms": 0}
+ESOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 67, "test_elapsed_ms": 28}
+                                                                         [100%]
+==================================== ERRORS ====================================
+________________________ ERROR at setup of test_control ________________________
+
+    @pytest.fixture
+    def fixture():
+>       raise RuntimeError('CONTROLLED_SETUP_FAILURE')
+E       RuntimeError: CONTROLLED_SETUP_FAILURE
+
+tests/unit/test_control.py:4: RuntimeError
+=========================== short test summary info ============================
+ERROR tests/unit/test_control.py::test_control - RuntimeError: CONTROLLED_SET...
+1 error in 0.04s

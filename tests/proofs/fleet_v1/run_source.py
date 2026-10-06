@@ -55,7 +55,7 @@ def main(argv=None):
     for name in ("TIP057RQ_EXPECTED_SHA", "TIP057RG03A_EXPECTED_SHA", "TIP057RB1_EXPECTED_SHA"):
         environment[name] = head
     cases = [
-        ("full-unit", ["-m", "pytest", "tests/unit", "-v", "--tb=short", "--durations=20",
+        ("full-unit", ["-m", "pytest", "-p", "fleet_source_progress", "tests/unit", "-v", "--tb=short", "--durations=20",
             "-o", "faulthandler_timeout=90", "--junitxml=" + str(destination / "unit.junit.xml")]),
         ("b1-portable", ["tests/proofs/tip057rb1/run_proof.py", "--portable", "--output", str(destination / "b1-portable")]),
     ]

@@ -1,0 +1,255 @@
+diff --git a/tests/proofs/fleet_v1/run_source.py b/tests/proofs/fleet_v1/run_source.py
+index 244c661..9d39b05 100644
+--- a/tests/proofs/fleet_v1/run_source.py
++++ b/tests/proofs/fleet_v1/run_source.py
+@@ -55,7 +55,7 @@ def main(argv=None):
+     for name in ("TIP057RQ_EXPECTED_SHA", "TIP057RG03A_EXPECTED_SHA", "TIP057RB1_EXPECTED_SHA"):
+         environment[name] = head
+     cases = [
+-        ("full-unit", ["-m", "pytest", "tests/unit", "-v", "--tb=short", "--durations=20",
++        ("full-unit", ["-m", "pytest", "-p", "fleet_source_progress", "tests/unit", "-v", "--tb=short", "--durations=20",
+             "-o", "faulthandler_timeout=90", "--junitxml=" + str(destination / "unit.junit.xml")]),
+         ("b1-portable", ["tests/proofs/tip057rb1/run_proof.py", "--portable", "--output", str(destination / "b1-portable")]),
+     ]
+diff --git a/tests/unit/test_fleet_source_runner.py b/tests/unit/test_fleet_source_runner.py
+index 30a2c07..a97cecc 100644
+--- a/tests/unit/test_fleet_source_runner.py
++++ b/tests/unit/test_fleet_source_runner.py
+@@ -42,6 +42,9 @@ def test_source_runner_keeps_required_proofs_and_honest_manifest(tmp_path, monke
+     assert all(item[1] == 120 for item in attempts[1:])
+     assert sum(item[1] for item in attempts) <= 1080
+     assert '-v' in attempts[0][2] and 'faulthandler_timeout=90' in attempts[0][2]
++    assert attempts[0][2].count('fleet_source_progress') == 1
++    assert all('fleet_source_progress' not in item[2] for item in attempts[1:])
++    assert not any(argument.startswith('--capture') for argument in attempts[0][2])
+     assert summary['physical_qualification'] == 'NOT_RUN'
+     assert summary['source_unchanged_during_run'] is (outcome != 'source-changed')
+     assert summary['status'] == ('PASS' if outcome == 'pass' else 'FAIL')
+
+diff --git a/tests/unit/fleet_source_progress.py b/tests/unit/fleet_source_progress.py
+new file mode 100644
+index 0000000..703c975
+--- /dev/null
++++ b/tests/unit/fleet_source_progress.py
+@@ -0,0 +1,63 @@
++"""Opt-in source-harness timing; no fixture locals or parameter values are emitted."""
++import json
++import re
++import time
++
++MAX_ROWS = 4096
++_progress = None
++
++
++class SourceProgress:
++    def __init__(self, config):
++        self.config, self.origin = config, time.monotonic()
++        self.started, self.ordinal, self.rows, self.truncated = None, 0, 0, False
++        self.outcome = 'UNKNOWN'
++
++    @staticmethod
++    def literal(nodeid):
++        if type(nodeid) is not str or len(nodeid) > 4096: return {}
++        parts = nodeid.split('::')
++        function = parts[-1].split('[', 1)[0]
++        if (len(parts) < 2 or re.fullmatch(r'tests/unit/[A-Za-z0-9_]{1,96}\.py', parts[0]) is None
++                or re.fullmatch(r'test_[A-Za-z0-9_]{1,96}', function) is None): return {}
++        return {'file': parts[0], 'function': function}
++
++    def emit(self, stage, nodeid):
++        reporter = self.config.pluginmanager.get_plugin('terminalreporter')
++        if reporter is None: return
++        if self.rows >= MAX_ROWS:
++            if not self.truncated:
++                self.truncated = True
++                reporter.write_line('SOURCE_TEST_PROGRESS ' + json.dumps(
++                    {'stage': 'TRUNCATED', 'rows_emitted': self.rows, 'row_limit': MAX_ROWS}, sort_keys=True))
++                reporter.flush()
++            return
++        now = time.monotonic()
++        row = {'stage': stage, 'ordinal': self.ordinal, 'suite_elapsed_ms': max(0, int((now - self.origin) * 1000)),
++               'test_elapsed_ms': max(0, int((now - self.started) * 1000)), **self.literal(nodeid)}
++        if stage == 'FINISH': row['outcome'] = self.outcome
++        self.rows += 1
++        reporter.write_line('SOURCE_TEST_PROGRESS ' + json.dumps(row, sort_keys=True))
++        reporter.flush()
++
++    def start(self, nodeid):
++        self.ordinal += 1
++        self.started, self.outcome = time.monotonic(), 'UNKNOWN'
++        self.emit('START', nodeid)
++
++    def report(self, report):
++        if report.failed: self.outcome = 'FAILED'
++        elif report.skipped and self.outcome != 'FAILED': self.outcome = 'SKIPPED'
++        elif report.when == 'call' and report.passed and self.outcome == 'UNKNOWN': self.outcome = 'PASSED'
++
++    def finish(self, nodeid): self.emit('FINISH', nodeid)
++
++
++def pytest_configure(config):
++    global _progress
++    _progress = SourceProgress(config)
++
++
++def pytest_runtest_logstart(nodeid, location): _progress.start(nodeid)
++def pytest_runtest_logreport(report): _progress.report(report)
++def pytest_runtest_logfinish(nodeid, location): _progress.finish(nodeid)
+
+diff --git a/tests/unit/test_fleet_source_progress.py b/tests/unit/test_fleet_source_progress.py
+new file mode 100644
+index 0000000..8ddde29
+--- /dev/null
++++ b/tests/unit/test_fleet_source_progress.py
+@@ -0,0 +1,151 @@
++"""Real disposable pytest children; no Windows or runtime qualification."""
++import json
++import os
++import subprocess
++import sys
++import time
++import xml.etree.ElementTree as ET
++from pathlib import Path
++from types import SimpleNamespace
++
++import pytest
++
++from fleet_source_progress import SourceProgress
++
++
++def progress_rows(text):
++    return [json.loads(line.split('SOURCE_TEST_PROGRESS ', 1)[1])
++            for line in text.splitlines() if 'SOURCE_TEST_PROGRESS ' in line]
++
++
++def live_progress_rows(text):
++    # A concurrently written final row is not ready until its newline exists.
++    return progress_rows(text[:text.rfind('\n') + 1])
++
++
++def child_environment():
++    return {**{key: value for key, value in os.environ.items()
++               if key not in ('PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'PYTEST_CURRENT_TEST')},
++            'PYTHONPATH': str(Path(__file__).parent), 'PYTEST_DISABLE_PLUGIN_AUTOLOAD': '1'}
++
++
++@pytest.mark.parametrize('outcome', ['passed', 'failed', 'skipped'])
++@pytest.mark.parametrize('enabled', [False, True])
++def test_real_pytest_progress_is_opt_in_and_preserves_outcome(tmp_path, outcome, enabled):
++    directory = tmp_path / 'tests' / 'unit'; directory.mkdir(parents=True)
++    source = directory / 'test_control.py'
++    body = {'passed': 'assert True', 'failed': "raise RuntimeError('CONTROLLED_FAILURE')",
++            'skipped': "pytest.skip('CONTROLLED_SKIP')"}[outcome]
++    source.write_text("import pytest\n@pytest.mark.parametrize('value', ['PRIVATE_PARAMETER_TOKEN'])\n"
++                      "def test_control(value):\n    " + body + '\n')
++    command = [sys.executable, '-m', 'pytest', *(['-p', 'fleet_source_progress'] if enabled else []),
++               'tests/unit/test_control.py', '-q', '--junitxml=' + str(tmp_path / 'child.junit.xml')]
++    (tmp_path / 'child-command.json').write_text(json.dumps(command))
++    with (tmp_path / 'child.log').open('w') as output:
++        result = subprocess.run(command, cwd=tmp_path, env=child_environment(),
++            stdout=output, stderr=subprocess.STDOUT, timeout=30, check=False)
++    rows = progress_rows((tmp_path / 'child.log').read_text())
++    assert result.returncode == (1 if outcome == 'failed' else 0)
++    cases = list(ET.parse(tmp_path / 'child.junit.xml').getroot().iter('testcase'))
++    assert len(cases) == 1 and (cases[0].find('failure') is not None) is (outcome == 'failed')
++    assert (cases[0].find('skipped') is not None) is (outcome == 'skipped')
++    if enabled:
++        assert [row['stage'] for row in rows] == ['START', 'FINISH']
++        assert all(row['file'] == 'tests/unit/test_control.py' and row['function'] == 'test_control' for row in rows)
++        assert rows[1]['outcome'] == outcome.upper() and rows[0]['ordinal'] == rows[1]['ordinal'] == 1
++        assert rows[1]['suite_elapsed_ms'] >= rows[0]['suite_elapsed_ms'] >= 0
++        assert rows[1]['test_elapsed_ms'] >= rows[0]['test_elapsed_ms'] >= 0
++        assert 'PRIVATE_PARAMETER_TOKEN' not in json.dumps(rows)
++    else: assert not rows
++
++
++def test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump(tmp_path):
++    directory = tmp_path / 'tests' / 'unit'; directory.mkdir(parents=True)
++    (directory / 'test_control.py').write_text('import time\ndef test_control():\n    time.sleep(30)\n')
++    command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress', 'tests/unit/test_control.py',
++               '-q', '-o', 'faulthandler_timeout=0.1']
++    log = tmp_path / 'control.log'
++    (tmp_path / 'child-command.json').write_text(json.dumps(command))
++    with log.open('w') as output:
++        process = subprocess.Popen(command, cwd=tmp_path, env=child_environment(),
++            stdout=output, stderr=subprocess.STDOUT)
++        try:
++            # Interpreter startup is outside the controlled timeout. Observe
++            # actual flushed START first, with its own bounded setup wait.
++            deadline = time.monotonic() + 20
++            while not live_progress_rows(log.read_text()) and process.poll() is None and time.monotonic() < deadline:
++                time.sleep(.01)
++            assert live_progress_rows(log.read_text()), 'CONTROLLED_CHILD_START_NOT_OBSERVED'
++            with pytest.raises(subprocess.TimeoutExpired): process.wait(timeout=.5)
++        finally:
++            if process.poll() is None: process.kill()
++            process.wait(timeout=5)
++    text = log.read_text(); rows = progress_rows(text)
++    assert [row['stage'] for row in rows] == ['START']
++    assert rows[0]['file'] == 'tests/unit/test_control.py' and rows[0]['function'] == 'test_control'
++    assert 'Timeout (' in text and 'test_control.py' in text
++    assert not any(argument.startswith('--capture') for argument in command)
++
++
++@pytest.mark.parametrize('stage', ['setup', 'teardown'])
++def test_real_pytest_progress_preserves_fixture_failure_and_junit_error(tmp_path, stage):
++    directory = tmp_path / 'tests' / 'unit'; directory.mkdir(parents=True)
++    body = ("    raise RuntimeError('CONTROLLED_SETUP_FAILURE')\n" if stage == 'setup' else
++            "    yield\n    raise RuntimeError('CONTROLLED_TEARDOWN_FAILURE')\n")
++    (directory / 'test_control.py').write_text('import pytest\n@pytest.fixture\ndef fixture():\n' + body +
++        'def test_control(fixture):\n    assert True\n')
++    command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress', 'tests/unit/test_control.py',
++               '-q', '--junitxml=' + str(tmp_path / 'child.junit.xml')]
++    (tmp_path / 'child-command.json').write_text(json.dumps(command))
++    with (tmp_path / 'child.log').open('w') as output:
++        result = subprocess.run(command, cwd=tmp_path, env=child_environment(),
++            stdout=output, stderr=subprocess.STDOUT, timeout=30, check=False)
++    rows = progress_rows((tmp_path / 'child.log').read_text())
++    assert result.returncode == 1 and [row['stage'] for row in rows] == ['START', 'FINISH']
++    assert rows[1]['outcome'] == 'FAILED'
++    cases = list(ET.parse(tmp_path / 'child.junit.xml').getroot().iter('testcase'))
++    assert len(cases) == 1 and cases[0].find('error') is not None
++
++
++@pytest.mark.parametrize('nodeid', [None, [], {}, 'PRIVATE_PARAMETER_TOKEN', '/private/test_secret.py::test_secret',
++                                  'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::PRIVATE_FUNCTION_TOKEN',
++                                  'tests/unit/test_control.py::test_' + 'x' * 97])
++def test_source_progress_omits_malformed_or_nonliteral_ids(nodeid):
++    assert SourceProgress.literal(nodeid) == {}
++
++
++def test_source_progress_keeps_literal_function_and_omits_all_parameter_data():
++    assert SourceProgress.literal('tests/unit/test_control.py::TestClass::test_control[PRIVATE_PARAMETER_TOKEN]') == {
++        'file': 'tests/unit/test_control.py', 'function': 'test_control'}
++
++
++def test_source_progress_caps_rows_flushes_and_marks_truncation(monkeypatch):
++    import fleet_source_progress as module
++    lines, flushes = [], []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: flushes.append(True))
++    config = SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter))
++    monkeypatch.setattr(module, 'MAX_ROWS', 2)
++    observer = SourceProgress(config)
++    for _ in range(5): observer.start('tests/unit/test_control.py::test_control[PRIVATE_PARAMETER_TOKEN]')
++    rows = progress_rows('\n'.join(lines))
++    assert [row['stage'] for row in rows] == ['START', 'START', 'TRUNCATED']
++    assert rows[-1] == {'stage': 'TRUNCATED', 'rows_emitted': 2, 'row_limit': 2}
++    assert observer.ordinal == 5 and len(flushes) == len(lines) == 3
++    assert 'PRIVATE_PARAMETER_TOKEN' not in json.dumps(rows)
++
++
++def test_source_progress_finish_without_call_report_is_honestly_unknown():
++    lines = []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    observer.start('tests/unit/test_control.py::test_control')
++    observer.finish('tests/unit/test_control.py::test_control')
++    assert progress_rows('\n'.join(lines))[-1]['outcome'] == 'UNKNOWN'
++
++
++def test_live_progress_requires_newline_but_rejects_malformed_complete_rows():
++    partial = 'SOURCE_TEST_PROGRESS {"stage":"START"'
++    assert live_progress_rows(partial) == []
++    assert live_progress_rows(partial + '}\n') == [{'stage': 'START'}]
++    with pytest.raises(json.JSONDecodeError): live_progress_rows(partial + '\n')
++    with pytest.raises(json.JSONDecodeError): progress_rows(partial)

@@ -1,0 +1,18 @@
+{
+  "tests/proofs/fleet_v1/run_source.py": {
+    "bytes": 5090,
+    "sha256": "632094121e7b97f39c8216e94a4ed0c8ca80f3cbbb1825f3dffb888e65415e5c"
+  },
+  "tests/unit/fleet_source_progress.py": {
+    "bytes": 2547,
+    "sha256": "6eda2925359156a3c99f28143ca597d9ef02608323a25ece93f77d8f6311d38c"
+  },
+  "tests/unit/test_fleet_source_runner.py": {
+    "bytes": 3273,
+    "sha256": "8fd7fd8a312a528fc54ea7c5fa85754d648df018164128521bf8f3893c520b64"
+  },
+  "tests/unit/test_fleet_source_progress.py": {
+    "bytes": 8536,
+    "sha256": "a10e2e7d50f5c7d37432fcfc64f9e6b483564271053eca6450191195b235bf39"
+  }
+}

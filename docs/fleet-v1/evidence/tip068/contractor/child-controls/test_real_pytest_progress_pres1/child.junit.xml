@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.048" timestamp="2026-10-07T00:28:30.355599+09:00" hostname="e54ea59580aa"><testcase classname="tests.unit.test_control" name="test_control" time="0.001"><error message="failed on teardown with &quot;RuntimeError: CONTROLLED_TEARDOWN_FAILURE&quot;">@pytest.fixture
+    def fixture():
+        yield
+&gt;       raise RuntimeError('CONTROLLED_TEARDOWN_FAILURE')
+E       RuntimeError: CONTROLLED_TEARDOWN_FAILURE
+
+tests/unit/test_control.py:5: RuntimeError</error></testcase></testsuite></testsuites>

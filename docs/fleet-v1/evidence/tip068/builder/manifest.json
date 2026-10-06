@@ -1,0 +1,202 @@
+{
+  "capture-probe/capture-control-receipt.json": {
+    "bytes": 1281,
+    "sha256": "2ccb36e14e161a7a679ee4de2c1f7b297817ff1550d141a7c8cfa555d5751ef7"
+  },
+  "capture-probe/fd.log": {
+    "bytes": 4386,
+    "sha256": "6f8cf4efe322fb4b51341d8ced9d0e81dbe7b811d45ece097b77999a463b00bb"
+  },
+  "capture-probe/tee-sys.log": {
+    "bytes": 4386,
+    "sha256": "4e016a5f0ff0a71b237e699eba42fda2c38aed28efe418f9c0db844b0d16edd4"
+  },
+  "capture-probe/test_control_dump.py": {
+    "bytes": 55,
+    "sha256": "21e74495c3507440b68c0712dc3caf36b5f1bb34d6926ef242b902b10c0bb9d9"
+  },
+  "child-v3/receipt.json": {
+    "bytes": 5287,
+    "sha256": "05d1dafea706dc4c4a1731314baedf6a6a09e61f9350b1edb89b4ce3ff57732a"
+  },
+  "child-v3/test_parent_timeout_keeps_flus0/child-command.json": {
+    "bytes": 173,
+    "sha256": "9f6a0ceeb1887eaa1978a4bbf0824779ca1db5a28815506ee66e734fe31e711e"
+  },
+  "child-v3/test_parent_timeout_keeps_flus0/control.log": {
+    "bytes": 4172,
+    "sha256": "f51d72e89bc5816b764d2c428d42837e8b66a7aff5c1ee903bbddb8eca21178e"
+  },
+  "child-v3/test_parent_timeout_keeps_flus0/tests/unit/test_control.py": {
+    "bytes": 51,
+    "sha256": "23e12191c70f773cbd09db64d3db11d7de0b710b67ec38a5fb4646cc8cbbf8d4"
+  },
+  "child-v3/test_real_pytest_progress_is_o0/child-command.json": {
+    "bytes": 199,
+    "sha256": "7316c6bbda63d7f02eda5aa90dfcd0a50d8f0b040bedb3fb0574cb34f831630a"
+  },
+  "child-v3/test_real_pytest_progress_is_o0/child.junit.xml": {
+    "bytes": 354,
+    "sha256": "1fa7ebee1179213fb3bb210096d0d799ad1872281075a996b2da6cf51021b344"
+  },
+  "child-v3/test_real_pytest_progress_is_o0/child.log": {
+    "bytes": 98,
+    "sha256": "a71df3ef716cabe43ead70bd8311cda3aeadcb986bea501da0ea9262f31c3925"
+  },
+  "child-v3/test_real_pytest_progress_is_o0/tests/unit/test_control.py": {
+    "bytes": 118,
+    "sha256": "689809f4b648789ca1fd606e6e37cef85cfeece4466ecf2c1ea05787b46ca011"
+  },
+  "child-v3/test_real_pytest_progress_is_o1/child-command.json": {
+    "bytes": 199,
+    "sha256": "9a1cc5a63940ac36deed5cf1db2447906169ca9ab1c7ae8546e85f80aae91f1e"
+  },
+  "child-v3/test_real_pytest_progress_is_o1/child.junit.xml": {
+    "bytes": 692,
+    "sha256": "f65ae829550e6c3e19d9952200960a8f10c93a5d30e8817b79908ee582956ffe"
+  },
+  "child-v3/test_real_pytest_progress_is_o1/child.log": {
+    "bytes": 688,
+    "sha256": "cd04cef9f55b7ef41ed814f660906ae2bbda582c462e3a769834ec02bc74c84b"
+  },
+  "child-v3/test_real_pytest_progress_is_o1/tests/unit/test_control.py": {
+    "bytes": 147,
+    "sha256": "f914ac021cbeeee0abbf25202d055095cd377882359e0caef5be55fabbc9f049"
+  },
+  "child-v3/test_real_pytest_progress_is_o2/child-command.json": {
+    "bytes": 199,
+    "sha256": "06cda29adaf6161826a553f05a9e8fc8a544e11562ae78652311f8375cc4ad56"
+  },
+  "child-v3/test_real_pytest_progress_is_o2/child.junit.xml": {
+    "bytes": 533,
+    "sha256": "62a074c12f7c69a35587e7f7398f64d4acd12f958721cea88bd3166930ccf2f9"
+  },
+  "child-v3/test_real_pytest_progress_is_o2/child.log": {
+    "bytes": 99,
+    "sha256": "f90ff1bc6613105089204ba33cbe06d1b3efbea38ea5015b13e942713b26371a"
+  },
+  "child-v3/test_real_pytest_progress_is_o2/tests/unit/test_control.py": {
+    "bytes": 137,
+    "sha256": "8aedeba2e14e4a6f9fd741730f8d5167ca37da3c5f6cd320b71cd80c71b97b8a"
+  },
+  "child-v3/test_real_pytest_progress_is_o3/child-command.json": {
+    "bytes": 230,
+    "sha256": "abee67987c63b43fbfda74ba7b0dbb55341479968a9aa6b0f338436420733253"
+  },
+  "child-v3/test_real_pytest_progress_is_o3/child.junit.xml": {
+    "bytes": 354,
+    "sha256": "c16294c38fd191b349d8d8a288fac639a06fb440eb701944c2c6da3cdbc175fc"
+  },
+  "child-v3/test_real_pytest_progress_is_o3/child.log": {
+    "bytes": 453,
+    "sha256": "bb71c38956a6a21778a8d2db0f56c1230c1ca68dac9d84a498f8cb183504c6ec"
+  },
+  "child-v3/test_real_pytest_progress_is_o3/tests/unit/test_control.py": {
+    "bytes": 118,
+    "sha256": "689809f4b648789ca1fd606e6e37cef85cfeece4466ecf2c1ea05787b46ca011"
+  },
+  "child-v3/test_real_pytest_progress_is_o4/child-command.json": {
+    "bytes": 230,
+    "sha256": "29650eceb2baed8f31a3e08631a45c7dcbd5d486906b7c89cba74f0067cf02f3"
+  },
+  "child-v3/test_real_pytest_progress_is_o4/child.junit.xml": {
+    "bytes": 692,
+    "sha256": "406dc970533ec6d389d55fc30d08fe7ad03d0b88e5a7d8fce20577645eab0296"
+  },
+  "child-v3/test_real_pytest_progress_is_o4/child.log": {
+    "bytes": 1044,
+    "sha256": "daf11a33f88de6dc47f2fd968b19114dd687ec0bdf0ff837635c46516d47e2ce"
+  },
+  "child-v3/test_real_pytest_progress_is_o4/tests/unit/test_control.py": {
+    "bytes": 147,
+    "sha256": "f914ac021cbeeee0abbf25202d055095cd377882359e0caef5be55fabbc9f049"
+  },
+  "child-v3/test_real_pytest_progress_is_o5/child-command.json": {
+    "bytes": 230,
+    "sha256": "d5e1cb09a03559cd76069e966ca5ad0882fac63e7fe0fac562e7ebfb0e0f6374"
+  },
+  "child-v3/test_real_pytest_progress_is_o5/child.junit.xml": {
+    "bytes": 533,
+    "sha256": "b82186229fd8debd456f6dc1e0e0ffbe3bc2875a00e9d7395afdc2633c511002"
+  },
+  "child-v3/test_real_pytest_progress_is_o5/child.log": {
+    "bytes": 455,
+    "sha256": "a29d8e872dc902878da7548674f1010fc839f46c0f1bd63bdbc9fe1120c642c0"
+  },
+  "child-v3/test_real_pytest_progress_is_o5/tests/unit/test_control.py": {
+    "bytes": 137,
+    "sha256": "8aedeba2e14e4a6f9fd741730f8d5167ca37da3c5f6cd320b71cd80c71b97b8a"
+  },
+  "child-v3/test_real_pytest_progress_pres0/child-command.json": {
+    "bytes": 230,
+    "sha256": "ab268935082e1b3e7df96082d867add865d270349cf7f20e21fd8c42423bd49f"
+  },
+  "child-v3/test_real_pytest_progress_pres0/child.junit.xml": {
+    "bytes": 618,
+    "sha256": "7957a6cbbf15b2a9bf2750256deef1726d93d450cc4bdf800d05e1689de30e50"
+  },
+  "child-v3/test_real_pytest_progress_pres0/child.log": {
+    "bytes": 963,
+    "sha256": "81d94c6b095d2351e7d8bc9a42f0d447107aaa31e1b781ac41f86e776db794de"
+  },
+  "child-v3/test_real_pytest_progress_pres0/tests/unit/test_control.py": {
+    "bytes": 139,
+    "sha256": "685d506d156d8b1e87af97de84c9145c8f191baaf7fefc16e7e8957d87b2d1c0"
+  },
+  "child-v3/test_real_pytest_progress_pres1/child-command.json": {
+    "bytes": 230,
+    "sha256": "5068e4a55b70e8906f3567028231757c7f8f6a6cd5159833958733c62b81245e"
+  },
+  "child-v3/test_real_pytest_progress_pres1/child.junit.xml": {
+    "bytes": 644,
+    "sha256": "b748059867b3452ac595ca5e77f854712f30e32c81d640f5da846070037f04c3"
+  },
+  "child-v3/test_real_pytest_progress_pres1/child.log": {
+    "bytes": 994,
+    "sha256": "4a5c58bbecc300e643b0d6a2d5c35b6fac211a49c2ebebcbaf4bc9510757827d"
+  },
+  "child-v3/test_real_pytest_progress_pres1/tests/unit/test_control.py": {
+    "bytes": 152,
+    "sha256": "36265b87f81dfb9ac49997e1a5a0084f2f4cd85a856d4637976455a2b095d4bc"
+  },
+  "commands.json": {
+    "bytes": 1761,
+    "sha256": "413e37349c3dd336885507a63afc4c997196f9ad66b41f0bdc4e6c31410c5451"
+  },
+  "diff-check.txt": {
+    "bytes": 23,
+    "sha256": "75ebccfc18cc5b1a8b32589edccfa2e9f53d9f4dcde857010b3235519655e37f"
+  },
+  "environment.lock.txt": {
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  "focused-v3.junit.xml": {
+    "bytes": 4686,
+    "sha256": "25b326b6b783704716908b2524fdb806e6ec24816a355d23907ba2c69f564941"
+  },
+  "focused-v3.log": {
+    "bytes": 99,
+    "sha256": "7baae8ad9040d2e3eff94770eef9c13d5e4a9f288f361120a268dc0219c4f4b9"
+  },
+  "frozen-v3-files.json": {
+    "bytes": 603,
+    "sha256": "479e4620341bdbc71eca792d38d203a2e2f0c2fe162d39c1f50d276758a9469e"
+  },
+  "source-manifest-v3-after.json": {
+    "bytes": 23645,
+    "sha256": "1fa92264351f1b0befd82c60e707f2ee0a14510e0c10df252663ed4d64be10f6"
+  },
+  "source-manifest-v3-before.json": {
+    "bytes": 23645,
+    "sha256": "1fa92264351f1b0befd82c60e707f2ee0a14510e0c10df252663ed4d64be10f6"
+  },
+  "source.diff": {
+    "bytes": 13513,
+    "sha256": "ef0eb687970c7b2c3e10b86528e3b3f3616651bfb265cae5129535aabc83d4fb"
+  },
+  "verification-summary.json": {
+    "bytes": 853,
+    "sha256": "e360ebe8a5fcb2e416882a7efb60b9db45a2be8d1da816bdb531331b17cf47c3"
+  }
+}

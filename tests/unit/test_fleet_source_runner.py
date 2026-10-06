@@ -42,6 +42,9 @@ def test_source_runner_keeps_required_proofs_and_honest_manifest(tmp_path, monke
     assert all(item[1] == 120 for item in attempts[1:])
     assert sum(item[1] for item in attempts) <= 1080
     assert '-v' in attempts[0][2] and 'faulthandler_timeout=90' in attempts[0][2]
+    assert attempts[0][2].count('fleet_source_progress') == 1
+    assert all('fleet_source_progress' not in item[2] for item in attempts[1:])
+    assert not any(argument.startswith('--capture') for argument in attempts[0][2])
     assert summary['physical_qualification'] == 'NOT_RUN'
     assert summary['source_unchanged_during_run'] is (outcome != 'source-changed')
     assert summary['status'] == ('PASS' if outcome == 'pass' else 'FAIL')

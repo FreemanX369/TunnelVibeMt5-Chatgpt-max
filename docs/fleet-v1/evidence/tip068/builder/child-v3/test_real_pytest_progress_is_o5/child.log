@@ -1,0 +1,4 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 49, "test_elapsed_ms": 0}
+sSOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "outcome": "SKIPPED", "stage": "FINISH", "suite_elapsed_ms": 55, "test_elapsed_ms": 6}
+                                                                         [100%]
+1 skipped in 0.02s

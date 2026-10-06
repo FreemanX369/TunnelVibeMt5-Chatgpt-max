@@ -1,0 +1,50 @@
+{
+  "focused-v1": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip068-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_fleet_source_runner.py",
+      "tests/unit/test_fleet_source_progress.py",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-builder/focused-v1.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip068-builder/app:/workspace/scratch/b4674f0ac496/tip068-builder/tests/unit"
+    }
+  },
+  "focused-v2": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip068-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_fleet_source_runner.py",
+      "tests/unit/test_fleet_source_progress.py",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-builder/focused-v2.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip068-builder/app:/workspace/scratch/b4674f0ac496/tip068-builder/tests/unit"
+    }
+  },
+  "focused-v3": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip068-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_fleet_source_runner.py",
+      "tests/unit/test_fleet_source_progress.py",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-builder/focused-v3.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip068-builder/app:/workspace/scratch/b4674f0ac496/tip068-builder/tests/unit"
+    }
+  }
+}

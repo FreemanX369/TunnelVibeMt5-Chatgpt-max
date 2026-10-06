@@ -1,0 +1,1 @@
+["/workspace/scratch/b4674f0ac496/test-venv/bin/python", "-m", "pytest", "-p", "fleet_source_progress", "tests/unit/test_control.py", "-q", "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-contractor/child-controls/test_real_pytest_progress_is_o5/child.junit.xml"]

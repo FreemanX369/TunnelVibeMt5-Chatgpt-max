@@ -1,0 +1,1 @@
+["/workspace/scratch/b4674f0ac496/test-venv/bin/python", "-m", "pytest", "tests/unit/test_control.py", "-q", "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o2/child.junit.xml"]
