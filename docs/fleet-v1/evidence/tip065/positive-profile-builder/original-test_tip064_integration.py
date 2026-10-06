@@ -345,19 +345,13 @@ import threading
 import time
 from queue import Queue
 
-LONG_FIXTURE_PROFILE = pytest.param({'authorization_ms': 1000, 'positive_transport': True}, id='1000')
-
 
 @pytest.fixture
 def composed_service(tmp_path, tls_files, request):
     ca, certificate, private = tls_files
     failures = Queue()
     signing_key = Ed25519PrivateKey.generate()
-    selected = getattr(request, "param", 2000)
-    authorization_ms = selected['authorization_ms'] if isinstance(selected, dict) else selected
-    # Only the long-phase positives opt in. Signed grant TTL is independent.
-    http_policy = (replace(fleet_policy(), http_timeout_ms=5000, heartbeat_interval_ms=5000)
-        if isinstance(selected, dict) and selected.get('positive_transport') else fleet_policy())
+    authorization_ms = getattr(request, "param", 2000)
     def factory(address):
         origin = 'https://127.0.0.1:' + str(address[1])
         policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
@@ -372,12 +366,12 @@ def composed_service(tmp_path, tls_files, request):
             audience=origin, policy=principal_policy(), initialize=True)
         domain = GatewayDomain(store, domains, jobs, native_signer=signer, start_authorization_ms=authorization_ms,
             principal_authority=principals)
-        return GatewayController(store, http_policy, audience=origin,
+        return GatewayController(store, fleet_policy(), audience=origin,
             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
-            broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
+            broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
-    http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), http_policy, cafile=str(ca),
+    http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca),
         server_thread=thread, failures=failures)
     try:
         yield http, OwnerClient(http, TOKEN), signing_key
@@ -407,7 +401,7 @@ def runtime(project_node, composed_service, *, adapter=None):
         device_id=device, route_generation=1, session_id='session-composed', policy=writer_policy(), initialize=True)
     dispatcher = NodeDomainDispatcher(root, domains, jobs, adapter or RoutedNativeAdapter(root),
         principal_runtime=writers, authorization_verifier=verifier, max_inventory_rows=20)
-    agent = OutboundNode(client, root, http.policy, session_id='session-composed',
+    agent = OutboundNode(client, root, fleet_policy(), session_id='session-composed',
         domain_dispatcher=dispatcher, synthetic_read_adapter=positive)
     return FleetClientFacade(owner), client, agent, dispatcher, jobs, domains, transport
 
@@ -976,7 +970,7 @@ def test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret(project_
         assert node.close()['status'] == 'CLOSED'
 
 
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+@pytest.mark.parametrize('composed_service', [1000], indirect=True)
 def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant(project_node, composed_service, monkeypatch):
     run_long_fixture(project_node, composed_service, monkeypatch)
 
@@ -1035,7 +1029,6 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         drained = not dispatcher.has_pending_work()
         raise_worker_failure()
         return succeeded and drained
-    failures = []
     try:
         node, selected = discover(facade, client, agent)
         frozen = freeze(project_node, target=selected); raw = project_node['source'].read_bytes()
@@ -1054,24 +1047,17 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert not dispatcher._native_records and not dispatcher._acked
     except BaseException as primary:
-        failures.append(primary)
+        if worker_failures and primary is not worker_failures[0]:
+            raise BaseExceptionGroup('long fixture worker and observation failed', [worker_failures[0], primary]) from None
+        raise
     finally:
-        try:
+        with preserve_fixture_failure():
             release_return.set()
             close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
             dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
-        except BaseException as cleanup:
-            failures.append(cleanup)
-    # Cleanup may release the wrapper and expose another original failure.
-    # Collect only after the normal bounded owner drain has finished.
-    originals = []
-    for failure in failures + worker_failures:
-        if not any(failure is original for original in originals): originals.append(failure)
-    if len(originals) == 1: raise originals[0]
-    if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
 
 
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+@pytest.mark.parametrize('composed_service', [1000], indirect=True)
 @pytest.mark.parametrize('seconds', [5, 10])
 def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(project_node, composed_service, monkeypatch, seconds):
     from vibemql5.fleet.job_journal import NodeJobJournal
@@ -1109,14 +1095,12 @@ def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(proje
         run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
     assert len(holds) == 6
     assert len(requests) == 5
-    assert all(kind == 'START_AUTHORIZE' and elapsed < composed_service[0].policy.http_timeout_ms / 1000
-        for kind, elapsed in requests)
+    assert all(kind == 'START_AUTHORIZE' and elapsed < 1 for kind, elapsed in requests)
     assert outcomes == [('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')]
-    assert composed_service[0].policy.http_timeout_ms == 5000
-    assert composed_service[0].policy.heartbeat_interval_ms == 5000
+    assert composed_service[0].policy.http_timeout_ms == 1000
 
 
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+@pytest.mark.parametrize('composed_service', [1000], indirect=True)
 @pytest.mark.parametrize('cleanup_fails', [False, True])
 def test_long_fixture_preserves_callback_error_identity_and_cleanup(project_node, composed_service, monkeypatch, cleanup_fails):
     from vibemql5.fleet.job_journal import NodeJobJournal
@@ -1148,16 +1132,16 @@ def test_long_fixture_preserves_callback_error_identity_and_cleanup(project_node
     with pytest.raises(BaseException) as observed:
         run_long_fixture(project_node, composed_service, monkeypatch)
     if cleanup_fails:
-        if not isinstance(observed.value, BaseExceptionGroup) or observed.value.exceptions != (fault, cleanup):
-            raise observed.value
+        assert isinstance(observed.value, BaseExceptionGroup)
+        assert observed.value.exceptions == (fault, cleanup)
     else:
-        if observed.value is not fault: raise observed.value
+        assert observed.value is fault
     assert fault.__notes__ == ['original callback note']
     assert cleanup.__notes__ == ['original cleanup note']
     assert outcomes == [('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN')]
 
 
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+@pytest.mark.parametrize('composed_service', [1000], indirect=True)
 @pytest.mark.parametrize('failure', ['error', 'pytest_failure', 'timeout'])
 def test_long_fixture_preserves_wrapper_failure_after_terminal_ack(project_node, composed_service, monkeypatch, failure):
     fault = pytest.fail.Exception('CONTROLLED_WRAPPER_FAILURE') if failure == 'pytest_failure' else RuntimeError('CONTROLLED_WRAPPER_FAILURE')
@@ -1171,86 +1155,10 @@ def test_long_fixture_preserves_wrapper_failure_after_terminal_ack(project_node,
             raise fault
     with pytest.raises(BaseException) as observed:
         run_long_fixture(project_node, composed_service, monkeypatch, return_barrier=ReturnBarrier())
-    if failure == 'timeout':
-        if not isinstance(observed.value, AssertionError) or 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT' not in str(observed.value):
-            raise observed.value
-    else:
-        if observed.value is not fault: raise observed.value
-        assert fault.__notes__ == ['original wrapper note']
     assert waits == [3]
-
-
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
-@pytest.mark.parametrize('cleanup_fails', [False, True])
-def test_long_fixture_preserves_worker_failure_released_by_cleanup(project_node, composed_service, monkeypatch, cleanup_fails):
-    import sys
-    primary, late, cleanup = WireError('HTTPS_UNAVAILABLE'), pytest.fail.Exception('LATE_WRAPPER'), RuntimeError('CLEANUP')
-    for error, note in ((primary, 'transport note'), (late, 'worker note'), (cleanup, 'cleanup note')):
-        error.add_note(note)
-    waiting, released, raised = threading.Event(), threading.Event(), threading.Event()
-    read, close, make_runtime = FleetClientFacade.get_job, close_dispatcher_fixture, runtime
-    resources, injected = [], []
-    class ReturnBarrier:
-        def is_set(self): return released.is_set()
-        def set(self): released.set()
-        def wait(self, timeout=None):
-            assert timeout == 3
-            waiting.set()
-            assert released.wait(timeout)
-            raised.set(); raise late
-    def interrupted_read(self, *args, **kwargs):
-        if waiting.is_set() and not released.is_set() and not injected:
-            injected.append(True); raise primary
-        return read(self, *args, **kwargs)
-    def owned_runtime(*args, **kwargs):
-        result = make_runtime(*args, **kwargs)
-        resources.extend([result[3].principals, *result[4:]])
-        return result
-    def failed_cleanup(*args, **kwargs):
-        close(*args, **kwargs)
-        for resource in resources: resource.close()
-        raise cleanup
-    monkeypatch.setattr(FleetClientFacade, 'get_job', interrupted_read)
-    if cleanup_fails:
-        monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
-        monkeypatch.setattr(sys.modules[__name__], 'close_dispatcher_fixture', failed_cleanup)
-    with pytest.raises(BaseExceptionGroup) as observed:
-        run_long_fixture(project_node, composed_service, monkeypatch, return_barrier=ReturnBarrier())
-    expected = (primary, cleanup, late) if cleanup_fails else (primary, late)
-    if observed.value.exceptions != expected: raise observed.value
-    assert raised.is_set() and injected == [True]
-    assert [error.__notes__ for error in expected] == [['transport note'], *([['cleanup note']] if cleanup_fails else []), ['worker note']]
-
-
-@pytest.mark.parametrize('control', ['callback', 'wrapper'])
-def test_long_fixture_negative_controls_preserve_unexpected_transport_error(monkeypatch, control):
-    import sys
-    fault = WireError('HTTPS_UNAVAILABLE'); fault.add_note('original transport diagnostic')
-    def failed_run(*args, **kwargs): raise fault
-    monkeypatch.setattr(sys.modules[__name__], 'run_long_fixture', failed_run)
-    with pytest.raises(WireError) as observed:
-        if control == 'callback':
-            test_long_fixture_preserves_callback_error_identity_and_cleanup(None, None, monkeypatch, False)
-        else:
-            test_long_fixture_preserves_wrapper_failure_after_terminal_ack(None, None, monkeypatch, 'pytest_failure')
-    assert observed.value is fault and fault.__notes__ == ['original transport diagnostic']
-
-
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
-def test_long_positive_profile_keeps_actual_nonce_replay_denied(project_node, composed_service):
-    from vibemql5.fleet.wire import encode_body, sign_request
-    facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service)
-    try:
-        body = {'schema': 'fleet.heartbeat/1', 'session_id': agent.session_id}
-        raw = encode_body(body, client.http.policy.max_body_bytes)
-        headers = sign_request(client.key, device_id=client.device_id, route_generation=client.route_generation,
-            timestamp_ms=int(time.time() * 1000), nonce='1' * 48, path='/fleet/v1/heartbeat', body=raw, audience=client.http.origin)
-        assert client.http.post('/fleet/v1/heartbeat', body, headers)['transport'] == 'ONLINE'
-        with pytest.raises(WireError) as observed: client.http.post('/fleet/v1/heartbeat', body, headers)
-        if observed.value.code != 'CONTROL_REPLAY': raise observed.value
-        assert client.http.policy.http_timeout_ms == agent.policy.heartbeat_interval_ms == 5000
-        assert not dispatcher.has_pending_work()
-    finally:
-        with preserve_fixture_failure():
-            close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
-            dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+    if failure == 'timeout':
+        assert isinstance(observed.value, AssertionError)
+        assert 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT' in str(observed.value)
+    else:
+        assert observed.value is fault
+        assert fault.__notes__ == ['original wrapper note']

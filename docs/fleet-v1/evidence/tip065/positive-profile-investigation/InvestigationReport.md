@@ -1,0 +1,33 @@
+# Late worker preservation and capacity aggregate investigation
+
+Exact source: `99ac11991b8858990bf8f5d7ed8f9bcd785b7858`. Two discriminating scratch controls PASS in 4.00 seconds; all 211 source entries unchanged. No repository edits, workflow reruns, live operations or physical qualification.
+
+## Proven late-worker mechanism
+
+The actual shared long TLS fixture receives a controlled original `WireError('HTTPS_UNAVAILABLE')` with an original note from its main-thread job observation while its native wrapper is waiting on the normal three-second return barrier. Its `except` block samples no worker failures yet. The existing `finally` releases that barrier; the wrapper now raises an original `pytest.fail.Exception` with its own note. Real owner cleanup drains and returns. The outer error remains the original WireError only: the late wrapper exception object is discarded. Both original objects retain their notes in the control, but only one reaches the caller.
+
+This establishes a concrete ordering gap in the fixture's failure preservation. It does not establish the historical transport timeout's cause, nor prove that its exact timing followed this schedule. The Deep identity assertion additionally substitutes its own assertion for an unexpected transport error, obscuring the original diagnostic notes.
+
+Minimal proposed correction: finish bounded cleanup before building the union of original observation, worker and cleanup exceptions; deduplicate by object identity, preserve a sole exception unchanged, group genuinely distinct failures. Expected-negative wrapper/callback controls should rethrow unexpected errors unchanged instead of replacing them with identity assertion failures. Add actual-helper controls for primary-before-late-wrapper and late-wrapper plus cleanup failure, with original identity and notes. Keep every runtime and fixture budget unchanged. No product UNKNOWN changes.
+
+## Capacity aggregate observation
+
+The unchanged capacity TLS test fails its literal aggregate `<1.5` assertion when a controlled scheduler delays each of its three control steps by 0.6 seconds before any request begins. All six actual HTTPS calls return within their unchanged 1000 ms budgets; two harmless workers remain pending and unreleased, and normal owner cleanup succeeds. The retained capacity diagnostic note records those facts. This is a valid causal demonstration that the speed assertion also measures harmless scheduling outside requests; it is not a historical storage or Windows timing diagnosis.
+
+The literal 1.5-second value originates in the integrated source testcase and is explicitly retained in later TIP-064 capacity and TIP-065 failure/COMMIT refinement contracts. It was not found in `blueprint.md`, `requirements-and-decisions.md`, or the continuous-build plan. Blueprint obligation O-09 requires measured resource/latency/fairness thresholds; TIP-056 specifies owner-selected measured limits and keeps physical qualification open. Therefore changing this existing test contract requires an explicit new Contractor design decision; it cannot be silently described as preserving the old assertion.
+
+A possible follow-up is a separate finite aggregate harness bound justified by the number of independent control calls, coupled to direct causal observations that all three steps return while the two actual workers remain held, third job remains queued and no scope/admission changes. Any such change must retain TLS/request, shared-round, SQLite, grant, worker hold and cleanup bounds. The ordinary `register_capacity` 1000 ms timeout is a separate issue; the sampled `_read_bounded` stack identifies an observation point, not a demonstrated optimization or timeout fix. It remains unresolved.
+
+YAGNI-3: these controls are needed to distinguish actual fixture defects from unknown latency causes; they reuse actual TLS helpers, native journals and normal cleanup; only two bounded scratch test functions were necessary. Commands, environment, raw log, JUnit, before/after source manifests and exact observations accompany this report.
+
+## Additional authorized positive-profile discrimination
+
+Four fresh-fixture controls now establish:
+
+- The real capacity roster installation commits exactly once, then its response is held 1.2 seconds. With the original 1000 ms HTTP/control profile, the client receives HTTPS_UNAVAILABLE/TimeoutError and the actual durable roster remains installed. With 5000 ms HTTP/control profile on a separate fresh fixture, the response returns and the original complete capacity testcase passes every original assertion. Each case observes exactly one install call and one durable roster; no registration retry occurs.
+- The original actual long TLS helper under the 5000 ms HTTP/control profile still denies its expired 1000 ms signed entry proof after the original 1.2-second harmless producer delay, receives the fresh next-phase grant, proves the ACK-before-worker-return race and drains normally.
+- The existing actual TLS replay/session testcase under that profile still rejects CONTROL_REPLAY, conflicting node session and unauthorized owner. No native effect is introduced.
+
+The first profile matrix yielded three PASS and one scratch assertion failure: pytest's anchored match included original exception notes, so `^HTTPS_UNAVAILABLE$` rejected the correct typed error. The original script/log/JUnit/receipt are retained. The control was corrected to inspect exact WireError.code and retain its TimeoutError note; only that changed negative control was rerun and passed in 1.56 seconds. All 211 repository source entries remained unchanged throughout. This was a scratch assertion correction, not a rerun of an unchanged workflow.
+
+The existing writer fixture already uses finite HTTP5000 for positive admission. Proposed scope is two existing test files: a scoped positive profile for only the long-fixture family (with HTTP client and agent using the same policy), and the capacity positive fixture. Signed TTLs, nonce rules, durability, per-request absolute-deadline handling and all transport-negative tests remain unchanged. A six-request aggregate cap derived from HTTP5000 is 30 seconds, but the existing capacity worker's independent 20-second hold remains stricter. Retaining it preserves fail-closed behavior; it does not promise acceptance of a worst-case six-times-five-second schedule. Capacity owner cleanup is already ten seconds; the composed fixture retains three-second cleanup and worker return bounds. Any change to these independent watchdogs requires a separate explicit design decision, not an implicit consequence of the profile.

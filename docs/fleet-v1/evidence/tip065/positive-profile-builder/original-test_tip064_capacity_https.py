@@ -68,16 +68,12 @@ def signed_roster(node, owner_key):
 
 
 @pytest.fixture
-def capacity_service(tmp_path, tls_files, request):
+def capacity_service(tmp_path, tls_files):
     ca, certificate, private = tls_files
     failures = Queue()
     signer_key, owner_key = Ed25519PrivateKey.generate(), Ed25519PrivateKey.generate()
     owner_public = owner_key.public_key().public_bytes_raw().hex()
-    # Positive TLS/SQLite composition is not the transport deadline-negative
-    # profile. Its signed grants and durable admission rules remain unchanged.
-    budget = getattr(request, 'param', 5000)
-    policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144,
-        http_timeout_ms=budget, heartbeat_interval_ms=budget)
+    policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144)
     def factory(address):
         origin = 'https://127.0.0.1:' + str(address[1])
         control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
@@ -102,10 +98,6 @@ def capacity_service(tmp_path, tls_files, request):
 
 @pytest.mark.parametrize('observation_order', ['normal', 'delayed-release-and-completion'])
 def test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued(project_node, capacity_service, observation_order):
-    run_capacity_fixture(project_node, capacity_service, observation_order)
-
-
-def run_capacity_fixture(project_node, capacity_service, observation_order):
     http, owner, signer_key, owner_key, policy = capacity_service
     root, device = project_node['root'], project_node['registry']['device_id']
     signed, load, closure, requests = signed_roster(project_node, owner_key)
@@ -170,16 +162,8 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         with observe_control_posts(http) as observed:
             began = time.monotonic()
             try:
-                for _ in range(3):
-                    agent.step()
-                    # Each control step must return while both real workers
-                    # are still held; no fast-storage performance claim.
-                    assert not release.is_set() and len(calls) == 2
-                    assert len(dispatcher._futures) == 2
-                    assert all(not row['future'].done() for row in dispatcher._futures.values())
-                # Six independent HTTP calls have six configured budgets.
-                # The independent 20-second worker hold remains stricter.
-                assert time.monotonic() - began < 6 * policy.http_timeout_ms / 1000
+                for _ in range(3): agent.step()
+                assert time.monotonic() - began < 1.5
             except BaseException as error:
                 facts = {**observed.summary(time.monotonic() - began), "callback_count": len(calls),
                          "release_set": release.is_set(), "completion_set": completion.is_set(),
@@ -242,60 +226,3 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
                 assert not timer.is_alive()
             close_dispatcher_fixture(agent, dispatcher, pump, seconds=10)
             jobs.close(); domains.close(); transport.close()
-
-
-@pytest.mark.parametrize('capacity_service', [1000, 5000], indirect=True)
-def test_capacity_positive_profile_delayed_durable_registration_has_no_retry(project_node, capacity_service, monkeypatch, tmp_path):
-    import sqlite3
-    original = GatewayJobJournal.install_capacity_roster
-    installed, returned = [], threading.Event()
-    def delayed(self, roster):
-        result = original(self, roster)
-        installed.append(result['profile']['device_id'])
-        time.sleep(1.2)  # Already committed: a missing response is uncertainty.
-        returned.set()
-        return result
-    monkeypatch.setattr(GatewayJobJournal, 'install_capacity_roster', delayed)
-    budget = capacity_service[0].policy.http_timeout_ms
-    if budget == 1000:
-        with pytest.raises(WireError) as observed:
-            run_capacity_fixture(project_node, capacity_service, 'normal')
-        if (observed.value.code != 'HTTPS_UNAVAILABLE' or installed != [project_node['registry']['device_id']]
-                or not any('TimeoutError' in note for note in getattr(observed.value, '__notes__', []))):
-            raise observed.value
-    else:
-        run_capacity_fixture(project_node, capacity_service, 'normal')
-    assert returned.wait(3)
-    assert installed == [project_node['registry']['device_id']]
-    db = sqlite3.connect((tmp_path / 'capacity-jobs.sqlite').as_uri() + '?mode=ro', uri=True)
-    try:
-        durable = json.loads(db.execute("SELECT value FROM meta WHERE name='capacity_rosters'").fetchone()[0])
-    finally: db.close()
-    assert list(durable) == installed and durable[installed[0]]['profile']['capacity'] == 2
-    assert capacity_service[0].policy.heartbeat_interval_ms == budget
-
-
-def test_capacity_control_returns_while_workers_held_past_old_aggregate(project_node, capacity_service, monkeypatch):
-    from contextlib import contextmanager
-    import sys
-    observe, step = observe_control_posts, OutboundNode.step
-    observing, delays, facts = [], [], []
-    @contextmanager
-    def observed_posts(http):
-        observing.append(True); began = time.monotonic()
-        try:
-            with observe(http) as posts:
-                yield posts
-                facts.append(posts.summary(time.monotonic() - began))
-        finally: observing.clear()
-    def held_step(self, *args, **kwargs):
-        if observing:
-            # Scheduling before a request begins does not extend its deadline.
-            time.sleep(.6); delays.append(True)
-        return step(self, *args, **kwargs)
-    monkeypatch.setattr(sys.modules[__name__], 'observe_control_posts', observed_posts)
-    monkeypatch.setattr(OutboundNode, 'step', held_step)
-    run_capacity_fixture(project_node, capacity_service, 'normal')
-    assert len(delays) == 3 and facts[0]['elapsed_ms'] >= 1800
-    assert facts[0]['post_count'] == 6 and not facts[0]['rows_truncated']
-    assert all(row['outcome'] == 'RETURNED' for row in facts[0]['posts'])

@@ -1,0 +1,718 @@
+{
+  "schema": "tip065.failed-candidate-receipt/1",
+  "status": "SOURCE_GATE_REJECTED_5_OF_8",
+  "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+  "tree": "34c788a21dcb5f48102987b58828d6085e583b7a",
+  "main": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "workflows": [
+    {
+      "id": 37321717654,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 37321717730,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 37321717684,
+      "name": "Verify TIP-027 Continuity Core",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 37321717656,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 37321717707,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 37321717777,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 37321717747,
+      "name": "Verify Fleet v1 integrated source",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 37321717850,
+      "name": "Verify TIP-053 Deep Update",
+      "head_sha": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "bootstrap": {
+    "run": 37321717777,
+    "job": 111802177274,
+    "passed": 1225,
+    "failed": 2,
+    "skipped": 12,
+    "seconds": 380.0
+  },
+  "deep": {
+    "run": 37321717850,
+    "job": 111802177245,
+    "passed": 1226,
+    "failed": 1,
+    "skipped": 12,
+    "seconds": 437.88
+  },
+  "artifacts": {
+    "schema": "fleet.artifacts-independent-verification/1",
+    "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+    "tree": "34c788a21dcb5f48102987b58828d6085e583b7a",
+    "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+    "physical_qualification": "NOT_RUN",
+    "source_acceptance": false,
+    "status": "FAILED_CANDIDATE_EVIDENCE_VERIFIED_NOT_ACCEPTED",
+    "artifacts": [
+      {
+        "artifact_id": 11349859788,
+        "archive": "artifact-11349859788.zip",
+        "bytes": 268047,
+        "sha256": "e6c709e36416339a7f79aff3d9f5a5caa62fa624639171221e32d074894b3dfe",
+        "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+        "run_id": 37321717747,
+        "proofs": [
+          {
+            "proof": "b1-harmless/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 15
+          },
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 15
+          },
+          {
+            "proof": "g03a-harmless/summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 8
+          },
+          {
+            "proof": "q1-harmless/summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 4
+          }
+        ],
+        "recorded_status": "FAIL",
+        "failed_tests": [
+          "test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]"
+        ],
+        "tree": "34c788a21dcb5f48102987b58828d6085e583b7a",
+        "source_entries": 211,
+        "junit": {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "1",
+          "skipped": "12",
+          "tests": "1239",
+          "time": "393.216",
+          "timestamp": "2026-10-05T14:04:53.566518+00:00",
+          "hostname": "runnervmfi6oq"
+        },
+        "passed": 1226,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+            ],
+            "exit_code": 1,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 395.468
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 2.61
+          },
+          {
+            "case": "q1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rq/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 13.797
+          },
+          {
+            "case": "g03a-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rg03a/run_windows.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 1.734
+          },
+          {
+            "case": "b1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 7.203
+          }
+        ]
+      },
+      {
+        "artifact_id": 11350042346,
+        "archive": "artifact-11350042346.zip",
+        "bytes": 64290,
+        "sha256": "d4ee0acae1186a650370738e45b7746f27db2123605cd783b6bcaa1644870b7d",
+        "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+        "run_id": 37321717747,
+        "proofs": [
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 15
+          }
+        ],
+        "recorded_status": "PASS",
+        "failed_tests": [],
+        "tree": "34c788a21dcb5f48102987b58828d6085e583b7a",
+        "source_entries": 211,
+        "junit": {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "18",
+          "tests": "1239",
+          "time": "120.588",
+          "timestamp": "2026-10-05T14:04:21.520315+00:00",
+          "hostname": "runnervm8df0l"
+        },
+        "passed": 1221,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 121.593
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 0.615
+          }
+        ]
+      },
+      {
+        "artifact_id": 11350111473,
+        "archive": "artifact-11350111473.zip",
+        "bytes": 8059,
+        "sha256": "8417f4bcb62afccbd5737e6d890a9f98d36deb7d6e177458437b20c4155829a2",
+        "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+        "run_id": 37321717654,
+        "proofs": [
+          {
+            "proof": "tip057rb1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 15
+          },
+          {
+            "proof": "tip057rb1-windows/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 15
+          }
+        ]
+      },
+      {
+        "artifact_id": 11350980761,
+        "archive": "artifact-11350980761.zip",
+        "bytes": 2319,
+        "sha256": "c754a19ef44f9c743757c7a23d1b0a5e3b8c3676ce8ed8bcb2f3a9505f06ab4a",
+        "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+        "run_id": 37321717707,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 8
+          }
+        ]
+      },
+      {
+        "artifact_id": 11351110517,
+        "archive": "artifact-11351110517.zip",
+        "bytes": 8893,
+        "sha256": "a65f1f0a6b115742d8c31d6e5e708bd7c52dad032e58592b04bcd110a02d61ef",
+        "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+        "run_id": 37321717656,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+            "verified_sources": 4
+          }
+        ]
+      }
+    ]
+  },
+  "required_windows_controls": [
+    {
+      "class": "tests.unit.test_tip056_resources",
+      "name": "test_real_process_fifo_and_atomic_resource_writers_share_legacy_lease",
+      "time": "1.006",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip056_resources",
+      "name": "test_real_queued_resource_writer_observing_active_is_denied_without_reservation",
+      "time": "0.877",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-False]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-True]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-False]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-True]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_caps_rows_without_replaying_calls",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_invalid_unhashable_route_cannot_mask_original_error",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect",
+      "time": "1.169",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[False]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[True]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_handoff_retains_owners_only_after_success[False]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_handoff_retains_owners_only_after_success[True]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure",
+      "time": "0.027",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[FAILED]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[NOT_RUN]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[CANCELLED]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_capacity_https",
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]",
+      "time": "5.382",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_capacity_https",
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+      "time": "14.097",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_observation_retains_only_original_reads_and_safe_last_state",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_original_predicate_failure_and_cleanup_identity_are_preserved",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_timeout_retains_last_predicate_state_without_additional_read",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[RETURNED]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[HTTPS_UNAVAILABLE]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[FIXTURE_LOST_ACK]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[CLOSE_WRONG_STATUS]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+      "time": "2.942",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]",
+      "time": "8.164",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]",
+      "time": "11.693",
+      "status": "FAIL"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_preserves_callback_error_identity_and_cleanup[False-1000]",
+      "time": "4.971",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_preserves_callback_error_identity_and_cleanup[True-1000]",
+      "time": "3.937",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]",
+      "time": "5.736",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]",
+      "time": "5.021",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]",
+      "time": "3.898",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_identity_positive_and_fresh_path_match",
+      "time": "0.084",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_handle_rejects_fresh_path_replacement",
+      "time": "0.049",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_abi_reuse_keeps_three_fresh_queries_buffers_and_library_owner",
+      "time": "0.101",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_changed_handle_metadata_is_observed_without_data_cache",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_query_failure_retains_current_last_error_and_never_prior_facts[18]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_query_failure_retains_current_last_error_and_never_prior_facts[0]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_query_failure_retains_current_last_error_and_never_prior_facts[1]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_current_metadata_still_fails_closed[changed0]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_current_metadata_still_fails_closed[changed1]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_current_metadata_still_fails_closed[changed2]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_current_metadata_still_fails_closed[changed3]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_current_metadata_still_fails_closed[changed4]",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_invalid_handle_is_not_satisfied_from_prior_metadata",
+      "time": "0.001",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_synthetic_concurrent_handles_own_distinct_result_buffers",
+      "time": "0.002",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_actual_windows_retained_handles_have_current_handle_specific_identity",
+      "time": "0.008",
+      "status": "PASS"
+    },
+    {
+      "class": "tests.unit.test_tip065_windows_metadata_bindings",
+      "name": "test_actual_windows_changed_file_is_reobserved_after_retained_handle_closes",
+      "time": "0.009",
+      "status": "PASS"
+    }
+  ],
+  "original_long_fixture": {
+    "classname": "tests.unit.test_tip064_integration",
+    "name": "test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]",
+    "time": "3.818"
+  },
+  "decoded_logs": {
+    "metadata/job-111802177844.log": {
+      "bytes": 28546,
+      "sha256": "35fb59f01e86f3aa2245f12cfcc040a86b6cbb194af555450a2a17fd305c835b"
+    },
+    "metadata/windows-full-unit.log": {
+      "bytes": 177357,
+      "sha256": "958a81e239e53a9f6008f31525ea6f5ab3eb874dcf73384db64f60511ef92227"
+    },
+    "metadata/job-111802177245.log": {
+      "bytes": 34017,
+      "sha256": "391e6e95df5f554b839ad5db973e6e33b0e9760cd2118a0fa31278b01ad7cc01"
+    },
+    "metadata/bootstrap-original.log": {
+      "bytes": 61176,
+      "sha256": "48f008b56f565b8bf5b85d45fc3b6b1e63fc8590fd1381e74bf68cfaa1da4f96"
+    }
+  },
+  "source_acceptance": false,
+  "overlay_deployment": "NOT_STARTED",
+  "restart": "NOT_RUN",
+  "physical_qualification": "NOT_RUN",
+  "full_fleet_activation": "OPEN",
+  "workflow_reruns": 0,
+  "original_30bcc_cause": "UNKNOWN",
+  "original_8019a52_owner_grant_cause": "UNKNOWN",
+  "commit_storage_scheduling_cause": "UNPROVEN"
+}

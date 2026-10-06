@@ -1,5 +1,29 @@
 # Fleet v1 — Continuous source verification
 
+Current rejected parent `99ac11991b8858990bf8f5d7ed8f9bcd785b7858`, tree
+`34c788a21dcb5f48102987b58828d6085e583b7a`, completed **5/8 on original attempt 1**.
+The [retained failure receipt](evidence/tip065/ci-99ac119/metadata/verification-receipt.json)
+verifies five official ZIPs, exact unchanged 211-entry manifests, full JUnit and
+nine harmless proofs without granting acceptance. Bootstrap recorded 1225 PASS,
+two failures and 12 skips: positive capacity registration timed out at 1000 ms,
+and three valid control rounds took 2766 ms against an incidental 1500-ms bound.
+Deep recorded 1226 PASS/one failure/12 skips: a negative wrapper control masked an
+unexpected HTTPS_UNAVAILABLE. Integrated Windows recorded 1226 PASS/one failure/
+12 skips, preserving phase/result/cleanup transport failures with sampled COMMIT
+frames. Linux passed 1221/18. None substitutes for the failed workflows.
+
+[Controlled investigations](evidence/tip065/positive-profile-investigation/InvestigationReport.md)
+prove a separate late-worker failure loss during cleanup, valid held-worker
+progress beyond 1500 ms, and positive transport/authority budget coupling. The
+[new two-file contract](TIP-065-positive-fixture-profile.md) preserves all product
+bytes and signed TTLs while explicitly selecting a 5000-ms positive transport
+profile, collecting original errors after bounded cleanup and verifying control
+progress while workers remain held. It supersedes only the named positive fixture
+assumptions in historical contracts below. Historical storage/COMMIT causes remain
+UNKNOWN; measured physical latency remains OPEN. The new candidate requires its
+own 8/8/artifact gate before the frozen five-file legacy preflight overlay can
+deploy. Full Fleet activation and private VM/MT5/SDK qualification remain OPEN.
+
 Parent `30bcc584953b29a8564bff717b3b4d5819a02798`, tree
 `b84c1f196461f49e852bb4cc9230a4b4da663bb3`, completed **7/8 on attempt 1**.
 Its [retained receipt](evidence/tip065/ci-30bcc58/metadata/verification-receipt.json)
