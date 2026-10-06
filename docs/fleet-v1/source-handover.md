@@ -1,5 +1,17 @@
 # Fleet v1 — Complete source handover
 
+The later 06/10 continuation adds [TIP-067](TIP-067-fixture-diagnostics.md), bounded
+test-only callback/authorization evidence preservation. Parent7ebff6b is rejected
+5/8 on original attempt1; three failed Windows runs and all five official ZIPs,
+212-entry source manifests/JUnit/nine harmless proofs are retained externally.
+Its capacity-normal outcome remains UNKNOWN with an ARMED scope; bootstrap
+COMMIT latency and long-phase expiry causes remain UNKNOWN. The Builder and
+[independent Contractor report](TIP-067-contractor-verification.md), plus the
+current PR/external receipts, determine the changed candidate's own source gate.
+Production, signed TTLs, fixture budgets, native/scoped authority and every
+negative/positive outcome assertion remain frozen. Runtime at21:30 ICT still
+returns MCP -32603; missing guards do not permit deployment or blind recovery.
+
 The 06/10 continuation dispatches [TIP-066](TIP-066-live-diagnostics.md), a bounded
 source correction for five anticipated legacy live-read errors masked by SDK 2.1.1.
 Only three existing MCP reads change their error boundary; catalog, input schemas,

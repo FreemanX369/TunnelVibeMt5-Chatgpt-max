@@ -1,0 +1,501 @@
+diff --git a/tests/unit/test_tip064_capacity_https.py b/tests/unit/test_tip064_capacity_https.py
+index 14ab80e..eede5f8 100644
+--- a/tests/unit/test_tip064_capacity_https.py
++++ b/tests/unit/test_tip064_capacity_https.py
+@@ -114,24 +114,48 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+     # These actual harmless scopes have private test provenance and no marker.
+     coordinator = ScopedResourceCoordinator._for_fixture(root, signed['body'], initialize=True)
+     entered, release, calls = Queue(), threading.Event(), []
++    callback_failures = []
++    def preserve_callback(callback):
++        def captured(*args, **kwargs):
++            try: return callback(*args, **kwargs)
++            except BaseException as error:
++                if not any(error is previous for previous in callback_failures): callback_failures.append(error)
++                raise
++        return captured
++    def raise_callback_failure():
++        if callback_failures: raise callback_failures[0]
++    def checked(predicate):
++        def observed():
++            raise_callback_failure()
++            result = predicate()
++            raise_callback_failure()
++            return result
++        return observed
+     completion, timers = threading.Event(), []
+     if observation_order == 'normal': completion.set()
+     class ScopedHarmlessAdapter:
++        @preserve_callback
+         def reserve(self, request, operation, exact_fence):
+             assert type(exact_fence['authorization']) is NativeAuthorization
+             return {'local_job_id': exact_fence['local_job_id']}
++        @preserve_callback
+         def start_reserved(self, local_job_id, request, exact_fence):
+             assert type(exact_fence['authorization']) is NativeAuthorization
+             selected = request['placement']['target']
+             with coordinator.execution(local_job_id, kind='tester', terminal_id=selected['terminal_id'],
+                     terminal_generation=selected['terminal_generation'], wait_ms=1000) as scope:
+-                armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
+-                # One finite harmless hold budget includes test observations
+-                # and the controlled delayed-completion regression barrier.
+-                hold_deadline = time.monotonic() + 20
+-                assert release.wait(max(0, hold_deadline - time.monotonic()))
+-                assert completion.wait(max(0, hold_deadline - time.monotonic()))
+-                scope.close_zero_attempt(armed)
++                # Capture before the context manager's durable release, which
++                # can independently fail and replace the callback exception.
++                @preserve_callback
++                def held_scope():
++                    armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
++                    # One finite harmless hold budget includes test observations
++                    # and the controlled delayed-completion regression barrier.
++                    hold_deadline = time.monotonic() + 20
++                    assert release.wait(max(0, hold_deadline - time.monotonic()))
++                    assert completion.wait(max(0, hold_deadline - time.monotonic()))
++                    scope.close_zero_attempt(armed)
++                held_scope()
+             return {'schema': 'fleet.native.effect/1', 'phase': 'start', 'evidence': 'SYNTHETIC_NATIVE_ONLY',
+                 'payload': {'execution': {'status': 'COMPLETED'}, 'process': current_identity()}}
+     key = Ed25519PrivateKey.generate()
+@@ -150,6 +174,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+         max_inventory_rows=20, capacity_roster=roster)
+     agent = OutboundNode(client, root, policy, session_id='session-capacity', domain_dispatcher=dispatcher, synthetic_read_adapter=positive)
+     facade = FleetClientFacade(owner)
++    failures = []
+     try:
+         agent.step()
+         payload = {'signed_profile': signed, 'load_receipt_base64': base64.b64encode(load).decode(),
+@@ -159,7 +184,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+         registered = client.register_capacity(agent.session_id, **payload)
+         assert registered['profile_sha256'] == roster.profile_sha256
+         launched = [facade.launch_job('capacity-native-' + str(index), request) for index, request in enumerate(requests)]
+-        pump(agent, lambda: entered.qsize() == 2)
++        pump(agent, checked(lambda: entered.qsize() == 2))
+         assert dispatcher.native_capacity == 2
+         assert len({entered.get_nowait(), entered.get_nowait()}) == 2
+         with coordinator.transaction() as db:
+@@ -171,7 +196,9 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+             began = time.monotonic()
+             try:
+                 for _ in range(3):
++                    raise_callback_failure()
+                     agent.step()
++                    raise_callback_failure()
+                     # Each control step must return while both real workers
+                     # are still held; no fast-storage performance claim.
+                     assert not release.is_set() and len(calls) == 2
+@@ -192,7 +219,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+             # Force observations past the former five-second worker watchdog.
+             observed = threading.Event()
+             timer = threading.Timer(5.2, observed.set); timers.append(timer); timer.start()
+-            pump(agent, observed.is_set, seconds=10)
++            pump(agent, checked(observed.is_set), seconds=10)
+             assert not release.is_set() and len(calls) == 2
+             assert facade.get_job(third['global_job_id'])['state'] == 'QUEUED'
+             assert all(facade.get_job(row['global_job_id'])['state'] == 'STARTING' for row in launched)
+@@ -226,7 +253,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+             return value
+         release.set()
+         try:
+-            pump(agent, completed, seconds=10)
++            pump(agent, checked(completed), seconds=10)
+         except BaseException as error:
+             error.add_note('CAPACITY_HTTPS_FIXTURE ' + json.dumps(diagnostic(), sort_keys=True))
+             raise
+@@ -234,14 +261,23 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
+         for row in launched + [third]:
+             assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
+         assert not (root / 'state' / 'fleet' / 'scoped-install.json').exists()
++    except BaseException as primary:
++        failures.append(primary)
+     finally:
+-        with preserve_fixture_failure():
++        try:
+             release.set(); completion.set()
+             for timer in timers:
+                 timer.cancel(); timer.join(timeout=1)
+                 assert not timer.is_alive()
+             close_dispatcher_fixture(agent, dispatcher, pump, seconds=10)
+             jobs.close(); domains.close(); transport.close()
++        except BaseException as cleanup:
++            failures.append(cleanup)
++    originals = []
++    for failure in failures + callback_failures:
++        if not any(failure is original for original in originals): originals.append(failure)
++    if len(originals) == 1: raise originals[0]
++    if originals: raise BaseExceptionGroup('capacity fixture observation, callback or cleanup failed', originals) from None
+ 
+ 
+ @pytest.mark.parametrize('capacity_service', [1000, 5000], indirect=True)
+@@ -299,3 +335,68 @@ def test_capacity_control_returns_while_workers_held_past_old_aggregate(project_
+     assert len(delays) == 3 and facts[0]['elapsed_ms'] >= 1800
+     assert facts[0]['post_count'] == 6 and not facts[0]['rows_truncated']
+     assert all(row['outcome'] == 'RETURNED' for row in facts[0]['posts'])
++
++
++@pytest.mark.parametrize('release_fails', [False, True])
++def test_capacity_callback_original_survives_unknown_and_armed_scope(project_node, capacity_service, monkeypatch, release_fails):
++    from vibemql5.fleet.scoped_resources import ScopedLease
++    from vibemql5.fleet.job_journal import JournalError
++    fault, cause, release_fault = RuntimeError('CALLBACK'), RuntimeError('CAUSE'), JournalError('SCOPE_RELEASE')
++    fault.add_note('original callback note'); release_fault.add_note('original release note')
++    close, save, outcome = ScopedLease.close_zero_attempt, ScopedResourceCoordinator._save, NodeJobJournal._outcome
++    scopes, outcomes = [], []
++    def failed_close(self, expected):
++        if not scopes:
++            scopes.append(self); raise fault from cause
++        return close(self, expected)
++    def failed_save(db, record):
++        if release_fails and record['phase'] == 'ARMED' and record['status'] == 'UNKNOWN': raise release_fault
++        return save(db, record)
++    def observed_outcome(self, record, state, result):
++        row = outcome(self, record, state, result)
++        outcomes.append((row['state'], (row['result'] or {}).get('reason_code')))
++        return row
++    monkeypatch.setattr(ScopedLease, 'close_zero_attempt', failed_close)
++    monkeypatch.setattr(ScopedResourceCoordinator, '_save', staticmethod(failed_save))
++    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
++    with pytest.raises(BaseException) as observed:
++        run_capacity_fixture(project_node, capacity_service, 'normal')
++    if release_fails:
++        assert isinstance(observed.value, BaseExceptionGroup) and observed.value.exceptions == (fault, release_fault)
++        assert release_fault.__context__ is fault and release_fault.__notes__ == ['original release note']
++    else: assert observed.value is fault
++    assert fault.__cause__ is cause and fault.__notes__[0] == 'original callback note'
++    assert ('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN') in outcomes
++    retained = scopes[0].load()
++    assert retained['phase'] == 'ARMED'
++    assert retained['status'] == ('ACQUIRED' if release_fails else 'UNKNOWN')
++    assert not (project_node['root'] / 'state' / 'fleet' / 'scoped-install.json').exists()
++
++
++def test_capacity_primary_late_callback_and_cleanup_keep_original_union(project_node, capacity_service, monkeypatch):
++    import sys
++    from vibemql5.fleet.scoped_resources import ScopedLease
++    primary, late, cleanup = WireError('HTTPS_UNAVAILABLE'), RuntimeError('LATE_CALLBACK'), RuntimeError('CLEANUP')
++    for error, note in ((primary, 'primary note'), (late, 'callback note'), (cleanup, 'cleanup note')): error.add_note(note)
++    read, close_scope, close = FleetClientFacade.get_job, ScopedLease.close_zero_attempt, close_dispatcher_fixture
++    injected, scopes = [], []
++    def failed_read(*args, **kwargs):
++        if not injected: injected.append(True); raise primary
++        return read(*args, **kwargs)
++    def failed_scope(self, expected):
++        if not scopes: scopes.append(self); raise late
++        return close_scope(self, expected)
++    def failed_cleanup(agent, dispatcher, pump, **kwargs):
++        close(agent, dispatcher, pump, **kwargs)
++        # Dispose only the already-drained temporary owners before injecting
++        # this test's cleanup error; keep the uncertain scope record intact.
++        dispatcher.native.close(); dispatcher.journal.close(); agent.client.transport_journal.close()
++        raise cleanup
++    monkeypatch.setattr(FleetClientFacade, 'get_job', failed_read)
++    monkeypatch.setattr(ScopedLease, 'close_zero_attempt', failed_scope)
++    monkeypatch.setattr(sys.modules[__name__], 'close_dispatcher_fixture', failed_cleanup)
++    with pytest.raises(BaseExceptionGroup) as observed:
++        run_capacity_fixture(project_node, capacity_service, 'normal')
++    assert observed.value.exceptions == (primary, cleanup, late)
++    assert [error.__notes__ for error in observed.value.exceptions] == [['primary note'], ['cleanup note'], ['callback note']]
++    assert scopes[0].load()['phase'] == 'ARMED' and scopes[0].load()['status'] == 'UNKNOWN'
+diff --git a/tests/unit/test_tip064_integration.py b/tests/unit/test_tip064_integration.py
+index e9867cd..0a3821a 100644
+--- a/tests/unit/test_tip064_integration.py
++++ b/tests/unit/test_tip064_integration.py
+@@ -386,7 +386,7 @@ def composed_service(tmp_path, tls_files, request):
+             stop_gateway_fixture(stopped, thread, failures)
+ 
+ 
+-def runtime(project_node, composed_service, *, adapter=None):
++def runtime(project_node, composed_service, *, adapter=None, authorization_diagnostics=None):
+     root, device = project_node['root'], project_node['registry']['device_id']
+     http, owner, signing_key = composed_service
+     key = Ed25519PrivateKey.generate()
+@@ -401,6 +401,7 @@ def runtime(project_node, composed_service, *, adapter=None):
+     domains = DomainJournal(root / 'node-domain.sqlite', initialize=True, role='NODE', policy=domain_policy())
+     verifier = NativeAuthorizationVerifier(signing_key.public_key().public_bytes_raw().hex(), http.origin,
+         clock_ms=lambda: int(time.time() * 1000))
++    if authorization_diagnostics is not None: authorization_diagnostics.instrument(verifier)
+     from fleet_writer_fixture import writer_policy
+     from vibemql5.fleet.writers import NodePrincipalRuntime
+     writers = NodePrincipalRuntime(root, gateway_public_key=signing_key.public_key().public_bytes_raw(), audience=http.origin,
+@@ -981,8 +982,226 @@ def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_g
+     run_long_fixture(project_node, composed_service, monkeypatch)
+ 
+ 
++class FixtureAuthorizationDiagnostics:
++    """Observe one fixture verifier; never call or replace an authority clock globally."""
++    def __init__(self):
++        self.rows, self._restores, self._local = [], [], threading.local()
++        self._active, self._lock = True, threading.Lock()
++
++    @staticmethod
++    def times(row, body):
++        if type(body) is dict:
++            for field in ('issued_ms', 'expires_ms'):
++                value = body.get(field)
++                if type(value) is int and 0 <= value < 2 ** 63: row[field] = value
++
++    def instrument(self, verifier):
++        clock, verify = verifier.clock, verifier.verify
++        prior = verifier.__dict__.get('verify')
++        def observed_clock():
++            value = clock()
++            row = getattr(self._local, 'row', None)
++            if self._active and row is not None and type(value) is int and 0 <= value < 2 ** 63:
++                row['current_ms'] = value
++            return value
++        def observed_verify(grant, **expected):
++            row = getattr(self._local, 'row', None)
++            try:
++                if self._active and row is not None and type(grant) is dict: self.times(row, grant.get('body'))
++            except Exception: pass
++            return verify(grant, **expected)
++        verifier.clock, verifier.verify = observed_clock, observed_verify
++        self._restores.append((verifier, clock, prior))
++
++    def restore(self):
++        self._active = False
++        for verifier, clock, prior in self._restores:
++            verifier.clock = clock
++            if prior is None: del verifier.verify
++            else: verifier.verify = prior
++        self._restores.clear()
++
++    def call(self, stage, phase, event, callback, *args, proof=None):
++        row = {'stage': stage if type(stage) is str and stage in ('BEGIN', 'REQUIRE') else 'OTHER',
++               'phase': phase if type(phase) is str and phase in ('deploy', 'capture') else 'OTHER',
++               'event': event if type(event) is str and event in ('snapshot_prepare:0001', 'compile_run_prepare:0001',
++                                           'compile_log_capture:0001') else 'OTHER'}
++        try:
++            if type(proof) is NativeAuthorization: self.times(row, proof._body)
++        except Exception: pass
++        prior, began = getattr(self._local, 'row', None), time.monotonic()
++        self._local.row = row
++        with self._lock:
++            if len(self.rows) < 32: self.rows.append(row)
++        try:
++            result = callback(*args)
++            try:
++                if type(result) is NativeAuthorization: self.times(row, result._body)
++            except Exception: pass
++            row['outcome'] = 'RETURNED'
++            return result
++        except BaseException as error:
++            row['outcome'] = 'ERROR'
++            row['elapsed_ms'] = max(0, int((time.monotonic() - began) * 1000))
++            try:
++                args = error.args
++                if type(args) is tuple and len(args) == 1 and type(args[0]) is str and args[0] == 'NATIVE_AUTHORIZATION_EXPIRED':
++                    error.add_note('LONG_AUTHORIZATION_FIXTURE ' + json.dumps(self.rows, sort_keys=True))
++            except Exception: pass
++            raise
++        finally:
++            row['elapsed_ms'] = max(0, int((time.monotonic() - began) * 1000))
++            self._local.row = prior
++
++
++@pytest.mark.parametrize('stage', ['BEGIN', 'REQUIRE'])
++def test_authorization_diagnostic_keeps_real_expiry_and_exact_clock_calls(stage):
++    from test_tip060_authorization import grant
++    from vibemql5.fleet.job_journal import JournalError
++    signed, binding, public = grant()
++    calls, now = [], [1001 if stage == 'REQUIRE' else 2000]
++    def clock():
++        calls.append(now[0]); return now[0]
++    verifier = NativeAuthorizationVerifier(public, binding['audience'], clock_ms=clock)
++    diagnostics = FixtureAuthorizationDiagnostics(); diagnostics.instrument(verifier)
++    proof = verifier.verify(signed, **binding) if stage == 'REQUIRE' else None
++    now[0] = 2000
++    callback = (lambda: proof.require(**binding)) if proof is not None else (lambda: verifier.verify(signed, **binding))
++    try:
++        with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED') as observed:
++            diagnostics.call(stage, binding['phase'], 'phase_admission', callback, proof=proof)
++        assert calls == ([1001, 2000] if stage == 'REQUIRE' else [2000])
++        assert diagnostics.rows[0]['issued_ms'] == 1000 and diagnostics.rows[0]['expires_ms'] == 2000
++        assert diagnostics.rows[0]['current_ms'] == 2000 and diagnostics.rows[0]['outcome'] == 'ERROR'
++        note = observed.value.__notes__[0]
++        assert 'LONG_AUTHORIZATION_FIXTURE' in note
++        assert binding['global_job_id'] not in note and signed['signature'] not in note
++    finally: diagnostics.restore()
++    assert verifier.clock is clock and 'verify' not in verifier.__dict__
++    if proof is not None:
++        before = copy.deepcopy(diagnostics.rows)
++        now[0] = 1001
++        assert proof.require(**binding)['issued_ms'] == 1000
++        assert calls == [1001, 2000, 1001] and diagnostics.rows == before
++
++
++@pytest.mark.parametrize('invalid', ['SECRET_PATH_TOKEN', [], {}, True, -1, 2 ** 63])
++def test_authorization_diagnostic_omits_malformed_fields_and_caps_rows(invalid):
++    calls, sentinel = [], object()
++    class Verifier:
++        def __init__(self): self.clock = lambda: invalid
++        def verify(self, grant, **expected):
++            calls.append((grant, expected)); self.clock(); return sentinel
++    verifier = Verifier(); clock = verifier.clock
++    diagnostics = FixtureAuthorizationDiagnostics(); diagnostics.instrument(verifier)
++    signed = {'body': {'issued_ms': invalid, 'expires_ms': invalid,
++                      'token': 'SECRET_PATH_TOKEN', 'authorization_id': 'SECRET_PATH_TOKEN'},
++              'signature': 'SECRET_PATH_TOKEN'}
++    try:
++        for _ in range(40):
++            assert diagnostics.call(invalid, invalid, invalid, lambda: verifier.verify(signed, secret='SECRET_PATH_TOKEN')) is sentinel
++        assert len(calls) == 40 and all(value is signed for value, _ in calls)
++        assert len(diagnostics.rows) == 32
++        assert all(row['stage'] == row['phase'] == row['event'] == 'OTHER' for row in diagnostics.rows)
++        assert all(set(row) == {'stage', 'phase', 'event', 'outcome', 'elapsed_ms'} for row in diagnostics.rows)
++        assert 'SECRET_PATH_TOKEN' not in json.dumps(diagnostics.rows)
++    finally: diagnostics.restore()
++    assert verifier.clock is clock and 'verify' not in verifier.__dict__
++
++
++def test_authorization_diagnostic_preserves_error_with_malformed_args_and_broken_annotation(monkeypatch):
++    from test_tip060_authorization import grant
++    signed, binding, public = grant()
++    fault = RuntimeError(['SECRET_PATH_TOKEN']); fault.add_note('original note')
++    diagnostics = FixtureAuthorizationDiagnostics()
++    def broken_times(*args): raise RuntimeError('CONTROLLED_DIAGNOSTIC_FAILURE')
++    monkeypatch.setattr(diagnostics, 'times', broken_times)
++    verifier = NativeAuthorizationVerifier(public, binding['audience'], clock_ms=lambda: 1001)
++    diagnostics.instrument(verifier)
++    try:
++        proof = diagnostics.call('BEGIN', 'deploy', 'snapshot_prepare:0001', lambda: verifier.verify(signed, **binding))
++        with pytest.raises(RuntimeError) as observed:
++            diagnostics.call('REQUIRE', 'deploy', 'snapshot_prepare:0001', lambda: (_ for _ in ()).throw(fault), proof=proof)
++        assert observed.value is fault and fault.__notes__ == ['original note']
++        assert 'SECRET_PATH_TOKEN' not in json.dumps(diagnostics.rows)
++    finally: diagnostics.restore()
++
++
++def test_authorization_diagnostic_keeps_concurrent_fixture_clocks_separate():
++    diagnostics, barrier, clocks = FixtureAuthorizationDiagnostics(), threading.Barrier(2), []
++    class Verifier:
++        def __init__(self, value): self.clock = lambda: value
++        def verify(self, grant, **expected):
++            barrier.wait(3); clocks.append(self.clock()); return grant
++    verifiers = [Verifier(1001), Verifier(2001)]
++    for verifier in verifiers: diagnostics.instrument(verifier)
++    failures = []
++    def observe(index):
++        try:
++            signed = {'body': {'issued_ms': index * 1000, 'expires_ms': (index + 2) * 1000}}
++            assert diagnostics.call('BEGIN', ('deploy', 'capture')[index], 'snapshot_prepare:0001',
++                lambda: verifiers[index].verify(signed)) is signed
++        except BaseException as error: failures.append(error)
++    threads = [threading.Thread(target=observe, args=(index,)) for index in range(2)]
++    try:
++        for thread in threads: thread.start()
++        for thread in threads: thread.join(3)
++        assert not failures and all(not thread.is_alive() for thread in threads)
++        assert sorted(clocks) == [1001, 2001]
++        rows = {row['phase']: row for row in diagnostics.rows}
++        assert rows['deploy']['issued_ms'] == 0 and rows['deploy']['current_ms'] == 1001
++        assert rows['capture']['issued_ms'] == 1000 and rows['capture']['current_ms'] == 2001
++    finally: diagnostics.restore()
++
++
++@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
++def test_long_callback_signed_expiry_keeps_exact_finite_observation(project_node, composed_service, monkeypatch):
++    from vibemql5.fleet.transport import NodeRpcProxy
++    from vibemql5.fleet.job_journal import JournalError
++    request, outcome = NodeRpcProxy._request, NodeJobJournal._outcome
++    holds, outcomes = [], []
++    def held_response(self, kind, payload):
++        result = request(self, kind, payload)
++        if kind == 'START_AUTHORIZE' and payload['command'].get('authorization_event') == 'snapshot_prepare:0001':
++            holds.append(True)
++            # Negative scheduling control: the original response is already
++            # signed, and its unchanged 1000-ms TTL must expire before verify.
++            time.sleep(1.05)
++        return result
++    def observed_outcome(self, record, state, result):
++        row = outcome(self, record, state, result)
++        outcomes.append((row['state'], (row['result'] or {}).get('reason_code')))
++        return row
++    monkeypatch.setattr(NodeRpcProxy, '_request', held_response)
++    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
++    with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED') as observed:
++        run_long_fixture(project_node, composed_service, monkeypatch)
++    notes = [note for note in observed.value.__notes__ if note.startswith('LONG_AUTHORIZATION_FIXTURE ')]
++    rows = json.loads(notes[0].removeprefix('LONG_AUTHORIZATION_FIXTURE '))
++    assert holds == [True] and outcomes == [('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN')]
++    assert len(rows) == 1 and rows[0]['stage'] == 'BEGIN' and rows[0]['event'] == 'snapshot_prepare:0001'
++    assert rows[0]['expires_ms'] - rows[0]['issued_ms'] == 1000
++    assert rows[0]['current_ms'] >= rows[0]['expires_ms'] and rows[0]['outcome'] == 'ERROR'
++
++
++@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
++def test_long_fixture_restore_failure_cannot_mask_original_callback(project_node, composed_service, monkeypatch):
++    fault, restoration = RuntimeError('CALLBACK'), RuntimeError('RESTORATION')
++    fault.add_note('callback note'); restoration.add_note('restoration note')
++    restore = FixtureAuthorizationDiagnostics.restore
++    def broken_restore(self):
++        restore(self); assert not self._restores; raise restoration
++    monkeypatch.setattr(NodeJobJournal, 'begin_effect', lambda *args, **kwargs: (_ for _ in ()).throw(fault))
++    monkeypatch.setattr(FixtureAuthorizationDiagnostics, 'restore', broken_restore)
++    with pytest.raises(BaseExceptionGroup) as observed:
++        run_long_fixture(project_node, composed_service, monkeypatch)
++    assert observed.value.exceptions == (fault, restoration)
++    assert fault.__notes__ == ['callback note'] and restoration.__notes__ == ['restoration note']
++
++
+ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None):
+     grants, events = [], []
++    authorization_diagnostics = FixtureAuthorizationDiagnostics()
+     worker_failures = []
+     def preserve_worker_call(callback, *args):
+         try: return callback(*args)
+@@ -993,12 +1212,17 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
+     def raise_worker_failure():
+         if worker_failures: raise worker_failures[0]
+     def start_fixture(request, fence):
+-        snapshot = fence['begin_effect']('deploy', 'snapshot_prepare:0001')
+-        snapshot.require(**snapshot.binding)
++        def begin(phase, event):
++            return authorization_diagnostics.call('BEGIN', phase, event, fence['begin_effect'], phase, event)
++        def require(proof, phase, event):
++            return authorization_diagnostics.call('REQUIRE', phase, event,
++                lambda: proof.require(**proof.binding), proof=proof)
++        snapshot = begin('deploy', 'snapshot_prepare:0001')
++        require(snapshot, 'deploy', 'snapshot_prepare:0001')
+         fence['complete_effect']('deploy', 'snapshot_prepare:0001', snapshot,
+             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
+-        compile_step = fence['begin_effect']('deploy', 'compile_run_prepare:0001')
+-        compile_step.require(**compile_step.binding)
++        compile_step = begin('deploy', 'compile_run_prepare:0001')
++        require(compile_step, 'deploy', 'compile_run_prepare:0001')
+         grants.append(compile_step); events.append('long-step-entered')
+         # This harmless producer return lasts longer than its entry proof TTL.
+         time.sleep(1.2)
+@@ -1006,16 +1230,17 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
+             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
+         from vibemql5.fleet.job_journal import JournalError
+         with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED'):
+-            compile_step.require(**compile_step.binding)
+-        capture = fence['begin_effect']('capture', 'compile_log_capture:0001')
+-        capture.require(**capture.binding); grants.append(capture)
++            require(compile_step, 'deploy', 'compile_run_prepare:0001')
++        capture = begin('capture', 'compile_log_capture:0001')
++        require(capture, 'capture', 'compile_log_capture:0001'); grants.append(capture)
+         fence['complete_effect']('capture', 'compile_log_capture:0001', capture,
+             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
+         events.append('fresh-next-phase')
+         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
+     adapter = SyntheticNativeAdapter(project_node['root'], callbacks={
+         'start': lambda *args: preserve_worker_call(start_fixture, *args)})
+-    facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service, adapter=adapter)
++    facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service,
++        adapter=adapter, authorization_diagnostics=authorization_diagnostics)
+     release_return = threading.Event() if return_barrier is None else return_barrier
+     observed_return_race = []
+     native_work = dispatcher._native_work
+@@ -1062,6 +1287,9 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
+             dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+         except BaseException as cleanup:
+             failures.append(cleanup)
++        finally:
++            try: authorization_diagnostics.restore()
++            except BaseException as restoration: failures.append(restoration)
+     # Cleanup may release the wrapper and expose another original failure.
+     # Collect only after the normal bounded owner drain has finished.
+     originals = []

@@ -386,7 +386,7 @@ def composed_service(tmp_path, tls_files, request):
             stop_gateway_fixture(stopped, thread, failures)
 
 
-def runtime(project_node, composed_service, *, adapter=None):
+def runtime(project_node, composed_service, *, adapter=None, authorization_diagnostics=None):
     root, device = project_node['root'], project_node['registry']['device_id']
     http, owner, signing_key = composed_service
     key = Ed25519PrivateKey.generate()
@@ -401,6 +401,7 @@ def runtime(project_node, composed_service, *, adapter=None):
     domains = DomainJournal(root / 'node-domain.sqlite', initialize=True, role='NODE', policy=domain_policy())
     verifier = NativeAuthorizationVerifier(signing_key.public_key().public_bytes_raw().hex(), http.origin,
         clock_ms=lambda: int(time.time() * 1000))
+    if authorization_diagnostics is not None: authorization_diagnostics.instrument(verifier)
     from fleet_writer_fixture import writer_policy
     from vibemql5.fleet.writers import NodePrincipalRuntime
     writers = NodePrincipalRuntime(root, gateway_public_key=signing_key.public_key().public_bytes_raw(), audience=http.origin,
@@ -981,8 +982,226 @@ def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_g
     run_long_fixture(project_node, composed_service, monkeypatch)
 
 
+class FixtureAuthorizationDiagnostics:
+    """Observe one fixture verifier; never call or replace an authority clock globally."""
+    def __init__(self):
+        self.rows, self._restores, self._local = [], [], threading.local()
+        self._active, self._lock = True, threading.Lock()
+
+    @staticmethod
+    def times(row, body):
+        if type(body) is dict:
+            for field in ('issued_ms', 'expires_ms'):
+                value = body.get(field)
+                if type(value) is int and 0 <= value < 2 ** 63: row[field] = value
+
+    def instrument(self, verifier):
+        clock, verify = verifier.clock, verifier.verify
+        prior = verifier.__dict__.get('verify')
+        def observed_clock():
+            value = clock()
+            row = getattr(self._local, 'row', None)
+            if self._active and row is not None and type(value) is int and 0 <= value < 2 ** 63:
+                row['current_ms'] = value
+            return value
+        def observed_verify(grant, **expected):
+            row = getattr(self._local, 'row', None)
+            try:
+                if self._active and row is not None and type(grant) is dict: self.times(row, grant.get('body'))
+            except Exception: pass
+            return verify(grant, **expected)
+        verifier.clock, verifier.verify = observed_clock, observed_verify
+        self._restores.append((verifier, clock, prior))
+
+    def restore(self):
+        self._active = False
+        for verifier, clock, prior in self._restores:
+            verifier.clock = clock
+            if prior is None: del verifier.verify
+            else: verifier.verify = prior
+        self._restores.clear()
+
+    def call(self, stage, phase, event, callback, *args, proof=None):
+        row = {'stage': stage if type(stage) is str and stage in ('BEGIN', 'REQUIRE') else 'OTHER',
+               'phase': phase if type(phase) is str and phase in ('deploy', 'capture') else 'OTHER',
+               'event': event if type(event) is str and event in ('snapshot_prepare:0001', 'compile_run_prepare:0001',
+                                           'compile_log_capture:0001') else 'OTHER'}
+        try:
+            if type(proof) is NativeAuthorization: self.times(row, proof._body)
+        except Exception: pass
+        prior, began = getattr(self._local, 'row', None), time.monotonic()
+        self._local.row = row
+        with self._lock:
+            if len(self.rows) < 32: self.rows.append(row)
+        try:
+            result = callback(*args)
+            try:
+                if type(result) is NativeAuthorization: self.times(row, result._body)
+            except Exception: pass
+            row['outcome'] = 'RETURNED'
+            return result
+        except BaseException as error:
+            row['outcome'] = 'ERROR'
+            row['elapsed_ms'] = max(0, int((time.monotonic() - began) * 1000))
+            try:
+                args = error.args
+                if type(args) is tuple and len(args) == 1 and type(args[0]) is str and args[0] == 'NATIVE_AUTHORIZATION_EXPIRED':
+                    error.add_note('LONG_AUTHORIZATION_FIXTURE ' + json.dumps(self.rows, sort_keys=True))
+            except Exception: pass
+            raise
+        finally:
+            row['elapsed_ms'] = max(0, int((time.monotonic() - began) * 1000))
+            self._local.row = prior
+
+
+@pytest.mark.parametrize('stage', ['BEGIN', 'REQUIRE'])
+def test_authorization_diagnostic_keeps_real_expiry_and_exact_clock_calls(stage):
+    from test_tip060_authorization import grant
+    from vibemql5.fleet.job_journal import JournalError
+    signed, binding, public = grant()
+    calls, now = [], [1001 if stage == 'REQUIRE' else 2000]
+    def clock():
+        calls.append(now[0]); return now[0]
+    verifier = NativeAuthorizationVerifier(public, binding['audience'], clock_ms=clock)
+    diagnostics = FixtureAuthorizationDiagnostics(); diagnostics.instrument(verifier)
+    proof = verifier.verify(signed, **binding) if stage == 'REQUIRE' else None
+    now[0] = 2000
+    callback = (lambda: proof.require(**binding)) if proof is not None else (lambda: verifier.verify(signed, **binding))
+    try:
+        with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED') as observed:
+            diagnostics.call(stage, binding['phase'], 'phase_admission', callback, proof=proof)
+        assert calls == ([1001, 2000] if stage == 'REQUIRE' else [2000])
+        assert diagnostics.rows[0]['issued_ms'] == 1000 and diagnostics.rows[0]['expires_ms'] == 2000
+        assert diagnostics.rows[0]['current_ms'] == 2000 and diagnostics.rows[0]['outcome'] == 'ERROR'
+        note = observed.value.__notes__[0]
+        assert 'LONG_AUTHORIZATION_FIXTURE' in note
+        assert binding['global_job_id'] not in note and signed['signature'] not in note
+    finally: diagnostics.restore()
+    assert verifier.clock is clock and 'verify' not in verifier.__dict__
+    if proof is not None:
+        before = copy.deepcopy(diagnostics.rows)
+        now[0] = 1001
+        assert proof.require(**binding)['issued_ms'] == 1000
+        assert calls == [1001, 2000, 1001] and diagnostics.rows == before
+
+
+@pytest.mark.parametrize('invalid', ['SECRET_PATH_TOKEN', [], {}, True, -1, 2 ** 63])
+def test_authorization_diagnostic_omits_malformed_fields_and_caps_rows(invalid):
+    calls, sentinel = [], object()
+    class Verifier:
+        def __init__(self): self.clock = lambda: invalid
+        def verify(self, grant, **expected):
+            calls.append((grant, expected)); self.clock(); return sentinel
+    verifier = Verifier(); clock = verifier.clock
+    diagnostics = FixtureAuthorizationDiagnostics(); diagnostics.instrument(verifier)
+    signed = {'body': {'issued_ms': invalid, 'expires_ms': invalid,
+                      'token': 'SECRET_PATH_TOKEN', 'authorization_id': 'SECRET_PATH_TOKEN'},
+              'signature': 'SECRET_PATH_TOKEN'}
+    try:
+        for _ in range(40):
+            assert diagnostics.call(invalid, invalid, invalid, lambda: verifier.verify(signed, secret='SECRET_PATH_TOKEN')) is sentinel
+        assert len(calls) == 40 and all(value is signed for value, _ in calls)
+        assert len(diagnostics.rows) == 32
+        assert all(row['stage'] == row['phase'] == row['event'] == 'OTHER' for row in diagnostics.rows)
+        assert all(set(row) == {'stage', 'phase', 'event', 'outcome', 'elapsed_ms'} for row in diagnostics.rows)
+        assert 'SECRET_PATH_TOKEN' not in json.dumps(diagnostics.rows)
+    finally: diagnostics.restore()
+    assert verifier.clock is clock and 'verify' not in verifier.__dict__
+
+
+def test_authorization_diagnostic_preserves_error_with_malformed_args_and_broken_annotation(monkeypatch):
+    from test_tip060_authorization import grant
+    signed, binding, public = grant()
+    fault = RuntimeError(['SECRET_PATH_TOKEN']); fault.add_note('original note')
+    diagnostics = FixtureAuthorizationDiagnostics()
+    def broken_times(*args): raise RuntimeError('CONTROLLED_DIAGNOSTIC_FAILURE')
+    monkeypatch.setattr(diagnostics, 'times', broken_times)
+    verifier = NativeAuthorizationVerifier(public, binding['audience'], clock_ms=lambda: 1001)
+    diagnostics.instrument(verifier)
+    try:
+        proof = diagnostics.call('BEGIN', 'deploy', 'snapshot_prepare:0001', lambda: verifier.verify(signed, **binding))
+        with pytest.raises(RuntimeError) as observed:
+            diagnostics.call('REQUIRE', 'deploy', 'snapshot_prepare:0001', lambda: (_ for _ in ()).throw(fault), proof=proof)
+        assert observed.value is fault and fault.__notes__ == ['original note']
+        assert 'SECRET_PATH_TOKEN' not in json.dumps(diagnostics.rows)
+    finally: diagnostics.restore()
+
+
+def test_authorization_diagnostic_keeps_concurrent_fixture_clocks_separate():
+    diagnostics, barrier, clocks = FixtureAuthorizationDiagnostics(), threading.Barrier(2), []
+    class Verifier:
+        def __init__(self, value): self.clock = lambda: value
+        def verify(self, grant, **expected):
+            barrier.wait(3); clocks.append(self.clock()); return grant
+    verifiers = [Verifier(1001), Verifier(2001)]
+    for verifier in verifiers: diagnostics.instrument(verifier)
+    failures = []
+    def observe(index):
+        try:
+            signed = {'body': {'issued_ms': index * 1000, 'expires_ms': (index + 2) * 1000}}
+            assert diagnostics.call('BEGIN', ('deploy', 'capture')[index], 'snapshot_prepare:0001',
+                lambda: verifiers[index].verify(signed)) is signed
+        except BaseException as error: failures.append(error)
+    threads = [threading.Thread(target=observe, args=(index,)) for index in range(2)]
+    try:
+        for thread in threads: thread.start()
+        for thread in threads: thread.join(3)
+        assert not failures and all(not thread.is_alive() for thread in threads)
+        assert sorted(clocks) == [1001, 2001]
+        rows = {row['phase']: row for row in diagnostics.rows}
+        assert rows['deploy']['issued_ms'] == 0 and rows['deploy']['current_ms'] == 1001
+        assert rows['capture']['issued_ms'] == 1000 and rows['capture']['current_ms'] == 2001
+    finally: diagnostics.restore()
+
+
+@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+def test_long_callback_signed_expiry_keeps_exact_finite_observation(project_node, composed_service, monkeypatch):
+    from vibemql5.fleet.transport import NodeRpcProxy
+    from vibemql5.fleet.job_journal import JournalError
+    request, outcome = NodeRpcProxy._request, NodeJobJournal._outcome
+    holds, outcomes = [], []
+    def held_response(self, kind, payload):
+        result = request(self, kind, payload)
+        if kind == 'START_AUTHORIZE' and payload['command'].get('authorization_event') == 'snapshot_prepare:0001':
+            holds.append(True)
+            # Negative scheduling control: the original response is already
+            # signed, and its unchanged 1000-ms TTL must expire before verify.
+            time.sleep(1.05)
+        return result
+    def observed_outcome(self, record, state, result):
+        row = outcome(self, record, state, result)
+        outcomes.append((row['state'], (row['result'] or {}).get('reason_code')))
+        return row
+    monkeypatch.setattr(NodeRpcProxy, '_request', held_response)
+    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+    with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED') as observed:
+        run_long_fixture(project_node, composed_service, monkeypatch)
+    notes = [note for note in observed.value.__notes__ if note.startswith('LONG_AUTHORIZATION_FIXTURE ')]
+    rows = json.loads(notes[0].removeprefix('LONG_AUTHORIZATION_FIXTURE '))
+    assert holds == [True] and outcomes == [('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN')]
+    assert len(rows) == 1 and rows[0]['stage'] == 'BEGIN' and rows[0]['event'] == 'snapshot_prepare:0001'
+    assert rows[0]['expires_ms'] - rows[0]['issued_ms'] == 1000
+    assert rows[0]['current_ms'] >= rows[0]['expires_ms'] and rows[0]['outcome'] == 'ERROR'
+
+
+@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+def test_long_fixture_restore_failure_cannot_mask_original_callback(project_node, composed_service, monkeypatch):
+    fault, restoration = RuntimeError('CALLBACK'), RuntimeError('RESTORATION')
+    fault.add_note('callback note'); restoration.add_note('restoration note')
+    restore = FixtureAuthorizationDiagnostics.restore
+    def broken_restore(self):
+        restore(self); assert not self._restores; raise restoration
+    monkeypatch.setattr(NodeJobJournal, 'begin_effect', lambda *args, **kwargs: (_ for _ in ()).throw(fault))
+    monkeypatch.setattr(FixtureAuthorizationDiagnostics, 'restore', broken_restore)
+    with pytest.raises(BaseExceptionGroup) as observed:
+        run_long_fixture(project_node, composed_service, monkeypatch)
+    assert observed.value.exceptions == (fault, restoration)
+    assert fault.__notes__ == ['callback note'] and restoration.__notes__ == ['restoration note']
+
+
 def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None):
     grants, events = [], []
+    authorization_diagnostics = FixtureAuthorizationDiagnostics()
     worker_failures = []
     def preserve_worker_call(callback, *args):
         try: return callback(*args)
@@ -993,12 +1212,17 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
     def raise_worker_failure():
         if worker_failures: raise worker_failures[0]
     def start_fixture(request, fence):
-        snapshot = fence['begin_effect']('deploy', 'snapshot_prepare:0001')
-        snapshot.require(**snapshot.binding)
+        def begin(phase, event):
+            return authorization_diagnostics.call('BEGIN', phase, event, fence['begin_effect'], phase, event)
+        def require(proof, phase, event):
+            return authorization_diagnostics.call('REQUIRE', phase, event,
+                lambda: proof.require(**proof.binding), proof=proof)
+        snapshot = begin('deploy', 'snapshot_prepare:0001')
+        require(snapshot, 'deploy', 'snapshot_prepare:0001')
         fence['complete_effect']('deploy', 'snapshot_prepare:0001', snapshot,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
-        compile_step = fence['begin_effect']('deploy', 'compile_run_prepare:0001')
-        compile_step.require(**compile_step.binding)
+        compile_step = begin('deploy', 'compile_run_prepare:0001')
+        require(compile_step, 'deploy', 'compile_run_prepare:0001')
         grants.append(compile_step); events.append('long-step-entered')
         # This harmless producer return lasts longer than its entry proof TTL.
         time.sleep(1.2)
@@ -1006,16 +1230,17 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
         from vibemql5.fleet.job_journal import JournalError
         with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED'):
-            compile_step.require(**compile_step.binding)
-        capture = fence['begin_effect']('capture', 'compile_log_capture:0001')
-        capture.require(**capture.binding); grants.append(capture)
+            require(compile_step, 'deploy', 'compile_run_prepare:0001')
+        capture = begin('capture', 'compile_log_capture:0001')
+        require(capture, 'capture', 'compile_log_capture:0001'); grants.append(capture)
         fence['complete_effect']('capture', 'compile_log_capture:0001', capture,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
         events.append('fresh-next-phase')
         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
     adapter = SyntheticNativeAdapter(project_node['root'], callbacks={
         'start': lambda *args: preserve_worker_call(start_fixture, *args)})
-    facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service, adapter=adapter)
+    facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service,
+        adapter=adapter, authorization_diagnostics=authorization_diagnostics)
     release_return = threading.Event() if return_barrier is None else return_barrier
     observed_return_race = []
     native_work = dispatcher._native_work
@@ -1062,6 +1287,9 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
         except BaseException as cleanup:
             failures.append(cleanup)
+        finally:
+            try: authorization_diagnostics.restore()
+            except BaseException as restoration: failures.append(restoration)
     # Cleanup may release the wrapper and expose another original failure.
     # Collect only after the normal bounded owner drain has finished.
     originals = []

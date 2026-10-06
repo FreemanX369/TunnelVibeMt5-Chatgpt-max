@@ -114,24 +114,48 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
     # These actual harmless scopes have private test provenance and no marker.
     coordinator = ScopedResourceCoordinator._for_fixture(root, signed['body'], initialize=True)
     entered, release, calls = Queue(), threading.Event(), []
+    callback_failures = []
+    def preserve_callback(callback):
+        def captured(*args, **kwargs):
+            try: return callback(*args, **kwargs)
+            except BaseException as error:
+                if not any(error is previous for previous in callback_failures): callback_failures.append(error)
+                raise
+        return captured
+    def raise_callback_failure():
+        if callback_failures: raise callback_failures[0]
+    def checked(predicate):
+        def observed():
+            raise_callback_failure()
+            result = predicate()
+            raise_callback_failure()
+            return result
+        return observed
     completion, timers = threading.Event(), []
     if observation_order == 'normal': completion.set()
     class ScopedHarmlessAdapter:
+        @preserve_callback
         def reserve(self, request, operation, exact_fence):
             assert type(exact_fence['authorization']) is NativeAuthorization
             return {'local_job_id': exact_fence['local_job_id']}
+        @preserve_callback
         def start_reserved(self, local_job_id, request, exact_fence):
             assert type(exact_fence['authorization']) is NativeAuthorization
             selected = request['placement']['target']
             with coordinator.execution(local_job_id, kind='tester', terminal_id=selected['terminal_id'],
                     terminal_generation=selected['terminal_generation'], wait_ms=1000) as scope:
-                armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
-                # One finite harmless hold budget includes test observations
-                # and the controlled delayed-completion regression barrier.
-                hold_deadline = time.monotonic() + 20
-                assert release.wait(max(0, hold_deadline - time.monotonic()))
-                assert completion.wait(max(0, hold_deadline - time.monotonic()))
-                scope.close_zero_attempt(armed)
+                # Capture before the context manager's durable release, which
+                # can independently fail and replace the callback exception.
+                @preserve_callback
+                def held_scope():
+                    armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
+                    # One finite harmless hold budget includes test observations
+                    # and the controlled delayed-completion regression barrier.
+                    hold_deadline = time.monotonic() + 20
+                    assert release.wait(max(0, hold_deadline - time.monotonic()))
+                    assert completion.wait(max(0, hold_deadline - time.monotonic()))
+                    scope.close_zero_attempt(armed)
+                held_scope()
             return {'schema': 'fleet.native.effect/1', 'phase': 'start', 'evidence': 'SYNTHETIC_NATIVE_ONLY',
                 'payload': {'execution': {'status': 'COMPLETED'}, 'process': current_identity()}}
     key = Ed25519PrivateKey.generate()
@@ -150,6 +174,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         max_inventory_rows=20, capacity_roster=roster)
     agent = OutboundNode(client, root, policy, session_id='session-capacity', domain_dispatcher=dispatcher, synthetic_read_adapter=positive)
     facade = FleetClientFacade(owner)
+    failures = []
     try:
         agent.step()
         payload = {'signed_profile': signed, 'load_receipt_base64': base64.b64encode(load).decode(),
@@ -159,7 +184,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         registered = client.register_capacity(agent.session_id, **payload)
         assert registered['profile_sha256'] == roster.profile_sha256
         launched = [facade.launch_job('capacity-native-' + str(index), request) for index, request in enumerate(requests)]
-        pump(agent, lambda: entered.qsize() == 2)
+        pump(agent, checked(lambda: entered.qsize() == 2))
         assert dispatcher.native_capacity == 2
         assert len({entered.get_nowait(), entered.get_nowait()}) == 2
         with coordinator.transaction() as db:
@@ -171,7 +196,9 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
             began = time.monotonic()
             try:
                 for _ in range(3):
+                    raise_callback_failure()
                     agent.step()
+                    raise_callback_failure()
                     # Each control step must return while both real workers
                     # are still held; no fast-storage performance claim.
                     assert not release.is_set() and len(calls) == 2
@@ -192,7 +219,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
             # Force observations past the former five-second worker watchdog.
             observed = threading.Event()
             timer = threading.Timer(5.2, observed.set); timers.append(timer); timer.start()
-            pump(agent, observed.is_set, seconds=10)
+            pump(agent, checked(observed.is_set), seconds=10)
             assert not release.is_set() and len(calls) == 2
             assert facade.get_job(third['global_job_id'])['state'] == 'QUEUED'
             assert all(facade.get_job(row['global_job_id'])['state'] == 'STARTING' for row in launched)
@@ -226,7 +253,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
             return value
         release.set()
         try:
-            pump(agent, completed, seconds=10)
+            pump(agent, checked(completed), seconds=10)
         except BaseException as error:
             error.add_note('CAPACITY_HTTPS_FIXTURE ' + json.dumps(diagnostic(), sort_keys=True))
             raise
@@ -234,14 +261,23 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         for row in launched + [third]:
             assert facade.get_job(row['global_job_id'])['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
         assert not (root / 'state' / 'fleet' / 'scoped-install.json').exists()
+    except BaseException as primary:
+        failures.append(primary)
     finally:
-        with preserve_fixture_failure():
+        try:
             release.set(); completion.set()
             for timer in timers:
                 timer.cancel(); timer.join(timeout=1)
                 assert not timer.is_alive()
             close_dispatcher_fixture(agent, dispatcher, pump, seconds=10)
             jobs.close(); domains.close(); transport.close()
+        except BaseException as cleanup:
+            failures.append(cleanup)
+    originals = []
+    for failure in failures + callback_failures:
+        if not any(failure is original for original in originals): originals.append(failure)
+    if len(originals) == 1: raise originals[0]
+    if originals: raise BaseExceptionGroup('capacity fixture observation, callback or cleanup failed', originals) from None
 
 
 @pytest.mark.parametrize('capacity_service', [1000, 5000], indirect=True)
@@ -299,3 +335,68 @@ def test_capacity_control_returns_while_workers_held_past_old_aggregate(project_
     assert len(delays) == 3 and facts[0]['elapsed_ms'] >= 1800
     assert facts[0]['post_count'] == 6 and not facts[0]['rows_truncated']
     assert all(row['outcome'] == 'RETURNED' for row in facts[0]['posts'])
+
+
+@pytest.mark.parametrize('release_fails', [False, True])
+def test_capacity_callback_original_survives_unknown_and_armed_scope(project_node, capacity_service, monkeypatch, release_fails):
+    from vibemql5.fleet.scoped_resources import ScopedLease
+    from vibemql5.fleet.job_journal import JournalError
+    fault, cause, release_fault = RuntimeError('CALLBACK'), RuntimeError('CAUSE'), JournalError('SCOPE_RELEASE')
+    fault.add_note('original callback note'); release_fault.add_note('original release note')
+    close, save, outcome = ScopedLease.close_zero_attempt, ScopedResourceCoordinator._save, NodeJobJournal._outcome
+    scopes, outcomes = [], []
+    def failed_close(self, expected):
+        if not scopes:
+            scopes.append(self); raise fault from cause
+        return close(self, expected)
+    def failed_save(db, record):
+        if release_fails and record['phase'] == 'ARMED' and record['status'] == 'UNKNOWN': raise release_fault
+        return save(db, record)
+    def observed_outcome(self, record, state, result):
+        row = outcome(self, record, state, result)
+        outcomes.append((row['state'], (row['result'] or {}).get('reason_code')))
+        return row
+    monkeypatch.setattr(ScopedLease, 'close_zero_attempt', failed_close)
+    monkeypatch.setattr(ScopedResourceCoordinator, '_save', staticmethod(failed_save))
+    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+    with pytest.raises(BaseException) as observed:
+        run_capacity_fixture(project_node, capacity_service, 'normal')
+    if release_fails:
+        assert isinstance(observed.value, BaseExceptionGroup) and observed.value.exceptions == (fault, release_fault)
+        assert release_fault.__context__ is fault and release_fault.__notes__ == ['original release note']
+    else: assert observed.value is fault
+    assert fault.__cause__ is cause and fault.__notes__[0] == 'original callback note'
+    assert ('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN') in outcomes
+    retained = scopes[0].load()
+    assert retained['phase'] == 'ARMED'
+    assert retained['status'] == ('ACQUIRED' if release_fails else 'UNKNOWN')
+    assert not (project_node['root'] / 'state' / 'fleet' / 'scoped-install.json').exists()
+
+
+def test_capacity_primary_late_callback_and_cleanup_keep_original_union(project_node, capacity_service, monkeypatch):
+    import sys
+    from vibemql5.fleet.scoped_resources import ScopedLease
+    primary, late, cleanup = WireError('HTTPS_UNAVAILABLE'), RuntimeError('LATE_CALLBACK'), RuntimeError('CLEANUP')
+    for error, note in ((primary, 'primary note'), (late, 'callback note'), (cleanup, 'cleanup note')): error.add_note(note)
+    read, close_scope, close = FleetClientFacade.get_job, ScopedLease.close_zero_attempt, close_dispatcher_fixture
+    injected, scopes = [], []
+    def failed_read(*args, **kwargs):
+        if not injected: injected.append(True); raise primary
+        return read(*args, **kwargs)
+    def failed_scope(self, expected):
+        if not scopes: scopes.append(self); raise late
+        return close_scope(self, expected)
+    def failed_cleanup(agent, dispatcher, pump, **kwargs):
+        close(agent, dispatcher, pump, **kwargs)
+        # Dispose only the already-drained temporary owners before injecting
+        # this test's cleanup error; keep the uncertain scope record intact.
+        dispatcher.native.close(); dispatcher.journal.close(); agent.client.transport_journal.close()
+        raise cleanup
+    monkeypatch.setattr(FleetClientFacade, 'get_job', failed_read)
+    monkeypatch.setattr(ScopedLease, 'close_zero_attempt', failed_scope)
+    monkeypatch.setattr(sys.modules[__name__], 'close_dispatcher_fixture', failed_cleanup)
+    with pytest.raises(BaseExceptionGroup) as observed:
+        run_capacity_fixture(project_node, capacity_service, 'normal')
+    assert observed.value.exceptions == (primary, cleanup, late)
+    assert [error.__notes__ for error in observed.value.exceptions] == [['primary note'], ['cleanup note'], ['callback note']]
+    assert scopes[0].load()['phase'] == 'ARMED' and scopes[0].load()['status'] == 'UNKNOWN'
