@@ -1,0 +1,74 @@
+{
+  "commands.json": {
+    "bytes": 1483,
+    "sha256": "baeb93e7d34fd8210cf1a755159dfd38b776ffce2eb6b9a10aec510343a34fd9"
+  },
+  "diff-check.txt": {
+    "bytes": 23,
+    "sha256": "75ebccfc18cc5b1a8b32589edccfa2e9f53d9f4dcde857010b3235519655e37f"
+  },
+  "environment.lock.txt": {
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  "focused-v1-receipt.json": {
+    "bytes": 559,
+    "sha256": "0050aca6d59d6532be6099b15f12859130b9d4e55d37dada5463ca7d1b65ea53"
+  },
+  "focused-v1.junit.xml": {
+    "bytes": 4723,
+    "sha256": "93a6a6bcedb167cb6cdf90b3d006dbf659345ccb920f4a65713d79e1f2709a97"
+  },
+  "focused-v1.log": {
+    "bytes": 3617,
+    "sha256": "f1a7aea9a161f0833bb6c24e63137c8f7d551e9c2ca3c92e6e97ac4b7b5cecca"
+  },
+  "focused-v2-receipt.json": {
+    "bytes": 130,
+    "sha256": "333bea44044b058e6691a417dc66637edd4eb611fb0dc3d3d25e6868555a76d3"
+  },
+  "focused-v2.junit.xml": {
+    "bytes": 3889,
+    "sha256": "8a56562d0b11a8f2c98b47b685f8f2b894ebbe1a175ecac9d4bf9037b479e487"
+  },
+  "focused-v2.log": {
+    "bytes": 115,
+    "sha256": "3c14d9677f5fab17c9e10845f9508e33431edffd912ad3f25c77680a9aea4f24"
+  },
+  "frozen-v1-files.json": {
+    "bytes": 308,
+    "sha256": "7015a4de52b7f4f700e54cc1ca4ffe2318736cb6f288b033efc3894d89ff188b"
+  },
+  "frozen-v2-files.json": {
+    "bytes": 308,
+    "sha256": "d812b8f3a9cc68441716f86c0a73aaed470c66dbc200db93b406177fb3a9a70d"
+  },
+  "parent-read-evidence-receipt.json": {
+    "bytes": 3145,
+    "sha256": "da9cc9185f604eb2cc0e5da36fc2beafac73b7626014ee7595e8ea6cc8cc0bf8"
+  },
+  "source-manifest-v1-after.json": {
+    "bytes": 23645,
+    "sha256": "a3abaea598ae71eb70164ed7010d54a3731daa6ae14319a193ad824c3c505b85"
+  },
+  "source-manifest-v1-before.json": {
+    "bytes": 23645,
+    "sha256": "a3abaea598ae71eb70164ed7010d54a3731daa6ae14319a193ad824c3c505b85"
+  },
+  "source-manifest-v2-after.json": {
+    "bytes": 23645,
+    "sha256": "a10c4e73c36dcd4191e5e0508cb3e899dd16944e3827725dd7ca58410778dd23"
+  },
+  "source-manifest-v2-before.json": {
+    "bytes": 23645,
+    "sha256": "a10c4e73c36dcd4191e5e0508cb3e899dd16944e3827725dd7ca58410778dd23"
+  },
+  "source.diff": {
+    "bytes": 30773,
+    "sha256": "605ef3da814d8ac81f587e10754a0b0c0db86f012b27b092da5831220dabb90e"
+  },
+  "verification-summary.json": {
+    "bytes": 1050,
+    "sha256": "97d42e1f4f40a075973fd0c982934d3f15c1b01d318fa1d209688dfe294bf9a7"
+  }
+}

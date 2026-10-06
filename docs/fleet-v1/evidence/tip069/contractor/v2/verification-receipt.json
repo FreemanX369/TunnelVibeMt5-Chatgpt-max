@@ -1,0 +1,31 @@
+{
+  "parent_head": "d9254cd82c996b646ec38d74d2c5467d653f4c84",
+  "frozen_files": {
+    "tests/unit/test_tip064_capacity_https.py": {
+      "bytes": 37387,
+      "sha256": "8ee8b65f3756e2cd7c39c84d1c4419b02ee06d1f54224abae9f1c2104d749e6d"
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "bytes": 97385,
+      "sha256": "c258487bb6ffda0856c1cbcac07d5b3be43d264dc0cc623066fcc096cb5cda4c"
+    }
+  },
+  "source_manifest_entries": 214,
+  "unchanged_other_source_entries": 212,
+  "unchanged_app_entries": 89,
+  "exit_code": 0,
+  "elapsed_seconds": 64.879,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "114",
+    "time": "64.100",
+    "timestamp": "2026-10-07T01:10:24.743764+09:00",
+    "hostname": "e54ea59580aa"
+  },
+  "source_unchanged": true,
+  "runtime_deployment": "NOT_RUN",
+  "physical_qualification": "NOT_RUN"
+}

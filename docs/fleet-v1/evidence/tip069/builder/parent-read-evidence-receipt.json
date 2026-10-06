@@ -1,0 +1,87 @@
+{
+  "integrated-windows-full-unit.log": {
+    "bytes": 992261,
+    "sha256": "66690ddbb99b920bd117c7437bac23275e7aafa10926fb1e0f5e6766b93a42a5",
+    "complete_lines": 8109,
+    "failure_start_line": 7990,
+    "failure_end_line": 8104,
+    "failure_extract_sha256": "f60de73735a47250fe497d981fa715228802db19ffe7c778750e0d39955f207f"
+  },
+  "job-112354560620-live-observation.raw.log": {
+    "bytes": 41494,
+    "sha256": "73af74b1611e0fa322f756d7ec6d573e494080a967bf6666e692a67450286d57",
+    "complete_lines": 398,
+    "failure_start_line": 298,
+    "failure_end_line": 378,
+    "failure_extract_sha256": "2e7d3455d8c508db0d7011a4feea4978e3db99f7075059bd69c8f828fd55bccb"
+  },
+  "job-112354567853-live-observation.raw.log": {
+    "bytes": 39797,
+    "sha256": "5cf994a755fb20c6901b1e56a68a805f5c1f3c744cdd9bdce673399afc5d23b7",
+    "complete_lines": 398,
+    "failure_start_line": 323,
+    "failure_end_line": 369,
+    "failure_extract_sha256": "6a7ec5bfa2290ecc018811ee917bc215cd501ebe8292ff54a097d5c0cf357729"
+  },
+  "source": {
+    "head": "d9254cd82c996b646ec38d74d2c5467d653f4c84",
+    "tree": "6e3f7d406dd9652e0932155857a18c4530fcc80f",
+    "published_worktree_clean": true,
+    "timing_rows": 2660,
+    "selected_rows": [
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "stage": "START",
+        "suite_elapsed_ms": 332890,
+        "test_elapsed_ms": 0
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "outcome": "FAILED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 350875,
+        "test_elapsed_ms": 17983
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1152,
+        "stage": "START",
+        "suite_elapsed_ms": 369797,
+        "test_elapsed_ms": 0
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1152,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 373657,
+        "test_elapsed_ms": 3860
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1153,
+        "stage": "START",
+        "suite_elapsed_ms": 373657,
+        "test_elapsed_ms": 0
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1153,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 377641,
+        "test_elapsed_ms": 3984
+      }
+    ],
+    "original_attempts_only": true,
+    "runtime_effects": "NONE"
+  }
+}

@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import sqlite3
+from collections import deque
 from dataclasses import replace
 from pathlib import Path
 
@@ -978,8 +979,12 @@ def test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret(project_
 
 
 @pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
-def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant(project_node, composed_service, monkeypatch):
+def test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant(project_node, composed_service, monkeypatch, capsys):
     run_long_fixture(project_node, composed_service, monkeypatch)
+    facts = long_owner_output(capsys.readouterr().out)
+    assert facts['latest']['native_state'] == 'SUCCEEDED' and facts['latest']['job_state'] == 'SUCCEEDED'
+    assert facts['milestones']['RETURN_FINISH'] >= facts['milestones']['ACK_RELEASE']
+    assert facts['latest']['pending_futures'] == facts['latest']['pending_native_records'] == 0
 
 
 class FixtureAuthorizationDiagnostics:
@@ -1199,19 +1204,119 @@ def test_long_fixture_restore_failure_cannot_mask_original_callback(project_node
     assert fault.__notes__ == ['callback note'] and restoration.__notes__ == ['restoration note']
 
 
+class LongFixtureObservations:
+    """Finite facts from calls the long fixture already makes, never new reads."""
+    STAGES = ('CALLBACK_START', 'CALLBACK_COMPLETE', 'WORKER_START', 'WORKER_FAILURE', 'NATIVE_RESULT', 'RETURN_WAIT',
+              'RETURN_FINISH', 'RETURN_FAILURE', 'CONTROL_START', 'CONTROL_FINISH', 'JOB_READ', 'ACK_RELEASE',
+              'CLEANUP_RELEASE', 'DRAIN_FINISH')
+    STATES = ('QUEUED', 'DELIVERED', 'RESERVED', 'STARTING', 'RUNNING', 'SUCCEEDED', 'FAILED',
+              'CANCELLED', 'UNKNOWN', 'RECOVERY_REQUIRED', 'RESULT_PENDING')
+    INTEGERS = ('step_elapsed_ms', 'read_elapsed_ms', 'pending_futures', 'pending_native_records')
+
+    def __init__(self):
+        self.origin, self.timeline, self.total = time.monotonic(), deque(maxlen=32), 0
+        self.latest, self.milestones, self.lock = {}, {}, threading.Lock()
+        self.observation_errors = []
+
+    def observe(self, stage, **facts):
+        try: self.mark(stage, **facts)
+        except BaseException as error:
+            with self.lock:
+                if not any(error is prior for prior in self.observation_errors): self.observation_errors.append(error)
+
+    def mark(self, stage, **facts):
+        if type(stage) is not str or stage not in self.STAGES: return
+        row = {'stage': stage, 'elapsed_ms': max(0, int((time.monotonic() - self.origin) * 1000))}
+        for key in self.INTEGERS:
+            value = facts.get(key)
+            if type(value) is int and 0 <= value < 2 ** 63: row[key] = value
+        for key in ('job_state', 'native_state'):
+            value = facts.get(key)
+            if type(value) is str and value in self.STATES: row[key] = value
+        with self.lock:
+            self.total += 1; self.timeline.append(row)
+            self.latest.update(row); self.milestones[stage] = row['elapsed_ms']
+
+    def snapshot(self):
+        with self.lock:
+            return {'timeline': list(self.timeline), 'timeline_total': self.total,
+                'timeline_dropped': max(0, self.total - 32), 'timeline_limit': 32,
+                'latest': dict(self.latest), 'milestones': dict(self.milestones)}
+
+    def publish(self):
+        print('LONG_OWNER_FIXTURE ' + json.dumps(self.snapshot(), sort_keys=True), flush=True)
+
+
+def long_owner_output(output):
+    rows = [json.loads(line.removeprefix('LONG_OWNER_FIXTURE ')) for line in output.splitlines()
+            if line.startswith('LONG_OWNER_FIXTURE ')]
+    assert len(rows) == 1
+    assert len(rows[0]['timeline']) <= 32 and rows[0]['timeline_dropped'] == max(0, rows[0]['timeline_total'] - 32)
+    return rows[0]
+
+
+def test_long_owner_observation_keeps_late_milestones_and_omits_unsafe_values():
+    observer = LongFixtureObservations()
+    for _ in range(80): observer.mark('CONTROL_FINISH', pending_futures=1)
+    observer.mark('ACK_RELEASE', job_state='SUCCEEDED', native_state='PRIVATE_TOKEN', pending_futures=True,
+                  read_elapsed_ms=-1, path='/private/path', grant={'secret': 'PRIVATE_TOKEN'})
+    observer.mark('RETURN_FAILURE')
+    for malformed in (None, [], {}, 'PRIVATE_TOKEN'): observer.mark(malformed)
+    facts = observer.snapshot()
+    assert facts['timeline_total'] == 82 and facts['timeline_dropped'] == 50 and len(facts['timeline']) == 32
+    assert facts['latest']['job_state'] == 'SUCCEEDED' and facts['latest']['pending_futures'] == 1
+    assert set(facts['milestones']) == {'CONTROL_FINISH', 'ACK_RELEASE', 'RETURN_FAILURE'}
+    assert 'PRIVATE_TOKEN' not in json.dumps(facts) and '/private/path' not in json.dumps(facts)
+
+
+@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+@pytest.mark.parametrize('broken_stage', ['mark', 'publish'])
+def test_long_broken_observation_keeps_original_worker_unknown_and_restores_step(project_node, composed_service, monkeypatch, broken_stage):
+    import sys
+    from vibemql5.fleet.job_journal import NodeJobJournal
+    fault, diagnostic = RuntimeError('ORIGINAL_CALLBACK'), RuntimeError('DIAGNOSTIC')
+    fault.add_note('original note'); diagnostic.add_note('diagnostic note')
+    make_runtime, outcome = runtime, NodeJobJournal._outcome
+    agents, outcomes, publications = [], [], []
+    def owned_runtime(*args, **kwargs):
+        result = make_runtime(*args, **kwargs); agents.append(result[2]); return result
+    def broken(*args, **kwargs): raise diagnostic
+    def observed_outcome(self, record, state, result):
+        row = outcome(self, record, state, result); outcomes.append((row['state'], (row['result'] or {}).get('reason_code'))); return row
+    publish = LongFixtureObservations.publish
+    def one_publication(self):
+        publications.append(True)
+        if broken_stage == 'publish': raise diagnostic
+        publish(self)
+    monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
+    monkeypatch.setattr(NodeJobJournal, 'begin_effect', lambda *args, **kwargs: (_ for _ in ()).throw(fault))
+    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+    if broken_stage == 'mark': monkeypatch.setattr(LongFixtureObservations, 'mark', broken)
+    monkeypatch.setattr(LongFixtureObservations, 'publish', one_publication)
+    with pytest.raises(BaseExceptionGroup) as observed:
+        run_long_fixture(project_node, composed_service, monkeypatch)
+    assert observed.value.exceptions == (fault, diagnostic)
+    assert fault.__notes__ == ['original note'] and diagnostic.__notes__ == ['diagnostic note']
+    assert outcomes == [('UNKNOWN', 'EXECUTION_OUTCOME_UNKNOWN')]
+    assert 'step' not in agents[0].__dict__ and publications == [True]
+
+
 def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None):
     grants, events = [], []
     authorization_diagnostics = FixtureAuthorizationDiagnostics()
+    owner_observations = LongFixtureObservations()
     worker_failures = []
     def preserve_worker_call(callback, *args):
         try: return callback(*args)
         except BaseException as error:
+            owner_observations.observe('WORKER_FAILURE')
             if not any(error is previous for previous in worker_failures):
                 worker_failures.append(error)
             raise
     def raise_worker_failure():
         if worker_failures: raise worker_failures[0]
     def start_fixture(request, fence):
+        owner_observations.observe('CALLBACK_START')
         def begin(phase, event):
             return authorization_diagnostics.call('BEGIN', phase, event, fence['begin_effect'], phase, event)
         def require(proof, phase, event):
@@ -1236,6 +1341,7 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         fence['complete_effect']('capture', 'compile_log_capture:0001', capture,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
         events.append('fresh-next-phase')
+        owner_observations.observe('CALLBACK_COMPLETE')
         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
     adapter = SyntheticNativeAdapter(project_node['root'], callbacks={
         'start': lambda *args: preserve_worker_call(start_fixture, *args)})
@@ -1245,22 +1351,41 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
     observed_return_race = []
     native_work = dispatcher._native_work
     def delayed_return(*args):
+        owner_observations.observe('WORKER_START')
         result = native_work(*args)
-        assert release_return.wait(timeout=3), 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT'
+        owner_observations.observe('NATIVE_RESULT', native_state=result.get('state') if type(result) is dict else None)
+        owner_observations.observe('RETURN_WAIT')
+        try: assert release_return.wait(timeout=3), 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT'
+        except BaseException:
+            owner_observations.observe('RETURN_FAILURE')
+            raise
+        owner_observations.observe('RETURN_FINISH')
         return result
     monkeypatch.setattr(dispatcher, '_native_work', lambda *args: preserve_worker_call(delayed_return, *args))
     def succeeded_and_drained(global_job_id):
         raise_worker_failure()
-        succeeded = facade.get_job(global_job_id)['state'] == 'SUCCEEDED'
+        began = time.monotonic()
+        observed = facade.get_job(global_job_id)
+        owner_observations.observe('JOB_READ', job_state=observed['state'], read_elapsed_ms=max(0, int((time.monotonic() - began) * 1000)))
+        succeeded = observed['state'] == 'SUCCEEDED'
         if succeeded and not release_return.is_set():
             # Force the Windows-observed ordering on every platform: gateway
             # sees the terminal ACK before the worker future has returned.
             assert dispatcher._futures and dispatcher.has_pending_work()
-            observed_return_race.append(True); release_return.set()
+            observed_return_race.append(True); owner_observations.observe('ACK_RELEASE'); release_return.set()
         drained = not dispatcher.has_pending_work()
         raise_worker_failure()
         return succeeded and drained
     failures = []
+    step = agent.step
+    had_step, prior_step = 'step' in agent.__dict__, agent.__dict__.get('step')
+    def observed_step(*args, **kwargs):
+        began = time.monotonic(); owner_observations.observe('CONTROL_START')
+        try: return step(*args, **kwargs)
+        finally:
+            owner_observations.observe('CONTROL_FINISH', step_elapsed_ms=max(0, int((time.monotonic() - began) * 1000)),
+                pending_futures=len(dispatcher._futures), pending_native_records=len(dispatcher._native_records))
+    agent.step = observed_step
     try:
         node, selected = discover(facade, client, agent)
         frozen = freeze(project_node, target=selected); raw = project_node['source'].read_bytes()
@@ -1282,18 +1407,27 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         failures.append(primary)
     finally:
         try:
+            owner_observations.observe('CLEANUP_RELEASE')
             release_return.set()
             close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+            owner_observations.observe('DRAIN_FINISH', pending_futures=len(dispatcher._futures),
+                pending_native_records=len(dispatcher._native_records))
             dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
         except BaseException as cleanup:
             failures.append(cleanup)
         finally:
+            try:
+                if had_step: agent.step = prior_step
+                else: del agent.step
+            except BaseException as restoration: failures.append(restoration)
             try: authorization_diagnostics.restore()
             except BaseException as restoration: failures.append(restoration)
+    try: owner_observations.publish()
+    except BaseException as observation: failures.append(observation)
     # Cleanup may release the wrapper and expose another original failure.
     # Collect only after the normal bounded owner drain has finished.
     originals = []
-    for failure in failures + worker_failures:
+    for failure in failures + worker_failures + owner_observations.observation_errors:
         if not any(failure is original for original in originals): originals.append(failure)
     if len(originals) == 1: raise originals[0]
     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
@@ -1387,7 +1521,7 @@ def test_long_fixture_preserves_callback_error_identity_and_cleanup(project_node
 
 @pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
 @pytest.mark.parametrize('failure', ['error', 'pytest_failure', 'timeout'])
-def test_long_fixture_preserves_wrapper_failure_after_terminal_ack(project_node, composed_service, monkeypatch, failure):
+def test_long_fixture_preserves_wrapper_failure_after_terminal_ack(project_node, composed_service, monkeypatch, failure, capsys):
     fault = pytest.fail.Exception('CONTROLLED_WRAPPER_FAILURE') if failure == 'pytest_failure' else RuntimeError('CONTROLLED_WRAPPER_FAILURE')
     fault.add_note('original wrapper note')
     waits = []
@@ -1406,11 +1540,15 @@ def test_long_fixture_preserves_wrapper_failure_after_terminal_ack(project_node,
         if observed.value is not fault: raise observed.value
         assert fault.__notes__ == ['original wrapper note']
     assert waits == [3]
+    facts = long_owner_output(capsys.readouterr().out)
+    assert facts['latest']['job_state'] == facts['latest']['native_state'] == 'SUCCEEDED'
+    assert facts['milestones']['RETURN_FAILURE'] >= facts['milestones']['ACK_RELEASE']
+    assert 'RETURN_FINISH' not in facts['milestones']
 
 
 @pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
 @pytest.mark.parametrize('cleanup_fails', [False, True])
-def test_long_fixture_preserves_worker_failure_released_by_cleanup(project_node, composed_service, monkeypatch, cleanup_fails):
+def test_long_fixture_preserves_worker_failure_released_by_cleanup(project_node, composed_service, monkeypatch, cleanup_fails, capsys):
     import sys
     primary, late, cleanup = WireError('HTTPS_UNAVAILABLE'), pytest.fail.Exception('LATE_WRAPPER'), RuntimeError('CLEANUP')
     for error, note in ((primary, 'transport note'), (late, 'worker note'), (cleanup, 'cleanup note')):
@@ -1448,6 +1586,10 @@ def test_long_fixture_preserves_worker_failure_released_by_cleanup(project_node,
     if observed.value.exceptions != expected: raise observed.value
     assert raised.is_set() and injected == [True]
     assert [error.__notes__ for error in expected] == [['transport note'], *([['cleanup note']] if cleanup_fails else []), ['worker note']]
+    facts = long_owner_output(capsys.readouterr().out)
+    assert 'ACK_RELEASE' not in facts['milestones']
+    assert facts['milestones']['RETURN_FAILURE'] >= facts['milestones']['CLEANUP_RELEASE']
+    assert ('DRAIN_FINISH' in facts['milestones']) is not cleanup_fails
 
 
 @pytest.mark.parametrize('control', ['callback', 'wrapper'])
@@ -1460,7 +1602,7 @@ def test_long_fixture_negative_controls_preserve_unexpected_transport_error(monk
         if control == 'callback':
             test_long_fixture_preserves_callback_error_identity_and_cleanup(None, None, monkeypatch, False)
         else:
-            test_long_fixture_preserves_wrapper_failure_after_terminal_ack(None, None, monkeypatch, 'pytest_failure')
+            test_long_fixture_preserves_wrapper_failure_after_terminal_ack(None, None, monkeypatch, 'pytest_failure', None)
     assert observed.value is fault and fault.__notes__ == ['original transport diagnostic']
 
 

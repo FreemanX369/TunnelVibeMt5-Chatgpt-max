@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "cases": 23,
+  "passed": 21,
+  "failures": [
+    "test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[record]",
+    "test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure]"
+  ],
+  "elapsed_seconds": 35.77,
+  "source_manifest_entries": 214,
+  "source_unchanged_during_run": true,
+  "cause": "New diagnostic control shared fault-injection flag can be consumed by a different callback; no production/historical-cause claim",
+  "source_fix_pending_independent_v1_completion": true
+}

@@ -1,0 +1,38 @@
+{
+  "focused-v1": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip069-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_tip064_capacity_https.py",
+      "tests/unit/test_tip064_integration.py",
+      "-k",
+      "scope_observation or scope_broken or long_owner or long_broken or long_fixture or capacity_callback_original or capacity_primary_late",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip069-builder/focused-v1.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip069-builder/app:/workspace/scratch/b4674f0ac496/tip069-builder/tests/unit"
+    }
+  },
+  "focused-v2": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip069-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_tip064_capacity_https.py",
+      "tests/unit/test_tip064_integration.py",
+      "-k",
+      "scope_observation or scope_broken or long_owner or long_broken or long_fixture or capacity_callback_original or capacity_primary_late",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip069-builder/focused-v2.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip069-builder/app:/workspace/scratch/b4674f0ac496/tip069-builder/tests/unit"
+    }
+  }
+}
