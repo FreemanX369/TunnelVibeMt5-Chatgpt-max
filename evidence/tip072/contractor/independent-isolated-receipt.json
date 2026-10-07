@@ -1,0 +1,33 @@
+{
+  "name": "independent-isolated",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-isolated.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-isolated_tmp",
+    "tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract"
+  ],
+  "limit": 90,
+  "exit": 0,
+  "wall_seconds": 0.4282684940000081,
+  "source_entries": 217,
+  "source_unchanged": true,
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.182",
+      "timestamp": "2026-10-07T18:54:10.719731+09:00",
+      "hostname": "bc2fcc3c9523"
+    }
+  ]
+}

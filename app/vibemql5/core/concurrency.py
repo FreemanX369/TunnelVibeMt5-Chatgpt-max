@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import contextvars
+import errno
 import hashlib
 import json
 import os
+import stat
 import threading
 import time
 import uuid
@@ -291,12 +293,40 @@ class _QueuedFileLease:
                 return self._publish_owner() if first else False
         return self._publish_owner() if first else False
 
+    def _has_verified_live_native_owner(self) -> bool:
+        if self.namespace != "native" or self.lock_path != self.root / "runs" / ".active.lock":
+            return False
+        try:
+            metadata = self.lock_path.lstat()
+            if (not stat.S_ISREG(metadata.st_mode)
+                    or getattr(metadata, "st_file_attributes", 0) & 0x400
+                    or self.lock_path.resolve(strict=True) != self.lock_path.absolute()):
+                return False
+            owner = _read_json_object(self.lock_path, attempts=1)
+            token, pid, identity = owner.get("token"), owner.get("pid"), owner.get("identity")
+            if (owner.get("schema_version") != _SCHEMA_VERSION or owner.get("namespace") != "native"
+                    or not isinstance(token, str) or len(token) != 32
+                    or any(character not in "0123456789abcdef" for character in token)
+                    or token == self.token or type(pid) is not int or pid <= 0
+                    or not _identity_valid(identity) or identity["pid"] != pid):
+                return False
+            with ObservedProcess(pid) as process:
+                return process.identity() == identity
+        except (OSError, ValueError, TypeError, RuntimeError):
+            return False
+
     def _publish_owner(self) -> bool:
         try:
             fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         except FileExistsError:
             self._remove_dead_owner()
             return False
+        except PermissionError as error:
+            # Verified live ownership is only a wait barrier, never admission or recovery.
+            if (self.namespace == "native" and error.errno == errno.EACCES
+                    and error.filename == str(self.lock_path) and self._has_verified_live_native_owner()):
+                return False
+            raise
         self.acquired_at = _now_iso()
         try:
             try:

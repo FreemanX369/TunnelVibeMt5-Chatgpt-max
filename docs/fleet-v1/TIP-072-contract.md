@@ -1,0 +1,23 @@
+# TIP-072 — preserve native FIFO waiter under qualified denied publication
+
+Contractor implementation authorization for the user's continuous approved source fix. Exact parent `e9f668a049288eb899c580a6b8147e5caedae585`, tree `29426b4fa2fdf0aefbcc4e0273b1f465d5b554c3`; parent source gate remains rejected6/8 with original CI evidence intact.
+
+YAGNI-3 answered before implementation:
+
+1. Needed now: a modeled original errno13 result while an actual valid native owner remains independently live makes current source abort B/remove its ticket and lets C win. The baseline and independent Contractor control reproduce this conditional defect, not the original Windows physical mechanism.
+2. Reuse: existing `_read_json_object(attempts=1)`, `_identity_valid`, `ObservedProcess`, CLOSED authority transaction and existing FIFO deadline/poll. `_remove_dead_owner()==False` is ambiguous and cannot qualify owner truth.
+3. Shortest safe correction: one narrow PermissionError branch in `_publish_owner()` plus a small private read-only qualification predicate if needed. Return False/NOT_ADMITTED only on affirmatively verified live native-owner condition. Otherwise bare re-raise the original denial. No new API/service/schema/worker/recovery path.
+
+Implementation by Builder only, in a new worktree/branch from exact parent. Contractor independently verifies frozen output. Allowed source paths: `app/vibemql5/core/concurrency.py` and new `tests/unit/test_tip072_native_denied_publication.py`. Add reports/raw evidence separately. Do not edit existing tests/workflows/dependencies/config/build/operator files or other production logic.
+
+Qualification is native-only: EACCES, exact error filename and expected rooted `runs/.active.lock`, ordinary file without symlink/reparse indirection, original owner schema/native namespace, valid distinct owner token, exact positive integer pid and valid matching recorded identity, actual independently observed same live process identity. Read/parse/stat/identity uncertainty is unqualified. Qualification supplies a barrier only; the new branch must not delete, reclaim, publish, grant or invoke `_remove_dead_owner`. Actual admission remains the existing O_EXCL publication under CLOSED authority. Owner release racing this observation may cause another poll and never qualifies admission.
+
+Preserve existing FIFO wait/deadline/poll, sequence allocation, cleanup, lease release, successful owner bytes, authority/SDK gates and all original assertions. No arbitrary PermissionError retry, new TTL, increased budget, guessed process truth or mutation namespace generalization.
+
+Meaningful controls: original-source red control for qualified modeled denial; fixed source keeps B ticket and native owner unchanged before release, then FIFO B before C; ordinary real FileExists path unchanged; missing/corrupt/foreign namespace/wrong identity/blank or invalid token/read denied/wrong error filename/non-native/indirected path remain exact original denial and unchanged owner; actual bad-path/denied publication without qualified owner remains an error; owner missing/dead/unobserved stays unqualified; new branch never reclaims/deletes/grants; authority ACTIVE/unknown continues blocking; successful native acquisition/release and existing concurrency/native ownership compatibility pass. Use finite case IDs and exact frozen source manifests before/after. Do not sum overlapping suites as distinct coverage.
+
+Capture new-regression baseline against original production before applying the patch. Keep every failed attempt/test-authoring receipt. Run appropriate focused and compatibility checks once; do not rerun an old unknown live unit run or original failed CI. Submit frozen Builder report/manifests/hashes, commands/logs/JUnit and source scope review. No commit/publication until Contractor verification; no main commit/merge or VPS mutation by Builder.
+
+Limits: errno13 is a modeled observed OS boundary; original CI owner state and Windows mechanism remain UNKNOWN. Separate Deep capacity-normal3s pump expiration, parent's delayed guard timeout and live MCP outage remain UNKNOWN. This fix makes no causal claim about them. Physical privateVM/two-node/realSDK/fullFleet and production merge remainOPEN/NOT_RUN. Scoped core/concurrency source cannot be copied onto the mixed legacy installation.
+
+Independent baseline: Contractor verifies all six Builder probe payload hashes and replays the same finite owned scratch control in separate directory; exit0, B ticket existed then removed, C alone won, valid owner bytes preserved, authorityCLOSED, eight negative controls preserved exact denial, source unchanged.

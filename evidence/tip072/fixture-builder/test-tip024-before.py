@@ -281,9 +281,6 @@ def test_tip024_mcp_registers_catalog_and_context_is_invisible_contract(monkeypa
     monkeypatch.setitem(sys.modules, "mcp", types.ModuleType("mcp"))
     monkeypatch.setitem(sys.modules, "mcp.server", types.ModuleType("mcp.server"))
     monkeypatch.setitem(sys.modules, "mcp.server.mcpserver", fake_server_mod)
-    exceptions_mod = types.ModuleType("mcp.server.mcpserver.exceptions")
-    exceptions_mod.ToolError = type("ToolError", (Exception,), {})
-    monkeypatch.setitem(sys.modules, "mcp.server.mcpserver.exceptions", exceptions_mod)
     types_mod = types.ModuleType("mcp.types")
     class _Model:
         def __init__(self, **kwargs):

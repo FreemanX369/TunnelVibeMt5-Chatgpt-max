@@ -1,0 +1,101 @@
+{
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip072-builder/app:/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit"
+  },
+  "commands": [
+    {
+      "name": "baseline",
+      "argv": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-vv",
+        "-p",
+        "fleet_source_progress",
+        "-o",
+        "faulthandler_timeout=30",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline.junit.xml",
+        "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp",
+        "tests/unit/test_tip072_native_denied_publication.py"
+      ],
+      "owned_process_limit_seconds": 90,
+      "stdout_stderr": "baseline.log",
+      "exit_code": 1,
+      "wall_time_seconds": 0.5858094459999847,
+      "source_manifest_entries": 217,
+      "source_unchanged": true
+    },
+    {
+      "name": "baseline-v2",
+      "argv": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-vv",
+        "-p",
+        "fleet_source_progress",
+        "-o",
+        "faulthandler_timeout=30",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline-v2.junit.xml",
+        "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline-v2_tmp",
+        "tests/unit/test_tip072_native_denied_publication.py"
+      ],
+      "owned_process_limit_seconds": 90,
+      "stdout_stderr": "baseline-v2.log",
+      "exit_code": 1,
+      "wall_time_seconds": 0.5790716419996897,
+      "source_manifest_entries": 217,
+      "source_unchanged": true
+    },
+    {
+      "name": "focused",
+      "argv": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-vv",
+        "-p",
+        "fleet_source_progress",
+        "-o",
+        "faulthandler_timeout=30",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/focused.junit.xml",
+        "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/focused_tmp",
+        "tests/unit/test_tip072_native_denied_publication.py"
+      ],
+      "owned_process_limit_seconds": 90,
+      "stdout_stderr": "focused.log",
+      "exit_code": 0,
+      "wall_time_seconds": 0.7827773230001185,
+      "source_manifest_entries": 217,
+      "source_unchanged": true
+    },
+    {
+      "name": "compatibility",
+      "argv": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-vv",
+        "-p",
+        "fleet_source_progress",
+        "-o",
+        "faulthandler_timeout=30",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/compatibility.junit.xml",
+        "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/compatibility_tmp",
+        "tests/unit/test_tip024_multiclient_concurrency.py",
+        "tests/unit/test_tip057rg03a_native_ownership.py",
+        "tests/unit/test_tip057r_sdk.py",
+        "tests/unit/test_tip061a_057n.py",
+        "tests/unit/test_tip071_scoped_db_setup_cleanup.py"
+      ],
+      "owned_process_limit_seconds": 180,
+      "stdout_stderr": "compatibility.log",
+      "exit_code": 1,
+      "wall_time_seconds": 10.863993477999884,
+      "source_manifest_entries": 217,
+      "source_unchanged": true
+    }
+  ]
+}

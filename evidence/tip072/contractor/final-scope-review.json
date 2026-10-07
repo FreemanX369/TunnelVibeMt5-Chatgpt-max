@@ -1,0 +1,13 @@
+{
+  "parent": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "source_entries": 217,
+  "changed_source_paths": [
+    "app/vibemql5/core/concurrency.py",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_tip072_native_denied_publication.py"
+  ],
+  "old_TIP024_AST_nodes_preserved": true,
+  "new_fake_setup_statements": 3,
+  "AST_outside_fake_setup_identical": true,
+  "other_source_entries_match_parent": 214
+}

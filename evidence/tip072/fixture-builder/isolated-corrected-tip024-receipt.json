@@ -1,0 +1,30 @@
+{
+  "name": "isolated-corrected-tip024",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/isolated-corrected-tip024.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/isolated-corrected-tip024_tmp",
+    "tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip072-builder/app:/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit"
+  },
+  "limit_seconds": 180,
+  "exit_code": 0,
+  "wall_time_seconds": 0.47175085100002434,
+  "case_count": 1,
+  "passed": 1,
+  "skipped": 0,
+  "failures": [],
+  "source_unchanged": true,
+  "source_manifest_entries": 217
+}

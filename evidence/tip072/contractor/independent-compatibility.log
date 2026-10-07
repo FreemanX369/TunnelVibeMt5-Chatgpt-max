@@ -1,0 +1,1576 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip072-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 261 items
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_identity_and_tool_catalog_are_preserved 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_identity_and_tool_catalog_are_preserved", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 551, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_identity_and_tool_catalog_are_preserved PASSED [  0%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_identity_and_tool_catalog_are_preserved", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 555, "test_elapsed_ms": 3}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_actor_is_provenance_not_security_identity 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_actor_is_provenance_not_security_identity", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 555, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_actor_is_provenance_not_security_identity PASSED [  0%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_actor_is_provenance_not_security_identity", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 556, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_global_mutation_lock_serializes_threads 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_global_mutation_lock_serializes_threads", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 556, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_global_mutation_lock_serializes_threads PASSED [  1%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_global_mutation_lock_serializes_threads", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 723, "test_elapsed_ms": 166}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_serializes_direct_and_worker_lease 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_native_fifo_serializes_direct_and_worker_lease", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 723, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_serializes_direct_and_worker_lease PASSED [  1%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_native_fifo_serializes_direct_and_worker_lease", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 831, "test_elapsed_ms": 107}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_order_for_multiple_waiters 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_native_fifo_order_for_multiple_waiters", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 831, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_order_for_multiple_waiters PASSED [  1%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_native_fifo_order_for_multiple_waiters", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1058, "test_elapsed_ms": 226}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_queue_sequence_allocator_is_monotonic_across_leases 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_queue_sequence_allocator_is_monotonic_across_leases", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 1058, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_queue_sequence_allocator_is_monotonic_across_leases PASSED [  2%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_queue_sequence_allocator_is_monotonic_across_leases", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1062, "test_elapsed_ms": 3}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_dead_pid_native_lock_is_recovered_fail_closed_for_live_owner 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_dead_pid_native_lock_is_recovered_fail_closed_for_live_owner", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 1063, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_dead_pid_native_lock_is_recovered_fail_closed_for_live_owner PASSED [  2%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_dead_pid_native_lock_is_recovered_fail_closed_for_live_owner", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1116, "test_elapsed_ms": 53}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_existing_source_requires_cas_and_checkpoint 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_existing_source_requires_cas_and_checkpoint", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 1116, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_existing_source_requires_cas_and_checkpoint PASSED [  3%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_existing_source_requires_cas_and_checkpoint", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1123, "test_elapsed_ms": 7}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_stale_second_client_cannot_overwrite_first_client 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_stale_second_client_cannot_overwrite_first_client", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 1124, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_stale_second_client_cannot_overwrite_first_client PASSED [  3%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_stale_second_client_cannot_overwrite_first_client", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1133, "test_elapsed_ms": 9}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_actor_binding_and_audit_do_not_store_source_content 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_actor_binding_and_audit_do_not_store_source_content", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 1133, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_actor_binding_and_audit_do_not_store_source_content PASSED [  3%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_actor_binding_and_audit_do_not_store_source_content", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1136, "test_elapsed_ms": 2}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_health_and_diagnose_publish_concurrency_contract 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_health_and_diagnose_publish_concurrency_contract", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 1136, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_health_and_diagnose_publish_concurrency_contract PASSED [  4%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_health_and_diagnose_publish_concurrency_contract", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1142, "test_elapsed_ms": 5}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 1142, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract PASSED [  4%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1175, "test_elapsed_ms": 32}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_direct_compile_operation_id_has_collision_resistant_suffix 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_direct_compile_operation_id_has_collision_resistant_suffix", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 1175, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_direct_compile_operation_id_has_collision_resistant_suffix PASSED [  4%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_direct_compile_operation_id_has_collision_resistant_suffix", "ordinal": 13, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1176, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_worker_lock_order_and_result_attribution_are_present 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_worker_lock_order_and_result_attribution_are_present", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 1176, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_worker_lock_order_and_result_attribution_are_present PASSED [  5%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_worker_lock_order_and_result_attribution_are_present", "ordinal": 14, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1177, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[both_missing-INSTALL_MISSING] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 1177, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[both_missing-INSTALL_MISSING] PASSED [  5%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 15, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1179, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_missing-INSTALL_MISSING] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 1179, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_missing-INSTALL_MISSING] PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 16, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1182, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_missing-AUTHORITY_MISSING] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 17, "stage": "START", "suite_elapsed_ms": 1183, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_missing-AUTHORITY_MISSING] PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 17, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1184, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_corrupt-INSTALL_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 18, "stage": "START", "suite_elapsed_ms": 1185, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_corrupt-INSTALL_INVALID] PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 18, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1187, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_corrupt-AUTHORITY_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 19, "stage": "START", "suite_elapsed_ms": 1187, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_corrupt-AUTHORITY_INVALID] PASSED [  7%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 19, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1189, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_version-INSTALL_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 20, "stage": "START", "suite_elapsed_ms": 1189, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_version-INSTALL_INVALID] PASSED [  7%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 20, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1191, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_version-AUTHORITY_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 21, "stage": "START", "suite_elapsed_ms": 1191, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_version-AUTHORITY_INVALID] PASSED [  8%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 21, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1193, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[epoch-EPOCH_MISMATCH] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 22, "stage": "START", "suite_elapsed_ms": 1193, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[epoch-EPOCH_MISMATCH] PASSED [  8%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 22, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1196, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[generation-AUTHORITY_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 23, "stage": "START", "suite_elapsed_ms": 1196, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[generation-AUTHORITY_INVALID] PASSED [  8%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 23, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1198, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[active_shape-AUTHORITY_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 24, "stage": "START", "suite_elapsed_ms": 1198, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[active_shape-AUTHORITY_INVALID] PASSED [  9%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 24, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1200, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_shape-INSTALL_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 25, "stage": "START", "suite_elapsed_ms": 1201, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[marker_shape-INSTALL_INVALID] PASSED [  9%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 25, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1203, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_shape-AUTHORITY_INVALID] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 26, "stage": "START", "suite_elapsed_ms": 1203, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_installation_denies_without_lazy_reset[state_shape-AUTHORITY_INVALID] PASSED [  9%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_installation_denies_without_lazy_reset", "ordinal": 26, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1205, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_interrupted_installation_stays_blocked_on_fresh_object[1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_interrupted_installation_stays_blocked_on_fresh_object", "ordinal": 27, "stage": "START", "suite_elapsed_ms": 1205, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_interrupted_installation_stays_blocked_on_fresh_object[1] PASSED [ 10%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_interrupted_installation_stays_blocked_on_fresh_object", "ordinal": 27, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1207, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_interrupted_installation_stays_blocked_on_fresh_object[2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_interrupted_installation_stays_blocked_on_fresh_object", "ordinal": 28, "stage": "START", "suite_elapsed_ms": 1207, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_interrupted_installation_stays_blocked_on_fresh_object[2] PASSED [ 10%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_interrupted_installation_stays_blocked_on_fresh_object", "ordinal": 28, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1208, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_epoch_restore_never_resets_active_generation 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_epoch_restore_never_resets_active_generation", "ordinal": 29, "stage": "START", "suite_elapsed_ms": 1208, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_epoch_restore_never_resets_active_generation PASSED [ 11%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_epoch_restore_never_resets_active_generation", "ordinal": 29, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1211, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_owned_intent_create_order_and_unknown_creation_survive_restart 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_owned_intent_create_order_and_unknown_creation_survive_restart", "ordinal": 30, "stage": "START", "suite_elapsed_ms": 1211, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_owned_intent_create_order_and_unknown_creation_survive_restart PASSED [ 11%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_owned_intent_create_order_and_unknown_creation_survive_restart", "ordinal": 30, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1216, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_create_attempt_publication_fault_leaves_recovery_required[before] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_create_attempt_publication_fault_leaves_recovery_required", "ordinal": 31, "stage": "START", "suite_elapsed_ms": 1216, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_create_attempt_publication_fault_leaves_recovery_required[before] PASSED [ 11%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_create_attempt_publication_fault_leaves_recovery_required", "ordinal": 31, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1219, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_create_attempt_publication_fault_leaves_recovery_required[after] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_create_attempt_publication_fault_leaves_recovery_required", "ordinal": 32, "stage": "START", "suite_elapsed_ms": 1219, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_create_attempt_publication_fault_leaves_recovery_required[after] PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_create_attempt_publication_fault_leaves_recovery_required", "ordinal": 32, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1222, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_active_or_invalid_authority_keeps_dead_owner_lock[False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_active_or_invalid_authority_keeps_dead_owner_lock", "ordinal": 33, "stage": "START", "suite_elapsed_ms": 1223, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_active_or_invalid_authority_keeps_dead_owner_lock[False] PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_active_or_invalid_authority_keeps_dead_owner_lock", "ordinal": 33, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1226, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_active_or_invalid_authority_keeps_dead_owner_lock[True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_active_or_invalid_authority_keeps_dead_owner_lock", "ordinal": 34, "stage": "START", "suite_elapsed_ms": 1226, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_active_or_invalid_authority_keeps_dead_owner_lock[True] PASSED [ 13%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_active_or_invalid_authority_keeps_dead_owner_lock", "ordinal": 34, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1229, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_queued_waiter_checks_winning_admission_and_release_preserves_active 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_queued_waiter_checks_winning_admission_and_release_preserves_active", "ordinal": 35, "stage": "START", "suite_elapsed_ms": 1229, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_queued_waiter_checks_winning_admission_and_release_preserves_active PASSED [ 13%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_queued_waiter_checks_winning_admission_and_release_preserves_active", "ordinal": 35, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1285, "test_elapsed_ms": 56}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_finally_and_failed_worker_unlink_do_not_close_authority 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_finally_and_failed_worker_unlink_do_not_close_authority", "ordinal": 36, "stage": "START", "suite_elapsed_ms": 1286, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_finally_and_failed_worker_unlink_do_not_close_authority PASSED [ 13%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_finally_and_failed_worker_unlink_do_not_close_authority", "ordinal": 36, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1291, "test_elapsed_ms": 5}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_authority_guard_unavailable_is_sanitized_status_and_restore_pending 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_authority_guard_unavailable_is_sanitized_status_and_restore_pending", "ordinal": 37, "stage": "START", "suite_elapsed_ms": 1291, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_authority_guard_unavailable_is_sanitized_status_and_restore_pending PASSED [ 14%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_authority_guard_unavailable_is_sanitized_status_and_restore_pending", "ordinal": 37, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1295, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[cancel] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 38, "stage": "START", "suite_elapsed_ms": 1295, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[cancel] PASSED [ 14%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 38, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1301, "test_elapsed_ms": 5}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[get_job] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 39, "stage": "START", "suite_elapsed_ms": 1301, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[get_job] PASSED [ 14%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 39, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1306, "test_elapsed_ms": 5}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[startup] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 40, "stage": "START", "suite_elapsed_ms": 1306, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[startup] PASSED [ 15%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_actual_cancel_read_startup_chain_keeps_restore_pending", "ordinal": 40, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1937, "test_elapsed_ms": 630}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_cancel_restore_does_not_wait_on_its_own_native_lease 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_cancel_restore_does_not_wait_on_its_own_native_lease", "ordinal": 41, "stage": "START", "suite_elapsed_ms": 1937, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_cancel_restore_does_not_wait_on_its_own_native_lease PASSED [ 15%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_cancel_restore_does_not_wait_on_its_own_native_lease", "ordinal": 41, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1942, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_existing_complete_cancel_proof_is_separate_from_ownership 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_existing_complete_cancel_proof_is_separate_from_ownership", "ordinal": 42, "stage": "START", "suite_elapsed_ms": 1942, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_existing_complete_cancel_proof_is_separate_from_ownership PASSED [ 16%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_existing_complete_cancel_proof_is_separate_from_ownership", "ordinal": 42, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1946, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_all_actual_common_entry_paths_deny_callbacks 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_all_actual_common_entry_paths_deny_callbacks", "ordinal": 43, "stage": "START", "suite_elapsed_ms": 1946, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_all_actual_common_entry_paths_deny_callbacks PASSED [ 16%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_all_actual_common_entry_paths_deny_callbacks", "ordinal": 43, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1960, "test_elapsed_ms": 13}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_mutation_native_capacity_one_and_order 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_two_process_mutation_native_capacity_one_and_order", "ordinal": 44, "stage": "START", "suite_elapsed_ms": 1960, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_mutation_native_capacity_one_and_order PASSED [ 16%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_two_process_mutation_native_capacity_one_and_order", "ordinal": 44, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2805, "test_elapsed_ms": 844}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[unexpected] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 45, "stage": "START", "suite_elapsed_ms": 2805, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[unexpected] PASSED [ 17%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 45, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2808, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 46, "stage": "START", "suite_elapsed_ms": 2808, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity1] PASSED [ 17%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 46, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2810, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 47, "stage": "START", "suite_elapsed_ms": 2810, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity2] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 47, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2812, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity3] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 48, "stage": "START", "suite_elapsed_ms": 2812, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity3] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 48, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2815, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity4] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 49, "stage": "START", "suite_elapsed_ms": 2815, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity4] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 49, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2818, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity5] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 50, "stage": "START", "suite_elapsed_ms": 2818, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_corrupt_identity_never_deletes_live_owner[invalid_identity5] PASSED [ 19%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_corrupt_identity_never_deletes_live_owner", "ordinal": 50, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2820, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_multiprocess_recovery_acquire_race_rejects_stale_successor_cas 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_multiprocess_recovery_acquire_race_rejects_stale_successor_cas", "ordinal": 51, "stage": "START", "suite_elapsed_ms": 2820, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_multiprocess_recovery_acquire_race_rejects_stale_successor_cas PASSED [ 19%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_multiprocess_recovery_acquire_race_rejects_stale_successor_cas", "ordinal": 51, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3165, "test_elapsed_ms": 344}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_native_fifo_wait_and_effect_do_not_hold_authority_guard 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_native_fifo_wait_and_effect_do_not_hold_authority_guard", "ordinal": 52, "stage": "START", "suite_elapsed_ms": 3165, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_native_fifo_wait_and_effect_do_not_hold_authority_guard PASSED [ 19%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_native_fifo_wait_and_effect_do_not_hold_authority_guard", "ordinal": 52, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3221, "test_elapsed_ms": 55}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_released_native_lease_cannot_progress_future_producer 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_released_native_lease_cannot_progress_future_producer", "ordinal": 53, "stage": "START", "suite_elapsed_ms": 3221, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_released_native_lease_cannot_progress_future_producer PASSED [ 20%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_released_native_lease_cannot_progress_future_producer", "ordinal": 53, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3224, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_cancel_restore_effect_runs_under_real_lease[existing] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_cancel_restore_effect_runs_under_real_lease", "ordinal": 54, "stage": "START", "suite_elapsed_ms": 3224, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_cancel_restore_effect_runs_under_real_lease[existing] PASSED [ 20%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_cancel_restore_effect_runs_under_real_lease", "ordinal": 54, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3229, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_cancel_restore_effect_runs_under_real_lease[restart] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_cancel_restore_effect_runs_under_real_lease", "ordinal": 55, "stage": "START", "suite_elapsed_ms": 3229, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_closed_cancel_restore_effect_runs_under_real_lease[restart] PASSED [ 21%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_closed_cancel_restore_effect_runs_under_real_lease", "ordinal": 55, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3233, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_exact_owned_job_stop_can_complete_while_restore_remains_pending 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_exact_owned_job_stop_can_complete_while_restore_remains_pending", "ordinal": 56, "stage": "START", "suite_elapsed_ms": 3234, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_exact_owned_job_stop_can_complete_while_restore_remains_pending PASSED [ 21%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_exact_owned_job_stop_can_complete_while_restore_remains_pending", "ordinal": 56, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3240, "test_elapsed_ms": 6}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[sequence-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 57, "stage": "START", "suite_elapsed_ms": 3240, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[sequence-True] PASSED [ 21%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 57, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3397, "test_elapsed_ms": 156}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[sequence-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 58, "stage": "START", "suite_elapsed_ms": 3397, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[sequence-False] PASSED [ 22%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 58, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3494, "test_elapsed_ms": 96}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[ticket-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 59, "stage": "START", "suite_elapsed_ms": 3494, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[ticket-True] PASSED [ 22%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 59, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3591, "test_elapsed_ms": 97}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[ticket-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 60, "stage": "START", "suite_elapsed_ms": 3592, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive[ticket-False] PASSED [ 22%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_queue_damage_stays_sanitized_and_readonly_startup_alive", "ordinal": 60, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3691, "test_elapsed_ms": 99}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_arm_publication_window_has_no_effect_before_committed_intent[before] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_arm_publication_window_has_no_effect_before_committed_intent", "ordinal": 61, "stage": "START", "suite_elapsed_ms": 3692, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_arm_publication_window_has_no_effect_before_committed_intent[before] PASSED [ 23%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_arm_publication_window_has_no_effect_before_committed_intent", "ordinal": 61, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3694, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_arm_publication_window_has_no_effect_before_committed_intent[after] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_arm_publication_window_has_no_effect_before_committed_intent", "ordinal": 62, "stage": "START", "suite_elapsed_ms": 3695, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_arm_publication_window_has_no_effect_before_committed_intent[after] PASSED [ 23%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_arm_publication_window_has_no_effect_before_committed_intent", "ordinal": 62, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3697, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[before] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 63, "stage": "START", "suite_elapsed_ms": 3698, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[before] PASSED [ 24%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 63, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3701, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[after] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 64, "stage": "START", "suite_elapsed_ms": 3701, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[after] PASSED [ 24%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 64, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3706, "test_elapsed_ms": 5}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[readback] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 65, "stage": "START", "suite_elapsed_ms": 3706, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_zero_attempt_closure_publication_failure_reinstates_active_barrier[readback] PASSED [ 24%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_zero_attempt_closure_publication_failure_reinstates_active_barrier", "ordinal": 65, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3710, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_missing_independent_os_image_never_becomes_current_directory_evidence 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_missing_independent_os_image_never_becomes_current_directory_evidence", "ordinal": 66, "stage": "START", "suite_elapsed_ms": 3710, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_missing_independent_os_image_never_becomes_current_directory_evidence PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_missing_independent_os_image_never_becomes_current_directory_evidence", "ordinal": 66, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3710, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[runs_mkdir] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 67, "stage": "START", "suite_elapsed_ms": 3711, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[runs_mkdir] PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 67, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3715, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[ticket_write] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 68, "stage": "START", "suite_elapsed_ms": 3716, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[ticket_write] PASSED [ 26%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 68, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3720, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[ticket_fsync] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 69, "stage": "START", "suite_elapsed_ms": 3720, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[ticket_fsync] PASSED [ 26%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 69, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3726, "test_elapsed_ms": 5}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[owner_write] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 70, "stage": "START", "suite_elapsed_ms": 3726, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[owner_write] PASSED [ 26%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 70, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3730, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[owner_fsync] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 71, "stage": "START", "suite_elapsed_ms": 3731, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire[owner_fsync] PASSED [ 27%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_restore_admission_fault_cleans_exact_ticket_then_healthy_acquire", "ordinal": 71, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3735, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_native_only_contention_preserves_fifo_capacity 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_two_process_native_only_contention_preserves_fifo_capacity", "ordinal": 72, "stage": "START", "suite_elapsed_ms": 3736, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_native_only_contention_preserves_fifo_capacity PASSED [ 27%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057rg03a_native_ownership.py", "function": "test_two_process_native_only_contention_preserves_fifo_capacity", "ordinal": 72, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4558, "test_elapsed_ms": 822}
+
+tests/unit/test_tip057r_sdk.py::test_real_worker_call_requires_installed_gate_before_any_sdk_or_probe 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_real_worker_call_requires_installed_gate_before_any_sdk_or_probe", "ordinal": 73, "stage": "START", "suite_elapsed_ms": 4558, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_real_worker_call_requires_installed_gate_before_any_sdk_or_probe PASSED [ 27%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_real_worker_call_requires_installed_gate_before_any_sdk_or_probe", "ordinal": 73, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4560, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_worker_freezes_request_before_injected_loader_can_mutate_caller_data 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_worker_freezes_request_before_injected_loader_can_mutate_caller_data", "ordinal": 74, "stage": "START", "suite_elapsed_ms": 4560, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_worker_freezes_request_before_injected_loader_can_mutate_caller_data PASSED [ 28%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_worker_freezes_request_before_injected_loader_can_mutate_caller_data", "ordinal": 74, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4562, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_actual_observation_source_synthetic_projection_mask_and_shutdown[state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_actual_observation_source_synthetic_projection_mask_and_shutdown", "ordinal": 75, "stage": "START", "suite_elapsed_ms": 4562, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_actual_observation_source_synthetic_projection_mask_and_shutdown[state] PASSED [ 28%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_actual_observation_source_synthetic_projection_mask_and_shutdown", "ordinal": 75, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4564, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_actual_observation_source_synthetic_projection_mask_and_shutdown[account] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_actual_observation_source_synthetic_projection_mask_and_shutdown", "ordinal": 76, "stage": "START", "suite_elapsed_ms": 4564, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_actual_observation_source_synthetic_projection_mask_and_shutdown[account] PASSED [ 29%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_actual_observation_source_synthetic_projection_mask_and_shutdown", "ordinal": 76, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4566, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 77, "stage": "START", "suite_elapsed_ms": 4566, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[1] PASSED [ 29%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 77, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4568, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[1234] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 78, "stage": "START", "suite_elapsed_ms": 4568, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[1234] PASSED [ 29%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 78, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4570, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[None] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 79, "stage": "START", "suite_elapsed_ms": 4570, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_short_account_identifier_is_never_exposed_in_full[None] PASSED [ 30%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_short_account_identifier_is_never_exposed_in_full", "ordinal": 79, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4571, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_disconnected_account_is_null_and_not_queried 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_disconnected_account_is_null_and_not_queried", "ordinal": 80, "stage": "START", "suite_elapsed_ms": 4572, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_disconnected_account_is_null_and_not_queried PASSED [ 30%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_disconnected_account_is_null_and_not_queried", "ordinal": 80, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4574, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_false_or_raised_initialize_still_shutdown_once_and_sanitizes[False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_false_or_raised_initialize_still_shutdown_once_and_sanitizes", "ordinal": 81, "stage": "START", "suite_elapsed_ms": 4574, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_false_or_raised_initialize_still_shutdown_once_and_sanitizes[False] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_false_or_raised_initialize_still_shutdown_once_and_sanitizes", "ordinal": 81, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4575, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_false_or_raised_initialize_still_shutdown_once_and_sanitizes[failure1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_false_or_raised_initialize_still_shutdown_once_and_sanitizes", "ordinal": 82, "stage": "START", "suite_elapsed_ms": 4576, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_false_or_raised_initialize_still_shutdown_once_and_sanitizes[failure1] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_false_or_raised_initialize_still_shutdown_once_and_sanitizes", "ordinal": 82, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4577, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_cleanup_failure_preserves_first_observation_error 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_cleanup_failure_preserves_first_observation_error", "ordinal": 83, "stage": "START", "suite_elapsed_ms": 4577, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_cleanup_failure_preserves_first_observation_error PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_cleanup_failure_preserves_first_observation_error", "ordinal": 83, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4579, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_process_binding_rechecked_after_sdk_and_overrun_does_not_succeed 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_process_binding_rechecked_after_sdk_and_overrun_does_not_succeed", "ordinal": 84, "stage": "START", "suite_elapsed_ms": 4579, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_process_binding_rechecked_after_sdk_and_overrun_does_not_succeed PASSED [ 32%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_process_binding_rechecked_after_sdk_and_overrun_does_not_succeed", "ordinal": 84, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4581, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[budget_ms-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 85, "stage": "START", "suite_elapsed_ms": 4581, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[budget_ms-True] PASSED [ 32%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 85, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4582, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[budget_ms-10001] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 86, "stage": "START", "suite_elapsed_ms": 4582, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[budget_ms-10001] PASSED [ 32%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 86, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4583, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[operation-login] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 87, "stage": "START", "suite_elapsed_ms": 4583, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[operation-login] PASSED [ 33%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 87, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4584, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[nonce-value3] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 88, "stage": "START", "suite_elapsed_ms": 4585, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[nonce-value3] PASSED [ 33%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 88, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4586, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[qualification_sha256-bad] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 89, "stage": "START", "suite_elapsed_ms": 4586, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_protocol_bad_request_denies_before_adapter_calls[qualification_sha256-bad] PASSED [ 34%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_protocol_bad_request_denies_before_adapter_calls", "ordinal": 89, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4587, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[target] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 90, "stage": "START", "suite_elapsed_ms": 4587, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[target] PASSED [ 34%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 90, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4589, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[owner] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 91, "stage": "START", "suite_elapsed_ms": 4589, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[owner] PASSED [ 34%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 91, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4591, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[binding] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 92, "stage": "START", "suite_elapsed_ms": 4591, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[binding] PASSED [ 35%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 92, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4593, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[nonce] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 93, "stage": "START", "suite_elapsed_ms": 4593, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[nonce] PASSED [ 35%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 93, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4595, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[operation] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 94, "stage": "START", "suite_elapsed_ms": 4595, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_full_result_binding_and_request_digest_reject_tamper[operation] PASSED [ 36%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_full_result_binding_and_request_digest_reject_tamper", "ordinal": 94, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4597, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_result_strict_fields_booleans_counts_time_and_no_unknown_data 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_result_strict_fields_booleans_counts_time_and_no_unknown_data", "ordinal": 95, "stage": "START", "suite_elapsed_ms": 4597, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_result_strict_fields_booleans_counts_time_and_no_unknown_data PASSED [ 36%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_result_strict_fields_booleans_counts_time_and_no_unknown_data", "ordinal": 95, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4600, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_bounded_json_duplicate_keys_invalid_utf8_and_nonfinite 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_bounded_json_duplicate_keys_invalid_utf8_and_nonfinite", "ordinal": 96, "stage": "START", "suite_elapsed_ms": 4600, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_bounded_json_duplicate_keys_invalid_utf8_and_nonfinite PASSED [ 36%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_bounded_json_duplicate_keys_invalid_utf8_and_nonfinite", "ordinal": 96, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4602, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_fixture_signed_operator_approval_is_categorically_refused 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_fixture_signed_operator_approval_is_categorically_refused", "ordinal": 97, "stage": "START", "suite_elapsed_ms": 4602, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_fixture_signed_operator_approval_is_categorically_refused PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_fixture_signed_operator_approval_is_categorically_refused", "ordinal": 97, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4617, "test_elapsed_ms": 15}
+
+tests/unit/test_tip057r_sdk.py::test_public_factory_and_adapter_do_not_accept_caller_qualification_flags 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_public_factory_and_adapter_do_not_accept_caller_qualification_flags", "ordinal": 98, "stage": "START", "suite_elapsed_ms": 4618, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_public_factory_and_adapter_do_not_accept_caller_qualification_flags PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_public_factory_and_adapter_do_not_accept_caller_qualification_flags", "ordinal": 98, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4619, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_arm_create_bind_resume_qualified_close_order 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_arm_create_bind_resume_qualified_close_order", "ordinal": 99, "stage": "START", "suite_elapsed_ms": 4619, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_arm_create_bind_resume_qualified_close_order PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_arm_create_bind_resume_qualified_close_order", "ordinal": 99, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4622, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_controller_result_published_before_bind_is_refused 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_result_published_before_bind_is_refused", "ordinal": 100, "stage": "START", "suite_elapsed_ms": 4622, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_result_published_before_bind_is_refused PASSED [ 38%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_result_published_before_bind_is_refused", "ordinal": 100, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4624, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[ARMED-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 101, "stage": "START", "suite_elapsed_ms": 4624, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[ARMED-True] PASSED [ 38%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 101, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4626, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[CREATE_ATTEMPT-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 102, "stage": "START", "suite_elapsed_ms": 4626, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[CREATE_ATTEMPT-False] PASSED [ 39%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 102, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4628, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[SUSPENDED_CREATE-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 103, "stage": "START", "suite_elapsed_ms": 4628, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[SUSPENDED_CREATE-False] PASSED [ 39%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 103, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4630, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[BOUND-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 104, "stage": "START", "suite_elapsed_ms": 4630, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[BOUND-True] PASSED [ 39%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 104, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4632, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[BEFORE_RESUME-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 105, "stage": "START", "suite_elapsed_ms": 4632, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[BEFORE_RESUME-True] PASSED [ 40%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 105, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4633, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[RESUMED-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 106, "stage": "START", "suite_elapsed_ms": 4634, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof[RESUMED-True] PASSED [ 40%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_fault_windows_do_not_fabricate_zero_attempt_or_exit_proof", "ordinal": 106, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4636, "test_elapsed_ms": 2}
+
+tests/unit/test_tip057r_sdk.py::test_product_modules_never_import_proof_or_sdk_controller_import 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_product_modules_never_import_proof_or_sdk_controller_import", "ordinal": 107, "stage": "START", "suite_elapsed_ms": 4636, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_product_modules_never_import_proof_or_sdk_controller_import PASSED [ 40%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_product_modules_never_import_proof_or_sdk_controller_import", "ordinal": 107, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4637, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_harmless_windows_api_and_structure_construction 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_harmless_windows_api_and_structure_construction", "ordinal": 108, "stage": "START", "suite_elapsed_ms": 4638, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_harmless_windows_api_and_structure_construction SKIPPED [ 41%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_harmless_windows_api_and_structure_construction", "ordinal": 108, "outcome": "SKIPPED", "stage": "FINISH", "suite_elapsed_ms": 4638, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_runtime_acl_refuses_signed_worker_and_broad_write_grants 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_runtime_acl_refuses_signed_worker_and_broad_write_grants", "ordinal": 109, "stage": "START", "suite_elapsed_ms": 4639, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_runtime_acl_refuses_signed_worker_and_broad_write_grants PASSED [ 41%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_runtime_acl_refuses_signed_worker_and_broad_write_grants", "ordinal": 109, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4639, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_import_resolution_refuses_unpinned_module_before_code 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_import_resolution_refuses_unpinned_module_before_code", "ordinal": 110, "stage": "START", "suite_elapsed_ms": 4639, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_import_resolution_refuses_unpinned_module_before_code PASSED [ 42%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_import_resolution_refuses_unpinned_module_before_code", "ordinal": 110, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4640, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_file_hash_rejects_allocation_cap_and_path_change 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_file_hash_rejects_allocation_cap_and_path_change", "ordinal": 111, "stage": "START", "suite_elapsed_ms": 4640, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_file_hash_rejects_allocation_cap_and_path_change PASSED [ 42%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_file_hash_rejects_allocation_cap_and_path_change", "ordinal": 111, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4641, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_routed_adapter_uses_remaining_absolute_deadline_once 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_routed_adapter_uses_remaining_absolute_deadline_once", "ordinal": 112, "stage": "START", "suite_elapsed_ms": 4641, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_routed_adapter_uses_remaining_absolute_deadline_once PASSED [ 42%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_routed_adapter_uses_remaining_absolute_deadline_once", "ordinal": 112, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4668, "test_elapsed_ms": 26}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 113, "stage": "START", "suite_elapsed_ms": 4668, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[True] PASSED [ 43%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 113, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4670, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[bad1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 114, "stage": "START", "suite_elapsed_ms": 4670, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[bad1] PASSED [ 43%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 114, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4671, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[bad2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 115, "stage": "START", "suite_elapsed_ms": 4671, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_request_scope_reference_is_exact_and_bound_to_owner[bad2] PASSED [ 44%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_request_scope_reference_is_exact_and_bound_to_owner", "ordinal": 115, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4672, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation[ARMED-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation", "ordinal": 116, "stage": "START", "suite_elapsed_ms": 4672, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation[ARMED-True] PASSED [ 44%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation", "ordinal": 116, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4682, "test_elapsed_ms": 9}
+
+tests/unit/test_tip057r_sdk.py::test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation[CREATE_ATTEMPT-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation", "ordinal": 117, "stage": "START", "suite_elapsed_ms": 4682, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation[CREATE_ATTEMPT-False] PASSED [ 44%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_controller_uses_durable_scoped_lease_and_retains_uncertain_creation", "ordinal": 117, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4693, "test_elapsed_ms": 10}
+
+tests/unit/test_tip057r_sdk.py::test_unapproved_scoped_marker_cannot_change_sdk_namespace 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_unapproved_scoped_marker_cannot_change_sdk_namespace", "ordinal": 118, "stage": "START", "suite_elapsed_ms": 4693, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_unapproved_scoped_marker_cannot_change_sdk_namespace PASSED [ 45%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_unapproved_scoped_marker_cannot_change_sdk_namespace", "ordinal": 118, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4694, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[worker-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 119, "stage": "START", "suite_elapsed_ms": 4694, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[worker-False] PASSED [ 45%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 119, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4698, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[worker-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 120, "stage": "START", "suite_elapsed_ms": 4698, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[worker-True] PASSED [ 45%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 120, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4702, "test_elapsed_ms": 3}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[admission-False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 121, "stage": "START", "suite_elapsed_ms": 4702, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[admission-False] PASSED [ 46%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 121, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4707, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[admission-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 122, "stage": "START", "suite_elapsed_ms": 4707, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_read_receipt_preserves_worker_first_error_and_actual_lease_release[admission-True] PASSED [ 46%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_read_receipt_preserves_worker_first_error_and_actual_lease_release", "ordinal": 122, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4712, "test_elapsed_ms": 4}
+
+tests/unit/test_tip057r_sdk.py::test_one_node_adapter_selects_two_exact_qualified_catalog_bindings_without_fallback 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_one_node_adapter_selects_two_exact_qualified_catalog_bindings_without_fallback", "ordinal": 123, "stage": "START", "suite_elapsed_ms": 4712, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_one_node_adapter_selects_two_exact_qualified_catalog_bindings_without_fallback PASSED [ 47%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_one_node_adapter_selects_two_exact_qualified_catalog_bindings_without_fallback", "ordinal": 123, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4714, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[duplicate] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 124, "stage": "START", "suite_elapsed_ms": 4714, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[duplicate] PASSED [ 47%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 124, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4716, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[session] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 125, "stage": "START", "suite_elapsed_ms": 4716, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[session] PASSED [ 47%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 125, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4717, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[device] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 126, "stage": "START", "suite_elapsed_ms": 4717, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[device] PASSED [ 48%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 126, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4718, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[runtime] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 127, "stage": "START", "suite_elapsed_ms": 4719, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[runtime] PASSED [ 48%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 127, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4720, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[too_many] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 128, "stage": "START", "suite_elapsed_ms": 4720, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_multi_target_catalog_rejects_duplicate_or_different_authority_family[too_many] PASSED [ 49%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_multi_target_catalog_rejects_duplicate_or_different_authority_family", "ordinal": 128, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4721, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_evidence_bound_can_hold_source_acl_closure_without_widening_worker_messages 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_evidence_bound_can_hold_source_acl_closure_without_widening_worker_messages", "ordinal": 129, "stage": "START", "suite_elapsed_ms": 4721, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_evidence_bound_can_hold_source_acl_closure_without_widening_worker_messages PASSED [ 49%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_evidence_bound_can_hold_source_acl_closure_without_widening_worker_messages", "ordinal": 129, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4722, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_scoped_worker_bound_snapshot_uses_only_read_only_files_and_memory_sqlite 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_scoped_worker_bound_snapshot_uses_only_read_only_files_and_memory_sqlite", "ordinal": 130, "stage": "START", "suite_elapsed_ms": 4722, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_scoped_worker_bound_snapshot_uses_only_read_only_files_and_memory_sqlite PASSED [ 49%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_scoped_worker_bound_snapshot_uses_only_read_only_files_and_memory_sqlite", "ordinal": 130, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4731, "test_elapsed_ms": 8}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_hash_rejects_or_prevents_actual_path_replacement 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_hash_rejects_or_prevents_actual_path_replacement", "ordinal": 131, "stage": "START", "suite_elapsed_ms": 4731, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_hash_rejects_or_prevents_actual_path_replacement PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_hash_rejects_or_prevents_actual_path_replacement", "ordinal": 131, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4732, "test_elapsed_ms": 1}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_hash_cumulative_cap_rejects_or_prevents_actual_growth 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_hash_cumulative_cap_rejects_or_prevents_actual_growth", "ordinal": 132, "stage": "START", "suite_elapsed_ms": 4732, "test_elapsed_ms": 0}
+
+tests/unit/test_tip057r_sdk.py::test_sdk_hash_cumulative_cap_rejects_or_prevents_actual_growth PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip057r_sdk.py", "function": "test_sdk_hash_cumulative_cap_rejects_or_prevents_actual_growth", "ordinal": 132, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4733, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure", "ordinal": 133, "stage": "START", "suite_elapsed_ms": 4733, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure", "ordinal": 133, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4754, "test_elapsed_ms": 21}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[FAILED] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 134, "stage": "START", "suite_elapsed_ms": 4755, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[FAILED] PASSED [ 51%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 134, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4756, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[NOT_RUN] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 135, "stage": "START", "suite_elapsed_ms": 4756, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[NOT_RUN] PASSED [ 51%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 135, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4757, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[CANCELLED] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 136, "stage": "START", "suite_elapsed_ms": 4757, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[CANCELLED] PASSED [ 52%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt", "ordinal": 136, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4757, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_default_change_affects_only_new_freezes_and_replay_uses_frozen_binding 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_default_change_affects_only_new_freezes_and_replay_uses_frozen_binding", "ordinal": 137, "stage": "START", "suite_elapsed_ms": 4758, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_default_change_affects_only_new_freezes_and_replay_uses_frozen_binding PASSED [ 52%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_default_change_affects_only_new_freezes_and_replay_uses_frozen_binding", "ordinal": 137, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4776, "test_elapsed_ms": 18}
+
+tests/unit/test_tip061a_057n.py::test_same_node_source_executor_and_frozen_session_checkpoint_integrity 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_same_node_source_executor_and_frozen_session_checkpoint_integrity", "ordinal": 138, "stage": "START", "suite_elapsed_ms": 4776, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_same_node_source_executor_and_frozen_session_checkpoint_integrity PASSED [ 52%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_same_node_source_executor_and_frozen_session_checkpoint_integrity", "ordinal": 138, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4792, "test_elapsed_ms": 15}
+
+tests/unit/test_tip061a_057n.py::test_strict_candidate_source_difference_is_evidence_not_equivalence_failure 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_candidate_source_difference_is_evidence_not_equivalence_failure", "ordinal": 139, "stage": "START", "suite_elapsed_ms": 4792, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_candidate_source_difference_is_evidence_not_equivalence_failure PASSED [ 53%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_candidate_source_difference_is_evidence_not_equivalence_failure", "ordinal": 139, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4794, "test_elapsed_ms": 2}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[target] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 140, "stage": "START", "suite_elapsed_ms": 4795, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[target] PASSED [ 53%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 140, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4796, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[binding] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 141, "stage": "START", "suite_elapsed_ms": 4796, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[binding] PASSED [ 54%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 141, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4798, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[terminal_build] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 142, "stage": "START", "suite_elapsed_ms": 4798, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[terminal_build] PASSED [ 54%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 142, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4800, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[compiler_build] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 143, "stage": "START", "suite_elapsed_ms": 4800, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[compiler_build] PASSED [ 54%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 143, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4802, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[tester_model] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 144, "stage": "START", "suite_elapsed_ms": 4802, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[tester_model] PASSED [ 55%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 144, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4804, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[logical_config] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 145, "stage": "START", "suite_elapsed_ms": 4804, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[logical_config] PASSED [ 55%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 145, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4805, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[effective_period] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 146, "stage": "START", "suite_elapsed_ms": 4805, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[effective_period] PASSED [ 55%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 146, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4807, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[set_sha256] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 147, "stage": "START", "suite_elapsed_ms": 4807, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[set_sha256] PASSED [ 56%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 147, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4809, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[include_sha256] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 148, "stage": "START", "suite_elapsed_ms": 4809, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[include_sha256] PASSED [ 56%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 148, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4811, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[input_manifest_sha256] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 149, "stage": "START", "suite_elapsed_ms": 4811, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[input_manifest_sha256] PASSED [ 57%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 149, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4813, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[broker_server] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 150, "stage": "START", "suite_elapsed_ms": 4813, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[broker_server] PASSED [ 57%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 150, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4814, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[history_evidence] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 151, "stage": "START", "suite_elapsed_ms": 4815, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_matrix_reports_each_missing_and_mismatched_field[history_evidence] PASSED [ 57%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_matrix_reports_each_missing_and_mismatched_field", "ordinal": 151, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4816, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[target-value0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 152, "stage": "START", "suite_elapsed_ms": 4816, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[target-value0] PASSED [ 58%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 152, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4818, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[binding-value1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 153, "stage": "START", "suite_elapsed_ms": 4818, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[binding-value1] PASSED [ 58%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 153, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4819, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[terminal_build-True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 154, "stage": "START", "suite_elapsed_ms": 4819, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[terminal_build-True] PASSED [ 59%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 154, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4820, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[compiler_build-0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 155, "stage": "START", "suite_elapsed_ms": 4820, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[compiler_build-0] PASSED [ 59%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 155, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4822, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[tester_model-4] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 156, "stage": "START", "suite_elapsed_ms": 4822, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[tester_model-4] PASSED [ 59%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 156, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4823, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[logical_config-value5] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 157, "stage": "START", "suite_elapsed_ms": 4823, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[logical_config-value5] PASSED [ 60%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 157, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4824, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[set_sha256-bad] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 158, "stage": "START", "suite_elapsed_ms": 4825, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[set_sha256-bad] PASSED [ 60%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 158, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4826, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[history_evidence-value7] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 159, "stage": "START", "suite_elapsed_ms": 4826, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[history_evidence-value7] PASSED [ 60%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 159, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4827, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[broker_server-] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 160, "stage": "START", "suite_elapsed_ms": 4827, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_invalid_environment_evidence_never_counts_as_compatible[broker_server-] PASSED [ 61%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_invalid_environment_evidence_never_counts_as_compatible", "ordinal": 160, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4828, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_new_native_hash_namespace_preserves_legacy_request_bytes 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_new_native_hash_namespace_preserves_legacy_request_bytes", "ordinal": 161, "stage": "START", "suite_elapsed_ms": 4829, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_new_native_hash_namespace_preserves_legacy_request_bytes PASSED [ 61%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_new_native_hash_namespace_preserves_legacy_request_bytes", "ordinal": 161, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4840, "test_elapsed_ms": 11}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[reserve] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 162, "stage": "START", "suite_elapsed_ms": 4840, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[reserve] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 162, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4949, "test_elapsed_ms": 108}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[deploy] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 163, "stage": "START", "suite_elapsed_ms": 4949, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[deploy] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 163, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4964, "test_elapsed_ms": 14}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[start] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 164, "stage": "START", "suite_elapsed_ms": 4964, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[start] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 164, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4979, "test_elapsed_ms": 14}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[test] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 165, "stage": "START", "suite_elapsed_ms": 4979, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[test] PASSED [ 63%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 165, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4993, "test_elapsed_ms": 13}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[capture] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 166, "stage": "START", "suite_elapsed_ms": 4993, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[capture] PASSED [ 63%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 166, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5009, "test_elapsed_ms": 15}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[cancel] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 167, "stage": "START", "suite_elapsed_ms": 5009, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[cancel] PASSED [ 63%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 167, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5023, "test_elapsed_ms": 14}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[result] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 168, "stage": "START", "suite_elapsed_ms": 5024, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_production_factory_denies_every_native_effect_before_job_or_callback[result] PASSED [ 64%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_production_factory_denies_every_native_effect_before_job_or_callback", "ordinal": 168, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5038, "test_elapsed_ms": 13}
+
+tests/unit/test_tip061a_057n.py::test_synthetic_reservation_reopen_replay_and_exact_process_cancellation 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_synthetic_reservation_reopen_replay_and_exact_process_cancellation", "ordinal": 169, "stage": "START", "suite_elapsed_ms": 5038, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_synthetic_reservation_reopen_replay_and_exact_process_cancellation PASSED [ 64%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_synthetic_reservation_reopen_replay_and_exact_process_cancellation", "ordinal": 169, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5122, "test_elapsed_ms": 83}
+
+tests/unit/test_tip061a_057n.py::test_synthetic_callback_uncertainty_keeps_common_ownership_and_never_repeats 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_synthetic_callback_uncertainty_keeps_common_ownership_and_never_repeats", "ordinal": 170, "stage": "START", "suite_elapsed_ms": 5122, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_synthetic_callback_uncertainty_keeps_common_ownership_and_never_repeats PASSED [ 65%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_synthetic_callback_uncertainty_keeps_common_ownership_and_never_repeats", "ordinal": 170, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5162, "test_elapsed_ms": 39}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[deploy] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 171, "stage": "START", "suite_elapsed_ms": 5162, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[deploy] PASSED [ 65%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 171, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5187, "test_elapsed_ms": 24}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[start] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 172, "stage": "START", "suite_elapsed_ms": 5187, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[start] PASSED [ 65%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 172, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5211, "test_elapsed_ms": 24}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[test] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 173, "stage": "START", "suite_elapsed_ms": 5212, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[test] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 173, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5237, "test_elapsed_ms": 25}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[capture] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 174, "stage": "START", "suite_elapsed_ms": 5238, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[capture] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 174, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5263, "test_elapsed_ms": 25}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[cancel] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 175, "stage": "START", "suite_elapsed_ms": 5263, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[cancel] PASSED [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 175, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5287, "test_elapsed_ms": 24}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[result] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 176, "stage": "START", "suite_elapsed_ms": 5288, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks[result] PASSED [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_source_drift_denies_all_synthetic_effect_boundaries_with_zero_callbacks", "ordinal": 176, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5313, "test_elapsed_ms": 25}
+
+tests/unit/test_tip061a_057n.py::test_strict_impossible_or_reversed_period_is_unverified[period0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_impossible_or_reversed_period_is_unverified", "ordinal": 177, "stage": "START", "suite_elapsed_ms": 5313, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_impossible_or_reversed_period_is_unverified[period0] PASSED [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_impossible_or_reversed_period_is_unverified", "ordinal": 177, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5315, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_strict_impossible_or_reversed_period_is_unverified[period1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_impossible_or_reversed_period_is_unverified", "ordinal": 178, "stage": "START", "suite_elapsed_ms": 5315, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_strict_impossible_or_reversed_period_is_unverified[period1] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_strict_impossible_or_reversed_period_is_unverified", "ordinal": 178, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5316, "test_elapsed_ms": 1}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 179, "stage": "START", "suite_elapsed_ms": 5316, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>0] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 179, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5328, "test_elapsed_ms": 11}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 180, "stage": "START", "suite_elapsed_ms": 5328, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>1] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 180, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5339, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 181, "stage": "START", "suite_elapsed_ms": 5339, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>2] PASSED [ 69%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 181, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5350, "test_elapsed_ms": 11}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>3] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 182, "stage": "START", "suite_elapsed_ms": 5351, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>3] PASSED [ 69%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 182, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5364, "test_elapsed_ms": 13}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>4] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 183, "stage": "START", "suite_elapsed_ms": 5364, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_frozen_corruption_is_denied_even_with_recomputed_integrity[<lambda>4] PASSED [ 70%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_frozen_corruption_is_denied_even_with_recomputed_integrity", "ordinal": 183, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5377, "test_elapsed_ms": 13}
+
+tests/unit/test_tip061a_057n.py::test_project_read_rejects_duplicates_and_bounds_before_decode[duplicate-schema] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_project_read_rejects_duplicates_and_bounds_before_decode", "ordinal": 184, "stage": "START", "suite_elapsed_ms": 5378, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_project_read_rejects_duplicates_and_bounds_before_decode[duplicate-schema] PASSED [ 70%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_project_read_rejects_duplicates_and_bounds_before_decode", "ordinal": 184, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5385, "test_elapsed_ms": 7}
+
+tests/unit/test_tip061a_057n.py::test_project_read_rejects_duplicates_and_bounds_before_decode[oversize] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_project_read_rejects_duplicates_and_bounds_before_decode", "ordinal": 185, "stage": "START", "suite_elapsed_ms": 5385, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_project_read_rejects_duplicates_and_bounds_before_decode[oversize] PASSED [ 70%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_project_read_rejects_duplicates_and_bounds_before_decode", "ordinal": 185, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5392, "test_elapsed_ms": 7}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 186, "stage": "START", "suite_elapsed_ms": 5393, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>0] PASSED [ 71%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 186, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5415, "test_elapsed_ms": 22}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 187, "stage": "START", "suite_elapsed_ms": 5415, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>1] PASSED [ 71%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 187, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5436, "test_elapsed_ms": 20}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 188, "stage": "START", "suite_elapsed_ms": 5436, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>2] PASSED [ 72%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 188, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5457, "test_elapsed_ms": 20}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>3] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 189, "stage": "START", "suite_elapsed_ms": 5457, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>3] PASSED [ 72%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 189, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5478, "test_elapsed_ms": 20}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>4] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 190, "stage": "START", "suite_elapsed_ms": 5478, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback[<lambda>4] PASSED [ 72%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_operation_corruption_never_restores_arbitrary_job_or_repeats_callback", "ordinal": 190, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5499, "test_elapsed_ms": 20}
+
+tests/unit/test_tip061a_057n.py::test_native_reservation_publication_gap_repairs_exact_original_job_only 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_reservation_publication_gap_repairs_exact_original_job_only", "ordinal": 191, "stage": "START", "suite_elapsed_ms": 5499, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_reservation_publication_gap_repairs_exact_original_job_only PASSED [ 73%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_reservation_publication_gap_repairs_exact_original_job_only", "ordinal": 191, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5522, "test_elapsed_ms": 23}
+
+tests/unit/test_tip061a_057n.py::test_scoped_marker_presence_denies_legacy_even_when_malformed 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_marker_presence_denies_legacy_even_when_malformed", "ordinal": 192, "stage": "START", "suite_elapsed_ms": 5523, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_scoped_marker_presence_denies_legacy_even_when_malformed PASSED [ 73%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_scoped_marker_presence_denies_legacy_even_when_malformed", "ordinal": 192, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5530, "test_elapsed_ms": 7}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 193, "stage": "START", "suite_elapsed_ms": 5530, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>0] PASSED [ 73%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 193, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5541, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 194, "stage": "START", "suite_elapsed_ms": 5541, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>1] PASSED [ 74%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 194, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5551, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 195, "stage": "START", "suite_elapsed_ms": 5551, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>2] PASSED [ 74%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 195, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5562, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>3] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 196, "stage": "START", "suite_elapsed_ms": 5562, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>3] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 196, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5573, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>4] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 197, "stage": "START", "suite_elapsed_ms": 5573, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_normalized_config_rejects_malformed_or_ini_injection[<lambda>4] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_normalized_config_rejects_malformed_or_ini_injection", "ordinal": 197, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5584, "test_elapsed_ms": 10}
+
+tests/unit/test_tip061a_057n.py::test_input_set_and_include_drift_denied_before_loading_qualification 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_input_set_and_include_drift_denied_before_loading_qualification", "ordinal": 198, "stage": "START", "suite_elapsed_ms": 5584, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_input_set_and_include_drift_denied_before_loading_qualification PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_input_set_and_include_drift_denied_before_loading_qualification", "ordinal": 198, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5599, "test_elapsed_ms": 14}
+
+tests/unit/test_tip061a_057n.py::test_concrete_production_driver_composes_owned_phases_and_common_resources 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_concrete_production_driver_composes_owned_phases_and_common_resources", "ordinal": 199, "stage": "START", "suite_elapsed_ms": 5599, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_concrete_production_driver_composes_owned_phases_and_common_resources PASSED [ 76%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_concrete_production_driver_composes_owned_phases_and_common_resources", "ordinal": 199, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5769, "test_elapsed_ms": 169}
+
+tests/unit/test_tip061a_057n.py::test_real_path_rejects_self_asserted_and_expired_authorization_before_owned_launch 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_real_path_rejects_self_asserted_and_expired_authorization_before_owned_launch", "ordinal": 200, "stage": "START", "suite_elapsed_ms": 5769, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_real_path_rejects_self_asserted_and_expired_authorization_before_owned_launch PASSED [ 76%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_real_path_rejects_self_asserted_and_expired_authorization_before_owned_launch", "ordinal": 200, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5789, "test_elapsed_ms": 20}
+
+tests/unit/test_tip061a_057n.py::test_gate_loss_between_compile_copy_and_create_never_launches_fixture 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_gate_loss_between_compile_copy_and_create_never_launches_fixture", "ordinal": 201, "stage": "START", "suite_elapsed_ms": 5790, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_gate_loss_between_compile_copy_and_create_never_launches_fixture PASSED [ 77%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_gate_loss_between_compile_copy_and_create_never_launches_fixture", "ordinal": 201, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5870, "test_elapsed_ms": 80}
+
+tests/unit/test_tip061a_057n.py::test_driver_copy_seams_use_verified_bytes_even_if_file_changes_at_copy_window 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_driver_copy_seams_use_verified_bytes_even_if_file_changes_at_copy_window", "ordinal": 202, "stage": "START", "suite_elapsed_ms": 5870, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_driver_copy_seams_use_verified_bytes_even_if_file_changes_at_copy_window PASSED [ 77%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_driver_copy_seams_use_verified_bytes_even_if_file_changes_at_copy_window", "ordinal": 202, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5879, "test_elapsed_ms": 8}
+
+tests/unit/test_tip061a_057n.py::test_native_manifest_mechanism_limits_deny_before_large_reads 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_manifest_mechanism_limits_deny_before_large_reads", "ordinal": 203, "stage": "START", "suite_elapsed_ms": 5879, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_manifest_mechanism_limits_deny_before_large_reads PASSED [ 77%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_manifest_mechanism_limits_deny_before_large_reads", "ordinal": 203, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5891, "test_elapsed_ms": 11}
+
+tests/unit/test_tip061a_057n.py::test_node_journal_sealed_phase_provider_is_consumed_without_caller_fence_booleans 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_node_journal_sealed_phase_provider_is_consumed_without_caller_fence_booleans", "ordinal": 204, "stage": "START", "suite_elapsed_ms": 5891, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_node_journal_sealed_phase_provider_is_consumed_without_caller_fence_booleans PASSED [ 78%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_node_journal_sealed_phase_provider_is_consumed_without_caller_fence_booleans", "ordinal": 204, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6034, "test_elapsed_ms": 143}
+
+tests/unit/test_tip061a_057n.py::test_authorization_expiry_after_live_launch_retains_handles_and_does_not_terminate 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_authorization_expiry_after_live_launch_retains_handles_and_does_not_terminate", "ordinal": 205, "stage": "START", "suite_elapsed_ms": 6035, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_authorization_expiry_after_live_launch_retains_handles_and_does_not_terminate PASSED [ 78%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_authorization_expiry_after_live_launch_retains_handles_and_does_not_terminate", "ordinal": 205, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6152, "test_elapsed_ms": 117}
+
+tests/unit/test_tip061a_057n.py::test_started_step_completes_after_ttl_then_next_effect_uses_new_grant 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_started_step_completes_after_ttl_then_next_effect_uses_new_grant", "ordinal": 206, "stage": "START", "suite_elapsed_ms": 6152, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_started_step_completes_after_ttl_then_next_effect_uses_new_grant PASSED [ 78%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_started_step_completes_after_ttl_then_next_effect_uses_new_grant", "ordinal": 206, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6296, "test_elapsed_ms": 143}
+
+tests/unit/test_tip061a_057n.py::test_native_installed_scope_path_uses_scoped_phase_authority_and_never_legacy_lane 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_installed_scope_path_uses_scoped_phase_authority_and_never_legacy_lane", "ordinal": 207, "stage": "START", "suite_elapsed_ms": 6296, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_native_installed_scope_path_uses_scoped_phase_authority_and_never_legacy_lane PASSED [ 79%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_native_installed_scope_path_uses_scoped_phase_authority_and_never_legacy_lane", "ordinal": 207, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6443, "test_elapsed_ms": 146}
+
+tests/unit/test_tip061a_057n.py::test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision", "ordinal": 208, "stage": "START", "suite_elapsed_ms": 6443, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision PASSED [ 79%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision", "ordinal": 208, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6829, "test_elapsed_ms": 385}
+
+tests/unit/test_tip061a_057n.py::test_cancelled_owned_compile_cannot_start_tester_even_if_ex5_was_published 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_cancelled_owned_compile_cannot_start_tester_even_if_ex5_was_published", "ordinal": 209, "stage": "START", "suite_elapsed_ms": 6830, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_cancelled_owned_compile_cannot_start_tester_even_if_ex5_was_published PASSED [ 80%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_cancelled_owned_compile_cannot_start_tester_even_if_ex5_was_published", "ordinal": 209, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6934, "test_elapsed_ms": 104}
+
+tests/unit/test_tip061a_057n.py::test_deployed_ex5_drift_after_tester_preparation_denies_process_creation 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_deployed_ex5_drift_after_tester_preparation_denies_process_creation", "ordinal": 210, "stage": "START", "suite_elapsed_ms": 6934, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_deployed_ex5_drift_after_tester_preparation_denies_process_creation PASSED [ 80%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_deployed_ex5_drift_after_tester_preparation_denies_process_creation", "ordinal": 210, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7046, "test_elapsed_ms": 112}
+
+tests/unit/test_tip061a_057n.py::test_signed_cancel_for_other_process_cannot_touch_owned_job[creation] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_signed_cancel_for_other_process_cannot_touch_owned_job", "ordinal": 211, "stage": "START", "suite_elapsed_ms": 7047, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_signed_cancel_for_other_process_cannot_touch_owned_job[creation] PASSED [ 80%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_signed_cancel_for_other_process_cannot_touch_owned_job", "ordinal": 211, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7079, "test_elapsed_ms": 32}
+
+tests/unit/test_tip061a_057n.py::test_signed_cancel_for_other_process_cannot_touch_owned_job[image] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_signed_cancel_for_other_process_cannot_touch_owned_job", "ordinal": 212, "stage": "START", "suite_elapsed_ms": 7080, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_signed_cancel_for_other_process_cannot_touch_owned_job[image] PASSED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_signed_cancel_for_other_process_cannot_touch_owned_job", "ordinal": 212, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7113, "test_elapsed_ms": 33}
+
+tests/unit/test_tip061a_057n.py::test_terminal_closure_is_historical_bound_and_read_only_after_normal_lease_return 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_terminal_closure_is_historical_bound_and_read_only_after_normal_lease_return", "ordinal": 213, "stage": "START", "suite_elapsed_ms": 7113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_terminal_closure_is_historical_bound_and_read_only_after_normal_lease_return PASSED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_terminal_closure_is_historical_bound_and_read_only_after_normal_lease_return", "ordinal": 213, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7266, "test_elapsed_ms": 152}
+
+tests/unit/test_tip061a_057n.py::test_retained_current_handles_keep_stop_pending_but_persisted_unknown_alone_does_not 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_retained_current_handles_keep_stop_pending_but_persisted_unknown_alone_does_not", "ordinal": 214, "stage": "START", "suite_elapsed_ms": 7266, "test_elapsed_ms": 0}
+
+tests/unit/test_tip061a_057n.py::test_retained_current_handles_keep_stop_pending_but_persisted_unknown_alone_does_not PASSED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip061a_057n.py", "function": "test_retained_current_handles_keep_stop_pending_but_persisted_unknown_alone_does_not", "ordinal": 214, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7273, "test_elapsed_ms": 7}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 215, "stage": "START", "suite_elapsed_ms": 7274, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection PASSED [ 82%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 215, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7275, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 216, "stage": "START", "suite_elapsed_ms": 7275, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection PASSED [ 82%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 216, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8280, "test_elapsed_ms": 1004}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 217, "stage": "START", "suite_elapsed_ms": 8280, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 217, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8282, "test_elapsed_ms": 2}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 218, "stage": "START", "suite_elapsed_ms": 8283, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 218, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8284, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 219, "stage": "START", "suite_elapsed_ms": 8284, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 219, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8286, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 220, "stage": "START", "suite_elapsed_ms": 8286, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] PASSED [ 84%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 220, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8287, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 221, "stage": "START", "suite_elapsed_ms": 8287, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] PASSED [ 84%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 221, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8289, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 222, "stage": "START", "suite_elapsed_ms": 8289, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] PASSED [ 85%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 222, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8290, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 223, "stage": "START", "suite_elapsed_ms": 8290, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] PASSED [ 85%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 223, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8291, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 224, "stage": "START", "suite_elapsed_ms": 8291, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] PASSED [ 85%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 224, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8293, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 225, "stage": "START", "suite_elapsed_ms": 8293, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] PASSED [ 86%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 225, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8294, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 226, "stage": "START", "suite_elapsed_ms": 8295, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] PASSED [ 86%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 226, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8296, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 227, "stage": "START", "suite_elapsed_ms": 8296, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] PASSED [ 86%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 227, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8297, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 228, "stage": "START", "suite_elapsed_ms": 8297, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] PASSED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 228, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8299, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 229, "stage": "START", "suite_elapsed_ms": 8299, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] PASSED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 229, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8300, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 230, "stage": "START", "suite_elapsed_ms": 8300, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] PASSED [ 88%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 230, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8301, "test_elapsed_ms": 1}
+
+tests/unit/test_tip072_native_denied_publication.py::test_live_owner_denial_keeps_ticket_and_owner_as_barrier 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_live_owner_denial_keeps_ticket_and_owner_as_barrier", "ordinal": 231, "stage": "START", "suite_elapsed_ms": 8302, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_live_owner_denial_keeps_ticket_and_owner_as_barrier PASSED [ 88%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_live_owner_denial_keeps_ticket_and_owner_as_barrier", "ordinal": 231, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8307, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_preserves_fifo_until_owner_releases 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_preserves_fifo_until_owner_releases", "ordinal": 232, "stage": "START", "suite_elapsed_ms": 8307, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_preserves_fifo_until_owner_releases PASSED [ 88%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_preserves_fifo_until_owner_releases", "ordinal": 232, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8368, "test_elapsed_ms": 61}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_keeps_original_zero_wait_deadline 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_keeps_original_zero_wait_deadline", "ordinal": 233, "stage": "START", "suite_elapsed_ms": 8369, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_keeps_original_zero_wait_deadline PASSED [ 89%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_keeps_original_zero_wait_deadline", "ordinal": 233, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8373, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_real_existing_owner_and_successful_release_are_unchanged 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_real_existing_owner_and_successful_release_are_unchanged", "ordinal": 234, "stage": "START", "suite_elapsed_ms": 8373, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_real_existing_owner_and_successful_release_are_unchanged PASSED [ 89%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_real_existing_owner_and_successful_release_are_unchanged", "ordinal": 234, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8376, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[missing] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 235, "stage": "START", "suite_elapsed_ms": 8376, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[missing] PASSED [ 90%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 235, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8379, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[corrupt] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 236, "stage": "START", "suite_elapsed_ms": 8380, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[corrupt] PASSED [ 90%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 236, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8383, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[foreign] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 237, "stage": "START", "suite_elapsed_ms": 8383, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[foreign] PASSED [ 90%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 237, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8386, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[schema] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 238, "stage": "START", "suite_elapsed_ms": 8386, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[schema] PASSED [ 91%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 238, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8389, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-id] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 239, "stage": "START", "suite_elapsed_ms": 8389, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-id] PASSED [ 91%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 239, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8393, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[blank-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 240, "stage": "START", "suite_elapsed_ms": 8393, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[blank-token] PASSED [ 91%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 240, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8396, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 241, "stage": "START", "suite_elapsed_ms": 8396, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-token] PASSED [ 92%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 241, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8399, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[own-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 242, "stage": "START", "suite_elapsed_ms": 8399, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[own-token] PASSED [ 92%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 242, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8402, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-text] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 243, "stage": "START", "suite_elapsed_ms": 8403, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-text] PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 243, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8406, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-bool] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 244, "stage": "START", "suite_elapsed_ms": 8406, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-bool] PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 244, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8410, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-zero] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 245, "stage": "START", "suite_elapsed_ms": 8410, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-zero] PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 245, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8413, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-mismatch] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 246, "stage": "START", "suite_elapsed_ms": 8413, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-mismatch] PASSED [ 94%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 246, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8416, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-id] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 247, "stage": "START", "suite_elapsed_ms": 8417, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-id] PASSED [ 94%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 247, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8420, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[read-denied] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 248, "stage": "START", "suite_elapsed_ms": 8420, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[read-denied] PASSED [ 95%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 248, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8423, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[stat-denied] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 249, "stage": "START", "suite_elapsed_ms": 8423, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[stat-denied] PASSED [ 95%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 249, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8426, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[unobserved] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 250, "stage": "START", "suite_elapsed_ms": 8427, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[unobserved] PASSED [ 95%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 250, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8434, "test_elapsed_ms": 7}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[dead-owner] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 251, "stage": "START", "suite_elapsed_ms": 8434, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[dead-owner] PASSED [ 96%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 251, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8493, "test_elapsed_ms": 59}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-error] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 252, "stage": "START", "suite_elapsed_ms": 8494, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-error] PASSED [ 96%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 252, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8499, "test_elapsed_ms": 5}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-root] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 253, "stage": "START", "suite_elapsed_ms": 8499, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-root] PASSED [ 96%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 253, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8503, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[non-native] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 254, "stage": "START", "suite_elapsed_ms": 8505, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[non-native] PASSED [ 97%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 254, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8508, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[symlink-stat] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 255, "stage": "START", "suite_elapsed_ms": 8508, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[symlink-stat] PASSED [ 97%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 255, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8511, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[reparse-stat] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 256, "stage": "START", "suite_elapsed_ms": 8512, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[reparse-stat] PASSED [ 98%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 256, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8516, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[ancestor-alias] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 257, "stage": "START", "suite_elapsed_ms": 8516, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[ancestor-alias] PASSED [ 98%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 257, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8520, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[other-errno] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 258, "stage": "START", "suite_elapsed_ms": 8520, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[other-errno] PASSED [ 98%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 258, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8524, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_actual_bad_path_does_not_become_owner_wait 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_actual_bad_path_does_not_become_owner_wait", "ordinal": 259, "stage": "START", "suite_elapsed_ms": 8524, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_actual_bad_path_does_not_become_owner_wait PASSED [ 99%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_actual_bad_path_does_not_become_owner_wait", "ordinal": 259, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8526, "test_elapsed_ms": 2}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[active] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 260, "stage": "START", "suite_elapsed_ms": 8526, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[active] PASSED [ 99%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 260, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8531, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[unknown] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 261, "stage": "START", "suite_elapsed_ms": 8531, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[unknown] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 261, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 8535, "test_elapsed_ms": 4}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-compatibility.junit.xml -
+======================== 260 passed, 1 skipped in 8.53s ========================
