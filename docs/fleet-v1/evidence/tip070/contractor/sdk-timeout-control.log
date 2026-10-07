@@ -1,0 +1,60 @@
+{
+  "status": "PASS_INDEPENDENT_REAL_SDK_TIMEOUT_CONTROL",
+  "candidate_core_sha256": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18",
+  "calls": [
+    {
+      "module": "pytest",
+      "requested_timeout": 300
+    }
+  ],
+  "protocol_is_error": false,
+  "payload": {
+    "status": "FAIL",
+    "suite": "unit",
+    "reason_code": "TEST_RUN_TIMEOUT",
+    "returncode": null,
+    "timeout_seconds": 0.2,
+    "stdout_tail": "ROOT_PARTIAL_OUT\n",
+    "stderr_tail": "ROOT_PARTIAL_ERR\n",
+    "descendant_outcome": "UNKNOWN"
+  },
+  "index": {
+    "entries": [
+      {
+        "evidence_relative_path": "backend-admin/test-runs/BTSYNC-20261007-093459-B21F0052.json",
+        "invocation_id": "BTSYNC-20261007-093459-B21F0052",
+        "started_at_utc": "2026-10-07T00:34:59.515+00:00",
+        "suite": "unit"
+      }
+    ],
+    "evicted_descriptors": 0,
+    "limit": 32,
+    "schema_version": "1.0",
+    "scope": "RECENT_DISCOVERY_ONLY",
+    "total_invocations": 1
+  },
+  "record": {
+    "descendant_outcome": "UNKNOWN",
+    "exception_type": "TimeoutExpired",
+    "finished_at_utc": "2026-10-07T00:34:59.717+00:00",
+    "invocation_id": "BTSYNC-20261007-093459-B21F0052",
+    "result": {
+      "descendant_outcome": "UNKNOWN",
+      "reason_code": "TEST_RUN_TIMEOUT",
+      "returncode": null,
+      "status": "FAIL",
+      "stderr_tail": "ROOT_PARTIAL_ERR\n",
+      "stdout_tail": "ROOT_PARTIAL_OUT\n",
+      "suite": "unit",
+      "timeout_seconds": 0.2
+    },
+    "schema_version": "1.0",
+    "scope": "METHOD_CALL_ONLY",
+    "started_at_utc": "2026-10-07T00:34:59.515+00:00",
+    "state": "INVOCATION_TIMEOUT",
+    "suite": "unit"
+  },
+  "native_effects": false,
+  "VPS_outage_cause": "UNKNOWN",
+  "old_sync_run": "UNKNOWN_NO_RECEIPT"
+}
