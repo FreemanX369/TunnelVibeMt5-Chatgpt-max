@@ -133,7 +133,7 @@ def test_original_suite_budgets_and_baseline_denial_remain(tmp_path, monkeypatch
 @pytest.mark.parametrize("stdout,stderr", [(b"a" * 9000 + b"OUT", b"b" * 9000 + b"ERR"),
                                            ("a" * 9000 + "OUT", "b" * 9000 + "ERR"),
                                            ("\U0001f642" * 5000, ("\U0001f642" * 5000).encode()),
-                                           (None, None)])
+                                           (None, None)], ids=["bytes", "text", "unicode", "none"])
 def test_timeout_tails_bound_bytes_text_and_omit_exception_command(tmp_path, monkeypatch, stdout, stderr):
     admin = BackendAdmin(root(tmp_path))
     original = subprocess.TimeoutExpired([SECRET], 300, output=stdout, stderr=stderr)

@@ -1,0 +1,29 @@
+{
+  "cwd": "/workspace/scratch/b4674f0ac496/tip070-v2-builder",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip070-v2-builder/app:/workspace/scratch/b4674f0ac496/tip070-v2-builder/tests/unit"
+  },
+  "collection_command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "--collect-only",
+    "-q",
+    "tests/unit/test_tip070_sync_test_receipts.py"
+  ],
+  "focused_command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "tests/unit/test_tip070_sync_test_receipts.py",
+    "tests/unit/test_tip047_049_backend_contracts.py",
+    "tests/unit/test_backend_restore_cas.py",
+    "tests/unit/test_tip066_live_diagnostics.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007/tip070-v2-builder/focused-v2.junit.xml"
+  ]
+}
