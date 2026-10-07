@@ -1,0 +1,17 @@
+{
+  "parent": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "changed_source_paths": [
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "source_entries": 217,
+  "production_unchanged": true,
+  "AST_outside_target_unchanged": true,
+  "arguments_decorators_unchanged": true,
+  "assert_AST_identical": true,
+  "assert_count": 6,
+  "four_existing_wrappers_AST_identical": true,
+  "original_control_flow_tail_AST_identical": true,
+  "source_bytes": 97723,
+  "source_sha256": "dc406d668c092d168094614cfe88e6a5849d36ac8f026ef124fa56792d93f6be",
+  "diff_check": true
+}

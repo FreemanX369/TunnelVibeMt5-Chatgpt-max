@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/focused.junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073a-builder",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_s": 45,
+  "exit_code": 0,
+  "wall_s": 13.256242681000003
+}

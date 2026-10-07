@@ -227,36 +227,6 @@ def test_failure_diagnostic_bounds_rows_frames_and_bytes(monkeypatch):
     assert 'PRIVATE_PARAMETER_TOKEN' not in json.dumps(records)
 
 
-def test_failure_diagnostic_byte_bound_drops_oversized_frame_metadata():
-    import fleet_source_progress as module
-    lines = []
-    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
-    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
-    file = 'app/vibemql5/' + 'a' * 80 + '/' + 'b' * 80 + '.py'
-    frame = {'file': file, 'function': 'c' * 96, 'line': 999999}
-    assert module._source_frame(**frame) == frame
-    observer.report(SimpleNamespace(failed=True, when='call', nodeid='tests/unit/test_control.py::test_control',
-        _source_failure_metadata={'exception_type': 'RuntimeError', 'frames': [frame] * module.MAX_FAILURE_FRAMES}))
-    assert failure_rows('\n'.join(lines))[0]['frames'] == []
-    assert len(lines[0].encode('utf-8')) <= module.MAX_FAILURE_BYTES + len('SOURCE_TEST_FAILURE ')
-    assert observer.outcome == 'FAILED'
-
-
-def test_partial_write_then_flush_failure_cannot_bypass_diagnostic_row_quota(monkeypatch):
-    import fleet_source_progress as module
-    lines = []
-    def broken_flush(): raise RuntimeError('PRIVATE_FLUSH_BODY')
-    reporter = SimpleNamespace(write_line=lines.append, flush=broken_flush)
-    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
-    monkeypatch.setattr(module, 'MAX_FAILURE_ROWS', 2)
-    report = SimpleNamespace(failed=True, when='call', nodeid='tests/unit/test_control.py::test_control')
-    for _ in range(20): observer.report(report)
-    records = failure_rows('\n'.join(lines))
-    assert len(records) == 3 and records[-1] == {'stage': 'TRUNCATED', 'rows_emitted': 2, 'row_limit': 2}
-    assert observer.failure_rows == 2 and observer.outcome == 'FAILED' and report.failed is True
-    assert 'PRIVATE_FLUSH_BODY' not in json.dumps(records)
-
-
 @pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
                                    'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
 def test_failure_diagnostic_omits_nonliteral_ids(nodeid):

@@ -1,0 +1,118 @@
+..........FFFFF.FF                                                       [100%]
+=================================== FAILURES ===================================
+_____________ test_failure_diagnostic_bounds_rows_frames_and_bytes _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f043a49ca40>
+
+    def test_failure_diagnostic_bounds_rows_frames_and_bytes(monkeypatch):
+        import fleet_source_progress as module
+        lines, flushes = [], []
+        reporter = SimpleNamespace(write_line=lines.append, flush=lambda: flushes.append(True))
+        observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
+>       monkeypatch.setattr(module, 'MAX_FAILURE_ROWS', 2)
+E       AttributeError: <module 'fleet_source_progress' from '/workspace/scratch/b4674f0ac496/tip073b-builder/tests/unit/fleet_source_progress.py'> has no attribute 'MAX_FAILURE_ROWS'
+
+tests/unit/test_fleet_source_progress.py:216: AttributeError
+______________ test_failure_diagnostic_omits_nonliteral_ids[None] ______________
+
+nodeid = None
+
+    @pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
+                                       'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
+    def test_failure_diagnostic_omits_nonliteral_ids(nodeid):
+        lines = []
+        reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
+        observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
+        observer.report(SimpleNamespace(failed=True, when='call', nodeid=nodeid))
+>       record = failure_rows('\n'.join(lines))[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/unit/test_fleet_source_progress.py:237: IndexError
+_ test_failure_diagnostic_omits_nonliteral_ids[/private/test_secret.py::test_secret] _
+
+nodeid = '/private/test_secret.py::test_secret'
+
+    @pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
+                                       'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
+    def test_failure_diagnostic_omits_nonliteral_ids(nodeid):
+        lines = []
+        reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
+        observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
+        observer.report(SimpleNamespace(failed=True, when='call', nodeid=nodeid))
+>       record = failure_rows('\n'.join(lines))[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/unit/test_fleet_source_progress.py:237: IndexError
+_ test_failure_diagnostic_omits_nonliteral_ids[tests/unit/../private.py::test_secret] _
+
+nodeid = 'tests/unit/../private.py::test_secret'
+
+    @pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
+                                       'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
+    def test_failure_diagnostic_omits_nonliteral_ids(nodeid):
+        lines = []
+        reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
+        observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
+        observer.report(SimpleNamespace(failed=True, when='call', nodeid=nodeid))
+>       record = failure_rows('\n'.join(lines))[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/unit/test_fleet_source_progress.py:237: IndexError
+_ test_failure_diagnostic_omits_nonliteral_ids[tests/unit/test_control.py::SECRET_FUNCTION] _
+
+nodeid = 'tests/unit/test_control.py::SECRET_FUNCTION'
+
+    @pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
+                                       'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
+    def test_failure_diagnostic_omits_nonliteral_ids(nodeid):
+        lines = []
+        reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
+        observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
+        observer.report(SimpleNamespace(failed=True, when='call', nodeid=nodeid))
+>       record = failure_rows('\n'.join(lines))[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/unit/test_fleet_source_progress.py:237: IndexError
+_ test_metadata_never_stringifies_exception_and_preserves_unknown_classification _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_metadata_never_stringifie0')
+
+    def test_metadata_never_stringifies_exception_and_preserves_unknown_classification(tmp_path):
+        import fleet_source_progress as module
+        class PrivateError(Exception):
+            def __str__(self): raise AssertionError('PRIVATE_STR_CALLED')
+            def __repr__(self): raise AssertionError('PRIVATE_REPR_CALLED')
+        try: raise PrivateError('PRIVATE_MESSAGE_BODY')
+        except PrivateError:
+            excinfo = pytest.ExceptionInfo.from_current()
+        item = SimpleNamespace(config=SimpleNamespace(rootpath=tmp_path))
+>       metadata = module._failure_metadata(item, SimpleNamespace(excinfo=excinfo))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'fleet_source_progress' has no attribute '_failure_metadata'
+
+tests/unit/test_fleet_source_progress.py:262: AttributeError
+___________ test_makereport_metadata_failure_returns_original_report ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f043a4e8d70>
+
+    def test_makereport_metadata_failure_returns_original_report(monkeypatch):
+        import fleet_source_progress as module
+        report = SimpleNamespace(failed=True)
+        def broken(*args): raise RuntimeError('PRIVATE_HOOK_BODY')
+>       monkeypatch.setattr(module, '_failure_metadata', broken)
+E       AttributeError: <module 'fleet_source_progress' from '/workspace/scratch/b4674f0ac496/tip073b-builder/tests/unit/fleet_source_progress.py'> has no attribute '_failure_metadata'
+
+tests/unit/test_fleet_source_progress.py:271: AttributeError
+=========================== short test summary info ============================
+FAILED tests/unit/test_fleet_source_progress.py::test_failure_diagnostic_bounds_rows_frames_and_bytes
+FAILED tests/unit/test_fleet_source_progress.py::test_failure_diagnostic_omits_nonliteral_ids[None]
+FAILED tests/unit/test_fleet_source_progress.py::test_failure_diagnostic_omits_nonliteral_ids[/private/test_secret.py::test_secret]
+FAILED tests/unit/test_fleet_source_progress.py::test_failure_diagnostic_omits_nonliteral_ids[tests/unit/../private.py::test_secret]
+FAILED tests/unit/test_fleet_source_progress.py::test_failure_diagnostic_omits_nonliteral_ids[tests/unit/test_control.py::SECRET_FUNCTION]
+FAILED tests/unit/test_fleet_source_progress.py::test_metadata_never_stringifies_exception_and_preserves_unknown_classification
+FAILED tests/unit/test_fleet_source_progress.py::test_makereport_metadata_failure_returns_original_report
+7 failed, 11 passed, 16 deselected in 0.10s

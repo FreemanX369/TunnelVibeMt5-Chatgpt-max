@@ -1,0 +1,13 @@
+..................................                                       [100%]
+============================= slowest 10 durations =============================
+0.63s call     tests/unit/test_fleet_source_progress.py::test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump
+0.25s call     tests/unit/test_fleet_source_progress.py::test_failed_phase_is_flushed_before_later_owned_child_timeout[setup]
+0.24s call     tests/unit/test_fleet_source_progress.py::test_failed_phase_is_flushed_before_later_owned_child_timeout[call]
+0.24s call     tests/unit/test_fleet_source_progress.py::test_failed_phase_is_flushed_before_later_owned_child_timeout[teardown]
+0.22s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-failed]
+0.22s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-failed]
+0.17s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-passed]
+0.17s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-skipped]
+0.17s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-skipped]
+0.17s call     tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_preserves_fixture_failure_and_junit_error[setup]
+34 passed in 2.84s

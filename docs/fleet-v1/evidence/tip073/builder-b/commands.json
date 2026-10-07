@@ -1,0 +1,77 @@
+{
+  "parent": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "commands": [
+    {
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fleet_source_progress.py",
+        "-k",
+        "metadata or bounds or nonliteral_ids or diagnostic_formatter or makereport or nonfailed",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/baseline.junit.xml"
+      ],
+      "timeout_seconds": 45,
+      "exit_code": 1,
+      "wall_seconds": 0.3650549740000315,
+      "source_unchanged": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fleet_source_progress.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/focused.junit.xml",
+        "--durations=10"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 3.133841627000038,
+      "source_files": 217,
+      "source_unchanged": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fleet_source_progress.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/focused-v2.junit.xml",
+        "--durations=10"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 3.43726179600003,
+      "source_files": 217,
+      "source_unchanged": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fleet_source_runner.py",
+        "tests/unit/test_tip060c_restore.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/compatibility.junit.xml",
+        "--durations=10"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 1.080319437000071,
+      "source_files": 217,
+      "source_unchanged": true
+    }
+  ],
+  "child_limits": {
+    "observe_actual_later_START_seconds": 20,
+    "owned_external_wait_seconds": 0.1,
+    "sleep_fixture_seconds": 30,
+    "reap_seconds": 5
+  },
+  "worktree_created_separately": true
+}

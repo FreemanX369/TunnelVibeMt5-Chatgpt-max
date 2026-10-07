@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_fleet_source_progress.py",
+    "tests/unit/test_fleet_source_runner.py",
+    "tests/unit/test_tip060c_restore.py",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_tip072_native_denied_publication.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/combined.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/combined-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073-candidate",
+  "timeout_s": 180,
+  "exit_code": 0,
+  "wall_s": 35.539503922999984,
+  "source_count": 217,
+  "source_unchanged": true,
+  "cases": 182,
+  "failed": 0,
+  "skipped": 0,
+  "passed": 182
+}

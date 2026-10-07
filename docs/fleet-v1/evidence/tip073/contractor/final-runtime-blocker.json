@@ -1,0 +1,33 @@
+{
+  "observed_at": "2026-10-07T11:16:05.207Z",
+  "server": {
+    "status": "fulfilled",
+    "value": {
+      "name": "server",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.server_info`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+          }
+        ],
+        "isError": true
+      }
+    }
+  },
+  "health": {
+    "status": "fulfilled",
+    "value": {
+      "name": "health",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.health`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+          }
+        ],
+        "isError": true
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "foreign_activity_plugin",
+    "-p",
+    "no:cacheprovider",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/foreign-green.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/foreign-green-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073a-builder",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit:/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OWNED_FOREIGN_RECEIPT": "/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/foreign-green.json"
+  },
+  "timeout_s": 30,
+  "exit_code": 0,
+  "wall_s": 7.13816364399986,
+  "cases": 1,
+  "failed": 0,
+  "source_entries": 217,
+  "source_unchanged": true
+}

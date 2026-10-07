@@ -1,0 +1,44 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 771, "test_elapsed_ms": 0}
+FSOURCE_TEST_FAILURE {"exception_type": "BaseExceptionGroup", "file": "tests/unit/test_tip064_integration.py", "frames": [{"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "line": 1474}, {"file": "tests/unit/test_tip064_integration.py", "function": "run_long_fixture", "line": 1433}], "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 1, "phase": "call"}
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 1, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 9098, "test_elapsed_ms": 8327}
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 9098, "test_elapsed_ms": 0}
+.SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 15255, "test_elapsed_ms": 6156}
+                                                                         [100%]
+=================================== FAILURES ===================================
+_ test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000] _
+  + Exception Group Traceback (most recent call last):
+  |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1474, in test_long_fixture_valid_finite_schedule_requires_aggregate_observation
+  |     run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+  |   File "/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/causal_gate_plugin_v2.py", line 88, in gated_run
+  |     return run(*args, **kwargs)
+  |            ^^^^^^^^^^^^^^^^^^^^
+  |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1433, in run_long_fixture
+  |     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
+  |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1398, in run_long_fixture
+    |     pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1412, in run_long_fixture
+    |     close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/fleet_gateway_fixture.py", line 44, in close_dispatcher_fixture
+    |     pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +------------------------------------
+----------------------------- Captured stdout call -----------------------------
+LONG_OWNER_FIXTURE {"latest": {"elapsed_ms": 8139, "job_state": "STARTING", "pending_futures": 1, "pending_native_records": 1, "read_elapsed_ms": 3, "stage": "CONTROL_FINISH", "step_elapsed_ms": 72}, "milestones": {"CALLBACK_START": 171, "CLEANUP_RELEASE": 5084, "CONTROL_FINISH": 8139, "CONTROL_START": 8067, "JOB_READ": 5079, "WORKER_START": 70}, "timeline": [{"elapsed_ms": 6793, "stage": "CONTROL_START"}, {"elapsed_ms": 6873, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 79}, {"elapsed_ms": 6878, "stage": "CONTROL_START"}, {"elapsed_ms": 6968, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 90}, {"elapsed_ms": 6973, "stage": "CONTROL_START"}, {"elapsed_ms": 7052, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 78}, {"elapsed_ms": 7057, "stage": "CONTROL_START"}, {"elapsed_ms": 7161, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 103}, {"elapsed_ms": 7166, "stage": "CONTROL_START"}, {"elapsed_ms": 7243, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 76}, {"elapsed_ms": 7248, "stage": "CONTROL_START"}, {"elapsed_ms": 7325, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 77}, {"elapsed_ms": 7331, "stage": "CONTROL_START"}, {"elapsed_ms": 7410, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 79}, {"elapsed_ms": 7415, "stage": "CONTROL_START"}, {"elapsed_ms": 7491, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 75}, {"elapsed_ms": 7496, "stage": "CONTROL_START"}, {"elapsed_ms": 7580, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 84}, {"elapsed_ms": 7585, "stage": "CONTROL_START"}, {"elapsed_ms": 7673, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 87}, {"elapsed_ms": 7678, "stage": "CONTROL_START"}, {"elapsed_ms": 7747, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 69}, {"elapsed_ms": 7753, "stage": "CONTROL_START"}, {"elapsed_ms": 7825, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 72}, {"elapsed_ms": 7830, "stage": "CONTROL_START"}, {"elapsed_ms": 7902, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 71}, {"elapsed_ms": 7907, "stage": "CONTROL_START"}, {"elapsed_ms": 7981, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 73}, {"elapsed_ms": 7986, "stage": "CONTROL_START"}, {"elapsed_ms": 8062, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 75}, {"elapsed_ms": 8067, "stage": "CONTROL_START"}, {"elapsed_ms": 8139, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 72}], "timeline_dropped": 363, "timeline_limit": 32, "timeline_total": 395}
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]
+1 failed, 1 passed in 15.24s

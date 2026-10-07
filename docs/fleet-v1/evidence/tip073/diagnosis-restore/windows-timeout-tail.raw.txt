@@ -1,0 +1,60 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1195, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[HTTPS_UNAVAILABLE] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1196, "stage": "START", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[HTTPS_UNAVAILABLE] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1196, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[FIXTURE_LOST_ACK] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1197, "stage": "START", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[FIXTURE_LOST_ACK] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1197, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[CLOSE_WRONG_STATUS] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1198, "stage": "START", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[CLOSE_WRONG_STATUS] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_composed_lost_ack_once_preserves_original_call_return_and_failure", "ordinal": 1198, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable", "ordinal": 1199, "stage": "START", "suite_elapsed_ms": 568515, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable", "ordinal": 1199, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 578015, "test_elapsed_ms": 9500}
+
+tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack", "ordinal": 1200, "stage": "START", "suite_elapsed_ms": 578015, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack", "ordinal": 1200, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 584265, "test_elapsed_ms": 6250}
+
+tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history", "ordinal": 1201, "stage": "START", "suite_elapsed_ms": 584265, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history", "ordinal": 1201, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 589687, "test_elapsed_ms": 5422}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1202, "stage": "START", "suite_elapsed_ms": 589687, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1202, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 592500, "test_elapsed_ms": 2812}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[bad_pair] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1203, "stage": "START", "suite_elapsed_ms": 592500, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[bad_pair] PASSED [ 84%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1203, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 594125, "test_elapsed_ms": 1625}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[lost_ack] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1204, "stage": "START", "suite_elapsed_ms": 594125, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[lost_ack] PASSED [ 84%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1204, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 597250, "test_elapsed_ms": 3125}
+
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[after_pair] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret", "ordinal": 1205, "stage": "START", "suite_elapsed_ms": 597250, "test_elapsed_ms": 0}
+
+SOURCE_CASE_FINISHED case=full-unit exit_code=124 timed_out=True elapsed_seconds=600.047

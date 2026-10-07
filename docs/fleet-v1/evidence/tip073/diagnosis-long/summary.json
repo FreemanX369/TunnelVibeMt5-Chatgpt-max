@@ -1,0 +1,19 @@
+{
+  "head": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "source_entries": 188,
+  "source_unchanged": true,
+  "git_clean": true,
+  "baseline": {
+    "cases": 2,
+    "passed": 2
+  },
+  "modeled": {
+    "cases": 2,
+    "failed": 2,
+    "original_limits_unchanged": true,
+    "cross_case_global_outcome_observation_proved": true
+  },
+  "original_windows_trigger": "UNKNOWN",
+  "first_cleanup_cause": "UNKNOWN",
+  "no_production_or_existing_test_edits": true
+}

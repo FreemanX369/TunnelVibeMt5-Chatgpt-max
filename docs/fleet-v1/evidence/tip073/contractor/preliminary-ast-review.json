@@ -1,0 +1,7 @@
+{
+  "other_module_nodes_exact": true,
+  "decorators_exact": true,
+  "arguments_exact": true,
+  "assertions_exact": true,
+  "existing_wrappers_exact": true
+}
