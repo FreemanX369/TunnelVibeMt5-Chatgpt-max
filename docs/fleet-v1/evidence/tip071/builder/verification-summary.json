@@ -1,0 +1,45 @@
+{
+  "status": "PASS_FROZEN_V2",
+  "source_entries_unchanged": 216,
+  "results": {
+    "baseline": {
+      "cases": 16,
+      "passed": 3,
+      "failed": 13,
+      "errors": 0,
+      "skipped": 0,
+      "progress_rows": 32,
+      "progress_matches_junit": true
+    },
+    "focused": {
+      "cases": 16,
+      "passed": 12,
+      "failed": 4,
+      "errors": 0,
+      "skipped": 0,
+      "progress_rows": 32,
+      "progress_matches_junit": true
+    },
+    "focused-v2": {
+      "cases": 16,
+      "passed": 16,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "progress_rows": 32,
+      "progress_matches_junit": true
+    },
+    "compatibility-v2": {
+      "cases": 237,
+      "passed": 236,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "progress_rows": 474,
+      "progress_matches_junit": true
+    }
+  },
+  "no_suite_CI_rerun_or_VPS_effects": true,
+  "original_windows_guard_timeout_cause": "UNKNOWN",
+  "live_MCP_outage_cause": "UNKNOWN"
+}

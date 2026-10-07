@@ -1,0 +1,13 @@
+{
+  "parent": "ce621625324a3872faee5302ec27c35b684d5217",
+  "source_entries": 216,
+  "changed": [
+    "app/vibemql5/fleet/scoped_resources.py"
+  ],
+  "added": [
+    "tests/unit/test_tip071_scoped_db_setup_cleanup.py"
+  ],
+  "module_AST_outside_db": "IDENTICAL",
+  "db_normal_body_signature_connect_call": "IDENTICAL",
+  "frozen_hashes": "PASS"
+}

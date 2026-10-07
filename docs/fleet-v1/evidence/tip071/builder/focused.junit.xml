@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="16" time="1.130" timestamp="2026-10-07T12:50:52.525611+05:00" hostname="0cd60d4e9ba3"><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_success_returns_usable_wal_full_connection" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_real_busy_retained_traceback_holds_a_closed_connection" time="1.004" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_setup_interruption_closes_once_and_keeps_original_chain[exit-full]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_connect_failure_retains_original_without_inventing_cleanup[unexpected]" time="0.000" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_connect_failure_retains_original_without_inventing_cleanup[interrupt]" time="0.001" /><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_close_failure_retains_real_setup_error_as_primary[unexpected-wal]" time="0.002"><failure message="AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))&#10; +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__&#10; +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value&#10; +  and   None = RuntimeError('owned close fault').__context__&#10; +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value">coordinator = &lt;vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422623da0&gt;
+connections = ({'deny_pragma': 'journal_mode', 'close_fault': RuntimeError('owned close fault')}, [&lt;test_tip071_scoped_db_setup_clea...ip071-builder/focused-tmp/test_close_failure_retains_rea0/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'wal', error_type = &lt;class 'RuntimeError'&gt;
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+&gt;       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+E        +  and   None = RuntimeError('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_close_failure_retains_real_setup_error_as_primary[unexpected-full]" time="0.001"><failure message="AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))&#10; +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__&#10; +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value&#10; +  and   None = RuntimeError('owned close fault').__context__&#10; +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value">coordinator = &lt;vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422623fe0&gt;
+connections = ({'deny_pragma': 'synchronous', 'close_fault': RuntimeError('owned close fault')}, [&lt;test_tip071_scoped_db_setup_clean...ip071-builder/focused-tmp/test_close_failure_retains_rea1/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'full', error_type = &lt;class 'RuntimeError'&gt;
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+&gt;       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+E        +  and   None = RuntimeError('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_close_failure_retains_real_setup_error_as_primary[interrupt-wal]" time="0.001"><failure message="AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))&#10; +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__&#10; +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value&#10; +  and   None = KeyboardInterrupt('owned close fault').__context__&#10; +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value">coordinator = &lt;vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422621af0&gt;
+connections = ({'deny_pragma': 'journal_mode', 'close_fault': KeyboardInterrupt('owned close fault')}, [&lt;test_tip071_scoped_db_setup...ip071-builder/focused-tmp/test_close_failure_retains_rea2/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'wal', error_type = &lt;class 'KeyboardInterrupt'&gt;
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+&gt;       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+E        +  and   None = KeyboardInterrupt('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip071_scoped_db_setup_cleanup" name="test_close_failure_retains_real_setup_error_as_primary[interrupt-full]" time="0.001"><failure message="AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))&#10; +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__&#10; +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value&#10; +  and   None = KeyboardInterrupt('owned close fault').__context__&#10; +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value">coordinator = &lt;vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422626360&gt;
+connections = ({'deny_pragma': 'synchronous', 'close_fault': KeyboardInterrupt('owned close fault')}, [&lt;test_tip071_scoped_db_setup_...ip071-builder/focused-tmp/test_close_failure_retains_rea3/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'full', error_type = &lt;class 'KeyboardInterrupt'&gt;
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+&gt;       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+E        +  and   None = KeyboardInterrupt('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = &lt;ExceptionInfo DatabaseError('not authorized') tblen=4&gt;.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError</failure></testcase></testsuite></testsuites>

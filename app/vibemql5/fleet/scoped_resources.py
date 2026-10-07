@@ -308,8 +308,13 @@ class ScopedResourceCoordinator:
 
     def _db(self):
         db = sqlite3.connect(str(self.path), timeout=self.profile["lock_wait_ms"] / 1000, isolation_level=None)
-        db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA synchronous=FULL")
-        return db
+        try:
+            db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA synchronous=FULL")
+            return db
+        except BaseException as error:
+            try: db.close()
+            except BaseException as cleanup: raise error from cleanup
+            raise
 
     def _validate(self, db, *, observe_resources=True):
         try:

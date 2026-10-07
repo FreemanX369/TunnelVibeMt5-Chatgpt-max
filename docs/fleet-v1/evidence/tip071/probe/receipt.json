@@ -1,0 +1,62 @@
+{
+  "status": "PROVEN_SETUP_EXCEPTION_RETAINS_OPEN_CONNECTION",
+  "source_head": "ce621625324a3872faee5302ec27c35b684d5217",
+  "source_tree": "59a359fd2e953e0d030c8308811187cdfacc1bb0",
+  "sqlite_version": "3.53.1",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "original_windows_guard_timeout_cause": "UNKNOWN",
+  "live_MCP_outage_cause": "UNKNOWN",
+  "source_modified": false,
+  "VPS_or_native_effects": false,
+  "source_hashes_before": {
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/fleet/scoped_resources.py": "66b37c4ed06ec896e2c4792cf9d2e72db3a9867eeadcd09cba1e921d04d19f9e"
+  },
+  "source_hashes_after": {
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/fleet/scoped_resources.py": "66b37c4ed06ec896e2c4792cf9d2e72db3a9867eeadcd09cba1e921d04d19f9e"
+  },
+  "observations": [
+    {
+      "case": "real_busy_setup",
+      "exception_type": "OperationalError",
+      "sqlite_errorcode": 5,
+      "sqlite_errorname": "SQLITE_BUSY",
+      "elapsed_ms": 1002,
+      "configured_lock_wait_ms": 1000,
+      "db_descriptors_before": 1,
+      "db_descriptors_after_failure_before_traceback_read": 2
+    },
+    {
+      "case": "traceback_retains_open_db",
+      "same_original_exception_retained": true,
+      "retained_db_select42_succeeded": true,
+      "retained_db_in_transaction": false,
+      "independent_exclusive_transaction_succeeded": true,
+      "proven_retention": "OPEN_SQLITE_CONNECTION_AND_OWNED_DB_FILE_DESCRIPTOR",
+      "persistent_sqlite_lock_in_this_control": false
+    },
+    {
+      "case": "explicit_close_control",
+      "closed_db_programming_error": true,
+      "owned_db_descriptors_restored_to_before_failure": true
+    },
+    {
+      "case": "normal_return_control",
+      "actual_sqlite_connection": true,
+      "journal_mode": "wal",
+      "synchronous": "FULL",
+      "select42_succeeded": true
+    },
+    {
+      "case": "guard_finite_busy_control",
+      "timeout_preserved": true,
+      "configured_control_timeout_ms": 200,
+      "physical_windows_qualification": false
+    },
+    {
+      "case": "guard_release_control",
+      "original_guard_reacquired_after_owned_release": true
+    }
+  ]
+}
