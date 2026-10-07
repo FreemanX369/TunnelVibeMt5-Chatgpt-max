@@ -9,7 +9,7 @@ import re
 import threading
 import time
 from collections import deque
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 from dataclasses import replace
 from queue import Queue
 
@@ -81,16 +81,22 @@ def capacity_service(tmp_path, tls_files, request):
     policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144,
         http_timeout_ms=budget, heartbeat_interval_ms=budget)
     def factory(address):
-        origin = 'https://127.0.0.1:' + str(address[1])
-        control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
-            policy=replace(control_policy(), max_operations=1000, max_nonces=1000))
-        jobs = GatewayJobJournal(tmp_path / 'capacity-jobs.sqlite', initialize=True,
-            capacity_owner_public_key=owner_public, max_records=20, max_payload_bytes=262144, wait_ms=1000)
-        journal = DomainJournal(tmp_path / 'capacity-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
-        domain = GatewayDomain(control, journal, jobs, native_signer=GatewayNativeSigner(signer_key, origin,
-            max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
-        return GatewayController(control, policy, audience=origin,
-            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
+        with ExitStack() as ownership:
+            origin = 'https://127.0.0.1:' + str(address[1])
+            control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
+                policy=replace(control_policy(), max_operations=1000, max_nonces=1000))
+            ownership.callback(control.close)
+            jobs = GatewayJobJournal(tmp_path / 'capacity-jobs.sqlite', initialize=True,
+                capacity_owner_public_key=owner_public, max_records=20, max_payload_bytes=262144, wait_ms=1000)
+            ownership.callback(jobs.close)
+            journal = DomainJournal(tmp_path / 'capacity-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
+            ownership.callback(journal.close)
+            domain = GatewayDomain(control, journal, jobs, native_signer=GatewayNativeSigner(signer_key, origin,
+                max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
+            controller = GatewayController(control, policy, audience=origin,
+                owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
+            ownership.pop_all()
+            return controller
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),

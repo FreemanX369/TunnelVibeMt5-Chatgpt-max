@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "no:cacheprovider",
+    "/workspace/scratch/b4674f0ac496/tip074b-builder/tests/unit/test_tip074_wire_unicode.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074b-builder/parent-unicode-controls.junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073-candidate",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_seconds": 30,
+  "exit_code": 0,
+  "wall_seconds": 0.3147450009992099
+}

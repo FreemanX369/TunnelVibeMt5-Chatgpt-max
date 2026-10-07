@@ -1,0 +1,30 @@
+{
+  "manifest_sha256": "808ecd67852376cab2ba5313edce6c570dc40570709824426bc6df8dd81fba58",
+  "payloads_verified": 46,
+  "bytes": 750878,
+  "junit": [
+    {
+      "file": "baseline-v3.junit.xml",
+      "cases": 12,
+      "failed": 10,
+      "skipped": 0,
+      "passed": 2
+    },
+    {
+      "file": "focused-v3.junit.xml",
+      "cases": 12,
+      "failed": 0,
+      "skipped": 0,
+      "passed": 12
+    },
+    {
+      "file": "compatibility.junit.xml",
+      "cases": 15,
+      "failed": 0,
+      "skipped": 0,
+      "passed": 15
+    }
+  ],
+  "source_already_verified_exact": true,
+  "implementation_authored_by": "Builder"
+}

@@ -1,6 +1,7 @@
 """Finite source composition. Positive fixtures never qualify MT5 or a host."""
 from __future__ import annotations
 
+from contextlib import ExitStack
 import copy
 import hashlib
 import json
@@ -360,22 +361,29 @@ def composed_service(tmp_path, tls_files, request):
     http_policy = (replace(fleet_policy(), http_timeout_ms=5000, heartbeat_interval_ms=5000)
         if isinstance(selected, dict) and selected.get('positive_transport') else fleet_policy())
     def factory(address):
-        origin = 'https://127.0.0.1:' + str(address[1])
-        policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
-        store = GatewayControlStore.initialize(tmp_path / 'composed-control.sqlite', policy=policy)
-        jobs = GatewayJobJournal(tmp_path / 'composed-jobs.sqlite', initialize=True,
-            max_records=20, max_payload_bytes=262144, wait_ms=1000)
-        domains = DomainJournal(tmp_path / 'composed-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
-        signer = GatewayNativeSigner(signing_key, origin, max_authorization_ms=authorization_ms)
-        from fleet_writer_fixture import principal_policy
-        from vibemql5.fleet.principals import GatewayPrincipalAuthority
-        principals = GatewayPrincipalAuthority(tmp_path / 'composed-principals.json', signing_key=signing_key,
-            audience=origin, policy=principal_policy(), initialize=True)
-        domain = GatewayDomain(store, domains, jobs, native_signer=signer, start_authorization_ms=authorization_ms,
-            principal_authority=principals)
-        return GatewayController(store, http_policy, audience=origin,
-            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
-            broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
+        with ExitStack() as ownership:
+            origin = 'https://127.0.0.1:' + str(address[1])
+            policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
+            store = GatewayControlStore.initialize(tmp_path / 'composed-control.sqlite', policy=policy)
+            ownership.callback(store.close)
+            jobs = GatewayJobJournal(tmp_path / 'composed-jobs.sqlite', initialize=True,
+                max_records=20, max_payload_bytes=262144, wait_ms=1000)
+            ownership.callback(jobs.close)
+            domains = DomainJournal(tmp_path / 'composed-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
+            ownership.callback(domains.close)
+            signer = GatewayNativeSigner(signing_key, origin, max_authorization_ms=authorization_ms)
+            from fleet_writer_fixture import principal_policy
+            from vibemql5.fleet.principals import GatewayPrincipalAuthority
+            principals = GatewayPrincipalAuthority(tmp_path / 'composed-principals.json', signing_key=signing_key,
+                audience=origin, policy=principal_policy(), initialize=True)
+            ownership.callback(principals.close)
+            domain = GatewayDomain(store, domains, jobs, native_signer=signer, start_authorization_ms=authorization_ms,
+                principal_authority=principals)
+            controller = GatewayController(store, http_policy, audience=origin,
+                owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
+                broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
+            ownership.pop_all()
+            return controller
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), http_policy, cafile=str(ca),

@@ -1,0 +1,8 @@
+...............                                                          [100%]
+============================= slowest 5 durations ==============================
+0.45s call     tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]
+0.27s call     tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack
+0.17s call     tests/unit/test_fleet_gateway_fixture.py::test_observer_waits_for_delayed_real_bind_and_preserves_actual_tls
+0.15s setup    tests/unit/test_fleet_gateway_fixture.py::test_stop_observer_records_real_gateway_close_stage_and_retains_uncertainty
+0.14s setup    tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack
+15 passed in 2.57s

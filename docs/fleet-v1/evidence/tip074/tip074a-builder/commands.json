@@ -1,0 +1,218 @@
+{
+  "external_test_bound_seconds": 60,
+  "receipts": {
+    "baseline-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/baseline.junit.xml"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 1,
+      "wall_seconds": 2.938638954000453,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "baseline-v2-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "cwd": "/workspace/scratch/b4674f0ac496/tip074a-red",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/baseline-v2.junit.xml",
+        "--durations=5"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 1,
+      "wall_seconds": 3.0888043580007434,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "baseline-v3-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "cwd": "/workspace/scratch/b4674f0ac496/tip074a-red",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/baseline-v3.junit.xml",
+        "--durations=5"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 1,
+      "wall_seconds": 2.586693882999498,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "compatibility-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "cwd": "/workspace/scratch/b4674f0ac496/tip074a-builder",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fleet_gateway_fixture.py",
+        "tests/unit/test_tip058b_transport.py::test_actual_https_pair_retry_replay_sessions_and_no_secrets",
+        "tests/unit/test_tip061b_writers.py::test_real_https_verified_source_two_commits_and_placement",
+        "tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack",
+        "tests/unit/test_tip064_integration.py::test_actual_protected_gateway_factory_and_owner_client_startup",
+        "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/compatibility.junit.xml",
+        "--durations=5"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 2.887299482000344,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "focused-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/focused.junit.xml",
+        "--durations=10"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 1,
+      "wall_seconds": 2.4354632189997574,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "focused-v2-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "cwd": "/workspace/scratch/b4674f0ac496/tip074a-builder",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/focused-v2.junit.xml",
+        "--durations=5"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 2.184590334000859,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "focused-v3-receipt.json": {
+      "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "cwd": "/workspace/scratch/b4674f0ac496/tip074a-builder",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_tip074_gateway_lifecycle.py",
+        "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/focused-v3.junit.xml",
+        "--durations=5"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 2.584982838000542,
+      "source_count": 218,
+      "source_equal": true
+    },
+    "scope-receipt.json": {
+      "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+      "parent_source_count": 217,
+      "candidate_source_count": 218,
+      "delta": [
+        "app/vibemql5/fleet/transport.py",
+        "tests/unit/fleet_writer_fixture.py",
+        "tests/unit/test_tip058b_transport.py",
+        "tests/unit/test_tip064_capacity_https.py",
+        "tests/unit/test_tip064_integration.py",
+        "tests/unit/test_tip074_gateway_lifecycle.py"
+      ],
+      "checks": {
+        "tests/unit/test_tip058b_transport.py": {
+          "all_existing_test_bodies_byte_equal": true,
+          "unchanged_AST_except_allowed_import_and_factory": true
+        },
+        "tests/unit/test_tip064_integration.py": {
+          "all_existing_test_bodies_byte_equal": true,
+          "unchanged_AST_except_allowed_import_and_factory": true
+        },
+        "tests/unit/test_tip064_capacity_https.py": {
+          "all_existing_test_bodies_byte_equal": true,
+          "unchanged_AST_except_allowed_import_and_factory": true
+        },
+        "tests/unit/fleet_writer_fixture.py": {
+          "all_existing_test_bodies_byte_equal": true,
+          "unchanged_AST_except_allowed_import_and_factory": true
+        },
+        "app/vibemql5/fleet/transport.py": {
+          "AST_outside_serve_gateway_equal": true,
+          "original_docstring_equal": true
+        }
+      },
+      "git_diff_check_exit": 0,
+      "git_status": " M app/vibemql5/fleet/transport.py\n M tests/unit/fleet_writer_fixture.py\n M tests/unit/test_tip058b_transport.py\n M tests/unit/test_tip064_capacity_https.py\n M tests/unit/test_tip064_integration.py\n?? tests/unit/test_tip074_gateway_lifecycle.py\n"
+    }
+  },
+  "junit_counts": {
+    "baseline-v2.junit.xml": {
+      "cases": 11,
+      "failures": 10,
+      "errors": 0,
+      "skips": 0
+    },
+    "baseline-v3.junit.xml": {
+      "cases": 12,
+      "failures": 10,
+      "errors": 0,
+      "skips": 0
+    },
+    "baseline.junit.xml": {
+      "cases": 11,
+      "failures": 10,
+      "errors": 0,
+      "skips": 0
+    },
+    "compatibility.junit.xml": {
+      "cases": 15,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "focused-v2.junit.xml": {
+      "cases": 11,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "focused-v3.junit.xml": {
+      "cases": 12,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "focused.junit.xml": {
+      "cases": 11,
+      "failures": 4,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "environment": {
+    "PYTHONPATH": "<tested-worktree>/app:<tested-worktree>/tests/unit"
+  },
+  "note": "Baseline V1 observer was corrected in V2; final V3 identical test source is used for red and fixed comparisons. No source edits after final freeze."
+}

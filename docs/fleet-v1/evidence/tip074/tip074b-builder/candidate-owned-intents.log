@@ -1,0 +1,1 @@
+{"schema": "candidate-owned-fresh-intents/1", "candidate_owned_intent_rows": 312, "policy": {"max_payload_bytes": 262144, "max_records": 1000, "wait_ms": 1000}, "below_unchanged_record_capacity": true, "all_canonical_bytes_and_stored_hashes_identical": true, "pending_rows": 0}

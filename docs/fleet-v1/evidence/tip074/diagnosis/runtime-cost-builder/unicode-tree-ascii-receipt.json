@@ -1,0 +1,201 @@
+{
+  "schema": "owned-plain-string-ascii-fast-path/1",
+  "physical_windows": "NOT_RUN",
+  "production_source_changed": false,
+  "controls": [
+    {
+      "ordinal": 1,
+      "original": "RETURNED:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "prototype": "RETURNED:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "ordinal": 2,
+      "original": "RETURNED:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+      "prototype": "RETURNED:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "ordinal": 3,
+      "original": "RETURNED:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+      "prototype": "RETURNED:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "ordinal": 4,
+      "original": "RETURNED:5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "prototype": "RETURNED:5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "ordinal": 5,
+      "original": "RETURNED:b34a1c30a715f6bf8b7243afa7fab883ce3612b7231716bdcbbdc1982e1aed29",
+      "prototype": "RETURNED:b34a1c30a715f6bf8b7243afa7fab883ce3612b7231716bdcbbdc1982e1aed29"
+    },
+    {
+      "ordinal": 6,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 7,
+      "original": "RETURNED:a30a043314fa89294fa2c1c989a01fbb5329e5c085a5c5a8d27317656de24ae0",
+      "prototype": "RETURNED:a30a043314fa89294fa2c1c989a01fbb5329e5c085a5c5a8d27317656de24ae0"
+    },
+    {
+      "ordinal": 8,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 9,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 10,
+      "original": "RETURNED:12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "prototype": "RETURNED:12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "ordinal": 11,
+      "original": "RETURNED:f0718403b202625bd44e2cf9880e5a0380a12a1c8d81c34a2bc24810e8ba2077",
+      "prototype": "RETURNED:f0718403b202625bd44e2cf9880e5a0380a12a1c8d81c34a2bc24810e8ba2077"
+    },
+    {
+      "ordinal": 12,
+      "original": "RETURNED:5a5fc2c98c32c2a452076b2a807e26840fbc9319d33599a31e53d2418102bb0f",
+      "prototype": "RETURNED:5a5fc2c98c32c2a452076b2a807e26840fbc9319d33599a31e53d2418102bb0f"
+    },
+    {
+      "ordinal": 13,
+      "original": "RETURNED:a517ebc6deb83ee011109898a99a7653da053d095c8c3bc19efd01f2e681081c",
+      "prototype": "RETURNED:a517ebc6deb83ee011109898a99a7653da053d095c8c3bc19efd01f2e681081c"
+    },
+    {
+      "ordinal": 14,
+      "original": "RETURNED:48847ce170fed1418545aec0e633a5f6eef4743342cab182be163e9239eaad93",
+      "prototype": "RETURNED:48847ce170fed1418545aec0e633a5f6eef4743342cab182be163e9239eaad93"
+    },
+    {
+      "ordinal": 15,
+      "original": "RETURNED:8367e7572038b6075b181af40ac113c787f5c864875fe61cd39a798fac172c01",
+      "prototype": "RETURNED:8367e7572038b6075b181af40ac113c787f5c864875fe61cd39a798fac172c01"
+    },
+    {
+      "ordinal": 16,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 17,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 18,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 19,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 20,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 21,
+      "original": "RETURNED:e468e5698795b1662a3cd7644268a1f70d23ca1be7c79fa6546318ad71afad23",
+      "prototype": "RETURNED:e468e5698795b1662a3cd7644268a1f70d23ca1be7c79fa6546318ad71afad23"
+    },
+    {
+      "ordinal": 22,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 23,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 24,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 25,
+      "original": "RETURNED:8c0c59dd0d275aadcd462a5fe12eb352cbdfeaf961eae4f85a4660521df7d2f5",
+      "prototype": "RETURNED:8c0c59dd0d275aadcd462a5fe12eb352cbdfeaf961eae4f85a4660521df7d2f5"
+    },
+    {
+      "ordinal": 26,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 27,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 28,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    },
+    {
+      "ordinal": 29,
+      "original": "ERROR:WIRE_INVALID",
+      "prototype": "ERROR:WIRE_INVALID"
+    }
+  ],
+  "actual_intent_rows": 247,
+  "fresh_actual_intent_hashes_identical": true,
+  "benchmark_per_side_per_iteration": 988,
+  "timings": [
+    {
+      "iteration": 1,
+      "original_seconds": 0.038297229999443516,
+      "prototype_seconds": 0.007726310999714769,
+      "ratio": 4.95672902642119
+    },
+    {
+      "iteration": 2,
+      "original_seconds": 0.03524692300015886,
+      "prototype_seconds": 0.007279036999534583,
+      "ratio": 4.842250836534081
+    },
+    {
+      "iteration": 3,
+      "original_seconds": 0.035822261000248545,
+      "prototype_seconds": 0.007171794999521808,
+      "ratio": 4.994880779865718
+    },
+    {
+      "iteration": 4,
+      "original_seconds": 0.03726440399987041,
+      "prototype_seconds": 0.007397564999337192,
+      "ratio": 5.037387843595728
+    },
+    {
+      "iteration": 5,
+      "original_seconds": 0.03465861699987727,
+      "prototype_seconds": 0.0068714720000571106,
+      "ratio": 5.04384169790537
+    },
+    {
+      "iteration": 6,
+      "original_seconds": 0.03573148899977241,
+      "prototype_seconds": 0.007348920999902475,
+      "ratio": 4.862140850370631
+    }
+  ],
+  "median_ratio": 4.9758049031434535,
+  "original_function_sha256": "4b155e046c702943cfe600db0b9d6d2491743df694ec8f254b99dbe351080bef",
+  "isolated_prototype_source": "def _tree(value, depth=0):\n    if depth > 32:\n        raise WireError(\"WIRE_INVALID\")\n    if isinstance(value, str):\n        if not (type(value) is str and value.isascii()) and any(0xD800 <= ord(char) <= 0xDFFF for char in value):\n            raise WireError(\"WIRE_INVALID\")\n    elif type(value) is dict:\n        for key, child in value.items():\n            if type(key) is not str:\n                raise WireError(\"WIRE_INVALID\")\n            _tree(key, depth + 1); _tree(child, depth + 1)\n    elif type(value) is list:\n        if len(value) > 10000:\n            raise WireError(\"WIRE_INVALID\")\n        for child in value:\n            _tree(child, depth + 1)\n    elif type(value) in (int, float):\n        try:\n            if not math.isfinite(value) or abs(value) > (1 << 63) - 1:\n                raise ValueError()\n        except (ValueError, OverflowError):\n            raise WireError(\"WIRE_INVALID\") from None\n    elif value is not None and type(value) is not bool:\n        raise WireError(\"WIRE_INVALID\")\n",
+  "limitations": [
+    "Hashes operate on freshly-read owned intents; no ledger result is cached.",
+    "Microbenchmark is Linux only and does not establish the original Windows cause.",
+    "End-to-end profile must be independently measured before shipping a correction."
+  ]
+}

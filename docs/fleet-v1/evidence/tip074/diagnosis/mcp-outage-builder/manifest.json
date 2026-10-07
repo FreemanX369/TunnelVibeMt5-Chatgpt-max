@@ -1,0 +1,37 @@
+{
+  "source_head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "files": {
+    "SCAN-Report.md": {
+      "bytes": 10398,
+      "sha256": "e553bf4aead66bbb07840b8668da0ff48e351ff745313e124b217c252c4be5b2"
+    },
+    "source-before.json": {
+      "bytes": 24579,
+      "sha256": "aa3f5f6ce6f3609e1f335ee85f0a8b3644f026fd5e8a2f618670ac221cd95e33"
+    },
+    "source-after.json": {
+      "bytes": 24749,
+      "sha256": "9ba61868ecd6f9c4bcb120ce47b145e6a64ededecb4ce0e70aa7156634739dad"
+    },
+    "diagnostic-bootstrap-failure.json": {
+      "bytes": 348,
+      "sha256": "8837862f583859e3714d240d0dcb9f59c998bd042d017f9d8a97e495db84f25a"
+    },
+    "owned-sdk-control.command.json": {
+      "bytes": 1227,
+      "sha256": "915f39dd2c7b6d894cc7dcf12d41a37a608f6c0897391c08064c25f1c72e8831"
+    },
+    "owned-sdk-control.raw.log": {
+      "bytes": 98,
+      "sha256": "ae2604274a833403d5a93d1b2dcea196bb9d11ba794c12f5c389cb0ec08875ba"
+    },
+    "owned-sdk-control.junit.xml": {
+      "bytes": 988,
+      "sha256": "964fd56f7bb884bacf334997305fe2fa06cc02b53e69908732f0ca46381cfa35"
+    },
+    "owned-sdk-source.json": {
+      "bytes": 11462,
+      "sha256": "4a3434853c320f8851854462e076470d6db329dd68fcd9fccf12834491a8e094"
+    }
+  }
+}

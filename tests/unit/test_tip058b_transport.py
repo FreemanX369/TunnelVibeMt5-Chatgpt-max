@@ -12,7 +12,7 @@ import ssl
 import threading
 import time
 from dataclasses import replace
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 from datetime import datetime, timedelta, timezone
 from queue import Queue
 from fleet_gateway_fixture import gateway_thread_stack, preserve_fixture_failure, stop_gateway_fixture
@@ -314,9 +314,13 @@ def service(tmp_path,tls_files):
     ca,certificate,private=tls_files
     stopping=threading.Event();ready=Queue();failures=Queue()
     def factory(address):
-        store=GatewayControlStore.initialize(tmp_path/"control.sqlite",policy=control_policy())
-        origin="https://127.0.0.1:"+str(address[1])
-        return GatewayController(store,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),broker=ReadBroker.for_synthetic_tests(fleet_policy()))
+        with ExitStack() as ownership:
+            store=GatewayControlStore.initialize(tmp_path/"control.sqlite",policy=control_policy())
+            ownership.callback(store.close)
+            origin="https://127.0.0.1:"+str(address[1])
+            controller = GatewayController(store,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),broker=ReadBroker.for_synthetic_tests(fleet_policy()))
+            ownership.pop_all()
+            return controller
     def run():
         try:serve_gateway(("127.0.0.1",0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
         except BaseException as exc:failures.put(exc)

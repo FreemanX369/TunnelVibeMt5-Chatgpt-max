@@ -1,0 +1,218 @@
+diff --git a/app/vibemql5/fleet/transport.py b/app/vibemql5/fleet/transport.py
+index fe9b6b0..65fe800 100644
+--- a/app/vibemql5/fleet/transport.py
++++ b/app/vibemql5/fleet/transport.py
+@@ -305,21 +305,36 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
+                 raise
+     with Server(address, Handler) as server:
+         controller = controller_factory(server.server_address)
+-        holder["controller"] = controller
+-        server.timeout = min(0.2, controller.policy.poll_interval_ms / 1000)
+-        if started:
+-            started(server.server_address)
++        primary = None
+         try:
++            holder["controller"] = controller
++            server.timeout = min(0.2, controller.policy.poll_interval_ms / 1000)
++            if started:
++                started(server.server_address)
+             while stop_event is None or not stop_event.is_set():
+                 server.handle_request()
++        except BaseException as error:
++            primary = error
++            raise
+         finally:
++            cleanup = []
+             try:
+                 if controller.domain is not None and hasattr(controller.domain, "close"):
+                     controller.domain.close()
+                 elif controller.native_journal is not None:
+                     controller.native_journal.close()
++            except BaseException as error:
++                cleanup.append(error)
+             finally:
+-                controller.store.close()
++                try:
++                    controller.store.close()
++                except BaseException as error:
++                    cleanup.append(error)
++            if cleanup:
++                failures = ([] if primary is None else [primary]) + cleanup
++                if len(failures) == 1:
++                    raise failures[0]
++                raise BaseExceptionGroup("gateway lifecycle and cleanup failed", failures) from None
+ 
+ 
+ class HttpsClient:
+diff --git a/tests/unit/fleet_writer_fixture.py b/tests/unit/fleet_writer_fixture.py
+index bb344e4..943a4ff 100644
+--- a/tests/unit/fleet_writer_fixture.py
++++ b/tests/unit/fleet_writer_fixture.py
+@@ -1,4 +1,5 @@
+ """Ephemeral real Ed25519 client/node/gateway, verified local HTTPS only."""
++from contextlib import ExitStack
+ import hashlib
+ import sys
+ import threading
+@@ -65,13 +66,20 @@ def writer_fixture(project_node,tls_files,tmp_path):
+     root=project_node['root']; device=project_node['registry']['device_id']
+     target={**project_node['project']['default_target'],'route_generation':1}
+     def factory(address):
+-        origin='https://127.0.0.1:'+str(address[1])
+-        control=GatewayControlStore.initialize(tmp_path/'gateway'/'control.sqlite',policy=control_policy())
+-        domains=DomainJournal(tmp_path/'gateway'/'domains.sqlite',policy=DomainPolicy(max_records=100,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000),role='GATEWAY',initialize=True)
+-        native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
+-        authority=GatewayPrincipalAuthority(tmp_path/'gateway'/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True)
+-        domain=GatewayDomain(control,domains,native,principal_authority=authority,start_authorization_ms=2000)
+-        return GatewayController(control,positive_policy,audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
++        with ExitStack() as ownership:
++            origin='https://127.0.0.1:'+str(address[1])
++            control=GatewayControlStore.initialize(tmp_path/'gateway'/'control.sqlite',policy=control_policy())
++            ownership.callback(control.close)
++            domains=DomainJournal(tmp_path/'gateway'/'domains.sqlite',policy=DomainPolicy(max_records=100,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000),role='GATEWAY',initialize=True)
++            ownership.callback(domains.close)
++            native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
++            ownership.callback(native.close)
++            authority=GatewayPrincipalAuthority(tmp_path/'gateway'/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True)
++            ownership.callback(authority.close)
++            domain=GatewayDomain(control,domains,native,principal_authority=authority,start_authorization_ms=2000)
++            controller = GatewayController(control,positive_policy,audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
++            ownership.pop_all()
++            return controller
+     def run():
+         try: serve_gateway(('127.0.0.1',0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
+         except BaseException as error: failures.put(error)
+diff --git a/tests/unit/test_tip058b_transport.py b/tests/unit/test_tip058b_transport.py
+index 885fc0c..fdf50a5 100644
+--- a/tests/unit/test_tip058b_transport.py
++++ b/tests/unit/test_tip058b_transport.py
+@@ -12,7 +12,7 @@ import ssl
+ import threading
+ import time
+ from dataclasses import replace
+-from contextlib import contextmanager
++from contextlib import contextmanager, ExitStack
+ from datetime import datetime, timedelta, timezone
+ from queue import Queue
+ from fleet_gateway_fixture import gateway_thread_stack, preserve_fixture_failure, stop_gateway_fixture
+@@ -314,9 +314,13 @@ def service(tmp_path,tls_files):
+     ca,certificate,private=tls_files
+     stopping=threading.Event();ready=Queue();failures=Queue()
+     def factory(address):
+-        store=GatewayControlStore.initialize(tmp_path/"control.sqlite",policy=control_policy())
+-        origin="https://127.0.0.1:"+str(address[1])
+-        return GatewayController(store,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),broker=ReadBroker.for_synthetic_tests(fleet_policy()))
++        with ExitStack() as ownership:
++            store=GatewayControlStore.initialize(tmp_path/"control.sqlite",policy=control_policy())
++            ownership.callback(store.close)
++            origin="https://127.0.0.1:"+str(address[1])
++            controller = GatewayController(store,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),broker=ReadBroker.for_synthetic_tests(fleet_policy()))
++            ownership.pop_all()
++            return controller
+     def run():
+         try:serve_gateway(("127.0.0.1",0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
+         except BaseException as exc:failures.put(exc)
+diff --git a/tests/unit/test_tip064_capacity_https.py b/tests/unit/test_tip064_capacity_https.py
+index a9ad2ed..9952a54 100644
+--- a/tests/unit/test_tip064_capacity_https.py
++++ b/tests/unit/test_tip064_capacity_https.py
+@@ -9,7 +9,7 @@ import re
+ import threading
+ import time
+ from collections import deque
+-from contextlib import contextmanager
++from contextlib import contextmanager, ExitStack
+ from dataclasses import replace
+ from queue import Queue
+ 
+@@ -81,16 +81,22 @@ def capacity_service(tmp_path, tls_files, request):
+     policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144,
+         http_timeout_ms=budget, heartbeat_interval_ms=budget)
+     def factory(address):
+-        origin = 'https://127.0.0.1:' + str(address[1])
+-        control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
+-            policy=replace(control_policy(), max_operations=1000, max_nonces=1000))
+-        jobs = GatewayJobJournal(tmp_path / 'capacity-jobs.sqlite', initialize=True,
+-            capacity_owner_public_key=owner_public, max_records=20, max_payload_bytes=262144, wait_ms=1000)
+-        journal = DomainJournal(tmp_path / 'capacity-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
+-        domain = GatewayDomain(control, journal, jobs, native_signer=GatewayNativeSigner(signer_key, origin,
+-            max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
+-        return GatewayController(control, policy, audience=origin,
+-            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
++        with ExitStack() as ownership:
++            origin = 'https://127.0.0.1:' + str(address[1])
++            control = GatewayControlStore.initialize(tmp_path / 'capacity-control.sqlite',
++                policy=replace(control_policy(), max_operations=1000, max_nonces=1000))
++            ownership.callback(control.close)
++            jobs = GatewayJobJournal(tmp_path / 'capacity-jobs.sqlite', initialize=True,
++                capacity_owner_public_key=owner_public, max_records=20, max_payload_bytes=262144, wait_ms=1000)
++            ownership.callback(jobs.close)
++            journal = DomainJournal(tmp_path / 'capacity-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
++            ownership.callback(journal.close)
++            domain = GatewayDomain(control, journal, jobs, native_signer=GatewayNativeSigner(signer_key, origin,
++                max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
++            controller = GatewayController(control, policy, audience=origin,
++                owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
++            ownership.pop_all()
++            return controller
+     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
+         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),
+diff --git a/tests/unit/test_tip064_integration.py b/tests/unit/test_tip064_integration.py
+index 31d284c..51ba1e1 100644
+--- a/tests/unit/test_tip064_integration.py
++++ b/tests/unit/test_tip064_integration.py
+@@ -1,6 +1,7 @@
+ """Finite source composition. Positive fixtures never qualify MT5 or a host."""
+ from __future__ import annotations
+ 
++from contextlib import ExitStack
+ import copy
+ import hashlib
+ import json
+@@ -360,22 +361,29 @@ def composed_service(tmp_path, tls_files, request):
+     http_policy = (replace(fleet_policy(), http_timeout_ms=5000, heartbeat_interval_ms=5000)
+         if isinstance(selected, dict) and selected.get('positive_transport') else fleet_policy())
+     def factory(address):
+-        origin = 'https://127.0.0.1:' + str(address[1])
+-        policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
+-        store = GatewayControlStore.initialize(tmp_path / 'composed-control.sqlite', policy=policy)
+-        jobs = GatewayJobJournal(tmp_path / 'composed-jobs.sqlite', initialize=True,
+-            max_records=20, max_payload_bytes=262144, wait_ms=1000)
+-        domains = DomainJournal(tmp_path / 'composed-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
+-        signer = GatewayNativeSigner(signing_key, origin, max_authorization_ms=authorization_ms)
+-        from fleet_writer_fixture import principal_policy
+-        from vibemql5.fleet.principals import GatewayPrincipalAuthority
+-        principals = GatewayPrincipalAuthority(tmp_path / 'composed-principals.json', signing_key=signing_key,
+-            audience=origin, policy=principal_policy(), initialize=True)
+-        domain = GatewayDomain(store, domains, jobs, native_signer=signer, start_authorization_ms=authorization_ms,
+-            principal_authority=principals)
+-        return GatewayController(store, http_policy, audience=origin,
+-            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
+-            broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
++        with ExitStack() as ownership:
++            origin = 'https://127.0.0.1:' + str(address[1])
++            policy = replace(control_policy(), max_operations=1000, max_nonces=1000)
++            store = GatewayControlStore.initialize(tmp_path / 'composed-control.sqlite', policy=policy)
++            ownership.callback(store.close)
++            jobs = GatewayJobJournal(tmp_path / 'composed-jobs.sqlite', initialize=True,
++                max_records=20, max_payload_bytes=262144, wait_ms=1000)
++            ownership.callback(jobs.close)
++            domains = DomainJournal(tmp_path / 'composed-domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy())
++            ownership.callback(domains.close)
++            signer = GatewayNativeSigner(signing_key, origin, max_authorization_ms=authorization_ms)
++            from fleet_writer_fixture import principal_policy
++            from vibemql5.fleet.principals import GatewayPrincipalAuthority
++            principals = GatewayPrincipalAuthority(tmp_path / 'composed-principals.json', signing_key=signing_key,
++                audience=origin, policy=principal_policy(), initialize=True)
++            ownership.callback(principals.close)
++            domain = GatewayDomain(store, domains, jobs, native_signer=signer, start_authorization_ms=authorization_ms,
++                principal_authority=principals)
++            controller = GatewayController(store, http_policy, audience=origin,
++                owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
++                broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
++            ownership.pop_all()
++            return controller
+     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
+         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), http_policy, cafile=str(ca),

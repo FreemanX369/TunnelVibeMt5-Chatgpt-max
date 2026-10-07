@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074b-builder/candidate_owned_intent_check.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip074b-builder",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_seconds": 10,
+  "exit_code": 0,
+  "wall_seconds": 0.11450571399927867
+}

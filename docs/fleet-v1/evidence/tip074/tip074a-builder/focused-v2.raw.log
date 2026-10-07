@@ -1,0 +1,8 @@
+...........                                                              [100%]
+============================= slowest 5 durations ==============================
+0.14s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[domain]
+0.13s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors
+0.12s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs]
+0.12s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[writer-domain]
+0.12s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[composed-principals]
+11 passed in 1.78s

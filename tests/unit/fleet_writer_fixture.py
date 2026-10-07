@@ -1,4 +1,5 @@
 """Ephemeral real Ed25519 client/node/gateway, verified local HTTPS only."""
+from contextlib import ExitStack
 import hashlib
 import sys
 import threading
@@ -65,13 +66,20 @@ def writer_fixture(project_node,tls_files,tmp_path):
     root=project_node['root']; device=project_node['registry']['device_id']
     target={**project_node['project']['default_target'],'route_generation':1}
     def factory(address):
-        origin='https://127.0.0.1:'+str(address[1])
-        control=GatewayControlStore.initialize(tmp_path/'gateway'/'control.sqlite',policy=control_policy())
-        domains=DomainJournal(tmp_path/'gateway'/'domains.sqlite',policy=DomainPolicy(max_records=100,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000),role='GATEWAY',initialize=True)
-        native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
-        authority=GatewayPrincipalAuthority(tmp_path/'gateway'/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True)
-        domain=GatewayDomain(control,domains,native,principal_authority=authority,start_authorization_ms=2000)
-        return GatewayController(control,positive_policy,audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
+        with ExitStack() as ownership:
+            origin='https://127.0.0.1:'+str(address[1])
+            control=GatewayControlStore.initialize(tmp_path/'gateway'/'control.sqlite',policy=control_policy())
+            ownership.callback(control.close)
+            domains=DomainJournal(tmp_path/'gateway'/'domains.sqlite',policy=DomainPolicy(max_records=100,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000),role='GATEWAY',initialize=True)
+            ownership.callback(domains.close)
+            native=GatewayJobJournal(tmp_path/'gateway'/'native.sqlite',initialize=True,max_records=100,max_payload_bytes=32768,wait_ms=50)
+            ownership.callback(native.close)
+            authority=GatewayPrincipalAuthority(tmp_path/'gateway'/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True)
+            ownership.callback(authority.close)
+            domain=GatewayDomain(control,domains,native,principal_authority=authority,start_authorization_ms=2000)
+            controller = GatewayController(control,positive_policy,audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=domain)
+            ownership.pop_all()
+            return controller
     def run():
         try: serve_gateway(('127.0.0.1',0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
         except BaseException as error: failures.put(error)

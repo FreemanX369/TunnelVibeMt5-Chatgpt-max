@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder/unicode_tree_probe.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073-candidate",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_seconds": 30,
+  "exit_code": 0,
+  "wall_seconds": 0.4246118290002414,
+  "source217_unchanged": true
+}

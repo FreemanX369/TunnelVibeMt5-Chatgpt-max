@@ -305,21 +305,36 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
                 raise
     with Server(address, Handler) as server:
         controller = controller_factory(server.server_address)
-        holder["controller"] = controller
-        server.timeout = min(0.2, controller.policy.poll_interval_ms / 1000)
-        if started:
-            started(server.server_address)
+        primary = None
         try:
+            holder["controller"] = controller
+            server.timeout = min(0.2, controller.policy.poll_interval_ms / 1000)
+            if started:
+                started(server.server_address)
             while stop_event is None or not stop_event.is_set():
                 server.handle_request()
+        except BaseException as error:
+            primary = error
+            raise
         finally:
+            cleanup = []
             try:
                 if controller.domain is not None and hasattr(controller.domain, "close"):
                     controller.domain.close()
                 elif controller.native_journal is not None:
                     controller.native_journal.close()
+            except BaseException as error:
+                cleanup.append(error)
             finally:
-                controller.store.close()
+                try:
+                    controller.store.close()
+                except BaseException as error:
+                    cleanup.append(error)
+            if cleanup:
+                failures = ([] if primary is None else [primary]) + cleanup
+                if len(failures) == 1:
+                    raise failures[0]
+                raise BaseExceptionGroup("gateway lifecycle and cleanup failed", failures) from None
 
 
 class HttpsClient:

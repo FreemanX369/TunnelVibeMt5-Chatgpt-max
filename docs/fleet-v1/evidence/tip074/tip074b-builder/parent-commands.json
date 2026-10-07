@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "profile_plugin",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder/actual-owned-cost.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder/actual-owned-cost-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073-candidate",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit:/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OWNED_COST_RECEIPT": "/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder/actual-owned-cost.json"
+  },
+  "timeout_seconds": 30,
+  "exit_code": 0,
+  "wall_seconds": 6.892319024999779,
+  "source_entries": 217,
+  "source_unchanged": true,
+  "head": "ef31be719b090c14effa96e69c08d405ac0ceceb"
+}
