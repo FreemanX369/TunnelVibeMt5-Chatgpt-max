@@ -188,6 +188,44 @@ def test_account_reads_only_exact_running_terminal_and_converts_ping(tmp_path):
     assert mt5.initialized == 1
 
 
+@pytest.mark.parametrize("observation", ["state", "market"])
+@pytest.mark.parametrize("sdk_error,reason", [
+    ((-6, "password=DO_NOT_EXPOSE"), "MT5_LIVE_AUTHORIZATION_FAILED"),
+    ((-10005, "password=DO_NOT_EXPOSE"), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    ((True, "password=DO_NOT_EXPOSE"), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    (("-6", "password=DO_NOT_EXPOSE"), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    ([-6, "password=DO_NOT_EXPOSE"], "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    ((), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    (None, "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    ((-6,), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    ((-6, None), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+    (RuntimeError("password=DO_NOT_EXPOSE"), "MT5_LIVE_IPC_INITIALIZE_FAILED"),
+])
+def test_initialize_failure_classifies_authorization_without_exposing_sdk_text(tmp_path, observation, sdk_error, reason):
+    inventory = Inventory(tmp_path)
+    calls = []
+
+    def initialize(path, timeout):
+        calls.append((path, timeout))
+        return False
+
+    def last_error():
+        if isinstance(sdk_error, Exception):
+            raise sdk_error
+        return sdk_error
+
+    # No account, login, symbol selection or cleanup API is available on this failed session.
+    live = LiveTerminal(inventory, "MT5-2", mt5=SimpleNamespace(initialize=initialize, last_error=last_error))
+    with pytest.raises(RuntimeError) as caught:
+        if observation == "state":
+            live.state()
+        else:
+            with live._market_session():
+                pytest.fail("A failed initialize must never yield a session")
+    assert str(caught.value) == reason
+    assert calls == [(inventory.terminal.terminal_path, 2000)]
+
+
 def test_disconnected_terminal_never_reports_stale_account_values(tmp_path):
     inventory = Inventory(tmp_path)
     mt5 = MT5(inventory)

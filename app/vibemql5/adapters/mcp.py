@@ -84,6 +84,7 @@ def create_server(root: Path, transport: str = "unknown"):
                 if operation in {"get_terminal_live_state", "get_account_snapshot", "inspect_terminal"} and str(exc) in {
                     "FIXED_TERMINAL_NOT_RUNNING",
                     "MT5_LIVE_IPC_INITIALIZE_FAILED",
+                    "MT5_LIVE_AUTHORIZATION_FAILED",
                     "MT5_LIVE_TERMINAL_INFO_UNAVAILABLE",
                     "MT5_LIVE_TERMINAL_BINDING_MISMATCH",
                     "MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE",
