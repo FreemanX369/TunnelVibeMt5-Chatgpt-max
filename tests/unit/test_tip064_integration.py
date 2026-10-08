@@ -7,11 +7,14 @@ import hashlib
 import json
 import os
 import sqlite3
+import sys
 from collections import deque
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
+
+from fleet_pipeline_fixture import pipeline_diagnostics, pipeline_for_request
 
 from test_tip057rc1 import fixture as local_identity
 from test_tip058b_transport import control_policy, fleet_policy, tls_files, positive, TOKEN, FixtureHttpsClient
@@ -352,6 +355,7 @@ LONG_FIXTURE_PROFILE = pytest.param({'authorization_ms': 1000, 'positive_transpo
 
 @pytest.fixture
 def composed_service(tmp_path, tls_files, request):
+    pipeline_observer = pipeline_for_request(request)
     ca, certificate, private = tls_files
     failures = Queue()
     signing_key = Ed25519PrivateKey.generate()
@@ -382,12 +386,16 @@ def composed_service(tmp_path, tls_files, request):
             controller = GatewayController(store, http_policy, audience=origin,
                 owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
                 broker=ReadBroker.for_synthetic_tests(http_policy), domain=domain)
+            if pipeline_observer is not None:
+                pipeline_observer.bind_gateway(controller)
             ownership.pop_all()
             return controller
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
         key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), http_policy, cafile=str(ca),
         server_thread=thread, failures=failures)
+    if pipeline_observer is not None:
+        pipeline_observer.bind_http(http)
     try:
         yield http, OwnerClient(http, TOKEN), signing_key
     finally:
@@ -548,8 +556,11 @@ def discover(facade, client, agent):
     return node, selected['target']
 
 
-def test_actual_tls_inventory_discovery_read_project_and_production_native_denial(project_node, composed_service, monkeypatch):
+def test_actual_tls_inventory_discovery_read_project_and_production_native_denial(project_node, composed_service, monkeypatch, pipeline_diagnostics):
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service)
+    pipeline_diagnostics.bind_runtime(client, agent, dispatcher, jobs, domains, transport)
+    pipeline_diagnostics.bind_pump(sys.modules[__name__], agent)
+    pipeline_diagnostics.bind_predicates(facade)
     try:
         node, selected = discover(facade, client, agent)
         assert selected['terminal_id'] == project_node['registry']['terminals'][0]['terminal_id']
@@ -724,7 +735,7 @@ def test_composed_lost_ack_once_preserves_original_call_return_and_failure(outco
     assert calls == (['run_once'] if outcome in {'RETURNED', 'HTTPS_UNAVAILABLE'} else ['run_once', 'close'])
 
 
-def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable(project_node, composed_service, monkeypatch):
+def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable(project_node, composed_service, monkeypatch, pipeline_diagnostics):
     entered, cancelled = threading.Event(), threading.Event()
     calls = []
     class HarmlessBlockedAdapter:
@@ -747,6 +758,9 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
             return {'schema': 'fleet.native.effect/1', 'phase': phase, 'evidence': 'SYNTHETIC_NATIVE_ONLY',
                 'payload': {'status': 'SYNTHETIC_STOPPED'}, 'local_job_id': local_job_id, 'target': request['placement']['target']}
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service, adapter=HarmlessBlockedAdapter())
+    pipeline_diagnostics.bind_runtime(client, agent, dispatcher, jobs, domains, transport)
+    pipeline_diagnostics.bind_pump(sys.modules[__name__], agent)
+    pipeline_diagnostics.bind_predicates(facade)
     stopping = composed_stop_runtime(agent, dispatcher, client, [transport, domains, jobs, dispatcher.principals])
     try:
         node, selected = discover(facade, client, agent)
@@ -757,9 +771,10 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
         queued = facade.launch_job('native-blocked', request); global_id = queued['global_job_id']
         pump(agent, entered.is_set)
         assert calls == ['start', 'result']
-        began = time.monotonic()
-        for _ in range(3): agent.step()
-        assert time.monotonic() - began < 1.5 and not cancelled.is_set()
+        with pipeline_diagnostics.span('ROUND'):
+            began = time.monotonic()
+            for _ in range(3): agent.step()
+            assert time.monotonic() - began < 1.5 and not cancelled.is_set()
         status = facade.get_job(global_id)
         assert status['state'] == 'RESULT_PENDING'
         assert status['result']['result']['evidence'] == 'SYNTHETIC_NATIVE_ONLY'
@@ -799,10 +814,13 @@ def test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_du
         close_composed_stop_runtime(stopping, cancelled)
 
 
-def test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack(project_node, composed_service):
+def test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack(project_node, composed_service, pipeline_diagnostics):
     from vibemql5.fleet.principals import PATHS
     import base64
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service)
+    pipeline_diagnostics.bind_runtime(client, agent, dispatcher, jobs, domains, transport)
+    pipeline_diagnostics.bind_pump(sys.modules[__name__], agent)
+    pipeline_diagnostics.bind_predicates(facade)
     try:
         node, selected = discover(facade, client, agent)
         private = Ed25519PrivateKey.generate()
@@ -845,11 +863,14 @@ def test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_ph
         dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
 
 
-def test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history(project_node, composed_service, tls_files):
+def test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history(project_node, composed_service, tls_files, pipeline_diagnostics):
     from dataclasses import asdict
     from cryptography.hazmat.primitives import serialization
     from vibemql5.adapters.fleet_cli import NodeRuntime
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service)
+    pipeline_diagnostics.bind_runtime(client, agent, dispatcher, jobs, domains, transport)
+    pipeline_diagnostics.bind_pump(sys.modules[__name__], agent)
+    pipeline_diagnostics.bind_predicates(facade)
     node, selected = discover(facade, client, agent)
     frozen = freeze(project_node, target=selected)
     raw = project_node['source'].read_bytes()
