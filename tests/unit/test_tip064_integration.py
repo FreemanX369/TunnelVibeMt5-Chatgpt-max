@@ -1449,13 +1449,15 @@ def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(proje
     begin, complete = NodeJobJournal.begin_effect, NodeJobJournal.complete_effect
     outcome, request = NodeJobJournal._outcome, NodeRpcProxy._request
     holds, outcomes, requests = [], [], []
+    # Cleanup releases artificial phase holds through the owned return barrier.
+    release_holds = threading.Event()
     def held_begin(self, job, phase, event, **kwargs):
         # Delay before a fresh intent, never an in-flight grant or request.
-        time.sleep(.7); holds.append(('BEGIN', event))
+        release_holds.wait(.7); holds.append(('BEGIN', event))
         return begin(self, job, phase, event, **kwargs)
     def held_complete(self, job, phase, event, proof, **kwargs):
         # Delay publication of already-observed harmless completion.
-        time.sleep(.7); holds.append(('COMPLETE', event))
+        release_holds.wait(.7); holds.append(('COMPLETE', event))
         return complete(self, job, phase, event, proof, **kwargs)
     def observed_outcome(self, record, state, result):
         row = outcome(self, record, state, result)
@@ -1479,11 +1481,11 @@ def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(proje
     monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
     if seconds == 5:
         with pytest.raises(pytest.fail.Exception, match='^bounded fixture did not reach expected state$'):
-            run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+            run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds, return_barrier=release_holds)
     else:
         # Runs every original proof-expiry, fresh-phase, ACK-before-return and
         # final empty-record assertion, through the same actual TLS helper.
-        run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+        run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds, return_barrier=release_holds)
     assert len(holds) == 6
     assert len(requests) == 5
     assert all(kind == 'START_AUTHORIZE' and elapsed < composed_service[0].policy.http_timeout_ms / 1000

@@ -335,7 +335,7 @@ def test_ac09_spawned_process_bootstraps_commit_one_complete_identity(tmp_path):
     for process in processes:
         process.join(timeout=25)
         assert process.exitcode == 0
-    assert all("error" not in result for result in results)
+    assert all("error" not in result for result in results), [result["error"] for result in results if "error" in result]
     assert results[0] == results[1] == results[2]
     assert IdentityRegistry(tmp_path).load() == results[0]
     assert len(results[0]["terminals"]) == 2
