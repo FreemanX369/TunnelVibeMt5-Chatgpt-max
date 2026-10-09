@@ -726,24 +726,30 @@ class OutboundNode:
         self.rpc_proxy = NodeRpcProxy(client, self._rpc)
         if domain_dispatcher is not None and hasattr(domain_dispatcher, "bind_control_transport"):
             domain_dispatcher.bind_control_transport(self.rpc_proxy)
-    def _service_rpc(self):
+    def _service_rpc(self, *, _budget=None):
         # One authority burst cannot consume a full timeout for every queued
         # worker. Queue uncertainty retains its original absolute deadline;
         # each admitted HTTPS request also borrows this control-round budget.
-        round_deadline = time.monotonic() + self.policy.heartbeat_interval_ms / 1000
-        for _ in range(self.policy.max_poll_commands):
-            if time.monotonic() >= round_deadline:
+        budget = _budget if _budget is not None else [
+            time.monotonic() + self.policy.heartbeat_interval_ms / 1000, self.policy.max_poll_commands]
+        while budget[1]:
+            if budget[0] is not None and time.monotonic() >= budget[0]:
                 break
             try:
                 kind, value, deadline, future = self._rpc.get_nowait()
             except Empty:
                 break
+            # Empty checkpoints spend neither time nor authority capacity.
+            # Once an item is dequeued, every checkpoint borrows the same burst.
+            if budget[0] is None:
+                budget[0] = time.monotonic() + self.policy.heartbeat_interval_ms / 1000
+            budget[1] -= 1
             if not future.set_running_or_notify_cancel():
                 continue
             try:
                 if time.monotonic() >= deadline:
                     raise WireError("NODE_RPC_DEADLINE_EXCEEDED")
-                request_deadline = min(deadline, round_deadline)
+                request_deadline = min(deadline, budget[0])
                 if kind == "START_AUTHORIZE":
                     if value["command"].get("authorization_process_sha256") is not None:
                         if self._domain_dispatcher is None or not hasattr(self._domain_dispatcher, "flush_native_progress"):
@@ -769,6 +775,9 @@ class OutboundNode:
         # No second caller can turn a timeout into overlapping IPC on this node.
         with self._lock:
             self.client.heartbeat(self.session_id)
+            rpc_budget = [None, self.policy.max_poll_commands]
+            if poll_commands:
+                self._service_rpc(_budget=rpc_budget)
             committed = []
             commands = (self.client.poll(self.session_id, self.policy.max_poll_commands) if poll_commands
                 else self.client.poll_cancel_only(self.session_id, self.policy.max_poll_commands))["commands"]
@@ -817,7 +826,12 @@ class OutboundNode:
                     prior = {"command": copy.deepcopy(command), "result": result}
                     self._results[command["command_id"]] = prior
                 committed.append(self.client.result(self.session_id, command, prior["result"]))
-            self._service_rpc()
+            if poll_commands:
+                self._service_rpc(_budget=rpc_budget)
+            else:
+                self._service_rpc()
             if self._domain_dispatcher is not None and hasattr(self._domain_dispatcher, "drain"):
                 committed.extend(self._domain_dispatcher.drain(self.client, self.session_id))
+            if poll_commands:
+                self._service_rpc(_budget=rpc_budget)
             return {"schema": "fleet.node-step/1", "read_commits": committed, "sdk_status": "UNQUALIFIED"}
