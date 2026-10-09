@@ -82,7 +82,7 @@
   "app/vibemql5/fleet/sdk_worker.py": "08d226bc8e805654560d6ea0fd7df1f8750f9a21bbc372b75a0d7a14869bbc18",
   "app/vibemql5/fleet/strict_baseline.py": "db196ab0be627fb743e0e8d6365e034ee8ed062348794d6d52c0551ca1228802",
   "app/vibemql5/fleet/targets.py": "dcbe3bd416e12cffc55b931cf19897ab31ce2559c13c9e360fabf29de53243ea",
-  "app/vibemql5/fleet/transport.py": "1d7749e31f30de4bdcddc2b9ea2ff6d7d032694bd9c90d42647f2cbd6266fcb3",
+  "app/vibemql5/fleet/transport.py": "d74b09ae3e5fc500850f642513452fcecc539049637053ca3224c81745a69eee",
   "app/vibemql5/fleet/wire.py": "7ae01084cb19e922c7d2fb81da222b797bda4b32a91ed1217921e0d1782b557c",
   "app/vibemql5/fleet/worktrees.py": "dbefac5d6be391e8b0acfb9368eed624b4edd3d58127dbf2cb7c9174d2fb3396",
   "app/vibemql5/fleet/writers.py": "dc2f6620cb8f3d19d2fca6f250b7e9c93d57594f419cd0381328609177886987",
@@ -221,5 +221,6 @@
   "tests/unit/test_tip072_native_denied_publication.py": "8e238ed853dea1d1283c07ac12bde9c2166e339fb14178edd1e74de573494d81",
   "tests/unit/test_tip074_gateway_lifecycle.py": "37ea260d970860f61bd469c2fc9baff9ecff66fa1147c9943cdbc063e6c20c00",
   "tests/unit/test_tip074_wire_unicode.py": "38dbc98571dd4639d02ad0dc3084bb81618fa379d0db6484c94d6f2038a25604",
-  "tests/unit/test_tip075_metadata_lock_fifo.py": "119e1be0ad06732d48c82fb1c3c0ce31c5c5a6470cbcf4f24d7e293c95eefa58"
+  "tests/unit/test_tip075_metadata_lock_fifo.py": "119e1be0ad06732d48c82fb1c3c0ce31c5c5a6470cbcf4f24d7e293c95eefa58",
+  "tests/unit/test_tip076_rpc_checkpoints.py": "22aa6d47af4e2ddba0611edf9f45bcdcaf4877d0d40769efb4f09c14059c1002"
 }

@@ -1,4 +1,4 @@
-name: Research TIP075 fixed Windows pipeline stages
+name: Research fixed Windows scoped transaction exits
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
           GIT_CONFIG_KEY_0: core.autocrlf
           GIT_CONFIG_VALUE_0: 'false'
         with:
-          ref: f5ee95360acd732e3ccb81730e8a288adb94e4e1
+          ref: 4757afbdd5c8fa399b41ff897c5baaa7a2ed1dfd
           path: source
       - uses: actions/setup-python@v5
         with:
@@ -38,16 +38,16 @@ jobs:
         run: python -m pip install -c source/requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
       - name: Run observer controls
         env:
-          PYTHONPATH: research/research/windows_stage
+          PYTHONPATH: "research/research/windows_stage;source/app;source/tests/unit"
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m pytest -q research/research/windows_stage --junitxml=windows-stage-evidence/observer-controls.junit.xml
-      - name: Run the full fixed original Windows unit suite once
-        run: python research/research/windows_stage/run_research.py --source source --output windows-stage-evidence
+        run: python -m pytest -q research/research/windows_stage --junitxml=windows-exit-evidence/observer-controls.junit.xml
+      - name: Run the three fixed original Windows modules once
+        run: python research/research/windows_stage/run_research.py --source source --output windows-exit-evidence
       - name: Preserve research output even when original tests fail
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tip075-windows-stage-research-${{ github.event.pull_request.head.sha }}
-          path: windows-stage-evidence/
+          name: scoped-exit-research-${{ github.event.pull_request.head.sha }}
+          path: windows-exit-evidence/
           retention-days: 14
           if-no-files-found: error

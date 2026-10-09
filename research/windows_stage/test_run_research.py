@@ -40,7 +40,8 @@ def test_harness_preserves_fixed_identity_budget_and_original_failure(monkeypatc
         assert result == {"failure": 7, "timeout": 124, "drift": 2}[mode]
         assert len(calls) == 1 and calls[0][1]["timeout"] == 600
         command = calls[0][0]
-        assert "tests/unit" in command and "faulthandler_timeout=90" in command
+        assert "tests/unit" not in command and "faulthandler_timeout=90" in command
+        assert tuple(value for value in command if value.startswith("tests/unit/")) == run_research.MODULES
         assert command.count("stage_observer") == 1 and command.count("fleet_source_progress") == 1
         assert facts["exit_code"] == (7 if mode == "failure" else 124 if mode == "timeout" else 0)
         assert facts["status"] == "FAIL" and facts["retries"] == 0

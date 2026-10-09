@@ -5,12 +5,15 @@ Timings are inclusive and overlapping; CM exit includes original durability and
 cleanup and is NOT an isolated fsync/COMMIT or OS-lock ownership measurement.
 """
 from collections import deque
+from contextlib import contextmanager
 import functools
+import hashlib
 import json
 import math
 from pathlib import Path
 import threading
 import time
+import sys
 
 import pytest
 
@@ -40,7 +43,10 @@ BASE_STAGES = frozenset((
 ))
 CM_STAGES = frozenset(("JOURNAL_TX", "SCOPE_TX", "SCOPE_EXECUTION", "NATIVE_LEASE",
                       "NATIVE_FILE_LOCK", "SCOPE_FILE_LOCK", "JOB_FILE_LOCK", "AUTHORITY_TX", "MUTATION_LEASE"))
-STAGES = BASE_STAGES | frozenset(base + suffix for base in CM_STAGES for suffix in (".ENTER", ".BODY", ".EXIT"))
+EXIT_STAGES = frozenset(("SCOPE_COMMIT", "SCOPE_CHECKPOINT_EXECUTE", "SCOPE_CHECKPOINT_FETCH",
+                        "SCOPE_DB_CLOSE", "SCOPE_ROLLBACK", "SCOPE_GUARD_UNLOCK", "SCOPE_GUARD_FILE_CLOSE",
+                        "SCOPE_EXIT_REMAINDER"))
+STAGES = BASE_STAGES | EXIT_STAGES | frozenset(base + suffix for base in CM_STAGES for suffix in (".ENTER", ".BODY", ".EXIT"))
 ERRORS = frozenset(("NONE", "TimeoutError", "RuntimeError", "AssertionError", "KeyboardInterrupt", "SystemExit", "OSError", "OTHER"))
 LIMIT = 2 ** 31 - 1
 
@@ -57,6 +63,7 @@ class Observation:
         self.prefix, self.tail, self.stats = [], deque(maxlen=64), {}
         self.total = self.faults = 0
         self.restores, self.bound = [], set()
+        self.exit_profiler = ExitProfiler(self)
 
     def safe(self, function, *args):
         try:
@@ -90,13 +97,13 @@ class Observation:
             if self.enabled and thread is not self.control and not any(thread is old for old in self.workers) and len(self.workers) < 2:
                 self.workers.append(thread)
 
-    def record(self, stage, start, error="NONE"):
+    def record(self, stage, start, error="NONE", *, duration=None):
         actor, end = self.actor(), self.now()
         if actor is None or stage not in STAGES or error not in ERRORS:
             return
         def milliseconds(value):
             return None if value is None else min(LIMIT, max(0, int(value * 1000)))
-        elapsed = milliseconds(end - start) if end is not None and start is not None else None
+        elapsed = milliseconds(duration) if duration is not None else (milliseconds(end - start) if end is not None and start is not None else None)
         offset = milliseconds(start - self.origin) if start is not None and self.origin is not None else None
         with self.lock:
             if not self.enabled:
@@ -125,6 +132,11 @@ class Observation:
         prior = getattr(self.local, "depth", 0)
         self.local.depth = prior + 1
         start, category = self.now(), "NONE"
+        previous_exit = getattr(self.local, "exit_track", None)
+        if stage == "SCOPE_TX.EXIT":
+            self.local.exit_serial = min(LIMIT, getattr(self.local, "exit_serial", 0) + 1)
+            self.local.exit_track = {"transaction": self.local.exit_serial, "pending": 0, "sum": 0,
+                                     "missing": not getattr(self.local, "exit_profile_active", False)}
         try:
             return original(*args, **kwargs)
         except BaseException as error:
@@ -133,6 +145,15 @@ class Observation:
                 category = "OTHER"
             raise
         finally:
+            if stage == "SCOPE_TX.EXIT":
+                track, end = self.local.exit_track, self.now()
+                callback = getattr(self.local, "exit_profile_callback", None)
+                if callback is None or self.safe(sys.getprofile) is not callback or track["pending"]:
+                    track["missing"] = True
+                if not track["missing"] and start is not None and end is not None:
+                    self.safe(lambda: self.record("SCOPE_EXIT_REMAINDER", start, category,
+                                                 duration=max(0, end - start - track["sum"])))
+                self.local.exit_track = previous_exit
             self.safe(self.record, stage, start, category)
             self.local.depth = prior
 
@@ -158,6 +179,9 @@ class Observation:
                 if cm:
                     context = original(*args, **kwargs)
                     return ObservedContext(self, stage, context, entered)
+                if worker:
+                    with self.exit_profiler.scope():
+                        return self.invoke(stage, original, *args, **kwargs)
                 return self.invoke(stage, original, *args, **kwargs)
             return wrapped
         self.safe(self.patch, obj, name, make)
@@ -181,6 +205,7 @@ class Observation:
     def bind_coordinator(self, coordinator):
         if not self.once(coordinator):
             return
+        self.exit_profiler.coordinators.append(coordinator)
         self.method(coordinator, "_db", "SCOPE_DB")
         self.method(coordinator, "_validate", "SCOPE_VALIDATE")
         self.method(coordinator, "transaction", "SCOPE_TX", cm=True)
@@ -283,6 +308,7 @@ class Observation:
         self.method(http, "post", "HTTP_POST")
         from vibemql5.fleet import native, scoped_resources, job_journal
         from vibemql5.core import jobs
+        self.safe(self.exit_profiler.configure, scoped_resources, jobs)
         from vibemql5.core.native_ownership import OwnershipAuthority
         self.constructor(OwnershipAuthority, self.bind_authority, nested_stage="AUTHORITY_INIT")
         for obj, stage in ((native, "NATIVE_FILE_LOCK"), (scoped_resources, "SCOPE_FILE_LOCK"), (jobs, "JOB_FILE_LOCK")):
@@ -312,9 +338,196 @@ class Observation:
                     "worker_threads_bound": len(self.workers), "stats": {key: dict(value) for key, value in self.stats.items()},
                     "timeline": list(self.prefix) + list(self.tail), "timeline_total": self.total,
                     "timeline_dropped": max(0, self.total - 128), "timeline_limit": 128,
+                    "exit_profile": {"configuration": self.exit_profiler.configuration,
+                                     "threads": {key: dict(value) for key, value in self.exit_profiler.states.items()},
+                                     "coverage": ("NOT_APPLICABLE" if not self.exit_profiler.coordinators else
+                                                  "COMPLETE" if self.exit_profiler.configuration == "AVAILABLE"
+                                                  and self.exit_profiler.states and all(state["coverage_complete"]
+                                                      and not state["active"] for state in self.exit_profiler.states.values())
+                                                  else "INCOMPLETE"),
+                                     "semantics": "C_CALL_INCLUSIVE_SCHEDULING_NOT_PHYSICAL_IO",
+                                     "not_applicable": not bool(self.exit_profiler.coordinators)},
                     "timing_semantics": "INCLUSIVE_OVERLAPPING_ORIGINAL_CALLS",
                     "physical_os_owner": "NOT_OBSERVED", "isolated_commit_fsync": "NOT_OBSERVED",
                     "tls_gateway_server": "NOT_OBSERVED", "qualification": "RESEARCH_ONLY"}
+
+
+class ExitProfiler:
+    """Only the original owned SQLite/file C boundaries; no proxy or extra read."""
+    def __init__(self, observer):
+        self.observer = observer
+        self.coordinators, self.states = [], {}
+        self.configuration = "UNCONFIGURED"
+        self.transaction_code = self.guard_code = None
+
+    def configure(self, scoped, jobs):
+        expected = json.loads((Path(__file__).parent / "source-manifest.json").read_text())
+        self.transaction_code = self.guard_code = None
+        codes = []
+        for module, name, function, sites in (
+                (scoped, "app/vibemql5/fleet/scoped_resources.py", scoped.ScopedResourceCoordinator.transaction,
+                 {371, 374, 377, 379}),
+                (jobs, "app/vibemql5/core/jobs.py", jobs._exclusive_file_lock, {187, 201, 203})):
+            source = Path(module.__file__).read_bytes()
+            if hashlib.sha256(source).hexdigest() != expected[name]:
+                self.configuration = "SOURCE_SEAM_MISMATCH"
+                return
+            code = function.__wrapped__.__code__
+            def frozen_code(container):
+                for value in container.co_consts:
+                    if type(value) is type(code):
+                        if value.co_qualname == code.co_qualname:
+                            return value
+                        found = frozen_code(value)
+                        if found is not None:
+                            return found
+            frozen = frozen_code(compile(source, str(module.__file__), "exec", dont_inherit=True))
+            if frozen != code or not sites <= {line for _, _, line in code.co_lines()}:
+                self.configuration = "SOURCE_SEAM_MISMATCH"
+                return
+            codes.append(code)
+        self.transaction_code, self.guard_code = codes
+        self.configuration = "AVAILABLE"
+
+    def stage(self, frame, method):
+        code, line, values = frame.f_code, frame.f_lineno, frame.f_locals
+        name, owner = getattr(method, "__name__", None), getattr(method, "__self__", None)
+        if code is self.transaction_code and any(values.get("self") is obj for obj in self.coordinators):
+            if owner is values.get("db"):
+                return {(371, "execute"): "SCOPE_COMMIT", (374, "execute"): "SCOPE_CHECKPOINT_EXECUTE",
+                        (379, "close"): "SCOPE_DB_CLOSE", (377, "execute"): "SCOPE_ROLLBACK"}.get((line, name))
+            if line == 374 and name == "fetchone":
+                # No result/SQL inspection; exact C cursor method and original site.
+                import sqlite3
+                if type(owner) is sqlite3.Cursor:
+                    return "SCOPE_CHECKPOINT_FETCH"
+        if code is self.guard_code and any(values.get("path") is obj.guard for obj in self.coordinators):
+            if (line, name) in ((187, "locking"), (201, "flock")):
+                return "SCOPE_GUARD_UNLOCK"
+            if line == 203 and name == "close" and owner is values.get("f"):
+                return "SCOPE_GUARD_FILE_CLOSE"
+        return None
+
+    @contextmanager
+    def scope(self):
+        observer, actor = self.observer, self.observer.actor()
+        if actor is None:
+            yield
+            return
+        with observer.lock:
+            state = self.states.setdefault(actor, {"status": "UNAVAILABLE", "active": False, "calls": 0,
+                                                    "exceptions": 0, "unmatched": 0, "faults": 0,
+                                                    "scopes": 0, "skipped_existing": 0, "clock_missing": 0,
+                                                    "pending_peak": 0, "coverage_complete": True})
+            state["scopes"] = min(LIMIT, state["scopes"] + 1)
+        pending, installed, prior = {}, False, None
+
+        def incomplete():
+            state["coverage_complete"] = False
+            observer.local.exit_profile_active = False
+            track = getattr(observer.local, "exit_track", None)
+            if track is not None:
+                track["missing"] = True
+
+        def callback(frame, event, method):
+            if not observer.enabled or state["status"] != "AVAILABLE":
+                return
+            try:
+                if observer.actor() != actor or event not in ("c_call", "c_return", "c_exception"):
+                    return
+                if frame.f_code is not self.transaction_code and frame.f_code is not self.guard_code:
+                    return
+                stage = self.stage(frame, method)
+                if stage is None:
+                    return
+                key = (frame, stage)
+                if event == "c_call":
+                    if len(pending) >= 64 or key in pending:
+                        raise RuntimeError()
+                    track = getattr(observer.local, "exit_track", None)
+                    pending[key] = (observer.now(), track)
+                    if track is not None:
+                        track["pending"] += 1
+                    state["pending_peak"] = max(state["pending_peak"], len(pending))
+                else:
+                    if key not in pending:
+                        with observer.lock:
+                            state["unmatched"] = min(LIMIT, state["unmatched"] + 1)
+                            incomplete()
+                        return
+                    (start, paired_track), end = pending.pop(key), observer.now()
+                    duration = end - start if start is not None and end is not None else None
+                    if duration is None:
+                        state["clock_missing"] = min(LIMIT, state["clock_missing"] + 1)
+                        incomplete()
+                    track = getattr(observer.local, "exit_track", None)
+                    if paired_track is not None:
+                        paired_track["pending"] -= 1
+                    if track is not paired_track:
+                        incomplete()
+                    if track is not None:
+                        if duration is None:
+                            track["missing"] = True
+                        else:
+                            track["sum"] += max(0, duration)
+                    observer.record(stage, start, "OTHER" if event == "c_exception" else "NONE", duration=duration)
+                    with observer.lock:
+                        state["calls"] = min(LIMIT, state["calls"] + 1)
+                        state["exceptions"] = min(LIMIT, state["exceptions"] + (event == "c_exception"))
+            except BaseException:
+                with observer.lock:
+                    state["status"] = "OBSERVATION_FAULT"
+                    state["faults"] = min(LIMIT, state["faults"] + 1)
+                    observer.faults = min(LIMIT, observer.faults + 1)
+                    incomplete()
+
+        try:
+            try:
+                if self.configuration != "AVAILABLE":
+                    state["status"] = self.configuration
+                    incomplete()
+                elif (prior := sys.getprofile()) is not None:
+                    state["status"] = "UNSUPPORTED_EXISTING_PROFILE"
+                    state["skipped_existing"] = min(LIMIT, state["skipped_existing"] + 1)
+                    incomplete()
+                else:
+                    state["status"] = "AVAILABLE"
+                    # Set installed first: a partial setter must still restore.
+                    installed = True
+                    sys.setprofile(callback)
+                    state["active"] = True
+                    observer.local.exit_profile_active = state["coverage_complete"]
+                    observer.local.exit_profile_callback = callback
+            except BaseException:
+                state["status"] = "INSTALL_FAULT"
+                state["faults"] = min(LIMIT, state["faults"] + 1)
+                observer.faults = min(LIMIT, observer.faults + 1)
+                incomplete()
+            yield
+        finally:
+            observer.local.exit_profile_active = False
+            observer.local.exit_profile_callback = None
+            try:
+                if installed:
+                    current = sys.getprofile()
+                    if current is callback:
+                        sys.setprofile(prior)
+                    elif current is not prior or state["status"] != "INSTALL_FAULT":
+                        state["status"] = "REPLACED_BY_OTHER_OWNER"
+                        incomplete()
+            except BaseException:
+                state["status"] = "RESTORE_FAULT"
+                state["faults"] = min(LIMIT, state["faults"] + 1)
+                observer.faults = min(LIMIT, observer.faults + 1)
+                incomplete()
+            with observer.lock:
+                # Presence differs from recording: a faulty setter can leave
+                # our already-disabled callback installed in this thread.
+                state["active"] = installed and observer.safe(sys.getprofile) is callback
+                state["unmatched"] = min(LIMIT, state["unmatched"] + len(pending))
+                if pending:
+                    incomplete()
+            pending.clear()
 
 
 class ObservedContext:
@@ -355,7 +568,8 @@ def pytest_runtest_call(item):
         observation.install(item.module, service[0])
     observation.safe(install)
     try:
-        yield
+        with observation.exit_profiler.scope():
+            yield
     finally:
         observation.safe(observation.stop)
         def publish():
