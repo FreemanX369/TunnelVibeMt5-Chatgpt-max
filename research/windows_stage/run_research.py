@@ -1,4 +1,4 @@
-"""Run the original fixed source three-module suite with external bounded observation."""
+"""Run the original fixed source full unit suite with external bounded observation."""
 import argparse
 import hashlib
 import importlib.util
@@ -13,8 +13,7 @@ import time
 HEAD = "4757afbdd5c8fa399b41ff897c5baaa7a2ed1dfd"
 TREE = "ce437da748d2eadc16b1221ad516f4104214f404"
 TIMEOUT = 600
-MODULES = ("tests/unit/test_tip058b_transport.py", "tests/unit/test_tip064_capacity_https.py",
-           "tests/unit/test_tip064_integration.py")
+MODULES = ("tests/unit",)
 
 
 def load_source(source):
@@ -55,8 +54,8 @@ def main():
                *MODULES, "-v", "--tb=short", "--durations=20", "-o", "faulthandler_timeout=90",
                "--junitxml=" + str(output / "unit.junit.xml"), "--stage-observation-dir=" + str(output / "observations")]
     started, timed_out = time.monotonic(), False
-    with (output / "focused-unit.log").open("w", encoding="utf-8") as log:
-        log.write("SOURCE_CASE_STARTED case=focused-unit timeout_seconds=600\n"); log.flush()
+    with (output / "full-unit.log").open("w", encoding="utf-8") as log:
+        log.write("SOURCE_CASE_STARTED case=full-unit timeout_seconds=600\n"); log.flush()
         try:
             result = subprocess.run(command, cwd=source, env=environment, stdout=log,
                                     stderr=subprocess.STDOUT, timeout=TIMEOUT, check=False)
@@ -64,7 +63,7 @@ def main():
         except subprocess.TimeoutExpired:
             code, timed_out = 124, True
         elapsed = round(time.monotonic() - started, 3)
-        log.write(f"\nSOURCE_CASE_FINISHED case=focused-unit exit_code={code} timed_out={timed_out} elapsed_seconds={elapsed}\n")
+        log.write(f"\nSOURCE_CASE_FINISHED case=full-unit exit_code={code} timed_out={timed_out} elapsed_seconds={elapsed}\n")
     after = original.source_manifest()
     unchanged = before == after == expected
     facts.update(source_after=after, source_unchanged_during_run=unchanged, command=command,

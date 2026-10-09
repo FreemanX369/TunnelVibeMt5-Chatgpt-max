@@ -1,4 +1,4 @@
-name: Research fixed Windows scoped transaction exits
+name: Research fixed Windows full-suite scoped transaction exits
 
 on:
   pull_request:
@@ -41,7 +41,7 @@ jobs:
           PYTHONPATH: "research/research/windows_stage;source/app;source/tests/unit"
           PYTHONDONTWRITEBYTECODE: '1'
         run: python -m pytest -q research/research/windows_stage --junitxml=windows-exit-evidence/observer-controls.junit.xml
-      - name: Run the three fixed original Windows modules once
+      - name: Run the fixed original Windows full unit suite once
         run: python research/research/windows_stage/run_research.py --source source --output windows-exit-evidence
       - name: Preserve research output even when original tests fail
         if: always()
