@@ -6,8 +6,10 @@ cleanup and is NOT an isolated fsync/COMMIT or OS-lock ownership measurement.
 """
 from collections import deque
 from contextlib import contextmanager
+import ast
 import functools
 import hashlib
+import inspect
 import json
 import math
 from pathlib import Path
@@ -51,6 +53,59 @@ ERRORS = frozenset(("NONE", "TimeoutError", "RuntimeError", "AssertionError", "K
 LIMIT = 2 ** 31 - 1
 
 
+def finite(value):
+    return value if type(value) in (int, float) and math.isfinite(value) else None
+
+
+def frozen_code(source, filename, code, *, rewritten=False):
+    def find(container):
+        for value in container.co_consts:
+            if type(value) is type(code):
+                if value.co_qualname == code.co_qualname:
+                    return value
+                found = find(value)
+                if found is not None:
+                    return found
+    if rewritten:
+        from _pytest.assertion.rewrite import rewrite_asserts
+        tree = ast.parse(source, filename=filename)
+        rewrite_asserts(tree, source, filename)
+        source = tree
+    return find(compile(source, filename, "exec", dont_inherit=True))
+
+
+class TransactionRetention:
+    """First8/latest8/largest16 exits per owned actor, with explicit dropped rows."""
+    def __init__(self):
+        self.actors = {}
+
+    def add(self, actor, row):
+        state = self.actors.setdefault(actor, {"total": 0, "incomplete": 0, "first": [],
+                                               "latest": deque(maxlen=8), "largest": []})
+        state["total"] = min(LIMIT, state["total"] + 1)
+        state["incomplete"] = min(LIMIT, state["incomplete"] + bool(row["incomplete"]))
+        if len(state["first"]) < 8:
+            state["first"].append(row)
+        state["latest"].append(row)
+        state["largest"].append(row)
+        state["largest"].sort(key=lambda item: (-(item["exit_seconds"] or 0), item["transaction"]))
+        del state["largest"][16:]
+
+    def snapshot(self, profiles=None):
+        result = {}
+        for actor, state in self.actors.items():
+            unique = {row["transaction"]: row for rows in (state["first"], state["latest"], state["largest"]) for row in rows}
+            result[actor] = {"total": state["total"], "incomplete_total": state["incomplete"],
+                             "retained": len(unique), "dropped": max(0, state["total"] - len(unique)),
+                             "coverage": "SAMPLED" if state["total"] > len(unique) else "COMPLETE",
+                             "coverage_semantics": "RETENTION_ONLY", "record_pairing": "INCOMPLETE" if state["incomplete"] else "COMPLETE",
+                             "record_pairing_semantics": "OBSERVED_CONTEXT_ROWS_ONLY",
+                             "records": [unique[key] for key in sorted(unique)]}
+        return {"limit_per_actor": 32, "selection": "FIRST8_LATEST8_LARGEST16_EXIT_DEDUPLICATED", "actors": result,
+                "unattributed_c_calls": {actor: state["transaction_unattributed_calls"] for actor, state in (profiles or {}).items() if state["transaction_unattributed_calls"]},
+                "observed_context_counts_exclude_unattributed_transactions": True}
+
+
 class Observation:
     def __init__(self, case, *, clock=time.perf_counter):
         self.case, self.clock = case, clock
@@ -60,10 +115,14 @@ class Observation:
         self.lock = threading.RLock()
         self.enabled = True
         self.origin = self.now()
+        self.monotonic_origin = self.monotonic_now()
+        self.fixture_origins = []
+        self.transactions = TransactionRetention()
         self.prefix, self.tail, self.stats = [], deque(maxlen=64), {}
         self.total = self.faults = 0
         self.restores, self.bound = [], set()
         self.exit_profiler = ExitProfiler(self)
+        self.pump = PumpObservation(self)
 
     def safe(self, function, *args):
         try:
@@ -79,6 +138,55 @@ class Observation:
             return value if type(value) in (int, float) and math.isfinite(value) else None
         except BaseException:
             return None
+
+    def monotonic_now(self):
+        try:
+            return finite(time.monotonic())
+        except BaseException:
+            return None
+
+    def interval(self, start, end, error="NONE"):
+        origin = self.monotonic_origin
+        return {"start_seconds": start - origin if start is not None and origin is not None else None,
+                "end_seconds": end - origin if end is not None and origin is not None else None,
+                "duration_seconds": end - start if start is not None and end is not None and end >= start else None,
+                "error": error}
+
+    def transaction_begin(self, coordinator):
+        actor = self.actor()
+        if actor is None:
+            return None
+        self.local.transaction_serial = min(LIMIT, getattr(self.local, "transaction_serial", 0) + 1)
+        return {"case": self.case, "actor": actor, "transaction": self.local.transaction_serial,
+                "coordinator": next((i + 1 for i, obj in enumerate(self.exit_profiler.coordinators) if obj is coordinator), None),
+                "intervals": {}, "boundaries": [], "incomplete": False, "body_error": "NONE",
+                "pump_phase_at_enter": self.pump.phase,
+                "_coordinator": coordinator, "_db": None, "_cursor": None, "_file": None}
+
+    def transaction_finish(self, row):
+        if row is None or not self.enabled:
+            return
+        intervals = row["intervals"]
+        row["incomplete"] |= any(interval["duration_seconds"] is None for interval in intervals.values())
+        row["incomplete"] |= "EXIT" not in intervals or self.monotonic_origin is None
+        row["exit_seconds"] = intervals.get("EXIT", {}).get("duration_seconds")
+        row["executed_boundaries"] = len(row["boundaries"])
+        row["stage_coverage"] = "EXECUTED" if row["boundaries"] else "UNEXECUTED"
+        row["pump_phase_at_finish"] = self.pump.phase
+        exit_error = intervals.get("EXIT", {}).get("error", "OTHER")
+        row["route"] = "ORIGINAL_ERROR_PATH" if row["body_error"] != "NONE" or exit_error != "NONE" else "NORMAL_EXIT"
+        expected = {"SCOPE_DB_CLOSE", "SCOPE_GUARD_UNLOCK", "SCOPE_GUARD_FILE_CLOSE"}
+        expected |= {"SCOPE_COMMIT", "SCOPE_CHECKPOINT_EXECUTE", "SCOPE_CHECKPOINT_FETCH"} if row["route"] == "NORMAL_EXIT" else set()
+        row["incomplete"] |= not expected <= {item["stage"] for item in row["boundaries"]}
+        if not row["incomplete"] and row["exit_seconds"] is not None:
+            summed = sum(item["duration_seconds"] for item in row["boundaries"])
+            row["exit_remainder_seconds"] = max(0, row["exit_seconds"] - summed)
+        else:
+            row["exit_remainder_seconds"] = None
+        for name in ("_coordinator", "_db", "_cursor", "_file"):
+            del row[name]
+        with self.lock:
+            self.transactions.add(row["actor"], row)
 
     def actor(self):
         if not self.enabled:
@@ -136,7 +244,9 @@ class Observation:
         if stage == "SCOPE_TX.EXIT":
             self.local.exit_serial = min(LIMIT, getattr(self.local, "exit_serial", 0) + 1)
             self.local.exit_track = {"transaction": self.local.exit_serial, "pending": 0, "sum": 0,
-                                     "missing": not getattr(self.local, "exit_profile_active", False)}
+                                     "missing": not getattr(self.local, "exit_profile_active", False),
+                                     "record": getattr(self.local, "transaction_record", None)}
+        pump_step = self.safe(self.pump.step_begin, original) if stage == "CONTROL_STEP" else None
         try:
             return original(*args, **kwargs)
         except BaseException as error:
@@ -145,11 +255,15 @@ class Observation:
                 category = "OTHER"
             raise
         finally:
+            if pump_step is not None:
+                self.safe(self.pump.step_end, pump_step, category)
             if stage == "SCOPE_TX.EXIT":
                 track, end = self.local.exit_track, self.now()
                 callback = getattr(self.local, "exit_profile_callback", None)
                 if callback is None or self.safe(sys.getprofile) is not callback or track["pending"]:
                     track["missing"] = True
+                if track["record"] is not None:
+                    track["record"]["incomplete"] |= track["missing"]
                 if not track["missing"] and start is not None and end is not None:
                     self.safe(lambda: self.record("SCOPE_EXIT_REMAINDER", start, category,
                                                  duration=max(0, end - start - track["sum"])))
@@ -178,7 +292,7 @@ class Observation:
                     return original(*args, **kwargs)
                 if cm:
                     context = original(*args, **kwargs)
-                    return ObservedContext(self, stage, context, entered)
+                    return ObservedContext(self, stage, context, entered, obj if stage == "SCOPE_TX" else None)
                 if worker:
                     with self.exit_profiler.scope():
                         return self.invoke(stage, original, *args, **kwargs)
@@ -304,11 +418,19 @@ class Observation:
         self.constructor(module.NodeDomainDispatcher, self.bind_dispatcher)
         self.constructor(module.OutboundNode, self.bind_agent)
         if hasattr(module, "ScopeFixtureObservations"):
-            self.constructor(module.ScopeFixtureObservations, lambda obj: self.bind_coordinator(obj.coordinator))
+            def bind_fixture(obj):
+                self.bind_coordinator(obj.coordinator)
+                if len(self.fixture_origins) < 64:
+                    self.fixture_origins.append(finite(obj.origin))
+            self.constructor(module.ScopeFixtureObservations, bind_fixture)
         self.method(http, "post", "HTTP_POST")
         from vibemql5.fleet import native, scoped_resources, job_journal
         from vibemql5.core import jobs
         self.safe(self.exit_profiler.configure, scoped_resources, jobs)
+        if self.case == 5:
+            self.safe(self.pump.configure, module)
+            if self.pump.configuration == "AVAILABLE":
+                self.safe(self.patch, module, "pump", self.pump.wrapper)
         from vibemql5.core.native_ownership import OwnershipAuthority
         self.constructor(OwnershipAuthority, self.bind_authority, nested_stage="AUTHORITY_INIT")
         for obj, stage in ((native, "NATIVE_FILE_LOCK"), (scoped_resources, "SCOPE_FILE_LOCK"), (jobs, "JOB_FILE_LOCK")):
@@ -338,6 +460,11 @@ class Observation:
                     "worker_threads_bound": len(self.workers), "stats": {key: dict(value) for key, value in self.stats.items()},
                     "timeline": list(self.prefix) + list(self.tail), "timeline_total": self.total,
                     "timeline_dropped": max(0, self.total - 128), "timeline_limit": 128,
+                    "clocks": {"base_stats_timeline": {"domain": "time.perf_counter", "origin_absolute_seconds": self.origin},
+                               "transaction_pump": {"domain": "time.monotonic", "origin_absolute_seconds": self.monotonic_origin},
+                               "original_fixture": {"domain": "time.monotonic", "origins_absolute_seconds": list(self.fixture_origins),
+                                                    "thread_labels_are_actor_ids": False}},
+                    "transactions": self.transactions.snapshot(self.exit_profiler.states), "final_pump": self.pump.snapshot(),
                     "exit_profile": {"configuration": self.exit_profiler.configuration,
                                      "threads": {key: dict(value) for key, value in self.exit_profiler.states.items()},
                                      "coverage": ("NOT_APPLICABLE" if not self.exit_profiler.coordinators else
@@ -346,10 +473,184 @@ class Observation:
                                                       and not state["active"] for state in self.exit_profiler.states.values())
                                                   else "INCOMPLETE"),
                                      "semantics": "C_CALL_INCLUSIVE_SCHEDULING_NOT_PHYSICAL_IO",
+                                     "stage_coverage": ("NOT_APPLICABLE" if not self.exit_profiler.coordinators else
+                                                        "EXECUTED" if any(state["calls"] for state in self.exit_profiler.states.values()) else "UNEXECUTED"),
+                                     "transaction_pairing": ("NOT_APPLICABLE" if not self.exit_profiler.coordinators else
+                                                             "INCOMPLETE" if any(state["transaction_unattributed_calls"] or not state["coverage_complete"] for state in self.exit_profiler.states.values()) else "COMPLETE"),
                                      "not_applicable": not bool(self.exit_profiler.coordinators)},
                     "timing_semantics": "INCLUSIVE_OVERLAPPING_ORIGINAL_CALLS",
                     "physical_os_owner": "NOT_OBSERVED", "isolated_commit_fsync": "NOT_OBSERVED",
                     "tls_gateway_server": "NOT_OBSERVED", "qualification": "RESEARCH_ONLY"}
+
+
+class PumpObservation:
+    """Case5's original final pump only; never call its predicate or step again."""
+    def __init__(self, observer):
+        self.observer = observer
+        self.configuration = "NOT_APPLICABLE" if observer.case != 5 else "UNCONFIGURED"
+        self.phase, self.current = "BEFORE_FINAL_PUMP", None
+        self.codes, self.original = {}, None
+        self.prefix, self.tail = [], deque(maxlen=32)
+        self.total = self.calls = self.clock_missing = 0
+        self.deadline = None
+        self.deadline_changed = self.failure_branch = self.predicate_true = False
+        self.pytest_outcome, self.error = "NOT_OBSERVED", "NONE"
+
+    def configure(self, module):
+        self.configuration = "SOURCE_SEAM_MISMATCH"
+        expected = json.loads((Path(__file__).parent / "source-manifest.json").read_text())
+        helper, pump = inspect.unwrap(module.run_capacity_fixture), module.pump
+        for function, name in ((helper, "tests/unit/test_tip064_capacity_https.py"),
+                               (pump, "tests/unit/test_tip064_integration.py")):
+            path = Path(function.__code__.co_filename)
+            source = path.read_bytes()
+            if hashlib.sha256(source).hexdigest() != expected[name]:
+                return
+            if not any(frozen_code(source, str(path), function.__code__, rewritten=rewritten) == function.__code__ for rewritten in (False, True)):
+                return
+        def nested(code):
+            for value in code.co_consts:
+                if type(value) is type(code):
+                    self.codes[value.co_qualname] = value
+                    nested(value)
+        nested(helper.__code__)
+        self.codes["helper"], self.codes["pump"] = helper.__code__, pump.__code__
+        for name in ("run_capacity_fixture.<locals>.checked", "run_capacity_fixture.<locals>.checked.<locals>.observed",
+                     "run_capacity_fixture.<locals>.completed", "run_capacity_fixture.<locals>.raise_callback_failure"):
+            if name not in self.codes:
+                return
+        if not {434, 435, 439} <= {line for _, _, line in pump.__code__.co_lines()}:
+            return
+        self.original = pump
+        self.monotonic = pump.__globals__["time"].monotonic
+        self.fail_owner = pump.__globals__["pytest"].fail
+        self.fail_code = getattr(self.fail_owner, "__code__", getattr(self.fail_owner.__call__, "__code__", None))
+        if self.fail_code is None:
+            return
+        self.configuration = "AVAILABLE"
+
+    def mark(self, stage, *, start=None, error="NONE", result=None):
+        if not self.observer.enabled:
+            return
+        end = self.observer.monotonic_now()
+        row = {"stage": stage, **self.observer.interval(end if start is None else start, end, error)}
+        if result is not None:
+            row["original_result"] = result
+        if row["duration_seconds"] is None:
+            self.clock_missing = min(LIMIT, self.clock_missing + 1)
+        self.total = min(LIMIT, self.total + 1)
+        if len(self.prefix) < 32:
+            self.prefix.append(row)
+        else:
+            self.tail.append(row)
+
+    def recognize(self, caller, agent, predicate, seconds):
+        if self.configuration != "AVAILABLE" or self.observer.actor() != "CONTROL" or self.current is not None:
+            return False
+        if caller is None or caller.f_code is not self.codes["helper"] or caller.f_lineno != 382 or type(seconds) is not int or seconds != 10:
+            return False
+        values = caller.f_locals
+        if values.get("agent") is not agent or getattr(predicate, "__code__", None) is not self.codes["run_capacity_fixture.<locals>.checked.<locals>.observed"]:
+            return False
+        closure = dict(zip(predicate.__code__.co_freevars, (cell.cell_contents for cell in predicate.__closure__)))
+        completed, checked, callback = values.get("completed"), values.get("checked"), values.get("raise_callback_failure")
+        return (closure.get("predicate") is completed and closure.get("raise_callback_failure") is callback
+                and getattr(completed, "__code__", None) is self.codes["run_capacity_fixture.<locals>.completed"]
+                and getattr(checked, "__code__", None) is self.codes["run_capacity_fixture.<locals>.checked"]
+                and getattr(callback, "__code__", None) is self.codes["run_capacity_fixture.<locals>.raise_callback_failure"])
+
+    def wrapper(self, original):
+        @functools.wraps(original)
+        def wrapped(*args, **kwargs):
+            agent = args[0] if args else kwargs.get("agent")
+            predicate = args[1] if len(args) > 1 else kwargs.get("predicate")
+            caller = self.observer.safe(sys._getframe, 2)
+            recognized = self.observer.safe(self.recognize, caller, agent, predicate, kwargs.get("seconds", 3))
+            if not recognized:
+                return original(*args, **kwargs)
+            self.calls = min(LIMIT, self.calls + 1)
+            self.current = {"agent": agent, "predicate": predicate, "completed": caller.f_locals["completed"],
+                            "frame": None, "predicate_frame": None, "predicate_start": None}
+            self.phase = "DURING_FINAL_PUMP"
+            self.observer.safe(self.mark, "OBSERVED_ENTRY")
+            try:
+                result = original(*args, **kwargs)
+            except BaseException as error:
+                self.error = type(error).__name__ if type(error).__name__ in ERRORS | {"Failed", "BaseExceptionGroup", "ExceptionGroup"} else "OTHER"
+                self.phase = "AFTER_ORIGINAL_PUMP_FAILURE"
+                self.observer.safe(lambda: self.mark("ORIGINAL_EXCEPTION", error=self.error))
+                raise
+            else:
+                self.phase = "AFTER_ORIGINAL_PUMP_RETURN"
+                self.observer.safe(self.mark, "ORIGINAL_RETURN")
+                return result
+            finally:
+                self.current = None  # Do not retain frames, closures, errors or payloads.
+        return wrapped
+
+    def step_begin(self, original):
+        if self.current is not None and self.observer.actor() == "CONTROL" and getattr(original, "__self__", None) is self.current["agent"]:
+            self.mark("STEP_ENTRY")
+            return self.observer.monotonic_now()
+        return None
+
+    def step_end(self, start, error):
+        self.mark("STEP_EXIT", start=start, error=error)
+
+    def event(self, frame, event, arg):
+        current = self.current
+        if current is None or self.observer.actor() != "CONTROL":
+            return
+        if event == "call" and frame.f_code is self.codes["pump"] and frame.f_locals.get("predicate") is current["predicate"] and frame.f_locals.get("agent") is current["agent"]:
+            current["frame"] = frame
+        pump_frame = current["frame"]
+        if frame is pump_frame and event == "c_call" and arg is self.monotonic and frame.f_lineno == 435:
+            raw = frame.f_locals.get("deadline")
+            value = raw if type(raw) is float and math.isfinite(raw) else None
+            if value is None:
+                self.clock_missing = min(LIMIT, self.clock_missing + 1)
+            elif self.deadline is None:
+                self.deadline = value
+                self.mark("ORIGINAL_DEADLINE_OBSERVED")
+            elif self.deadline != value:
+                self.deadline_changed = True
+        if event == "call" and frame.f_back is pump_frame and frame.f_code is self.fail_code and pump_frame.f_lineno == 439 and (
+                hasattr(self.fail_owner, "__code__") or frame.f_locals.get("self") is self.fail_owner):
+            self.failure_branch = True
+            self.mark("ORIGINAL_FAILURE_BRANCH_439")
+        if frame.f_code is current["predicate"].__code__:
+            if event == "call" and frame.f_back is pump_frame and frame.f_locals.get("predicate") is current["completed"]:
+                current["predicate_frame"], current["predicate_start"] = frame, self.observer.monotonic_now()
+                self.mark("PREDICATE_ENTRY")
+            elif event == "return" and frame is current["predicate_frame"]:
+                result = "TRUE" if arg is True else "FALSE" if arg is False else "UNCLASSIFIED"
+                self.predicate_true |= arg is True
+                self.mark("PREDICATE_RETURN", start=current["predicate_start"], result=result)
+                current["predicate_frame"] = None
+        if frame is pump_frame and event == "return":
+            # Python profile return(None) also occurs when unwinding an error.
+            self.mark("PROFILE_RETURN_UNCLASSIFIED")
+
+    def outcome(self, outcome):
+        if outcome is not None:
+            self.pytest_outcome = "FAILED" if outcome.excinfo is not None else "PASSED"
+
+    def snapshot(self):
+        applicable = self.observer.case == 5
+        complete = self.configuration == "AVAILABLE" and self.calls == 1 and self.deadline is not None and not self.deadline_changed and not self.clock_missing and self.current is None and not self.observer.faults
+        return {"configuration": self.configuration, "recognition": "RECOGNIZED" if self.calls else "UNAVAILABLE" if applicable else "NOT_APPLICABLE",
+                "calls": self.calls, "original_seconds": 10 if applicable else None,
+                "original_deadline_absolute_monotonic_seconds": self.deadline,
+                "deadline_changed": self.deadline_changed, "clock_missing": self.clock_missing,
+                "coverage": "COMPLETE" if complete else "INCOMPLETE" if applicable else "NOT_APPLICABLE",
+                "coverage_semantics": "DEADLINE_IDENTITY_OUTCOME_PAIRING_NOT_MARKER_RETENTION",
+                "phase": self.phase, "failure_branch_439": self.failure_branch,
+                "original_exception_category": self.error, "observed_predicate_true": self.predicate_true,
+                "pytest_call_outcome": self.pytest_outcome, "markers": list(self.prefix) + list(self.tail),
+                "marker_total": self.total, "marker_dropped": max(0, self.total - 64), "marker_limit": 64,
+                "marker_retention": "SAMPLED" if self.total > 64 else "COMPLETE",
+                "entry_semantics": "OBSERVED_WRAPPER_ENTRY_NOT_RECONSTRUCTED_ORIGINAL_START",
+                "profile_return_semantics": "UNCLASSIFIED_NOT_SUCCESS_PROOF"}
 
 
 class ExitProfiler:
@@ -408,6 +709,39 @@ class ExitProfiler:
                 return "SCOPE_GUARD_FILE_CLOSE"
         return None
 
+    def boundary(self, frame, method, stage, start, end, event, row):
+        if row is None:
+            return False
+        values, owner = frame.f_locals, getattr(method, "__self__", None)
+        if frame.f_code is self.transaction_code:
+            exact = values.get("self") is row["_coordinator"] and values.get("db") is row["_db"]
+            if stage == "SCOPE_CHECKPOINT_FETCH":
+                import sqlite3
+                exact &= type(owner) is sqlite3.Cursor and owner.connection is row["_db"]
+                if exact and row["_cursor"] is None:
+                    row["_cursor"] = owner
+                exact &= owner is row["_cursor"]
+            else:
+                exact &= owner is row["_db"]
+        else:
+            exact = values.get("path") is row["_coordinator"].guard
+            if row["_file"] is None:
+                row["_file"] = values.get("f")
+            exact &= values.get("f") is row["_file"] and row["_file"] is not None
+            if stage == "SCOPE_GUARD_FILE_CLOSE":
+                exact &= owner is row["_file"]
+        if not exact or len(row["boundaries"]) >= 8:
+            row["incomplete"] = True
+            return False
+        interval = self.observer.interval(start, end, "OTHER" if event == "c_exception" else "NONE")
+        if interval["duration_seconds"] is None:
+            row["incomplete"] = True
+        row["boundaries"].append({"stage": stage, **interval, "identity": "EXACT_ORIGINAL_TRANSACTION",
+                                  "connection": 1 if frame.f_code is self.transaction_code else None,
+                                  "cursor": 1 if stage == "SCOPE_CHECKPOINT_FETCH" else None,
+                                  "guard_file": 1 if frame.f_code is self.guard_code else None})
+        return True
+
     @contextmanager
     def scope(self):
         observer, actor = self.observer, self.observer.actor()
@@ -419,6 +753,9 @@ class ExitProfiler:
                                                     "exceptions": 0, "unmatched": 0, "faults": 0,
                                                     "scopes": 0, "skipped_existing": 0, "clock_missing": 0,
                                                     "pending_peak": 0, "coverage_complete": True})
+            state.setdefault("transaction_paired_calls", 0)
+            state.setdefault("transaction_unattributed_calls", 0)
+            state.setdefault("transaction_unattributed_stage_phase", {})
             state["scopes"] = min(LIMIT, state["scopes"] + 1)
         pending, installed, prior = {}, False, None
 
@@ -433,7 +770,10 @@ class ExitProfiler:
             if not observer.enabled or state["status"] != "AVAILABLE":
                 return
             try:
-                if observer.actor() != actor or event not in ("c_call", "c_return", "c_exception"):
+                if observer.actor() != actor:
+                    return
+                observer.pump.event(frame, event, method)
+                if event not in ("c_call", "c_return", "c_exception"):
                     return
                 if frame.f_code is not self.transaction_code and frame.f_code is not self.guard_code:
                     return
@@ -445,7 +785,7 @@ class ExitProfiler:
                     if len(pending) >= 64 or key in pending:
                         raise RuntimeError()
                     track = getattr(observer.local, "exit_track", None)
-                    pending[key] = (observer.now(), track)
+                    pending[key] = (observer.now(), track, observer.monotonic_now(), getattr(method, "__self__", None))
                     if track is not None:
                         track["pending"] += 1
                     state["pending_peak"] = max(state["pending_peak"], len(pending))
@@ -455,25 +795,37 @@ class ExitProfiler:
                             state["unmatched"] = min(LIMIT, state["unmatched"] + 1)
                             incomplete()
                         return
-                    (start, paired_track), end = pending.pop(key), observer.now()
+                    (start, paired_track, monotonic_start, paired_owner), end = pending.pop(key), observer.now()
                     duration = end - start if start is not None and end is not None else None
                     if duration is None:
                         state["clock_missing"] = min(LIMIT, state["clock_missing"] + 1)
                         incomplete()
                     track = getattr(observer.local, "exit_track", None)
+                    transaction_paired = False
                     if paired_track is not None:
                         paired_track["pending"] -= 1
                     if track is not paired_track:
+                        incomplete()
+                    if getattr(method, "__self__", None) is not paired_owner:
                         incomplete()
                     if track is not None:
                         if duration is None:
                             track["missing"] = True
                         else:
                             track["sum"] += max(0, duration)
+                        if track is paired_track:
+                            transaction_paired = self.boundary(frame, method, stage, monotonic_start, observer.monotonic_now(), event, track["record"])
                     observer.record(stage, start, "OTHER" if event == "c_exception" else "NONE", duration=duration)
                     with observer.lock:
                         state["calls"] = min(LIMIT, state["calls"] + 1)
                         state["exceptions"] = min(LIMIT, state["exceptions"] + (event == "c_exception"))
+                        state["transaction_paired_calls"] = min(LIMIT, state["transaction_paired_calls"] + bool(transaction_paired))
+                        state["transaction_unattributed_calls"] = min(LIMIT, state["transaction_unattributed_calls"] + (not transaction_paired))
+                        if not transaction_paired:
+                            phase = observer.pump.phase if observer.case == 5 else "NOT_APPLICABLE"
+                            key = phase + ":" + stage
+                            counts = state["transaction_unattributed_stage_phase"]
+                            counts[key] = min(LIMIT, counts.get(key, 0) + 1)
             except BaseException:
                 with observer.lock:
                     state["status"] = "OBSERVATION_FAULT"
@@ -531,12 +883,31 @@ class ExitProfiler:
 
 
 class ObservedContext:
-    def __init__(self, observer, stage, context, entered=None):
+    def __init__(self, observer, stage, context, entered=None, coordinator=None):
         self.observer, self.stage, self.context, self.entered = observer, stage, context, entered
         self.body = None
+        self.coordinator, self.transaction = coordinator, None
+        self.prior_transaction = None
 
     def __enter__(self):
-        result = self.observer.invoke(self.stage + ".ENTER", type(self.context).__enter__, self.context)
+        if self.coordinator is not None:
+            self.transaction = self.observer.safe(self.observer.transaction_begin, self.coordinator)
+            self.prior_transaction = getattr(self.observer.local, "transaction_record", None)
+            self.observer.local.transaction_record = self.transaction
+        start = self.observer.monotonic_now() if self.transaction is not None else None
+        try:
+            result = self.observer.invoke(self.stage + ".ENTER", type(self.context).__enter__, self.context)
+        except BaseException as error:
+            if self.transaction is not None:
+                self.transaction["intervals"]["ENTER"] = self.observer.interval(start, self.observer.monotonic_now(), type(error).__name__ if type(error).__name__ in ERRORS else "OTHER")
+                self.transaction["incomplete"] = True
+                self.observer.safe(self.observer.transaction_finish, self.transaction)
+                self.observer.local.transaction_record = self.prior_transaction
+            raise
+        if self.transaction is not None:
+            self.transaction["_db"] = result
+            self.transaction["intervals"]["ENTER"] = self.observer.interval(start, self.observer.monotonic_now())
+            self.body_monotonic = self.observer.monotonic_now()
         if self.entered is not None and self.observer.actor() is not None:
             self.observer.safe(self.entered, result)
         self.body = self.observer.now()
@@ -544,7 +915,22 @@ class ObservedContext:
 
     def __exit__(self, typ, error, traceback):
         self.observer.safe(self.observer.record, self.stage + ".BODY", self.body)
-        return self.observer.invoke(self.stage + ".EXIT", type(self.context).__exit__, self.context, typ, error, traceback)
+        category = type(error).__name__ if error is not None and type(error).__name__ in ERRORS else "OTHER" if error is not None else "NONE"
+        start = self.observer.monotonic_now() if self.transaction is not None else None
+        if self.transaction is not None:
+            self.transaction["body_error"] = category
+            self.transaction["intervals"]["BODY"] = self.observer.interval(self.body_monotonic, start, category)
+        category = "NONE"
+        try:
+            return self.observer.invoke(self.stage + ".EXIT", type(self.context).__exit__, self.context, typ, error, traceback)
+        except BaseException as failure:
+            category = type(failure).__name__ if type(failure).__name__ in ERRORS else "OTHER"
+            raise
+        finally:
+            if self.transaction is not None:
+                self.transaction["intervals"]["EXIT"] = self.observer.interval(start, self.observer.monotonic_now(), category)
+                self.observer.safe(self.observer.transaction_finish, self.transaction)
+                self.observer.local.transaction_record = self.prior_transaction
 
 
 def pytest_addoption(parser):
@@ -569,7 +955,8 @@ def pytest_runtest_call(item):
     observation.safe(install)
     try:
         with observation.exit_profiler.scope():
-            yield
+            outcome = yield
+            observation.safe(observation.pump.outcome, outcome)
     finally:
         observation.safe(observation.stop)
         def publish():

@@ -711,3 +711,337 @@ def test_exit_profiler_restoration_failure_keeps_original_outcome_and_disabled_c
         assert 'PRIVATE' not in json.dumps(observer.snapshot())
     finally:
         setter(None); observer.stop()
+
+
+def test_transaction_same_identity_intervals_six_boundaries_and_remainder(tmp_path):
+    coordinator, observer = scoped_capture(tmp_path)
+    try:
+        with observer.exit_profiler.scope():
+            for _ in range(2):
+                with coordinator.transaction(): pass
+        result = observer.snapshot()
+        actor = result['transactions']['actors']['CONTROL']
+        assert actor['total'] == actor['retained'] == 2 and actor['dropped'] == 0
+        assert actor['incomplete_total'] == 0
+        for serial, row in enumerate(actor['records'], 1):
+            assert row['case'] == 0 and row['actor'] == 'CONTROL' and row['transaction'] == serial and row['coordinator'] == 1
+            assert set(row['intervals']) == {'ENTER', 'BODY', 'EXIT'}
+            assert row['executed_boundaries'] == 6 and row['stage_coverage'] == 'EXECUTED'
+            assert [item['stage'] for item in row['boundaries']] == [
+                'SCOPE_COMMIT', 'SCOPE_CHECKPOINT_EXECUTE', 'SCOPE_CHECKPOINT_FETCH',
+                'SCOPE_DB_CLOSE', 'SCOPE_GUARD_UNLOCK', 'SCOPE_GUARD_FILE_CLOSE']
+            exit_interval = row['intervals']['EXIT']
+            for item in row['boundaries']:
+                assert item['identity'] == 'EXACT_ORIGINAL_TRANSACTION'
+                assert exit_interval['start_seconds'] <= item['start_seconds'] <= item['end_seconds'] <= exit_interval['end_seconds']
+            assert row['exit_remainder_seconds'] >= 0
+            assert abs(row['exit_seconds'] - row['exit_remainder_seconds'] - sum(item['duration_seconds'] for item in row['boundaries'])) < 1e-8
+            assert not any(name.startswith('_') for name in row)
+        assert result['clocks']['transaction_pump']['domain'] == 'time.monotonic'
+        assert result['clocks']['original_fixture']['thread_labels_are_actor_ids'] is False
+        assert result['exit_profile']['stage_coverage'] == 'EXECUTED'
+    finally:
+        observer.stop()
+
+
+def test_transaction_retention_first_latest_largest_deduplicated_and_dropped():
+    retention = stage_observer.TransactionRetention()
+    for number in range(1, 101):
+        retention.add('CONTROL', {'transaction': number, 'exit_seconds': 1 if 30 <= number <= 45 else .01,
+                                  'incomplete': number == 50})
+    actor = retention.snapshot()['actors']['CONTROL']
+    expected = set(range(1, 9)) | set(range(93, 101)) | set(range(30, 46))
+    assert {row['transaction'] for row in actor['records']} == expected
+    assert actor['total'] == 100 and actor['retained'] == 32 and actor['dropped'] == 68
+    assert actor['incomplete_total'] == 1 and actor['coverage'] == 'SAMPLED'
+    small = stage_observer.TransactionRetention()
+    for number in range(1, 9): small.add('WORKER_1', {'transaction': number, 'exit_seconds': None, 'incomplete': True})
+    facts = small.snapshot()['actors']['WORKER_1']
+    assert facts['retained'] == 8 and facts['dropped'] == 0 and facts['incomplete_total'] == 8
+
+
+@pytest.mark.parametrize('mode', ['missing_clock', 'unavailable_profile', 'original_error'])
+def test_transaction_clock_unavailable_and_original_error_are_explicit(tmp_path, mode):
+    coordinator, observer = scoped_capture(tmp_path)
+    fault = RuntimeError('PRIVATE_BODY')
+    if mode == 'missing_clock': observer.monotonic_now = lambda: None
+    if mode == 'unavailable_profile': observer.exit_profiler.configuration = 'SOURCE_SEAM_MISMATCH'
+    try:
+        def original():
+            with observer.exit_profiler.scope():
+                with coordinator.transaction():
+                    if mode == 'original_error': raise fault
+        if mode == 'original_error':
+            with pytest.raises(RuntimeError) as caught: original()
+            assert caught.value is fault
+        else: original()
+        row = observer.snapshot()['transactions']['actors']['CONTROL']['records'][0]
+        if mode == 'original_error':
+            assert row['body_error'] == 'RuntimeError' and row['route'] == 'ORIGINAL_ERROR_PATH'
+            assert row['intervals']['EXIT']['error'] == 'NONE'
+            assert [item['stage'] for item in row['boundaries']] == [
+                'SCOPE_ROLLBACK', 'SCOPE_DB_CLOSE', 'SCOPE_GUARD_UNLOCK', 'SCOPE_GUARD_FILE_CLOSE']
+            assert not row['incomplete']
+        else:
+            assert row['incomplete'] and row['exit_remainder_seconds'] is None
+        if mode == 'unavailable_profile': assert row['stage_coverage'] == 'UNEXECUTED'
+        assert 'PRIVATE' not in json.dumps(observer.snapshot())
+    finally:
+        observer.stop()
+
+
+def test_transaction_boundary_rejects_different_cursor_connection_and_guard_file(tmp_path):
+    import sqlite3
+    coordinator, observer = scoped_capture(tmp_path)
+    try:
+        with sqlite3.connect(':memory:') as owned, sqlite3.connect(':memory:') as foreign:
+            row = observer.transaction_begin(coordinator); row['_db'] = owned
+            cursor = foreign.cursor()
+            frame = SimpleNamespace(f_code=observer.exit_profiler.transaction_code, f_locals={'self': coordinator, 'db': owned})
+            observer.exit_profiler.boundary(frame, cursor.fetchone, 'SCOPE_CHECKPOINT_FETCH', 1., 2., 'c_return', row)
+            assert row['incomplete'] and not row['boundaries']
+            frame = SimpleNamespace(f_code=observer.exit_profiler.guard_code, f_locals={'path': coordinator.guard, 'f': object()})
+            row['_file'] = object()
+            observer.exit_profiler.boundary(frame, SimpleNamespace(__self__=frame.f_locals['f']), 'SCOPE_GUARD_FILE_CLOSE', 1., 2., 'c_return', row)
+            assert not row['boundaries']
+    finally:
+        observer.stop()
+
+
+def pump_control(observer, *, pending=False):
+    """Execute the verified original nested predicate codes on inert control data."""
+    from types import FunctionType
+    import test_tip064_capacity_https as capacity
+    observer.pump.configure(capacity)
+    assert observer.pump.configuration == 'AVAILABLE'
+    def cell(value): return (lambda: value).__closure__[0]
+    def function(name, values):
+        code = observer.pump.codes['run_capacity_fixture.<locals>.' + name]
+        return FunctionType(code, capacity.__dict__, closure=tuple(cell(values[key]) for key in code.co_freevars))
+    callback = function('raise_callback_failure', {'callback_failures': []})
+    completed = function('completed', {'latest': [], 'launched': [], 'third': {'global_job_id': 'CONTROL_ONLY'},
+        'summary': lambda row: row, 'facade': SimpleNamespace(get_job=lambda key: {'state': 'SUCCEEDED'}),
+        'dispatcher': SimpleNamespace(has_pending_work=lambda: pending)})
+    checked = function('checked', {'raise_callback_failure': callback})
+    return capacity, completed, checked, callback
+
+
+@pytest.mark.parametrize('wrong', ['none', 'caller_code', 'caller_line', 'closure', 'agent', 'seconds'])
+def test_final_pump_recognition_requires_exact_original_codes_frame_and_closure(wrong):
+    observer = Observation(5)
+    capacity, completed, checked, callback = pump_control(observer)
+    agent, foreign = object(), object()
+    predicate = checked(completed)
+    frame = SimpleNamespace(f_code=observer.pump.codes['helper'], f_lineno=382,
+                            f_locals={'agent': agent, 'completed': completed, 'checked': checked, 'raise_callback_failure': callback})
+    if wrong == 'caller_code': frame.f_code = checked.__code__
+    if wrong == 'caller_line': frame.f_lineno = 347
+    if wrong == 'closure': predicate = checked(lambda: True)
+    assert observer.pump.recognize(frame, foreign if wrong == 'agent' else agent, predicate,
+                                   3 if wrong == 'seconds' else 10) is (wrong == 'none')
+    assert observer.pump.snapshot()['recognition'] == 'UNAVAILABLE'
+    observer.stop()
+
+
+@pytest.mark.parametrize('mode', ['return', 'exception', 'deadline_failure'])
+def test_original_pump_deadline_outcome_identity_and_profile_return_not_success(tmp_path, monkeypatch, mode):
+    import sys
+    from vibemql5.fleet import scoped_resources
+    from vibemql5.core import jobs
+    observer = Observation(5)
+    capacity, completed, checked, callback = pump_control(observer, pending=mode == 'deadline_failure')
+    observer.exit_profiler.configure(scoped_resources, jobs)
+    fault, cause = RuntimeError('PRIVATE_ORIGINAL'), ValueError('PRIVATE_CAUSE')
+    fault.add_note('PRIVATE_NOTE')
+    calls = []
+    class Agent:
+        def step(self):
+            calls.append('step')
+            if mode == 'exception': raise fault from cause
+    agent = Agent()
+    observer.method(agent, 'step', 'CONTROL_STEP')
+    # Frame recognition is tested above and on the separate real case5 smoke.
+    monkeypatch.setattr(observer.pump, 'recognize', lambda *args: True)
+    wrapped = observer.pump.wrapper(observer.pump.original)
+    try:
+        with observer.exit_profiler.scope():
+            if mode == 'return': assert wrapped(agent, checked(completed), seconds=10) is None
+            else:
+                with pytest.raises(BaseException) as caught: wrapped(agent, checked(completed), seconds=10)
+                if mode == 'exception':
+                    assert caught.value is fault and fault.__cause__ is cause and fault.__notes__ == ['PRIVATE_NOTE']
+                    assert any(frame.name == 'pump' for frame in __import__('traceback').extract_tb(fault.__traceback__))
+        facts = observer.pump.snapshot()
+        assert sys.getprofile() is None and facts['calls'] == 1 and facts['coverage'] == 'COMPLETE'
+        assert facts['original_deadline_absolute_monotonic_seconds'] is not None and not facts['deadline_changed']
+        assert facts['phase'] == ('AFTER_ORIGINAL_PUMP_RETURN' if mode == 'return' else 'AFTER_ORIGINAL_PUMP_FAILURE')
+        assert any(row['stage'] == 'PROFILE_RETURN_UNCLASSIFIED' for row in facts['markers'])
+        assert facts['failure_branch_439'] is (mode == 'deadline_failure')
+        assert facts['observed_predicate_true'] is (mode == 'return')
+        assert facts['pytest_call_outcome'] == 'NOT_OBSERVED'
+        assert 'PRIVATE' not in json.dumps(observer.snapshot())
+        assert len(calls) == 1 if mode != 'deadline_failure' else len(calls) > 1
+        if mode == 'deadline_failure': assert facts['marker_dropped'] > 0 and len(facts['markers']) <= 64
+    finally:
+        observer.stop()
+    assert 'step' not in agent.__dict__ and observer.pump.current is None
+
+
+@pytest.mark.parametrize('seam', ['helper', 'pump'])
+def test_final_pump_seam_mismatch_and_missing_clock_are_unavailable(monkeypatch, seam):
+    import test_tip064_capacity_https as capacity
+    observer = Observation(5)
+    name = 'run_capacity_fixture' if seam == 'helper' else 'pump'
+    original = getattr(capacity, name)
+    monkeypatch.setattr(capacity, name, lambda *args, **kwargs: None)
+    observer.safe(observer.pump.configure, capacity)
+    assert observer.pump.configuration == 'SOURCE_SEAM_MISMATCH'
+    assert observer.pump.snapshot()['coverage'] == 'INCOMPLETE'
+    monkeypatch.setattr(capacity, name, original)
+    observer.pump.configure(capacity)
+    observer.monotonic_now = lambda: None
+    observer.pump.mark('OBSERVED_ENTRY')
+    assert observer.pump.clock_missing == 1 and observer.pump.snapshot()['coverage'] == 'INCOMPLETE'
+    assert observer.interval(2., 1.)['duration_seconds'] is None
+    observer.stop()
+
+
+@pytest.mark.parametrize('deadline', [1, True, float('nan'), float('inf'), None])
+def test_final_pump_deadline_requires_original_finite_float(deadline):
+    observer = Observation(5)
+    _, completed, checked, _ = pump_control(observer)
+    predicate, agent = checked(completed), object()
+    frame = SimpleNamespace(f_code=observer.pump.codes['pump'], f_lineno=435,
+                            f_locals={'deadline': deadline, 'agent': agent, 'predicate': predicate})
+    observer.pump.current = {'agent': agent, 'predicate': predicate, 'completed': completed, 'frame': frame,
+                             'predicate_frame': None, 'predicate_start': None}
+    observer.pump.event(frame, 'c_call', observer.pump.monotonic)
+    assert observer.pump.deadline is None and observer.pump.clock_missing == 1
+    assert observer.pump.snapshot()['coverage'] == 'INCOMPLETE'
+    observer.pump.current = None
+    observer.stop()
+
+
+@pytest.mark.parametrize('exception', [False, True])
+def test_pump_introspection_fault_delegates_original_once_and_preserves_exception(monkeypatch, exception):
+    import sys
+    observer = Observation(5)
+    calls, fault = [], RuntimeError('PRIVATE_ORIGINAL')
+    fault.add_note('PRIVATE_NOTE')
+    def original(*args, **kwargs):
+        calls.append((args, kwargs))
+        if exception: raise fault
+        return 42
+    def unavailable(*args): raise RuntimeError('PRIVATE_AUDIT_DENIAL')
+    wrapped = observer.pump.wrapper(original)
+    monkeypatch.setattr(sys, '_getframe', unavailable)
+    token = object()
+    if exception:
+        with pytest.raises(RuntimeError) as caught: wrapped(token, token, seconds=10)
+        assert caught.value is fault and fault.__notes__ == ['PRIVATE_NOTE']
+    else: assert wrapped(token, token, seconds=10) == 42
+    assert calls == [((token, token), {'seconds': 10})]
+    assert observer.faults == 1 and observer.pump.calls == 0
+    assert observer.pump.snapshot()['recognition'] == 'UNAVAILABLE'
+    assert 'PRIVATE' not in json.dumps(observer.snapshot())
+    observer.stop()
+
+
+@pytest.mark.parametrize('mode', ['source_hash', 'loaded_code'])
+@pytest.mark.parametrize('seam', ['helper', 'pump'])
+def test_pump_fixed_source_and_loaded_codes_reject_modification(monkeypatch, mode, seam):
+    from types import FunctionType
+    import test_tip064_capacity_https as capacity
+    observer = Observation(5)
+    name = 'run_capacity_fixture' if seam == 'helper' else 'pump'
+    original = getattr(capacity, name)
+    if mode == 'source_hash':
+        read = Path.read_bytes
+        def changed(path):
+            data = read(path)
+            return data + b'\n' if path == Path(original.__code__.co_filename) else data
+        monkeypatch.setattr(Path, 'read_bytes', changed)
+    else:
+        changed = FunctionType(original.__code__.replace(co_firstlineno=original.__code__.co_firstlineno + 1), original.__globals__)
+        monkeypatch.setattr(capacity, name, changed)
+    observer.pump.configure(capacity)
+    assert observer.pump.configuration == 'SOURCE_SEAM_MISMATCH'
+    assert observer.pump.original is None and observer.pump.snapshot()['recognition'] == 'UNAVAILABLE'
+    observer.stop()
+
+
+@pytest.mark.parametrize('foreign', ['self', 'code'])
+def test_pump_failure_branch_requires_original_fail_callable_identity(foreign):
+    observer = Observation(5)
+    _, completed, checked, _ = pump_control(observer)
+    pump_frame = SimpleNamespace(f_code=observer.pump.codes['pump'], f_lineno=439, f_locals={})
+    observer.pump.current = {'agent': object(), 'predicate': checked(completed), 'completed': completed,
+                             'frame': pump_frame, 'predicate_frame': None, 'predicate_start': None}
+    child = SimpleNamespace(f_code=observer.pump.fail_code, f_back=pump_frame, f_locals={'self': observer.pump.fail_owner})
+    if foreign == 'self': child.f_locals['self'] = object()
+    else: child.f_code = (lambda: None).__code__
+    observer.pump.event(child, 'call', None)
+    assert not observer.pump.failure_branch
+    child.f_code, child.f_locals['self'] = observer.pump.fail_code, observer.pump.fail_owner
+    observer.pump.event(child, 'call', None)
+    assert observer.pump.failure_branch and observer.pump.total == 1
+    observer.pump.current = None
+    observer.stop()
+
+
+def test_pump_marker_fault_preserves_original_exception_notes_traceback_and_restores(monkeypatch):
+    import sys
+    from vibemql5.fleet import scoped_resources
+    from vibemql5.core import jobs
+    observer = Observation(5)
+    _, completed, checked, _ = pump_control(observer)
+    observer.exit_profiler.configure(scoped_resources, jobs)
+    fault, cause = RuntimeError('PRIVATE_ERROR'), ValueError('PRIVATE_CAUSE')
+    fault.add_note('PRIVATE_NOTE')
+    calls = []
+    class Agent:
+        def step(self):
+            calls.append('step')
+            raise fault from cause
+    agent = Agent()
+    observer.method(agent, 'step', 'CONTROL_STEP')
+    monkeypatch.setattr(observer.pump, 'recognize', lambda *args: True)
+    def broken(*args, **kwargs): raise SystemExit('PRIVATE_MARKER')
+    monkeypatch.setattr(observer.pump, 'mark', broken)
+    wrapped = observer.pump.wrapper(observer.pump.original)
+    try:
+        with observer.exit_profiler.scope():
+            with pytest.raises(RuntimeError) as caught: wrapped(agent, checked(completed), seconds=10)
+        assert caught.value is fault and fault.__cause__ is cause and fault.__notes__ == ['PRIVATE_NOTE']
+        frames = __import__('traceback').extract_tb(fault.__traceback__)
+        assert any(frame.name == 'pump' and frame.lineno == 436 for frame in frames)
+        assert calls == ['step'] and sys.getprofile() is None
+        assert observer.faults > 0 and observer.pump.snapshot()['coverage'] == 'INCOMPLETE'
+        assert 'PRIVATE' not in json.dumps(observer.snapshot())
+    finally:
+        observer.stop()
+    assert observer.pump.current is None and 'step' not in agent.__dict__
+
+
+def test_cached_original_transaction_is_explicitly_unattributed_not_complete(tmp_path):
+    coordinator, observer = scoped_capture(tmp_path)
+    original = coordinator.transaction.__wrapped__
+    try:
+        with observer.exit_profiler.scope():
+            with original(): pass  # Original fixture caches can bypass the outer research CM.
+            with coordinator.transaction(): pass
+        facts = observer.snapshot()
+        assert facts['observation_faults'] == 0 and facts['exit_profile']['coverage'] == 'COMPLETE'
+        assert facts['exit_profile']['transaction_pairing'] == 'INCOMPLETE'
+        state = facts['exit_profile']['threads']['CONTROL']
+        assert state['calls'] == 12 and state['transaction_paired_calls'] == state['transaction_unattributed_calls'] == 6
+        assert state['transaction_unattributed_stage_phase'] == {
+            'NOT_APPLICABLE:' + stage: 1 for stage in ('SCOPE_COMMIT', 'SCOPE_CHECKPOINT_EXECUTE', 'SCOPE_CHECKPOINT_FETCH',
+                'SCOPE_DB_CLOSE', 'SCOPE_GUARD_UNLOCK', 'SCOPE_GUARD_FILE_CLOSE')}
+        assert facts['transactions']['unattributed_c_calls'] == {'CONTROL': 6}
+        actor = facts['transactions']['actors']['CONTROL']
+        assert actor['total'] == 1 and actor['record_pairing'] == 'COMPLETE'
+        assert actor['record_pairing_semantics'] == 'OBSERVED_CONTEXT_ROWS_ONLY'
+        assert facts['transactions']['observed_context_counts_exclude_unattributed_transactions']
+    finally:
+        observer.stop()
