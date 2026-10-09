@@ -1,7 +1,9 @@
 """Research-observer controls; never part of the fixed production unit tree."""
 from contextlib import contextmanager
+import ast
 import gc
 import json
+from pathlib import Path
 from types import SimpleNamespace
 import threading
 import weakref
@@ -287,3 +289,29 @@ def test_inflight_owned_worker_after_stop_keeps_result_without_late_record():
     observer.stop()
     release.set(); worker.join(2)
     assert not worker.is_alive() and returns == [result] and observer.total == 0
+
+
+def test_allowlist_covers_capacity_helper_callers_and_excludes_other_scope_tests():
+    original = Path(__file__).resolve().parents[2] / "tests/unit/test_tip064_capacity_https.py"
+    tree = ast.parse(original.read_text(encoding="utf-8"))
+    helper_callers = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+                      and node.name.startswith("test_") and any(isinstance(call, ast.Call)
+                      and isinstance(call.func, ast.Name) and call.func.id == "run_capacity_fixture"
+                      for call in ast.walk(node))}
+    capacity = [case.split("::")[1].split("[")[0] for case in stage_observer.CASES
+                if case.startswith("tests/unit/test_tip064_capacity_https.py::")]
+    assert set(capacity) == helper_callers and len(capacity) == 10
+    assert len(stage_observer.CASES) == len(set(stage_observer.CASES)) == 12
+
+
+@pytest.mark.parametrize("name", ["test_scope_observation_actual_guard_contention_keeps_late_owner_and_delegates_once",
+                                  "test_scope_observation_excludes_released_failing_context_from_owner"])
+def test_unrelated_scope_test_does_not_initialize_plugin(monkeypatch, name):
+    constructed = []
+    monkeypatch.setattr(stage_observer, "Observation", lambda *args: constructed.append(args))
+    item = SimpleNamespace(nodeid="tests/unit/test_tip064_capacity_https.py::" + name,
+                           config=SimpleNamespace(getoption=lambda option: "unused"))
+    hook = stage_observer.pytest_runtest_call(item)
+    assert next(hook) is None
+    with pytest.raises(StopIteration): next(hook)
+    assert not constructed

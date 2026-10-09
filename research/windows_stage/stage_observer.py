@@ -1,6 +1,6 @@
 """External, opt-in timing research. Never a production qualification gate.
 
-No source import occurs until pytest has selected one of four original cases.
+No source import occurs until pytest has selected one of twelve original cases.
 Timings are inclusive and overlapping; CM exit includes original durability and
 cleanup and is NOT an isolated fsync/COMMIT or OS-lock ownership measurement.
 """
@@ -19,6 +19,14 @@ CASES = (
     "tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure]",
     "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]",
     "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]",
+    "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]",
+    "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[1000]",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[True]",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_primary_late_callback_and_cleanup_keep_original_union",
 )
 BASE_STAGES = frozenset((
     "WORKER", "DISPATCH", "NATIVE_EXECUTE", "NATIVE_RESULT", "NATIVE_RECEIVE",
