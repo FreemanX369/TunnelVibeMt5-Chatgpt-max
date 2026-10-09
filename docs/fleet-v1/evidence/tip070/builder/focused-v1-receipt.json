@@ -1,0 +1,44 @@
+{
+  "status": "PASS_FOCUSED_V1",
+  "source_parent": "7a4535b1cdaed3d7cb5d484642c099239944ab6b",
+  "tests": {
+    "tests": 101,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_seconds": 14.516
+  },
+  "before_after_identical": true,
+  "python_manifest_entries": 176,
+  "supplemental_source_manifest_entries": 215,
+  "other_parent_source_bytes_unchanged": 213,
+  "original_suite_body_AST_identical": true,
+  "changed_parent_sources": [
+    "app/vibemql5/backend_admin/core.py"
+  ],
+  "new_source": "tests/unit/test_tip070_sync_test_receipts.py",
+  "frozen_files": [
+    {
+      "path": "app/vibemql5/backend_admin/core.py",
+      "bytes": 78852,
+      "sha256": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18"
+    },
+    {
+      "path": "tests/unit/test_tip070_sync_test_receipts.py",
+      "bytes": 18252,
+      "sha256": "f191fc73aa2f8f54781533a0356d4e7cac5c70fcf325bda9ccf9b52179cd6dbb"
+    }
+  ],
+  "native_VPS_effects": false,
+  "full_CI": "NOT_RUN_FOR_THIS_CANDIDATE",
+  "runtime_outage_cause": "UNKNOWN",
+  "historical_sync_run": "UNKNOWN_NO_RECEIPT",
+  "new_tip070_controls": 48,
+  "compatibility_controls": 53,
+  "full_manifest_derived_from_exact_parent_and_pretest_frozen_changed_files_matches_measured_after": true,
+  "prior_setup_attempt": {
+    "exit_code": 4,
+    "tests_collected": false,
+    "retained_log": "focused-v0.log"
+  }
+}

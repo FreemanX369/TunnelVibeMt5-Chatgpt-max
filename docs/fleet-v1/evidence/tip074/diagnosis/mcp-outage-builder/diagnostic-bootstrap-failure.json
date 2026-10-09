@@ -1,0 +1,9 @@
+{
+  "phase": "manifest_reader",
+  "selected_file": "combined-frozen-source.json",
+  "exit_code": 1,
+  "stdout": "manifest_type dict top_keys parent, source_entries, allowed_changes, other_source_exact, all_production_exact",
+  "stderr": "Unexpected manifest container",
+  "corrected_file": "combined-source-before.json",
+  "source_writes": false
+}

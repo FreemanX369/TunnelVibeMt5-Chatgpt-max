@@ -1,0 +1,42 @@
+{
+  "commands.json": {
+    "bytes": 621,
+    "sha256": "94d1431993c12de58682f5a7305747919dc8d5ed333c331834029e2835268f41"
+  },
+  "environment.lock.txt": {
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  "first-verifier-error.json": {
+    "bytes": 258,
+    "sha256": "ed807a75364d4af802becaba25a5c8297f1fc160ec7460b819ff96219e8d0924"
+  },
+  "focused.junit.xml": {
+    "bytes": 182987,
+    "sha256": "cb11ca4562b0f94fc1a4d118fb65de698967b88e1b23a94be8b5dba53eb1f112"
+  },
+  "focused.log": {
+    "bytes": 47480,
+    "sha256": "75242f2d5a062241bee2e93b21175ad7bae91d02130dc9aaa87adca003ae1e03"
+  },
+  "manifest-verification.json": {
+    "bytes": 356,
+    "sha256": "28a19adb324d3e129313c1786e9fe17550e2492f7de69c871eccee776d8bfa49"
+  },
+  "review-receipt.json": {
+    "bytes": 1680,
+    "sha256": "2a9a409e30cae3e376e3649b5b387006b0883c51b6ddad868f8218c37504e97a"
+  },
+  "sdk-timeout-control.json": {
+    "bytes": 1755,
+    "sha256": "2cde2142308286a6598997f7ea4d3b66d9752a94092d89482bd9f47810ed3664"
+  },
+  "sdk-timeout-control.log": {
+    "bytes": 1755,
+    "sha256": "2cde2142308286a6598997f7ea4d3b66d9752a94092d89482bd9f47810ed3664"
+  },
+  "source-manifest-after.json": {
+    "bytes": 23763,
+    "sha256": "e824eed8f14ba43dc3259c6cc6ef69778a10f584a460af6f604d16f4d54f9c04"
+  }
+}

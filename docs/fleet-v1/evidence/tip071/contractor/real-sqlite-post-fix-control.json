@@ -1,0 +1,11 @@
+{
+  "scope": "OWNED_SCRATCH_REAL_SQLITE_BUSY_DIRECT_BUILTIN_CONNECTION",
+  "setup_error_type": "OperationalError",
+  "sqlite_errorcode": 5,
+  "sqlite_errorname": "SQLITE_BUSY",
+  "retained_traceback_connection_is_closed": true,
+  "restored_normal_WAL_FULL_and_query": "PASS",
+  "connection_subclass_or_injected_error": false,
+  "current_windows_guard_timeout_or_MCP_cause": "UNKNOWN",
+  "VPS_effects": false
+}

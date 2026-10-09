@@ -82,6 +82,26 @@ def test_json_reader_missing_and_malformed_fail_closed(tmp_path):
 
 
 @pytest.mark.parametrize(
+    "timestamp,expected_fresh",
+    [
+        ("2026-09-30T01:00:00Z", True),
+        ("2026-09-30T08:00:00+07:00", True),
+        ("2026-09-30T01:00:00", False),
+    ],
+)
+def test_json_reader_preserves_timestamp_text_without_inventing_an_offset(tmp_path, timestamp, expected_fresh):
+    path = tmp_path / "state.json"
+    path.write_text(json.dumps({"heartbeat_utc": timestamp}), encoding="utf-8")
+    out = run_ps(
+        f"$state=Read-VibeJsonSafe -Path {ps_quote(str(path))}\n"
+        "$now=[DateTimeOffset]::Parse('2026-09-30T01:00:10Z')\n"
+        "$result=@{timestamp=$state.heartbeat_utc;is_string=($state.heartbeat_utc -is [string]);"
+        "fresh=(Test-VibeHeartbeatFresh -Timestamp $state.heartbeat_utc -StaleSeconds 45 -Now $now)}"
+    )
+    assert out == {"timestamp": timestamp, "is_string": True, "fresh": expected_fresh}
+
+
+@pytest.mark.parametrize(
     "timestamp,expected",
     [
         ("2026-09-30T01:00:00Z", True),
@@ -114,7 +134,7 @@ def test_heartbeat_uses_explicit_offsets_and_rejects_stale_or_future(timestamp, 
     ],
 )
 def test_watchdog_actual_history_block_uses_utc_and_conservative_future_budget(
-    history, expected_count, expected_cooldown, expected_budget
+    tmp_path, history, expected_count, expected_cooldown, expected_budget
 ):
     source = (OPS / "Invoke-VibeMQL5Watchdog.ps1").read_text(encoding="utf-8")
     # Execute the real budget/cooldown block, without running scheduled tasks,
@@ -122,10 +142,12 @@ def test_watchdog_actual_history_block_uses_utc_and_conservative_future_budget(
     start = source.index("$history=@()")
     end = source.index('$action="NONE"', start)
     block = source[start:end]
+    state = tmp_path / "watchdog-state.json"
+    state.write_text(json.dumps({"restart_history_utc": history}), encoding="utf-8")
     out = run_ps(
         "$watchdogNow=[DateTimeOffset]::Parse('2026-09-30T01:00:10Z')\n"
         "$config=[pscustomobject]@{supervisor=[pscustomobject]@{watchdogRestartCooldownSeconds=120;maxRestartsPerHour=3}}\n"
-        f"$previous={ps_quote(json.dumps({'restart_history_utc': history}))}|ConvertFrom-Json\n"
+        f"$previous=Read-VibeJsonSafe -Path {ps_quote(str(state))}\n"
         + block
         + "$result=@{count=$history.Count;cooldown=$cooldownOk;budget=$budgetOk}"
     )

@@ -1,0 +1,25 @@
+........................................................................ [ 37%]
+..............sss....................................................... [ 74%]
+.............................ss...................                       [100%]
+============================= slowest 20 durations =============================
+9.42s call     tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]
+5.91s call     tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]
+5.83s call     tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]
+2.38s call     tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate
+1.78s call     tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]
+1.57s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]
+1.56s call     tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]
+1.55s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]
+1.54s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]
+1.53s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[True-1000]
+1.52s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[False-1000]
+1.29s call     tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[1000]
+1.11s call     tests/unit/test_tip058b_transport.py::test_slow_fragmented_headers_cannot_renew_total_budget
+1.01s call     tests/unit/test_tip058b_transport.py::test_transport_fixture_timeout_can_follow_committed_grant_without_replay
+1.00s call     tests/unit/test_tip058b_transport.py::test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect
+0.65s call     tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]
+0.54s call     tests/unit/test_tip064_integration.py::test_optional_catalog_is_separate_and_does_not_start_service
+0.45s call     tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable
+0.38s call     tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial
+0.24s setup    tests/unit/test_tip058b_transport.py::test_transport_fixture_timeout_can_follow_committed_grant_without_replay
+189 passed, 5 skipped in 48.55s

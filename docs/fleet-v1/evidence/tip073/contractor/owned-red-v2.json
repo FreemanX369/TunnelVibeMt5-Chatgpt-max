@@ -1,0 +1,110 @@
+{
+  "schema": "owned-causal-gate/1",
+  "modeled_boundary": true,
+  "original_windows_cause": "UNKNOWN",
+  "pytest_exit": 1,
+  "rows": [
+    {
+      "elapsed_ms": 351,
+      "stage": "RUNTIME",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 351,
+      "stage": "INSTRUMENTATION_SCOPE",
+      "test_index": 0,
+      "begin_instance": false,
+      "complete_instance": false,
+      "outcome_instance": false,
+      "request_instance": false
+    },
+    {
+      "elapsed_ms": 497,
+      "stage": "MODELED_GATE_ENTER",
+      "test_index": 0,
+      "job_id": "fjob_89af7ce972074ce7837418ccf19a50d9",
+      "event": "snapshot_prepare:0001"
+    },
+    {
+      "elapsed_ms": 8473,
+      "stage": "CASE_RETURN",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 8480,
+      "stage": "CASE_TEARDOWN",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 8600,
+      "stage": "NEXT_OBSERVER_INSTALLED",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 8600,
+      "stage": "MODELED_GATE_EXIT",
+      "test_index": 0,
+      "job_id": "fjob_89af7ce972074ce7837418ccf19a50d9"
+    },
+    {
+      "elapsed_ms": 8613,
+      "stage": "RUNTIME",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 8613,
+      "stage": "INSTRUMENTATION_SCOPE",
+      "test_index": 1,
+      "begin_instance": false,
+      "complete_instance": false,
+      "outcome_instance": false,
+      "request_instance": false
+    },
+    {
+      "elapsed_ms": 14302,
+      "stage": "OUTCOME_ENTER",
+      "test_index": 1,
+      "runtime_owner": 0,
+      "job_id": "fjob_89af7ce972074ce7837418ccf19a50d9",
+      "state": "UNKNOWN",
+      "reason_code": "EXECUTION_OUTCOME_UNKNOWN",
+      "evidence": null
+    },
+    {
+      "elapsed_ms": 14357,
+      "stage": "OUTCOME_ENTER",
+      "test_index": 1,
+      "runtime_owner": 1,
+      "job_id": "fjob_54b177e121574434bd261ab662135027",
+      "state": "SUCCEEDED",
+      "reason_code": null,
+      "evidence": "SYNTHETIC_NATIVE_ONLY"
+    },
+    {
+      "elapsed_ms": 14556,
+      "stage": "CASE_RETURN",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 14604,
+      "stage": "CASE_TEARDOWN",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 14604,
+      "stage": "FINAL_RETAINED",
+      "test_index": 0,
+      "futures": 1,
+      "pending_records": 1,
+      "futures_done": true
+    },
+    {
+      "elapsed_ms": 14604,
+      "stage": "FINAL_RETAINED",
+      "test_index": 1,
+      "futures": 0,
+      "pending_records": 0,
+      "futures_done": true
+    }
+  ]
+}

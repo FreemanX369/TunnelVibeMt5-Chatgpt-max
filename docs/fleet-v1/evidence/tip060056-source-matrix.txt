@@ -1,0 +1,9 @@
+PYTHONPATH=/workspace/scratch/250985b4823e/audit/tunnel-venv/lib/python3.12/site-packages:app:tests/unit python -m pytest -q tests/unit/test_tip060_journal.py tests/unit/test_tip060_historical.py tests/unit/test_tip060_authorization.py tests/unit/test_tip060_artifacts.py tests/unit/test_tip056_resources.py tests/unit/test_tip056_scoped.py tests/unit/test_tip056_signed_roster.py tests/unit/test_tip056_gateway_capacity.py tests/unit/test_tip057r_sdk.py tests/unit/test_tip061a_057n.py tests/unit/test_tip057n_qualification.py tests/unit/test_tip057n_windows_owned_process.py tests/unit/test_tip058b_transport.py tests/unit/test_tip060c_restore.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip060c_node_transport.py tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py --junitxml=docs/fleet-v1/evidence/tip060056-source-matrix.xml
+
+378 passed, 7 skipped in 22.23s
+
+compileall owned product/test files: PASS
+git diff --check: PASS
+No physical SDK/MetaTrader/Windows capacity qualification inferred.
+
+Builder snapshot before later integration-owned CLI pairing-failure assertions; root final exact-candidate matrix controls final acceptance.

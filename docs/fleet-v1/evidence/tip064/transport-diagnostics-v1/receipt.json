@@ -1,0 +1,42 @@
+{
+  "schema": "fleet.transport-diagnostics-verification/1",
+  "starting_head": "8019a52b136d0aae71c1a0235e224557d0e9a1a9",
+  "starting_tree": "55985ff5f11af083a1c00780f0196eea50c25cfb",
+  "original_incident": "ORIGINAL_CAUSE_UNKNOWN",
+  "original_incident_fixed": false,
+  "scope": "SOURCE_FIXTURE_DIAGNOSTICS_ONLY",
+  "physical_qualification": "NOT_RUN",
+  "production_python_files": 88,
+  "changed_production_files": [],
+  "contractor_junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "3",
+    "tests": "81",
+    "time": "4.525",
+    "timestamp": "2026-10-05T13:16:34.606633+09:00",
+    "hostname": "4452c5f65e61"
+  },
+  "source_sha256": {
+    "tests/unit/test_tip058b_transport.py": "ce637a8b5cbcccb91fe8750943acd5aec26eb694f8a9628353fad0e4a416446c"
+  },
+  "evidence_sha256": {
+    "builder/baseline.junit.xml": "12c5d9c28a87be3edf95eba6feb2f7d618547c5c8dfd57979fd7923cf0333a7a",
+    "builder/baseline.log": "171672d9e841cbebfb22f1c7ea1dcd19db81f42a4fced65fc138291a6ce7b1cc",
+    "builder/controls.junit.xml": "e88913e8af7821f1aff56e59d90a88f88b0300dab9c6b84df7d5d31029d7e2b2",
+    "builder/controls.log": "3cba7b5541dde6b9c309f949f56bcfa51bad28d04040140b4a687098646f5d32",
+    "builder/dependencies.txt": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db",
+    "builder/focused-final.junit.xml": "59184d2d4847bc29ba6e6bd2596600efd50ca913bb240980d2260475b097669c",
+    "builder/focused-final.log": "c47478b99064c3074c702b52be6ec8f619177262169a4a32f9506efd55d38c86",
+    "builder/focused.junit.xml": "d9cecde2f1fb53c1039af3aa4523ba9804de9b5bf176c12773f1f9f07eb4f4c0",
+    "builder/focused.log": "a84dd5bad6164c3530f10bfd222e885137a538379dc323da48e4bded7e44be7e",
+    "builder/source.patch": "f6a76ea082d795550e57a6f717b15addffe1e52d143b5bc0c4b6decbd10cb086",
+    "contractor/focused.junit.xml": "848c43ef5f3ce1131adb963ac382682ab349528ea42c390ba5e2b1f79f05dc06",
+    "contractor/focused.log": "130604513f19a77b9bc106397420787089cf0019c7383029f8b2b4b740eef659",
+    "contractor/frozen-after.txt": "8be989d470138c88c366b886b5e5695390d7781f93f29e3095e61c1ddff35173",
+    "contractor/frozen-before.txt": "8be989d470138c88c366b886b5e5695390d7781f93f29e3095e61c1ddff35173",
+    "contractor/frozen.junit.xml": "a2f541755198ee0dc3fd2bf91c54a0934e8be48c83f8a81f4075d42ab7403cb5",
+    "contractor/frozen.log": "838f43913fe0c3b593a5c80ddb645eda88e466d5f59b7d060a1ded2b25112112"
+  }
+}

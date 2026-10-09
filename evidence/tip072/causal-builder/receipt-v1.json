@@ -1,0 +1,77 @@
+{
+  "source_head": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "source_tree": "29426b4fa2fdf0aefbcc4e0273b1f465d5b554c3",
+  "source_sha256": {
+    "app/vibemql5/core/concurrency.py": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "73183b02324d9e29b72c60f2e7b8b1e1c5e1e07fd6f5742dc3c3690857273514"
+  },
+  "boundary": "INJECTED_OBSERVED_ERRNO13_NOT_PHYSICAL_WINDOWS_REPRODUCTION",
+  "fifo": {
+    "ticket_existed_at_denial": true,
+    "qualified_live_owner_at_modeled_denial": true,
+    "held_owner_bytes_unchanged_at_denial": true,
+    "normal_existing_owner_returned_false": true,
+    "original_permission_error_identity_preserved": true,
+    "B_ticket_removed_after_error": true,
+    "order": [
+      "C"
+    ],
+    "authority_stayed_closed": true
+  },
+  "qualification_controls": [
+    {
+      "case": "missing",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "corrupt",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "foreign-namespace",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "wrong-live-identity",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "blank-token",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "read-denied",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "wrong-error-path",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    },
+    {
+      "case": "non-native",
+      "qualification": "UNQUALIFIED",
+      "original_error_identity_preserved": true,
+      "owner_bytes_or_absence_unchanged": true
+    }
+  ],
+  "source_modified": false,
+  "original_CI_owner_at_denial": "UNKNOWN",
+  "original_CI_Windows_OS_cause": "UNKNOWN",
+  "Deep_capacity_normal_cause": "UNKNOWN",
+  "MCP_live_runtime_cause": "UNKNOWN"
+}

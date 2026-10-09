@@ -1,0 +1,46 @@
+{
+  "status": "PASS_INDEPENDENT_FOCUSED_SOURCE_REVIEW",
+  "source_parent": "7a4535b1cdaed3d7cb5d484642c099239944ab6b",
+  "JUnit_cases": 101,
+  "new_controls": 48,
+  "failed": 0,
+  "skipped": 0,
+  "progress_rows": 202,
+  "known_safe_label_omissions": [
+    {
+      "ordinal": 12,
+      "function": "test_timeout_tails_bound_bytes_text_and_omit_exception_command",
+      "nodeid_length": 18118,
+      "reason": "EXISTING_NODEID_SAFETY_CAP_GT4096"
+    },
+    {
+      "ordinal": 13,
+      "function": "test_timeout_tails_bound_bytes_text_and_omit_exception_command",
+      "nodeid_length": 18118,
+      "reason": "EXISTING_NODEID_SAFETY_CAP_GT4096"
+    },
+    {
+      "ordinal": 14,
+      "function": "test_timeout_tails_bound_bytes_text_and_omit_exception_command",
+      "nodeid_length": 130111,
+      "reason": "EXISTING_NODEID_SAFETY_CAP_GT4096"
+    }
+  ],
+  "source_manifest_entries": 215,
+  "unchanged_parent_sources": 213,
+  "changed": [
+    "app/vibemql5/backend_admin/core.py"
+  ],
+  "new": [
+    "tests/unit/test_tip070_sync_test_receipts.py"
+  ],
+  "source_bytes_match_builder_frozen": true,
+  "existing_suite_AST_and_signature": "IDENTICAL",
+  "core_sha256": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18",
+  "test_sha256": "f191fc73aa2f8f54781533a0356d4e7cac5c70fcf325bda9ccf9b52179cd6dbb",
+  "source_gate": "PENDING_NEW_CANDIDATE_CI",
+  "runtime_deploy": "BLOCKED_CURRENT_GUARDS_AND_CONNECTOR",
+  "old_sync": "UNKNOWN_NO_RECEIPT",
+  "VPS_effects": false,
+  "prior_verifier_error": "Retained KeyError is verifier metadata error only; three overlong parameter identities are correctly omitted by existing observer, all ordinals/outcomes match JUnit"
+}

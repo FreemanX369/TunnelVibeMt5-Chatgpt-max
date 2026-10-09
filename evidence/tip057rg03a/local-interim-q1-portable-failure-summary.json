@@ -1,0 +1,73 @@
+{
+  "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "broker_sdk": "OPEN",
+  "candidate_sha": "0233b1ce537d7730efc147981aa6ce0b56f1574b",
+  "elapsed_ms": 15.6687980006609,
+  "errors": 7,
+  "exact_head_verified": false,
+  "expected_head_sha": null,
+  "failures": 0,
+  "github_event_sha": null,
+  "mode": "PORTABLE_UNQUALIFIED",
+  "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "proof_log": {
+    "original_bytes": 21533,
+    "original_sha256": "948c6a0895731fe12bb65ef97f9c1a29289db4a18f078b44f168bacff42e9772",
+    "retained_bytes": 21533,
+    "truncated": false
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "records": [
+    {
+      "case": "__main__.PortableCases.test_create_attempt_without_binding_cannot_release",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_no_attempt_release",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_partial_intent_is_fail_closed",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values",
+      "elapsed_ms": 0.17543800004204968,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_stale_recovery_cannot_clear_successor",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    },
+    {
+      "case": "__main__.PortableCases.test_unresolved_descendant_rejects_clear",
+      "error_type": "OwnershipBlocked",
+      "status": "ERROR"
+    }
+  ],
+  "schema": "tip057rq.proof/1",
+  "scope": "isolated harmless fixture paths only",
+  "skips": 0,
+  "sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+    "run_proof.py": "bd4d2d159a07aa7a2a81cb4b7f1dbe5ec400b4c044381ec92f4d2372ab1c4365",
+    "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+  },
+  "status": "FAIL",
+  "tests_run": 8
+}

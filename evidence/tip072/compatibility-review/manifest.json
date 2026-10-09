@@ -1,0 +1,155 @@
+{
+  "schema": "tip072.compatibility-review/1",
+  "files": [
+    {
+      "name": "Completion-Report.md",
+      "bytes": 4571,
+      "sha256": "2565c9cd5cce3a97a2f077ab72c092f744d31dcb6f0fe7a7bd1e30d855d6a1a3"
+    },
+    {
+      "name": "current-isolated-tip024-receipt.json",
+      "bytes": 4956,
+      "sha256": "c598e88047f04ecab83adf281080ef49140e48633f8f92b2cd409f29d35cc8f0"
+    },
+    {
+      "name": "current-isolated-tip024-source-after.json",
+      "bytes": 24011,
+      "sha256": "412f185481e516153c93565aa39a2658581d9c0189b6e91cd4a6790130901045"
+    },
+    {
+      "name": "current-isolated-tip024-source-before.json",
+      "bytes": 24011,
+      "sha256": "412f185481e516153c93565aa39a2658581d9c0189b6e91cd4a6790130901045"
+    },
+    {
+      "name": "current-isolated-tip024.junit.xml",
+      "bytes": 4041,
+      "sha256": "37d38bdeb7374beda95bcc5e3e2f1dc8cdc385f1fc2e5dd5e2e40979af47537f"
+    },
+    {
+      "name": "current-isolated-tip024.log",
+      "bytes": 5290,
+      "sha256": "ac10cc5b64f32cb6a74d2280abebad8127516586173943ecca2464ab290c07e1"
+    },
+    {
+      "name": "parent-archive-sha256.txt",
+      "bytes": 65,
+      "sha256": "6593e0fd3af980c250b091adab49a2312e6bae032a3fd0e5bc275934d4bdbfd3"
+    },
+    {
+      "name": "parent-bounded-compatibility-receipt.json",
+      "bytes": 5247,
+      "sha256": "defe380b62443bd1e5d95072ec0e3b7905e80811573bb750c22998651b8c91fa"
+    },
+    {
+      "name": "parent-bounded-compatibility-source-after.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-bounded-compatibility-source-before.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-bounded-compatibility.junit.xml",
+      "bytes": 39372,
+      "sha256": "877e574a003df0b1d638ba62bc328181776cc9d657260f7f59cffa147b1741c5"
+    },
+    {
+      "name": "parent-bounded-compatibility.log",
+      "bytes": 172221,
+      "sha256": "3b38f45425fc7f38e6f4c847121802a4d6e53a03ab8deecf9e85f441cc0394b8"
+    },
+    {
+      "name": "parent-complete-bounded-compatibility-receipt.json",
+      "bytes": 5301,
+      "sha256": "e0d7dec0c3dfa8d984aba950f0cb892ad7b855be222b2f4d4b8e4ad80015a4ba"
+    },
+    {
+      "name": "parent-complete-bounded-compatibility-source-after.json",
+      "bytes": 23886,
+      "sha256": "4b79181aaf11cccaa60274a87cd015db28fe0781c69318e4d9ce3a5664312042"
+    },
+    {
+      "name": "parent-complete-bounded-compatibility-source-before.json",
+      "bytes": 23886,
+      "sha256": "4b79181aaf11cccaa60274a87cd015db28fe0781c69318e4d9ce3a5664312042"
+    },
+    {
+      "name": "parent-complete-bounded-compatibility.junit.xml",
+      "bytes": 39399,
+      "sha256": "c13fcaaf32fe05b8c2f78df3a680b78308a26d21e465ad36f08af73659a7a1a1"
+    },
+    {
+      "name": "parent-complete-bounded-compatibility.log",
+      "bytes": 172256,
+      "sha256": "c45a9e5b03b83be581ff24791e22404d41cdbb7c11a413c4a19b8a03f515a610"
+    },
+    {
+      "name": "parent-isolated-tip024-receipt.json",
+      "bytes": 5089,
+      "sha256": "c414bbaabf5761389eef0c10611d36823d7c62bbc2a31eacae344986ce6399a3"
+    },
+    {
+      "name": "parent-isolated-tip024-source-after.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-isolated-tip024-source-before.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-isolated-tip024.junit.xml",
+      "bytes": 4038,
+      "sha256": "80aaa42edcaa6c4204a3744c0af223df9b585fe0cf6c6ec70e6583542a650201"
+    },
+    {
+      "name": "parent-isolated-tip024.log",
+      "bytes": 5332,
+      "sha256": "6a935002418d5962e1f1c068d2d0532f07d709c16fcdea2a28838ddc9636a32f"
+    },
+    {
+      "name": "parent-with-real-sdk-module-collected-receipt.json",
+      "bytes": 1299,
+      "sha256": "90b6f8d9b4b005a43d1aa90f39e7b5e1246f588d0239ef89a25bb8e063b1ad96"
+    },
+    {
+      "name": "parent-with-real-sdk-module-collected-source-after.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-with-real-sdk-module-collected-source-before.json",
+      "bytes": 20553,
+      "sha256": "2e1014132a39523d28705d780a4f3160fd5ee1b22967e4933ddcb7b7fec6f233"
+    },
+    {
+      "name": "parent-with-real-sdk-module-collected.junit.xml",
+      "bytes": 8316,
+      "sha256": "638d800f083354b21a5ca7b076f146b15d8bba0c6fdd7d11a092edb769823920"
+    },
+    {
+      "name": "parent-with-real-sdk-module-collected.log",
+      "bytes": 36190,
+      "sha256": "eb6a7047caafc05a45722a8c96a781968e6d9e54b63f222c4f17e50afd50050d"
+    },
+    {
+      "name": "review.py",
+      "bytes": 4274,
+      "sha256": "5b5ee43a828422c1c26cc8348fc569085946cee90cbbbefdc17d17ce646d2f93"
+    },
+    {
+      "name": "scope-complete.json",
+      "bytes": 49360,
+      "sha256": "54017ae86b3187e3eb86a49f3511fec1c96981eb10bf73f2e5163974b0aa0bf2"
+    },
+    {
+      "name": "scope.json",
+      "bytes": 50586,
+      "sha256": "3190094378de364c0348e5caa67c93128c787260e0048d290ffed5c64d16b9f2"
+    }
+  ]
+}

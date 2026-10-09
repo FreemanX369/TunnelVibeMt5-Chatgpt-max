@@ -1,0 +1,1 @@
+{"caught": {"code": "RESTORE_TRANSPORT_UNRESOLVED", "type": "RestoreError"}, "cleanup_completed": true, "control_status": "RECONCILIATION_REQUIRED", "coordinator_bytes_unchanged": true, "coordinator_ready": false, "nonce_count": 0, "scope": "actual_owned_local_fixture; not Windows or live qualification", "setup_seconds": 0.02001717199993891, "witness_count": 0}

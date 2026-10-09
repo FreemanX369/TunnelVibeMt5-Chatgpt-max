@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip072-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 1 item
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 172, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 208, "test_elapsed_ms": 35}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/isolated-corrected-tip024.junit.xml -
+============================== 1 passed in 0.19s ===============================

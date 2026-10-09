@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_fleet_source_progress.py",
+    "-k",
+    "metadata or bounds or nonliteral_ids or diagnostic_formatter or makereport or nonfailed",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/baseline.junit.xml"
+  ],
+  "timeout_seconds": 45,
+  "exit_code": 1,
+  "wall_seconds": 0.3650549740000315,
+  "source_unchanged": true
+}

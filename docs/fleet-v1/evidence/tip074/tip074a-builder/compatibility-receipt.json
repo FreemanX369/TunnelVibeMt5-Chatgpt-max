@@ -1,0 +1,23 @@
+{
+  "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "cwd": "/workspace/scratch/b4674f0ac496/tip074a-builder",
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip058b_transport.py::test_actual_https_pair_retry_replay_sessions_and_no_secrets",
+    "tests/unit/test_tip061b_writers.py::test_real_https_verified_source_two_commits_and_placement",
+    "tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack",
+    "tests/unit/test_tip064_integration.py::test_actual_protected_gateway_factory_and_owner_client_startup",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/compatibility.junit.xml",
+    "--durations=5"
+  ],
+  "timeout_seconds": 60,
+  "exit_code": 0,
+  "wall_seconds": 2.887299482000344,
+  "source_count": 218,
+  "source_equal": true
+}

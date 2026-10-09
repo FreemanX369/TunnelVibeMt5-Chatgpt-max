@@ -1,0 +1,1 @@
+{"scope": "incomplete-stub-strict-import-control", "strict_sdk_error_preserved": true, "error": "MCP SDK v2 is required. Run: pip install -e \".[mcp]\"", "cause": "No module named 'mcp.server.mcpserver.exceptions'; 'mcp.server.mcpserver' is not a package", "exception_module_loaded": false}

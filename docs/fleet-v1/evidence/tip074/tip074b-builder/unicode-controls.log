@@ -1,0 +1,17 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+rootdir: /workspace/scratch/b4674f0ac496/tip074b-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 7 items
+
+tests/unit/test_tip074_wire_unicode.py::test_canonical_ascii_and_unicode_boundaries_roundtrip_and_digest PASSED [ 14%]
+tests/unit/test_tip074_wire_unicode.py::test_surrogates_at_each_position_and_nested_key_or_value_are_rejected PASSED [ 28%]
+tests/unit/test_tip074_wire_unicode.py::test_scalar_types_numbers_and_finite_container_limits PASSED [ 42%]
+tests/unit/test_tip074_wire_unicode.py::test_decode_and_encode_size_and_invalid_json_controls PASSED [ 57%]
+tests/unit/test_tip074_wire_unicode.py::test_ascii_str_subclass_keeps_its_custom_surrogate_iteration PASSED [ 71%]
+tests/unit/test_tip074_wire_unicode.py::test_nonascii_str_subclass_keeps_its_custom_ordinary_iteration PASSED [ 85%]
+tests/unit/test_tip074_wire_unicode.py::test_str_subclass_iteration_error_is_preserved_without_ascii_method_call PASSED [100%]
+
+- generated xml file: /workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074b-builder/unicode-controls.junit.xml -
+============================== 7 passed in 0.04s ===============================

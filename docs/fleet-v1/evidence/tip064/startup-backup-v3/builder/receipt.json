@@ -1,0 +1,40 @@
+{
+  "baseline_head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+  "baseline_tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+  "command": "PYTHONPATH=app .venv/bin/python -m pytest -q -s tests/unit/test_fleet_gateway_fixture.py tests/unit/test_tip058a_gateway_control.py tests/unit/test_tip058b_transport.py tests/unit/test_tip060c_restore.py tests/unit/test_tip060c_https_restore.py tests/unit/test_tip064_capacity_https.py tests/unit/test_tip064_integration.py --junitxml=/workspace/scratch/1818a0d45fa0/builder-transport-diagnostic-v3/focused-final.junit.xml",
+  "environment": {
+    "cryptography": "50.0.1",
+    "dependencies": "requirements-bootstrap.lock constrained, Windows-only packages excluded",
+    "mcp": "2.1.1",
+    "platform": "linux",
+    "pytest": "9.1.1",
+    "python": "3.12.14"
+  },
+  "evidence": {
+    "dependencies.txt": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db",
+    "focused-final.junit.xml": "47d531a8d3f04dc5a104ea5ca6baaf28c1845b571b8e96397b8ce3f72bddeef0",
+    "focused-final.log": "18682b5fbe0129d8a6c31b1089b3bd24405008131ecfd674af49580f8b082219",
+    "source-final.patch": "659de2e7f89e327e45cd3083e71afcf73dc4164c701576fda11386b517779cc6"
+  },
+  "original_incident_causes": "UNRESOLVED",
+  "owned_source_sha256": {
+    "tests/unit/fleet_gateway_fixture.py": "7063ff1843d8bd5f1e864d85def4d0692f50028ce68d9688921fcf3045522270",
+    "tests/unit/test_fleet_gateway_fixture.py": "cf970b8db2ea03dd811e56a84c2d8626029a8a625d48a593b2fb3269721b932c",
+    "tests/unit/test_tip058b_transport.py": "89617263f67930dbbda0c18114380d851a9b6726f231fbd2429cf5754a433746",
+    "tests/unit/test_tip060c_https_restore.py": "55eb7d723b2cc97dbd363e08dc9f85b03e51b6fe04afa9cc73728fe898337d78",
+    "tests/unit/test_tip064_capacity_https.py": "a4a15438447d505c82eb34cf77473868e53628a04f897df0e08cb870a50cacb5",
+    "tests/unit/test_tip064_integration.py": "b8fd8faa529378e37b79ddf775edb839cf5fc8696c50540356c79edbed45afba"
+  },
+  "physical_qualification": "OPEN",
+  "production_source_changed": false,
+  "result": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 248,
+    "seconds": 24.63,
+    "skipped": 3
+  },
+  "schema": "fleet.fixture-refinement-receipt/1",
+  "source_unchanged_during_verification": true,
+  "status": "LOCAL_SOURCE_DIAGNOSTIC_PASS"
+}

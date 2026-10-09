@@ -1,0 +1,70 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/1818a0d45fa0/repo
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 48 items
+
+tests/unit/test_tip064_integration.py::test_protected_principal_only_startup_pins_ca_and_never_reads_owner_secret PASSED [  2%]
+tests/unit/test_tip064_integration.py::test_operator_tls_context_pins_validated_bytes_and_cleans_private_staging PASSED [  4%]
+tests/unit/test_tip064_integration.py::test_actual_protected_gateway_factory_and_owner_client_startup PASSED [  6%]
+tests/unit/test_tip064_integration.py::test_operator_config_writable_or_symlink_rejected_before_https PASSED [  8%]
+tests/unit/test_tip064_integration.py::test_legacy_positive_route_cannot_use_installed_local_sdk_capability[get_terminal_live_state] PASSED [ 10%]
+tests/unit/test_tip064_integration.py::test_legacy_positive_route_cannot_use_installed_local_sdk_capability[get_account_snapshot] PASSED [ 12%]
+tests/unit/test_tip064_integration.py::test_local_trusted_sdk_dispatch_happens_before_any_c1_lease[get_terminal_live_state] PASSED [ 14%]
+tests/unit/test_tip064_integration.py::test_local_trusted_sdk_dispatch_happens_before_any_c1_lease[get_account_snapshot] PASSED [ 16%]
+tests/unit/test_tip064_integration.py::test_caller_dict_or_boolean_cannot_install_sdk PASSED [ 18%]
+tests/unit/test_tip064_integration.py::test_finite_domain_replay_conflict_restart_and_unknown_effect PASSED [ 20%]
+tests/unit/test_tip064_integration.py::test_domain_dispatch_duplicate_delivery_commits_same_node_result PASSED [ 22%]
+tests/unit/test_tip064_integration.py::test_optional_catalog_is_separate_and_does_not_start_service PASSED [ 25%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[extra_table] PASSED [ 27%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[trigger] PASSED [ 29%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[column] PASSED [ 31%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[record_field] PASSED [ 33%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[id_mapping] PASSED [ 35%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[sequence] PASSED [ 37%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[result] PASSED [ 39%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[noncanonical] PASSED [ 41%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[oversize] PASSED [ 43%]
+tests/unit/test_tip064_integration.py::test_domain_corruption_is_bounded_and_rejected_on_reopen[capacity] PASSED [ 45%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change0] PASSED [ 47%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change1] PASSED [ 50%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change2] PASSED [ 52%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change3] PASSED [ 54%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change4] PASSED [ 56%]
+tests/unit/test_tip064_integration.py::test_domain_malformed_delivery_rejected_before_any_durable_intent[change5] PASSED [ 58%]
+tests/unit/test_tip064_integration.py::test_domain_initialization_and_transaction_interruption_leave_complete_or_absent_state PASSED [ 60%]
+tests/unit/test_tip064_integration.py::test_native_denial_observation_retains_only_original_reads_and_safe_last_state PASSED [ 62%]
+tests/unit/test_tip064_integration.py::test_native_denial_original_predicate_failure_and_cleanup_identity_are_preserved PASSED [ 64%]
+tests/unit/test_tip064_integration.py::test_native_denial_timeout_retains_last_predicate_state_without_additional_read PASSED [ 66%]
+tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial PASSED [ 68%]
+tests/unit/test_tip064_integration.py::test_composed_stop_fixture_initializes_normal_sentinels_and_closes_actual_resources PASSED [ 70%]
+tests/unit/test_tip064_integration.py::test_composed_stop_cleanup_retains_exact_failure_and_uncertain_resources[False] PASSED [ 72%]
+tests/unit/test_tip064_integration.py::test_composed_stop_cleanup_retains_exact_failure_and_uncertain_resources[True] PASSED [ 75%]
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[RETURNED] PASSED [ 77%]
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[HTTPS_UNAVAILABLE] PASSED [ 79%]
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[FIXTURE_LOST_ACK] PASSED [ 81%]
+tests/unit/test_tip064_integration.py::test_composed_lost_ack_once_preserves_original_call_return_and_failure[CLOSE_WRONG_STATUS] PASSED [ 83%]
+tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable PASSED [ 85%]
+tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack PASSED [ 87%]
+tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history PASSED [ 89%]
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none] PASSED [ 91%]
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[bad_pair] PASSED [ 93%]
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[lost_ack] PASSED [ 95%]
+tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[after_pair] PASSED [ 97%]
+tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000] PASSED [100%]
+
+- generated xml file: /workspace/scratch/1818a0d45fa0/tip065-lost-ack-identity-20261005/focused-v1.xml -
+============================= slowest 10 durations =============================
+1.57s call     tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]
+0.60s call     tests/unit/test_tip064_integration.py::test_optional_catalog_is_separate_and_does_not_start_service
+0.44s call     tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable
+0.38s call     tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial
+0.24s call     tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack
+0.22s call     tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history
+0.17s setup    tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none]
+0.15s setup    tests/unit/test_tip064_integration.py::test_operator_tls_context_pins_validated_bytes_and_cleans_private_staging
+0.13s setup    tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[after_pair]
+0.12s setup    tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[lost_ack]
+============================== 48 passed in 5.38s ==============================

@@ -1,0 +1,29 @@
+{
+  "scope": "SOURCE_OBSERVABILITY_AND_DISPOSABLE_CHILD_CONTROLS",
+  "parent_head": "806ca44e238cc1384441234d9699cb2dbf3336e8",
+  "parent_tree": "8ff9579347109eafd214eb98637b0db182490108",
+  "focused_v3": {
+    "status": "PASS",
+    "tests": 27,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_elapsed_seconds": 4.56
+  },
+  "manifest_entries": 214,
+  "source_unchanged_during_focused_v3": true,
+  "changed_parent_entries": [
+    "tests/proofs/fleet_v1/run_source.py",
+    "tests/unit/test_fleet_source_runner.py"
+  ],
+  "added_entries": [
+    "tests/unit/fleet_source_progress.py",
+    "tests/unit/test_fleet_source_progress.py"
+  ],
+  "removed_entries": [],
+  "production_entries_unchanged": 89,
+  "historical_tip067_windows_cause": "UNKNOWN",
+  "physical_qualification": "NOT_RUN",
+  "runtime_effects": "NONE",
+  "published": "NO"
+}

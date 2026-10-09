@@ -8,8 +8,10 @@ import re
 import signal
 import subprocess
 import sys
+import threading
 import time
 import uuid
+from collections import deque
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -19,6 +21,9 @@ from ..config import default_root
 from ..errors import InvalidStateTransition
 from ..models.types import TERMINAL_STATES
 from .artifacts import ArtifactManager
+
+_FILE_LOCK_CONDITION = threading.Condition()
+_FILE_LOCK_QUEUES: dict[str, deque] = {}
 
 _WORKER_PROCS: list[subprocess.Popen] = []
 _JOB_ID_RE = re.compile(r"^BT-[0-9]{8}-[0-9]{6}-[A-F0-9]{6}$")
@@ -125,48 +130,77 @@ def _publish_json_exclusive(path: Path, value: Any) -> bool:
 
 
 @contextmanager
-def _exclusive_file_lock(path: Path, timeout_seconds: float = 15.0):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    f = path.open("a+b")
+def _local_file_lock_turn(path: Path, deadline: float):
+    key = os.path.normcase(os.path.abspath(os.fspath(path)))
+    ticket = object()
+    enqueued = waited = False
     try:
-        f.seek(0, os.SEEK_END)
-        if f.tell() == 0:
-            f.write(b"\0")
-            f.flush()
-        f.seek(0)
-        deadline = time.monotonic() + float(timeout_seconds)
-        if os.name == "nt":
-            import msvcrt
-            while True:
-                try:
-                    f.seek(0)
-                    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
-                    break
-                except OSError:
-                    if time.monotonic() >= deadline:
-                        raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
-                    time.sleep(0.01)
-            try:
-                yield
-            finally:
-                f.seek(0)
-                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
-        else:
-            import fcntl
-            while True:
-                try:
-                    fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                    break
-                except BlockingIOError:
-                    if time.monotonic() >= deadline:
-                        raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
-                    time.sleep(0.01)
-            try:
-                yield
-            finally:
-                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+        with _FILE_LOCK_CONDITION:
+            queue = _FILE_LOCK_QUEUES.setdefault(key, deque())
+            queue.append(ticket)
+            enqueued = True
+            while queue[0] is not ticket:
+                waited = True
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
+                _FILE_LOCK_CONDITION.wait(remaining)
+            if waited and time.monotonic() >= deadline:
+                raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
+        yield
     finally:
-        f.close()
+        if enqueued:
+            with _FILE_LOCK_CONDITION:
+                queue.remove(ticket)
+                if not queue:
+                    del _FILE_LOCK_QUEUES[key]
+                _FILE_LOCK_CONDITION.notify_all()
+
+
+@contextmanager
+def _exclusive_file_lock(path: Path, timeout_seconds: float = 15.0):
+    deadline = time.monotonic() + float(timeout_seconds)
+    with _local_file_lock_turn(path, deadline):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        f = path.open("a+b")
+        try:
+            f.seek(0, os.SEEK_END)
+            if f.tell() == 0:
+                f.write(b"\0")
+                f.flush()
+            f.seek(0)
+            if os.name == "nt":
+                import msvcrt
+                while True:
+                    try:
+                        f.seek(0)
+                        msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                        break
+                    except OSError:
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
+                        time.sleep(0.01)
+                try:
+                    yield
+                finally:
+                    f.seek(0)
+                    msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+                while True:
+                    try:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                        break
+                    except BlockingIOError:
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError(f"JOB_METADATA_LOCK_TIMEOUT: {path}")
+                        time.sleep(0.01)
+                try:
+                    yield
+                finally:
+                    fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+        finally:
+            f.close()
 
 
 def _pid_exists(pid: int) -> bool:
@@ -755,6 +789,25 @@ class JobManager:
         requirement = self._cancel_restore_requirement(job_id)
         if requirement.get("complete"):
             return requirement
+        # Both IPC probing and restart require compatible common admission. An
+        # existing/self-held lease is pending, never recursively waited or borrowed.
+        from .concurrency import acquire_native_execution
+        from .native_ownership import OwnershipBlocked
+        try:
+            lease = acquire_native_execution(self.root, f"CANCEL-RESTORE-{job_id}",
+                kind="cancel_terminal_restore", wait_seconds=0)
+        except (RuntimeError, TimeoutError, OSError) as exc:
+            reason = (exc.reason if isinstance(exc, OwnershipBlocked) else
+                      "NATIVE_LEASE_BUSY" if isinstance(exc, TimeoutError) else "NATIVE_LEASE_UNAVAILABLE")
+            return {**requirement, "complete": False, "recovery_attempted": False,
+                    "reason": "NATIVE_OWNERSHIP_RESTORE_PENDING", "error": "LIVE_RECOVERY_REQUIRED",
+                    "ownership_reason": reason}
+        try:
+            return self._restore_cancel_terminal_with_lease(job_id, requirement)
+        finally:
+            lease.release()
+
+    def _restore_cancel_terminal_with_lease(self, job_id: str, requirement: dict[str, Any]) -> dict[str, Any]:
         handoff = dict(requirement.get("handoff") or {})
         job = self.store.load(job_id)
         try:

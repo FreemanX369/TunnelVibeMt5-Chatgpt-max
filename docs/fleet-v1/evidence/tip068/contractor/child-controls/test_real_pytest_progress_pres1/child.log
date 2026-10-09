@@ -1,0 +1,16 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 41, "test_elapsed_ms": 0}
+.ESOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 71, "test_elapsed_ms": 29}
+                                                                         [100%]
+==================================== ERRORS ====================================
+______________________ ERROR at teardown of test_control _______________________
+
+    @pytest.fixture
+    def fixture():
+        yield
+>       raise RuntimeError('CONTROLLED_TEARDOWN_FAILURE')
+E       RuntimeError: CONTROLLED_TEARDOWN_FAILURE
+
+tests/unit/test_control.py:5: RuntimeError
+=========================== short test summary info ============================
+ERROR tests/unit/test_control.py::test_control - RuntimeError: CONTROLLED_TEA...
+1 passed, 1 error in 0.05s

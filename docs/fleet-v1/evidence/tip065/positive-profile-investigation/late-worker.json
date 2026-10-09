@@ -1,0 +1,10 @@
+{
+  "classification": "CONTROLLED_MECHANISM_NOT_HISTORICAL_CAUSE",
+  "primary_identity_preserved": true,
+  "late_worker_raised": true,
+  "late_worker_in_outer_exception": false,
+  "wait_seconds": [
+    3
+  ],
+  "real_owner_cleanup_returned": true
+}

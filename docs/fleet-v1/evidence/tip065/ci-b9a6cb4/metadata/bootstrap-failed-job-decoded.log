@@ -1,0 +1,704 @@
+﻿2026-10-05T08:57:05.3315412Z Current runner version: '2.337.0'
+2026-10-05T08:57:05.3336242Z ##[group]Runner Image Provisioner
+2026-10-05T08:57:05.3336901Z Hosted Compute Agent
+2026-10-05T08:57:05.3337352Z Version: 20260901.588
+2026-10-05T08:57:05.3337846Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-05T08:57:05.3338350Z Build Date: 2026-09-01T19:56:44Z
+2026-10-05T08:57:05.3338833Z Worker ID: {de9fe801-ebfb-427c-b826-1742d568b0a9}
+2026-10-05T08:57:05.3339337Z Azure Region: centralus
+2026-10-05T08:57:05.3339756Z ##[endgroup]
+2026-10-05T08:57:05.3340666Z ##[group]Operating System
+2026-10-05T08:57:05.3341150Z Microsoft Windows Server 2025
+2026-10-05T08:57:05.3341753Z 10.0.26100
+2026-10-05T08:57:05.3342151Z Datacenter
+2026-10-05T08:57:05.3342527Z ##[endgroup]
+2026-10-05T08:57:05.3343534Z ##[group]Runner Image
+2026-10-05T08:57:05.3343962Z Image: windows-2025-vs2026
+2026-10-05T08:57:05.3344412Z Version: 20260925.250.1
+2026-10-05T08:57:05.3345655Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+2026-10-05T08:57:05.3346900Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+2026-10-05T08:57:05.3347567Z ##[endgroup]
+2026-10-05T08:57:05.3348358Z ##[group]GITHUB_TOKEN Permissions
+2026-10-05T08:57:05.3350032Z Contents: read
+2026-10-05T08:57:05.3350449Z Metadata: read
+2026-10-05T08:57:05.3350837Z ##[endgroup]
+2026-10-05T08:57:05.3352429Z Secret source: Actions
+2026-10-05T08:57:05.3353092Z Cache mode: write
+2026-10-05T08:57:05.3353610Z Prepare workflow directory
+2026-10-05T08:57:05.3623750Z Prepare all required actions
+2026-10-05T08:57:05.3662537Z Getting action download info
+2026-10-05T08:57:05.5930691Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-05T08:57:05.6895705Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-05T08:57:06.0069066Z Complete job name: fresh-checkout
+2026-10-05T08:57:06.1485396Z ##[group]Run actions/checkout@v4
+2026-10-05T08:57:06.1486765Z with:
+2026-10-05T08:57:06.1487267Z   repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:06.1490892Z   token: ***
+2026-10-05T08:57:06.1491275Z   ssh-strict: true
+2026-10-05T08:57:06.1491688Z   ssh-user: git
+2026-10-05T08:57:06.1492099Z   persist-credentials: true
+2026-10-05T08:57:06.1492531Z   clean: true
+2026-10-05T08:57:06.1493140Z   sparse-checkout-cone-mode: true
+2026-10-05T08:57:06.1493650Z   fetch-depth: 1
+2026-10-05T08:57:06.1494059Z   fetch-tags: false
+2026-10-05T08:57:06.1494527Z   show-progress: true
+2026-10-05T08:57:06.1494885Z   lfs: false
+2026-10-05T08:57:06.1495252Z   submodules: false
+2026-10-05T08:57:06.1495627Z   set-safe-directory: true
+2026-10-05T08:57:06.1496046Z   allow-unsafe-pr-checkout: false
+2026-10-05T08:57:06.1496985Z ##[endgroup]
+2026-10-05T08:57:06.3299095Z Syncing repository: FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:06.3306396Z ##[group]Getting Git version info
+2026-10-05T08:57:06.3308826Z Working directory is 'D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max'
+2026-10-05T08:57:06.6322606Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-05T08:57:07.8780571Z git version 2.55.0.windows.5
+2026-10-05T08:57:07.8828158Z ##[endgroup]
+2026-10-05T08:57:07.8844211Z Temporarily overriding HOME='D:\a\_temp\bdc2b5f4-1276-48da-9f67-29aaa4aeeca5' before making global git config changes
+2026-10-05T08:57:07.8846276Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T08:57:07.8855362Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:08.0322897Z Deleting the contents of 'D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max'
+2026-10-05T08:57:08.0328080Z ##[group]Initializing the repository
+2026-10-05T08:57:08.0336162Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:08.1168164Z Initialized empty Git repository in D:/a/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/.git/
+2026-10-05T08:57:08.1220813Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:08.1798683Z ##[endgroup]
+2026-10-05T08:57:08.1799251Z ##[group]Disabling automatic garbage collection
+2026-10-05T08:57:08.1805956Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-05T08:57:08.2033240Z ##[endgroup]
+2026-10-05T08:57:08.2033791Z ##[group]Setting up auth
+2026-10-05T08:57:08.2043284Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T08:57:08.2267124Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-05T08:57:10.1488233Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T08:57:10.1727220Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-05T08:57:10.5873547Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T08:57:10.6108450Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-05T08:57:11.0794963Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-05T08:57:11.1035289Z ##[endgroup]
+2026-10-05T08:57:11.1035948Z ##[group]Fetching the repository
+2026-10-05T08:57:11.1047020Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +397c5827715128089d45fae24cab676de2d5f02c:refs/remotes/pull/65/merge
+2026-10-05T08:57:14.5723112Z From https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:14.5724597Z  * [new ref]         397c5827715128089d45fae24cab676de2d5f02c -> pull/65/merge
+2026-10-05T08:57:14.5768628Z ##[endgroup]
+2026-10-05T08:57:14.5769317Z ##[group]Determining the checkout info
+2026-10-05T08:57:14.5770829Z ##[endgroup]
+2026-10-05T08:57:14.5779949Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-05T08:57:14.6462541Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-05T08:57:14.6752864Z ##[group]Checking out the ref
+2026-10-05T08:57:14.6759986Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/65/merge
+2026-10-05T08:57:14.9522025Z Note: switching to 'refs/remotes/pull/65/merge'.
+2026-10-05T08:57:14.9522404Z 
+2026-10-05T08:57:14.9522581Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-05T08:57:14.9523014Z changes and commit them, and you can discard any commits you make in this
+2026-10-05T08:57:14.9523635Z state without impacting any branches by switching back to a branch.
+2026-10-05T08:57:14.9523931Z 
+2026-10-05T08:57:14.9524149Z If you want to create a new branch to retain commits you create, you may
+2026-10-05T08:57:14.9524630Z do so (now or later) by using -c with the switch command. Example:
+2026-10-05T08:57:14.9524840Z 
+2026-10-05T08:57:14.9525004Z   git switch -c <new-branch-name>
+2026-10-05T08:57:14.9525159Z 
+2026-10-05T08:57:14.9525311Z Or undo this operation with:
+2026-10-05T08:57:14.9525536Z 
+2026-10-05T08:57:14.9525633Z   git switch -
+2026-10-05T08:57:14.9525808Z 
+2026-10-05T08:57:14.9525992Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-05T08:57:14.9526271Z 
+2026-10-05T08:57:14.9601441Z HEAD is now at 397c582 Merge b9a6cb402cc969d3ac618f9eeb2de678c6837e17 into 70e2112da9fe8eaa6262f2ba896b55bf3e078260
+2026-10-05T08:57:14.9856347Z ##[endgroup]
+2026-10-05T08:57:15.0394710Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-05T08:57:15.0660899Z 397c5827715128089d45fae24cab676de2d5f02c
+2026-10-05T08:57:15.1077368Z ##[group]Run actions/setup-python@v5
+2026-10-05T08:57:15.1077807Z with:
+2026-10-05T08:57:15.1078098Z   python-version: 3.12
+2026-10-05T08:57:15.1078347Z   check-latest: false
+2026-10-05T08:57:15.1080239Z   token: ***
+2026-10-05T08:57:15.1080491Z   update-environment: true
+2026-10-05T08:57:15.1080754Z   allow-prereleases: false
+2026-10-05T08:57:15.1081030Z   freethreaded: false
+2026-10-05T08:57:15.1081273Z ##[endgroup]
+2026-10-05T08:57:15.2354319Z ##[group]Installed versions
+2026-10-05T08:57:15.2541142Z (node:8908) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T08:57:15.2543351Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T08:57:15.2543915Z Successfully set up CPython (3.12.10)
+2026-10-05T08:57:15.2544543Z ##[endgroup]
+2026-10-05T08:57:15.2819491Z ##[group]Run python -m pip install -c requirements-bootstrap.lock -e ".[test]"
+2026-10-05T08:57:15.2820226Z [36;1mpython -m pip install -c requirements-bootstrap.lock -e ".[test]"[0m
+2026-10-05T08:57:15.3304276Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T08:57:15.3304678Z env:
+2026-10-05T08:57:15.3305004Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:57:15.3305541Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-05T08:57:15.3305932Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:57:15.3306331Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:57:15.3306702Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:57:15.3307024Z ##[endgroup]
+2026-10-05T08:57:19.8161511Z Obtaining file:///D:/a/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max
+2026-10-05T08:57:19.8189043Z   Installing build dependencies: started
+2026-10-05T08:57:22.0617413Z   Installing build dependencies: finished with status 'done'
+2026-10-05T08:57:22.0631411Z   Checking if build backend supports build_editable: started
+2026-10-05T08:57:23.2679911Z   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-05T08:57:23.2699141Z   Getting requirements to build editable: started
+2026-10-05T08:57:23.6943519Z   Getting requirements to build editable: finished with status 'done'
+2026-10-05T08:57:23.6970951Z   Preparing editable metadata (pyproject.toml): started
+2026-10-05T08:57:23.9426440Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-05T08:57:24.1666593Z Collecting MetaTrader5>=5.0.6147 (from vibemql5==0.2.42)
+2026-10-05T08:57:24.3193235Z   Downloading metatrader5-5.0.6231-cp312-cp312-win_amd64.whl.metadata (2.5 kB)
+2026-10-05T08:57:24.5271756Z Collecting cryptography<51,>=50 (from vibemql5==0.2.42)
+2026-10-05T08:57:24.5380931Z   Downloading cryptography-50.0.1-cp311-abi3-win_amd64.whl.metadata (4.3 kB)
+2026-10-05T08:57:24.5919852Z Collecting mcp==2.1.1 (from vibemql5==0.2.42)
+2026-10-05T08:57:24.6024421Z   Downloading mcp-2.1.1-py3-none-any.whl.metadata (7.8 kB)
+2026-10-05T08:57:24.6676836Z Collecting pytest==9.1.1 (from vibemql5==0.2.42)
+2026-10-05T08:57:24.6783699Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+2026-10-05T08:57:24.7418542Z Collecting anyio>=4.9 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:24.7527951Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+2026-10-05T08:57:24.8060875Z Collecting httpx2>=2.5.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:24.8186074Z   Downloading httpx2-2.13.0-py3-none-any.whl.metadata (10 kB)
+2026-10-05T08:57:24.8771931Z Collecting jsonschema>=4.20.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:24.8877182Z   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+2026-10-05T08:57:24.9402596Z Collecting mcp-types==2.1.1 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:24.9506210Z   Downloading mcp_types-2.1.1-py3-none-any.whl.metadata (1.9 kB)
+2026-10-05T08:57:25.0150041Z Collecting opentelemetry-api>=1.28.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.0254356Z   Downloading opentelemetry_api-1.44.0-py3-none-any.whl.metadata (1.4 kB)
+2026-10-05T08:57:25.1691715Z Collecting pydantic>=2.12.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.1803267Z   Downloading pydantic-2.13.5-py3-none-any.whl.metadata (110 kB)
+2026-10-05T08:57:25.2506486Z Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.2614787Z   Downloading pyjwt-2.14.0-py3-none-any.whl.metadata (3.4 kB)
+2026-10-05T08:57:25.3116232Z Collecting python-multipart>=0.0.9 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.3221773Z   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+2026-10-05T08:57:25.3834437Z Collecting pywin32>=311 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.3946591Z   Downloading pywin32-312-cp312-cp312-win_amd64.whl.metadata (11 kB)
+2026-10-05T08:57:25.5481169Z Collecting sse-starlette>=3.0.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.5595588Z   Downloading sse_starlette-3.4.11-py3-none-any.whl.metadata (15 kB)
+2026-10-05T08:57:25.6180173Z Collecting starlette>=0.27 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.6288575Z   Downloading starlette-1.6.0-py3-none-any.whl.metadata (6.4 kB)
+2026-10-05T08:57:25.6927523Z Collecting typing-extensions>=4.13.0 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.7057844Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-10-05T08:57:25.7570218Z Collecting typing-inspection>=0.4.1 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.7673972Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+2026-10-05T08:57:25.8343551Z Collecting uvicorn>=0.31.1 (from mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.8450697Z   Downloading uvicorn-0.53.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-05T08:57:25.8658436Z Requirement already satisfied: colorama>=0.4 in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==9.1.1->vibemql5==0.2.42) (0.4.6)
+2026-10-05T08:57:25.8997120Z Collecting iniconfig>=1.0.1 (from pytest==9.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.9103966Z   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-05T08:57:25.9330610Z Requirement already satisfied: packaging>=22 in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==9.1.1->vibemql5==0.2.42) (26.3)
+2026-10-05T08:57:25.9664060Z Collecting pluggy<2,>=1.5 (from pytest==9.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:25.9812119Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+2026-10-05T08:57:26.0366045Z Collecting pygments>=2.7.2 (from pytest==9.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.0472651Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-05T08:57:26.1524382Z Collecting cffi>=2.0.0 (from cryptography<51,>=50->vibemql5==0.2.42)
+2026-10-05T08:57:26.1638546Z   Downloading cffi-2.1.1-cp312-cp312-win_amd64.whl.metadata (2.6 kB)
+2026-10-05T08:57:26.2192412Z Collecting idna>=2.8 (from anyio>=4.9->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.2301220Z   Downloading idna-3.19-py3-none-any.whl.metadata (9.2 kB)
+2026-10-05T08:57:26.2872676Z Collecting pycparser (from cffi>=2.0.0->cryptography<51,>=50->vibemql5==0.2.42)
+2026-10-05T08:57:26.2982653Z   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+2026-10-05T08:57:26.3582160Z Collecting httpcore2==2.13.0 (from httpx2>=2.5.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.3691522Z   Downloading httpcore2-2.13.0-py3-none-any.whl.metadata (26 kB)
+2026-10-05T08:57:26.4163394Z Collecting truststore>=0.10 (from httpx2>=2.5.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.4269304Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+2026-10-05T08:57:26.4770565Z Collecting h11>=0.16 (from httpcore2==2.13.0->httpx2>=2.5.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.4880180Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-10-05T08:57:26.5428265Z Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.5533379Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-10-05T08:57:26.6272915Z Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.6376798Z   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-10-05T08:57:26.6905484Z Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.7011262Z   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+2026-10-05T08:57:26.9515884Z Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:26.9627738Z   Downloading rpds_py-2026.6.3-cp312-cp312-win_amd64.whl.metadata (4.2 kB)
+2026-10-05T08:57:27.1344265Z Collecting numpy>=1.7 (from MetaTrader5>=5.0.6147->vibemql5==0.2.42)
+2026-10-05T08:57:27.1455147Z   Downloading numpy-2.5.3-cp312-cp312-win_amd64.whl.metadata (6.6 kB)
+2026-10-05T08:57:27.1976339Z Collecting annotated-types>=0.6.0 (from pydantic>=2.12.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:27.2103432Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+2026-10-05T08:57:27.7098248Z Collecting pydantic-core==2.46.5 (from pydantic>=2.12.0->mcp==2.1.1->vibemql5==0.2.42)
+2026-10-05T08:57:27.7213671Z   Downloading pydantic_core-2.46.5-cp312-cp312-win_amd64.whl.metadata (6.7 kB)
+2026-10-05T08:57:27.7538624Z Requirement already satisfied: click>=7.0 in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from uvicorn>=0.31.1->mcp==2.1.1->vibemql5==0.2.42) (8.5.0)
+2026-10-05T08:57:27.7669698Z Downloading mcp-2.1.1-py3-none-any.whl (357 kB)
+2026-10-05T08:57:27.8078015Z Downloading mcp_types-2.1.1-py3-none-any.whl (69 kB)
+2026-10-05T08:57:27.8485411Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+2026-10-05T08:57:27.8809623Z Downloading cryptography-50.0.1-cp311-abi3-win_amd64.whl (3.8 MB)
+2026-10-05T08:57:28.0048744Z    ---------------------------------------- 3.8/3.8 MB 28.6 MB/s  0:00:00
+2026-10-05T08:57:28.0156700Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+2026-10-05T08:57:28.0421025Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+2026-10-05T08:57:28.0715152Z Downloading cffi-2.1.1-cp312-cp312-win_amd64.whl (185 kB)
+2026-10-05T08:57:28.0990846Z Downloading httpx2-2.13.0-py3-none-any.whl (95 kB)
+2026-10-05T08:57:28.1288473Z Downloading httpcore2-2.13.0-py3-none-any.whl (83 kB)
+2026-10-05T08:57:28.1548958Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-10-05T08:57:28.1872376Z Downloading idna-3.19-py3-none-any.whl (68 kB)
+2026-10-05T08:57:28.2139084Z Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+2026-10-05T08:57:28.2470141Z Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+2026-10-05T08:57:28.4470364Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-10-05T08:57:28.4784861Z Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+2026-10-05T08:57:28.5082486Z Downloading metatrader5-5.0.6231-cp312-cp312-win_amd64.whl (47 kB)
+2026-10-05T08:57:28.5389340Z Downloading numpy-2.5.3-cp312-cp312-win_amd64.whl (12.6 MB)
+2026-10-05T08:57:28.7390325Z    ---------------------------------------- 12.6/12.6 MB 60.6 MB/s  0:00:00
+2026-10-05T08:57:28.7499588Z Downloading opentelemetry_api-1.44.0-py3-none-any.whl (60 kB)
+2026-10-05T08:57:28.7817983Z Downloading pydantic-2.13.5-py3-none-any.whl (472 kB)
+2026-10-05T08:57:28.8136791Z Downloading pydantic_core-2.46.5-cp312-cp312-win_amd64.whl (2.0 MB)
+2026-10-05T08:57:28.8617069Z    ---------------------------------------- 2.0/2.0 MB 38.7 MB/s  0:00:00
+2026-10-05T08:57:28.8719971Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+2026-10-05T08:57:28.9006642Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-10-05T08:57:28.9620728Z    ---------------------------------------- 1.3/1.3 MB 21.0 MB/s  0:00:00
+2026-10-05T08:57:29.0781947Z Downloading pyjwt-2.14.0-py3-none-any.whl (32 kB)
+2026-10-05T08:57:29.1073699Z Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+2026-10-05T08:57:29.1383895Z Downloading pywin32-312-cp312-cp312-win_amd64.whl (6.9 MB)
+2026-10-05T08:57:29.3012785Z    ---------------------------------------- 6.9/6.9 MB 42.6 MB/s  0:00:00
+2026-10-05T08:57:29.3118777Z Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+2026-10-05T08:57:29.3386731Z Downloading rpds_py-2026.6.3-cp312-cp312-win_amd64.whl (220 kB)
+2026-10-05T08:57:29.3687534Z Downloading sse_starlette-3.4.11-py3-none-any.whl (17 kB)
+2026-10-05T08:57:29.3946939Z Downloading starlette-1.6.0-py3-none-any.whl (75 kB)
+2026-10-05T08:57:29.4241150Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+2026-10-05T08:57:29.4536717Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-10-05T08:57:29.4920164Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+2026-10-05T08:57:29.5202879Z Downloading uvicorn-0.53.0-py3-none-any.whl (87 kB)
+2026-10-05T08:57:29.5496281Z Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+2026-10-05T08:57:29.6956839Z Building wheels for collected packages: vibemql5
+2026-10-05T08:57:29.6980549Z   Building editable for vibemql5 (pyproject.toml): started
+2026-10-05T08:57:30.2804908Z   Building editable for vibemql5 (pyproject.toml): finished with status 'done'
+2026-10-05T08:57:30.2844661Z   Created wheel for vibemql5: filename=vibemql5-0.2.42-0.editable-py3-none-any.whl size=1386 sha256=7c727e7d03431d97378c5ca4760b29c7b5eae3a5a29825b1b12570560e9f6e8a
+2026-10-05T08:57:30.2845684Z   Stored in directory: C:\Users\runneradmin\AppData\Local\Temp\pip-ephem-wheel-cache-c7_45ld0\wheels\ca\ea\0b\a7a3b333bdf94e737a5d56e498c0427ebf535356665d30ffed
+2026-10-05T08:57:30.2864420Z Successfully built vibemql5
+2026-10-05T08:57:30.3451269Z Installing collected packages: typing-extensions, truststore, rpds-py, pywin32, python-multipart, pyjwt, pygments, pycparser, pluggy, numpy, iniconfig, idna, h11, attrs, annotated-types, uvicorn, typing-inspection, referencing, pytest, pydantic-core, opentelemetry-api, MetaTrader5, httpcore2, cffi, anyio, starlette, pydantic, jsonschema-specifications, httpx2, cryptography, vibemql5, sse-starlette, mcp-types, jsonschema, mcp
+2026-10-05T08:58:01.5534548Z 
+2026-10-05T08:58:01.5563658Z Successfully installed MetaTrader5-5.0.6231 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 cffi-2.1.1 cryptography-50.0.1 h11-0.16.0 httpcore2-2.13.0 httpx2-2.13.0 idna-3.19 iniconfig-2.3.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-2.1.1 mcp-types-2.1.1 numpy-2.5.3 opentelemetry-api-1.44.0 pluggy-1.6.0 pycparser-3.0 pydantic-2.13.5 pydantic-core-2.46.5 pygments-2.21.0 pyjwt-2.14.0 pytest-9.1.1 python-multipart-0.0.32 pywin32-312 referencing-0.37.0 rpds-py-2026.6.3 sse-starlette-3.4.11 starlette-1.6.0 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.53.0 vibemql5-0.2.42
+2026-10-05T08:58:01.8558636Z ##[group]Run python -c "import vibemql5.adapters.mcp; print('IMPORT_PASS')"
+2026-10-05T08:58:01.8559308Z [36;1mpython -c "import vibemql5.adapters.mcp; print('IMPORT_PASS')"[0m
+2026-10-05T08:58:01.8617545Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T08:58:01.8617892Z env:
+2026-10-05T08:58:01.8618189Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:01.8618617Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-05T08:58:01.8619014Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:01.8619375Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:01.8619734Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:01.8620238Z ##[endgroup]
+2026-10-05T08:58:02.5003970Z IMPORT_PASS
+2026-10-05T08:58:02.6288084Z ##[group]Run python -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==85; assert len(MCP_TOOL_NAMES)==85; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==84; assert MCP_TOOL_CATALOG_SHA256=='915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef'; print('CATALOG_PASS')"
+2026-10-05T08:58:02.6289930Z [36;1mpython -c "from vibemql5.contracts import MCP_TOOL_COUNT,MCP_TOOL_NAMES,MCP_TOOL_CATALOG_SHA256; assert MCP_TOOL_COUNT==85; assert len(MCP_TOOL_NAMES)==85; assert len([x for x in MCP_TOOL_NAMES if x!='import_ex5_authorized_file'])==84; assert MCP_TOOL_CATALOG_SHA256=='915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef'; print('CATALOG_PASS')"[0m
+2026-10-05T08:58:02.6347786Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T08:58:02.6348145Z env:
+2026-10-05T08:58:02.6348554Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.6348975Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-05T08:58:02.6349348Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.6349732Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.6350100Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.6350391Z ##[endgroup]
+2026-10-05T08:58:02.8619600Z CATALOG_PASS
+2026-10-05T08:58:02.9453262Z ##[group]Run python -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"
+2026-10-05T08:58:02.9454868Z [36;1mpython -c "import pathlib,py_compile; files=list(pathlib.Path('app/vibemql5').rglob('*.py')); [py_compile.compile(str(p),doraise=True) for p in files]; print('PY_COMPILE_PASS',len(files))"[0m
+2026-10-05T08:58:02.9511793Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T08:58:02.9512176Z env:
+2026-10-05T08:58:02.9512472Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.9512858Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-05T08:58:02.9513299Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.9513646Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.9514135Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:02.9514424Z ##[endgroup]
+2026-10-05T08:58:03.5467694Z PY_COMPILE_PASS 89
+2026-10-05T08:58:03.6415721Z ##[group]Run python -m pytest tests/unit -q -rs
+2026-10-05T08:58:03.6416241Z [36;1mpython -m pytest tests/unit -q -rs[0m
+2026-10-05T08:58:03.6473194Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T08:58:03.6473573Z env:
+2026-10-05T08:58:03.6473929Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:03.6474367Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-05T08:58:03.6474802Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:03.6475179Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:03.6475531Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-05T08:58:03.6475860Z ##[endgroup]
+2026-10-05T08:58:13.8117837Z ........................................................................ [  5%]
+2026-10-05T08:58:25.6714156Z ........................................................................ [ 11%]
+2026-10-05T08:58:34.5908781Z ........................................................................ [ 17%]
+2026-10-05T08:58:40.5127989Z ........................................ss.............................. [ 23%]
+2026-10-05T08:58:54.1224341Z .........................................s....................s......... [ 29%]
+2026-10-05T08:59:08.1625840Z ...................................................s.................... [ 35%]
+2026-10-05T08:59:17.4495954Z .................sss.................................................... [ 41%]
+2026-10-05T08:59:22.8409959Z ........................................................................ [ 47%]
+2026-10-05T08:59:31.7452331Z ........................................................................ [ 53%]
+2026-10-05T08:59:37.8894601Z .................................s...................................... [ 59%]
+2026-10-05T08:59:47.0488088Z ........................................................................ [ 65%]
+2026-10-05T08:59:51.2163139Z ........................................................................ [ 71%]
+2026-10-05T09:00:46.2235374Z ................................................F....................... [ 77%]
+2026-10-05T09:01:06.7425220Z ........................................................................ [ 83%]
+2026-10-05T09:02:15.7647451Z ........................................................................ [ 89%]
+2026-10-05T09:04:26.0561018Z ......................................F...s.........................F... [ 95%]
+2026-10-05T09:04:49.8124352Z ............................ss.....................                      [100%]
+2026-10-05T09:04:49.8124898Z ================================== FAILURES ===================================
+2026-10-05T09:04:49.8125330Z _ test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[worktree] _
+2026-10-05T09:04:49.8125702Z 
+2026-10-05T09:04:49.8126566Z project_node = {'root': WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_https_full_jo...ta/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_https_full_journal2/workspaces/demo/Experts/DemoEA.mq5'), ...}
+2026-10-05T09:04:49.8128115Z tls_files = (WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_https_full_journal2/c...:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_https_full_journal2/server-key.pem'))
+2026-10-05T09:04:49.8129100Z tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_https_full_journal2')
+2026-10-05T09:04:49.8129559Z nonempty = 'worktree'
+2026-10-05T09:04:49.8129711Z 
+2026-10-05T09:04:49.8129945Z     @pytest.mark.parametrize("nonempty",[False,True,"worktree","readonly","readonly-inactive"])
+2026-10-05T09:04:49.8131278Z     def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(project_node,tls_files,tmp_path,nonempty):
+2026-10-05T09:04:49.8134113Z         ca,certificate,private=tls_files
+2026-10-05T09:04:49.8134646Z         nodekey,gatewaykey,operator=(Ed25519PrivateKey.generate() for _ in range(3))
+2026-10-05T09:04:49.8135175Z         device=project_node['registry']['device_id'];session='recovery-session'
+2026-10-05T09:04:49.8135636Z         registrysha=digest(project_node['registry'])
+2026-10-05T09:04:49.8136157Z         original=tmp_path/'gateway-original';original.mkdir();restored=tmp_path/'gateway-restored';restored.mkdir()
+2026-10-05T09:04:49.8136697Z         retained=tmp_path/'retained';retained.mkdir()
+2026-10-05T09:04:49.8137773Z         dp=DomainPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000)
+2026-10-05T09:04:49.8138362Z         jp=dict(max_records=20,max_payload_bytes=32768,wait_ms=50)
+2026-10-05T09:04:49.8138729Z         cp=restore_control_policy()
+2026-10-05T09:04:49.8139029Z         failures=Queue()
+2026-10-05T09:04:49.8139380Z         def start(factory,address=('127.0.0.1',0)):
+2026-10-05T09:04:49.8139869Z             return start_gateway_fixture(address,certificate=certificate,key_file=private,
+2026-10-05T09:04:49.8140456Z                 controller_factory=factory,failures=failures,startup_timeout=5,stop_timeout=5)
+2026-10-05T09:04:49.8141249Z         def controller(control,domains,jobs,principals,origin,recovery=None):
+2026-10-05T09:04:49.8142222Z             return GatewayController(control,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=GatewayDomain(control,domains,jobs,principal_authority=principals,recovery=recovery,start_authorization_ms=2000))
+2026-10-05T09:04:49.8143129Z         def initial(address):
+2026-10-05T09:04:49.8143861Z             origin='https://127.0.0.1:'+str(address[1])
+2026-10-05T09:04:49.8145105Z             return controller(GatewayControlStore.initialize(original/'control.db',policy=cp),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
+2026-10-05T09:04:49.8146630Z         stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+2026-10-05T09:04:49.8147803Z         transport=NodeTransportJournal.initialize(tmp_path/'node-transport.db',TransportPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50),device_id=device,public_key=nodekey.public_key().public_bytes_raw().hex(),audience=origin)
+2026-10-05T09:04:49.8148892Z         node=NodeClient(http,nodekey,device,0,transport)
+2026-10-05T09:04:49.8149365Z         nodejobs=NodeJobJournal(tmp_path/'node-jobs.db',initialize=True,**jp)
+2026-10-05T09:04:49.8150077Z         nodedomains=DomainJournal(tmp_path/'node-domains.db',policy=dp,role='NODE',initialize=True)
+2026-10-05T09:04:49.8150636Z         has_writers=nonempty not in {'readonly','readonly-inactive'}
+2026-10-05T09:04:49.8151730Z         writers=None if not has_writers else NodePrincipalRuntime(project_node['root'],gateway_public_key=gatewaykey.public_key().public_bytes_raw(),audience=origin,device_id=device,route_generation=1,session_id=session,policy=writer_policy(),initialize=True)
+2026-10-05T09:04:49.8152596Z         worktrees, worktree_args, worktree_head = None, None, None
+2026-10-05T09:04:49.8152915Z         try:
+2026-10-05T09:04:49.8153462Z             grant=owner.admin('grant',{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'operation_id':'grant','expected_revision':1,'expected_route_generation':None})
+2026-10-05T09:04:49.8154188Z             node.pair(grant_id=grant['receipt']['grant_id'],secret=grant['secret'],operation_id='pair',expected_revision=2)
+2026-10-05T09:04:49.8154620Z             node.heartbeat(session)
+2026-10-05T09:04:49.8154918Z             if writers is not None:writers.bind_control_transport(node)
+2026-10-05T09:04:49.8155865Z             if nonempty and has_writers:
+2026-10-05T09:04:49.8156159Z                 clientkey=Ed25519PrivateKey.generate()
+2026-10-05T09:04:49.8156989Z                 credential=owner.domain_request('/fleet/v1/principals/issue',{'operation_id':'issue','client_public_key':clientkey.public_key().public_bytes_raw().hex(),'installation_id':'client','session_id':'client-session','expires_ms':int(time.time()*1000)+600000,'scopes':sorted(PATHS)})['credential']
+2026-10-05T09:04:49.8158140Z                 target={**project_node['project']['default_target'],'route_generation':1}
+2026-10-05T09:04:49.8158794Z                 owner.domain_request('/fleet/v1/principals/assign',{'operation_id':'assign','principal_id':credential['body']['principal_id'],'project_id':'P','target':target,'writer_epoch':1})
+2026-10-05T09:04:49.8159373Z                 if nonempty == "worktree":
+2026-10-05T09:04:49.8159679Z                     repo=project_node['root']/'workspaces'/'demo'
+2026-10-05T09:04:49.8160156Z                     git(repo,'init','--initial-branch=main');git(repo,'add','Experts/DemoEA.mq5');git(repo,'commit','-m','retained baseline')
+2026-10-05T09:04:49.8160673Z                     base=git(repo,'rev-parse','HEAD')
+2026-10-05T09:04:49.8161106Z                     worktree_args={'repositories':{'P':{'repository':str(repo),'base_commit':base,'source_paths':['Experts/DemoEA.mq5']}},
+2026-10-05T09:04:49.8162208Z                         'worktree_root':project_node['root']/'isolated-worktrees','git_executable':Path(shutil.which('git')).resolve(),'policy':worktree_policy()}
+2026-10-05T09:04:49.8162830Z                     worktrees=NodeWorktrees(project_node['root'],principals=writers,initialize=True,**worktree_args)
+2026-10-05T09:04:49.8163292Z                     writers.bind_worktrees(worktrees)
+2026-10-05T09:04:49.8163636Z                     path='/fleet/v1/worktrees/prepare';operation='prepare-worktree'
+2026-10-05T09:04:49.8164087Z                     payload={'project_id':'P','worktree_id':'retained-task','base_commit':base}
+2026-10-05T09:04:49.8164430Z                 else:
+2026-10-05T09:04:49.8164666Z                     old=project_node['session']
+2026-10-05T09:04:49.8165417Z                     frozen=project_node['projects'].freeze('P','original-write',writer_id=credential['body']['principal_id'],target=target,expected_placement_revision=1,expected_session_revision=old['revision_id'],expected_session_sha256=old['revision_sha256'],operation_id='freeze')
+2026-10-05T09:04:49.8166189Z                     path='/fleet/v1/sources/write';operation='write'
+2026-10-05T09:04:49.8166682Z                     payload={'project_id':'P','frozen_id':frozen['frozen_id'],'source_base64':base64.b64encode(b'void OnTick(){ /* verified */ }\n').decode()}
+2026-10-05T09:04:49.8167416Z                 value={'schema':'fleet.domain-request/1','node':{'device_id':device,'route_generation':1},'operation_id':operation,'payload':payload}
+2026-10-05T09:04:49.8167881Z                 raw=encode_body(value,32768)
+2026-10-05T09:04:49.8168435Z                 http.post(path,value,sign_principal_request(clientkey,credential,path=path,body_bytes=raw,timestamp_ms=int(time.time()*1000),nonce='client-write',audience=origin))
+2026-10-05T09:04:49.8168992Z                 command=node.poll(session,4)['commands'][0]
+2026-10-05T09:04:49.8169440Z                 dispatcher=NodeDomainDispatcher(project_node['root'],nodedomains,nodejobs,None,principal_runtime=writers)
+2026-10-05T09:04:49.8169957Z                 dispatcher.dispatch(command,node,session);dispatcher.close()
+2026-10-05T09:04:49.8170298Z                 if worktrees is not None:
+2026-10-05T09:04:49.8170626Z                     worktree_head=worktrees.recovery_head()
+2026-10-05T09:04:49.8170988Z                     assert worktree_head['operations'][0]['git_steps'][0]['status']=='CLOSED'
+2026-10-05T09:04:49.8171359Z                     assert writers.witness('a'*64)['pending_intents']==[]
+2026-10-05T09:04:49.8171909Z                     assert project_node['projects'].sessions.get('P')['revision_id']=='REV-000001'
+2026-10-05T09:04:49.8172362Z                 else:assert project_node['projects'].sessions.get('P')['revision_id']=='REV-000002'
+2026-10-05T09:04:49.8172713Z         finally:
+2026-10-05T09:04:49.8172974Z             if worktrees is not None:worktrees.close()
+2026-10-05T09:04:49.8173300Z             if writers is not None:writers.close()
+2026-10-05T09:04:49.8173632Z             nodedomains.close();stop.set();thread.join(timeout=5)
+2026-10-05T09:04:49.8173936Z         assert not thread.is_alive()
+2026-10-05T09:04:49.8174212Z         if not failures.empty():raise failures.get()
+2026-10-05T09:04:49.8174493Z     
+2026-10-05T09:04:49.8174803Z         with GatewayControlStore.open_existing(original/'control.db',policy=cp) as control:
+2026-10-05T09:04:49.8175324Z             snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db')
+2026-10-05T09:04:49.8175763Z         with GatewayJobJournal(original/'jobs.db',**jp) as jobs:
+2026-10-05T09:04:49.8176165Z             mapping=jobs.mapping_sha256();jobs.backup(retained/'jobs-backup.db')
+2026-10-05T09:04:49.8176610Z         with closing(DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')) as domains:
+2026-10-05T09:04:49.8177116Z             domainhead=domains.control_head()
+2026-10-05T09:04:49.8177681Z         with closing(GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())) as principals:
+2026-10-05T09:04:49.8178555Z             principalhead=principals.control_head()
+2026-10-05T09:04:49.8179690Z         facts={'schema':'fleet.quiescent-checkpoint/1','audience':origin,'control_head':head,'control_wall_ms':snapshot['last_wall_ms'],'devices':[{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'route_generation':1,'state':'ACTIVE','registry_sha256':registrysha,'session_id':session,'worktree_head':worktree_head}],'job_export_generation':1,'job_mapping_sha256':mapping,'domain_head':domainhead,'principal_head':principalhead}
+2026-10-05T09:04:49.8180972Z         checkpoint=retained/'checkpoint.json';checkpoint.write_bytes(canonical(facts));scopequeue=Queue()
+2026-10-05T09:04:49.8181374Z         def recovery_service(address):
+2026-10-05T09:04:49.8181783Z             control=GatewayControlStore.restore(retained/'control-backup.db',restored/'control.db',policy=cp)
+2026-10-05T09:04:49.8182396Z             jobs=GatewayJobJournal.restore_backup(retained/'jobs-backup.db',restored/'jobs.db',devices=[device],export_generation=1,**jp)
+2026-10-05T09:04:49.8182907Z             domains=DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')
+2026-10-05T09:04:49.8183511Z             principals=GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())
+2026-10-05T09:04:49.8184430Z             now=int(time.time()*1000);body={'schema':'fleet.restore.operator-approval/1','audience':origin,'challenge':jobs.restore_state()['challenge'],'issued_ms':now,'expires_ms':now+30000,'checkpoint_sha256':hashlib.sha256(checkpoint.read_bytes()).hexdigest()}
+2026-10-05T09:04:49.8185218Z             approval={'approval':body,'signature':operator.sign(DOMAIN+canonical(body)).hex()}
+2026-10-05T09:04:49.8186348Z             recovery=RestoreCoordinator(restored/'coordination.json',control,jobs,audience=origin,operator_public_key=operator.public_key().public_bytes_raw(),policy=RestorePolicy(max_devices=20,max_payload_bytes=1048576,max_nonces=20,clock_skew_ms=5000,wait_ms=50),now_ms=now,initialize=True,approval=approval,checkpoint_path=checkpoint,domain_journal=domains,principal_authority=principals)
+2026-10-05T09:04:49.8187505Z             scopequeue.put((recovery.scope(),jobs.restore_state(),recovery.record['coordination_sha256']))
+2026-10-05T09:04:49.8187995Z             return controller(control,domains,jobs,principals,origin,recovery)
+2026-10-05T09:04:49.8188364Z         stop,thread,_=start(recovery_service,address)
+2026-10-05T09:04:49.8188828Z         nodedomains=DomainJournal(tmp_path/'node-domains.db',policy=dp,role='NODE')
+2026-10-05T09:04:49.8189602Z         writers=None if not has_writers else NodePrincipalRuntime(project_node['root'],gateway_public_key=gatewaykey.public_key().public_bytes_raw(),audience=origin,device_id=device,route_generation=1,session_id=session,policy=writer_policy())
+2026-10-05T09:04:49.8190391Z         if writers is not None:nodedomains.bind_principal_authority(writers)
+2026-10-05T09:04:49.8190727Z         worktrees=None
+2026-10-05T09:04:49.8190963Z         if worktree_args is not None:
+2026-10-05T09:04:49.8191390Z             worktrees=NodeWorktrees(project_node['root'],principals=writers,**worktree_args);writers.bind_worktrees(worktrees)
+2026-10-05T09:04:49.8191818Z         recovery_dispatcher=None
+2026-10-05T09:04:49.8192048Z         try:
+2026-10-05T09:04:49.8192325Z             scope,jobscope,coordination=scopequeue.get(timeout=3)
+2026-10-05T09:04:49.8192652Z             if nonempty=='readonly-inactive':
+2026-10-05T09:04:49.8193368Z                 inactive=NodePrincipalRuntime(project_node['root'],gateway_public_key=gatewaykey.public_key().public_bytes_raw(),audience=origin,device_id=device,route_generation=1,session_id=session,policy=writer_policy(),initialize=True)
+2026-10-05T09:04:49.8194103Z                 inactive.close()
+2026-10-05T09:04:49.8194527Z             value={'schema':'fleet.reconcile/1','coordination_sha256':coordination,'registry_sha256':registrysha,'session_id':session,
+2026-10-05T09:04:49.8195037Z                 'transport_witness':transport.witness(scope['challenge']),
+2026-10-05T09:04:49.8195652Z                 'job_witness':nodejobs.witness({**jobscope,'coordination_sha256':coordination,'joint_scope':scope},device_id=device,route_generation=1,session_id=session,private_key=nodekey),
+2026-10-05T09:04:49.8196424Z                 'domain_witness':nodedomains.witness(coordination,device_id=device,route_generation=1,session_id=session),
+2026-10-05T09:04:49.8197389Z                 'principal_witness':writers.witness(coordination) if writers is not None else None if nonempty=='readonly-inactive' else empty_writer_witness(project_node['root'],device_id=device,route_generation=1,session_id=session,coordination_sha256=coordination,expected_worktree_head=worktree_head)}
+2026-10-05T09:04:49.8198592Z             if value['principal_witness'] is not None:assert value["principal_witness"]["worktree_head"]==worktree_head
+2026-10-05T09:04:49.8199023Z             if nonempty is True:
+2026-10-05T09:04:49.8199278Z                 changed=copy.deepcopy(value)
+2026-10-05T09:04:49.8199668Z                 changed['principal_witness'].update(authority='EMPTY_ABSENCE',assignments=[],phase_receipts=[])
+2026-10-05T09:04:49.8200134Z                 before=(restored/'coordination.json').read_bytes()
+2026-10-05T09:04:49.8200424Z                 raw=encode_body(changed,32768)
+2026-10-05T09:04:49.8200855Z                 headers=sign_request(nodekey,device_id=device,route_generation=1,timestamp_ms=int(time.time()*1000),
+2026-10-05T09:04:49.8201328Z                     nonce='c'*32,path='/fleet/v1/reconcile',body=raw,audience=origin)
+2026-10-05T09:04:49.8201712Z                 # Deliberately invalid but genuinely signed TLS request: empty
+2026-10-05T09:04:49.8202097Z                 # local evidence cannot erase existing gateway writer history.
+2026-10-05T09:04:49.8202481Z                 with pytest.raises(WireError,match='PRINCIPAL_WITNESS_UNRESOLVED'):
+2026-10-05T09:04:49.8202897Z                     http.post('/fleet/v1/reconcile',changed,headers)
+2026-10-05T09:04:49.8203252Z                 assert (restored/'coordination.json').read_bytes()==before
+2026-10-05T09:04:49.8203558Z             if nonempty=='readonly':
+2026-10-05T09:04:49.8203889Z                 assert value['principal_witness']['authority']=='EMPTY_ABSENCE'
+2026-10-05T09:04:49.8204278Z                 assert not (project_node['root']/'state'/'fleet'/'writers.json').exists()
+2026-10-05T09:04:49.8205123Z                 assert not (project_node['root']/'state'/'fleet'/'writers.owner.lock').exists()
+2026-10-05T09:04:49.8205536Z             if nonempty in {'worktree','readonly','readonly-inactive'}:
+2026-10-05T09:04:49.8206061Z                 recovery_dispatcher=NodeDomainDispatcher(project_node['root'],nodedomains,nodejobs,None,principal_runtime=writers)
+2026-10-05T09:04:49.8206698Z                 agent=OutboundNode(node,project_node['root'],fleet_policy(),session_id=session,domain_dispatcher=recovery_dispatcher)
+2026-10-05T09:04:49.8207186Z                 # Exercise the actual CLI helper over the already-open genuine
+2026-10-05T09:04:49.8207568Z                 # client/agent/journals, without a second lifetime journal owner.
+2026-10-05T09:04:49.8207903Z                 runtime=object.__new__(NodeRuntime)
+2026-10-05T09:04:49.8208235Z                 runtime.config={'root':str(project_node['root'])};runtime.client=node
+2026-10-05T09:04:49.8208640Z                 runtime.agent=agent;runtime.dispatcher=recovery_dispatcher
+2026-10-05T09:04:49.8209204Z                 recovery_input={'schema':'fleet.node-recovery-input/1','coordination_sha256':coordination,'joint_scope':scope,'job_scope':jobscope}
+2026-10-05T09:04:49.8209685Z                 if nonempty=='readonly-inactive':
+2026-10-05T09:04:49.8210200Z                     before=(restored/'coordination.json').read_bytes();transport_before=transport.witness(scope['challenge'])
+2026-10-05T09:04:49.8210732Z                     with pytest.raises(WriterError,match='WRITER_ABSENCE_UNPROVEN'):runtime.reconcile(recovery_input)
+2026-10-05T09:04:49.8211200Z                     assert (restored/'coordination.json').read_bytes()==before
+2026-10-05T09:04:49.8211571Z                     assert transport.witness(scope['challenge'])==transport_before
+2026-10-05T09:04:49.8212044Z                     assert inactive.path.exists() and inactive.path.with_suffix('.owner.lock').exists()
+2026-10-05T09:04:49.8212415Z                     result=None
+2026-10-05T09:04:49.8212679Z >               else:result=runtime.reconcile(recovery_input)
+2026-10-05T09:04:49.8212989Z                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8213174Z 
+2026-10-05T09:04:49.8213287Z tests\unit\test_tip060c_https_restore.py:181: 
+2026-10-05T09:04:49.8213588Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+2026-10-05T09:04:49.8213926Z app\vibemql5\adapters\fleet_cli.py:332: in reconcile
+2026-10-05T09:04:49.8214224Z     return self.client.reconcile(packet)
+2026-10-05T09:04:49.8214523Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8214790Z app\vibemql5\fleet\transport.py:541: in reconcile
+2026-10-05T09:04:49.8215082Z     return self._post("/fleet/v1/reconcile", value)
+2026-10-05T09:04:49.8215382Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8215659Z app\vibemql5\fleet\transport.py:463: in _post
+2026-10-05T09:04:49.8216025Z     result = self.http.post(path, value, headers, deadline_monotonic=deadline_monotonic)
+2026-10-05T09:04:49.8216407Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8216761Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+2026-10-05T09:04:49.8216951Z 
+2026-10-05T09:04:49.8217152Z self = <vibemql5.fleet.transport.HttpsClient object at 0x0000026D9D5FBC80>
+2026-10-05T09:04:49.8217496Z path = '/fleet/v1/reconcile'
+2026-10-05T09:04:49.8218686Z value = {'schema': 'fleet.reconcile/1', 'coordination_sha256': '44d6246ef2a716235e3330c0a1d29f8e9b31edee179e74be340e429a1d44d1...try_sha256': '2ae55379213829abe4ad720b6e441feb8b4bdf4c6039dc4378e344dec0950cc6', 'session_id': 'recovery-session', ...}
+2026-10-05T09:04:49.8219771Z headers = {'x-vibe-device': 'dev_a1f536d3ed2c4f8d9a03681e62ef1790', 'x-vibe-key': '1c43e817a397c7e569495a2f6e198e3998a8170e80283fcfa5f22f5b3312826f', 'x-vibe-route': '1', 'x-vibe-time': '1791190829463', ...}
+2026-10-05T09:04:49.8220481Z deadline_monotonic = None
+2026-10-05T09:04:49.8220659Z 
+2026-10-05T09:04:49.8220914Z     def post(self, path, value, headers=None, *, deadline_monotonic=None):
+2026-10-05T09:04:49.8221228Z         self._tls()
+2026-10-05T09:04:49.8221467Z         if path not in ALL_PATHS:
+2026-10-05T09:04:49.8221769Z             raise WireError("WIRE_INVALID")
+2026-10-05T09:04:49.8222064Z         body = encode_body(value, self.policy.max_body_bytes)
+2026-10-05T09:04:49.8222381Z         supplied = dict(headers or {})
+2026-10-05T09:04:49.8222731Z         if any(k.lower() in {"host", "content-length", "transfer-encoding"} for k in supplied):
+2026-10-05T09:04:49.8223094Z             raise WireError("WIRE_INVALID")
+2026-10-05T09:04:49.8223358Z         begun = time.monotonic()
+2026-10-05T09:04:49.8223845Z         deadline = min(begun + self.policy.http_timeout_ms / 1000, deadline_monotonic) if deadline_monotonic is not None else begun + self.policy.http_timeout_ms / 1000
+2026-10-05T09:04:49.8224407Z         if deadline <= begun:
+2026-10-05T09:04:49.8224713Z             raise WireError("HTTP_DEADLINE_EXCEEDED")
+2026-10-05T09:04:49.8225119Z         connection = http.client.HTTPSConnection(self._parsed.hostname, self._parsed.port or 443,
+2026-10-05T09:04:49.8225578Z             timeout=deadline - begun, context=self.context)
+2026-10-05T09:04:49.8225961Z         class DeadlineResponseInput(io.RawIOBase):
+2026-10-05T09:04:49.8226282Z             def __init__(self, original, protected):
+2026-10-05T09:04:49.8226600Z                 self.original, self.protected = original, protected
+2026-10-05T09:04:49.8226888Z             def readable(self):
+2026-10-05T09:04:49.8227154Z                 return True
+2026-10-05T09:04:49.8227419Z             def readinto(self, buffer):
+2026-10-05T09:04:49.8227720Z                 remaining = deadline - time.monotonic()
+2026-10-05T09:04:49.8228000Z                 if remaining <= 0:
+2026-10-05T09:04:49.8228267Z                     raise TimeoutError("HTTP_DEADLINE_EXCEEDED")
+2026-10-05T09:04:49.8228587Z                 self.protected.settimeout(remaining)
+2026-10-05T09:04:49.8228892Z                 return self.original.raw.readinto(buffer)
+2026-10-05T09:04:49.8229178Z             def close(self):
+2026-10-05T09:04:49.8229428Z                 self.original.close()
+2026-10-05T09:04:49.8229710Z                 super().close()
+2026-10-05T09:04:49.8230007Z         class DeadlineResponse(http.client.HTTPResponse):
+2026-10-05T09:04:49.8230324Z             def __init__(self, protected, *args, **kwargs):
+2026-10-05T09:04:49.8230643Z                 super().__init__(protected, *args, **kwargs)
+2026-10-05T09:04:49.8231013Z                 self.fp = io.BufferedReader(DeadlineResponseInput(self.fp, protected))
+2026-10-05T09:04:49.8231372Z         connection.response_class = DeadlineResponse
+2026-10-05T09:04:49.8231655Z         try:
+2026-10-05T09:04:49.8231933Z             # Keep stdlib address-family order and TLS hostname verification,
+2026-10-05T09:04:49.8232475Z             # but never send an authority request after connect/TLS used its
+2026-10-05T09:04:49.8232873Z             # complete absolute budget (for example a slow family fallback).
+2026-10-05T09:04:49.8233189Z             connection.connect()
+2026-10-05T09:04:49.8233481Z             remaining = deadline - time.monotonic()
+2026-10-05T09:04:49.8233765Z             if remaining <= 0:
+2026-10-05T09:04:49.8234025Z                 raise WireError("HTTP_DEADLINE_EXCEEDED")
+2026-10-05T09:04:49.8234336Z             connection.sock.settimeout(remaining)
+2026-10-05T09:04:49.8234750Z             connection.request("POST", path, body=body, headers={"Content-Type": "application/json", **supplied})
+2026-10-05T09:04:49.8235211Z             remaining = deadline - time.monotonic()
+2026-10-05T09:04:49.8235487Z             if remaining <= 0:
+2026-10-05T09:04:49.8235747Z                 raise WireError("HTTP_DEADLINE_EXCEEDED")
+2026-10-05T09:04:49.8236414Z             if connection.sock:
+2026-10-05T09:04:49.8236688Z                 connection.sock.settimeout(remaining)
+2026-10-05T09:04:49.8237097Z             response = connection.getresponse()
+2026-10-05T09:04:49.8237445Z             lengths = response.headers.get_all("Content-Length", [])
+2026-10-05T09:04:49.8237921Z             if len(lengths) != 1 or re.fullmatch(r"0|[1-9][0-9]{0,9}", lengths[0]) is None or response.headers.get_all("Transfer-Encoding"):
+2026-10-05T09:04:49.8238438Z                 raise WireError("HTTP_RESPONSE_INVALID")
+2026-10-05T09:04:49.8238713Z             length = int(lengths[0])
+2026-10-05T09:04:49.8239000Z             if length > self.policy.max_response_bytes:
+2026-10-05T09:04:49.8239290Z                 raise WireError("WIRE_TOO_LARGE")
+2026-10-05T09:04:49.8239543Z             content = bytearray()
+2026-10-05T09:04:49.8239882Z             while len(content) < length:
+2026-10-05T09:04:49.8240165Z                 remaining = deadline - time.monotonic()
+2026-10-05T09:04:49.8240446Z                 if remaining <= 0:
+2026-10-05T09:04:49.8240729Z                     raise WireError("HTTP_DEADLINE_EXCEEDED")
+2026-10-05T09:04:49.8241128Z                 response_socket = connection.sock or getattr(getattr(response.fp, "raw", None), "_sock", None)
+2026-10-05T09:04:49.8241556Z                 if response_socket is not None:
+2026-10-05T09:04:49.8241855Z                     response_socket.settimeout(remaining)
+2026-10-05T09:04:49.8242306Z                 chunk = response.read1(min(65536, length - len(content)))
+2026-10-05T09:04:49.8242626Z                 if not chunk:
+2026-10-05T09:04:49.8242886Z                     raise WireError("HTTP_RESPONSE_INVALID")
+2026-10-05T09:04:49.8243207Z                 content.extend(chunk)
+2026-10-05T09:04:49.8243535Z             result = decode_body(bytes(content), self.policy.max_response_bytes)
+2026-10-05T09:04:49.8243865Z             if response.status != 200:
+2026-10-05T09:04:49.8244223Z                 if result.get("schema") == "fleet.error/1" and type(result.get("code")) is str:
+2026-10-05T09:04:49.8244592Z                     raise WireError(text(result["code"], 128))
+2026-10-05T09:04:49.8244950Z                 raise WireError("HTTP_RESPONSE_INVALID")
+2026-10-05T09:04:49.8245226Z             return result
+2026-10-05T09:04:49.8245477Z         except (OSError, http.client.HTTPException):
+2026-10-05T09:04:49.8245807Z >           raise WireError("HTTPS_UNAVAILABLE") from None
+2026-10-05T09:04:49.8246143Z E           vibemql5.fleet.wire.WireError: HTTPS_UNAVAILABLE
+2026-10-05T09:04:49.8246390Z 
+2026-10-05T09:04:49.8246518Z app\vibemql5\fleet\transport.py:412: WireError
+2026-10-05T09:04:49.8246986Z _ test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion] _
+2026-10-05T09:04:49.8247525Z   + Exception Group Traceback (most recent call last):
+2026-10-05T09:04:49.8248211Z   |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_capacity_https.py", line 222, in test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued
+2026-10-05T09:04:49.8248833Z   |     with preserve_fixture_failure():
+2026-10-05T09:04:49.8249096Z   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8249459Z   |   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\contextlib.py", line 158, in __exit__
+2026-10-05T09:04:49.8249820Z   |     self.gen.throw(value)
+2026-10-05T09:04:49.8250306Z   |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\fleet_gateway_fixture.py", line 16, in preserve_fixture_failure
+2026-10-05T09:04:49.8250924Z   |     raise BaseExceptionGroup("fixture and cleanup failed", [primary, cleanup]) from None
+2026-10-05T09:04:49.8251346Z   | ExceptionGroup: fixture and cleanup failed (2 sub-exceptions)
+2026-10-05T09:04:49.8251670Z   +-+---------------- 1 ----------------
+2026-10-05T09:04:49.8251922Z     | Traceback (most recent call last):
+2026-10-05T09:04:49.8252636Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_capacity_https.py", line 213, in test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued
+2026-10-05T09:04:49.8253291Z     |     pump(agent, completed, seconds=10)
+2026-10-05T09:04:49.8253783Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 411, in pump
+2026-10-05T09:04:49.8254222Z     |     agent.step()
+2026-10-05T09:04:49.8254614Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 758, in step
+2026-10-05T09:04:49.8255186Z     |     commands = (self.client.poll(self.session_id, self.policy.max_poll_commands) if poll_commands
+2026-10-05T09:04:49.8255595Z     |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8256368Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 483, in poll
+2026-10-05T09:04:49.8257352Z     |     return self._poll(session_id, max_commands, "WORKLOAD")
+2026-10-05T09:04:49.8257714Z     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8258192Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 488, in _poll
+2026-10-05T09:04:49.8258835Z     |     result = self._post("/fleet/v1/poll", {"schema": "fleet.poll/1", "session_id": session_id, "max_commands": max_commands, "mode": mode})
+2026-10-05T09:04:49.8259505Z     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8260029Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 463, in _post
+2026-10-05T09:04:49.8260562Z     |     result = self.http.post(path, value, headers, deadline_monotonic=deadline_monotonic)
+2026-10-05T09:04:49.8260996Z     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8261463Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip058b_transport.py", line 58, in post
+2026-10-05T09:04:49.8261899Z     |     return super().post(*args, **kwargs)
+2026-10-05T09:04:49.8262190Z     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8262627Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 412, in post
+2026-10-05T09:04:49.8263082Z     |     raise WireError("HTTPS_UNAVAILABLE") from None
+2026-10-05T09:04:49.8263402Z     | vibemql5.fleet.wire.WireError: HTTPS_UNAVAILABLE
+2026-10-05T09:04:49.8266816Z     | TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'TimeoutError', 'elapsed_ms': 1000, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0, 'cause_stack': [{'file': 'transport.py', 'function': 'post', 'line': 386}, {'file': 'client.py', 'function': 'getresponse', 'line': 1430}, {'file': 'client.py', 'function': 'begin', 'line': 331}, {'file': 'client.py', 'function': '_read_status', 'line': 292}, {'file': 'transport.py', 'function': 'readinto', 'line': 362}, {'file': 'socket.py', 'function': 'readinto', 'line': 720}, {'file': 'ssl.py', 'function': 'recv_into', 'line': 1251}, {'file': 'ssl.py', 'function': 'read', 'line': 1103}], 'server_stack': [{'file': 'scoped_resources.py', 'function': 'capacity_source_manifest', 'line': 143}, {'file': 'scoped_resources.py', 'function': 'verify_capacity_roster', 'line': 649}, {'file': 'job_journal.py', 'function': '_verify_capacity_receipt', 'line': 616}, {'file': 'job_journal.py', 'function': 'capacity_for_node', 'line': 724}, {'file': 'domain.py', 'function': 'poll_for_node', 'line': 775}, {'file': 'domain.py', 'function': 'wrapped', 'line': 633}, {'file': 'transport.py', 'function': '_handle', 'line': 174}, {'file': 'transport.py', 'function': 'handle', 'line': 99}, {'file': 'transport.py', 'function': 'do_POST', 'line': 275}, {'file': 'server.py', 'function': 'handle_one_request', 'line': 424}, {'file': 'server.py', 'function': 'handle', 'line': 436}, {'file': 'socketserver.py', 'function': '__init__', 'line': 766}]}
+2026-10-05T09:04:49.8270808Z     | CAPACITY_HTTPS_FIXTURE {"callback_count": 2, "completion_set": true, "gateway_jobs": [{"reason_code": null, "sequence": 4, "state": "STARTING"}, {"reason_code": null, "sequence": 4, "state": "STARTING"}, {"reason_code": null, "sequence": 1, "state": "QUEUED"}], "node_jobs": [{"reason_code": null, "sequence": 3, "state": "STARTING"}, {"reason_code": null, "sequence": 3, "state": "STARTING"}, {"lookup_error_type": "JournalError"}], "pending_futures": 2, "pending_native_records": 2, "release_set": true, "scope_lookup_error_type": "TimeoutError"}
+2026-10-05T09:04:49.8272035Z     +---------------- 2 ----------------
+2026-10-05T09:04:49.8272307Z     | Traceback (most recent call last):
+2026-10-05T09:04:49.8272781Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\fleet_gateway_fixture.py", line 13, in preserve_fixture_failure
+2026-10-05T09:04:49.8273276Z     |     yield
+2026-10-05T09:04:49.8273896Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_capacity_https.py", line 227, in test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued
+2026-10-05T09:04:49.8274652Z     |     close_dispatcher_fixture(agent, dispatcher, pump, seconds=10)
+2026-10-05T09:04:49.8275199Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\fleet_gateway_fixture.py", line 44, in close_dispatcher_fixture
+2026-10-05T09:04:49.8275753Z     |     pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+2026-10-05T09:04:49.8276563Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 411, in pump
+2026-10-05T09:04:49.8277020Z     |     agent.step()
+2026-10-05T09:04:49.8277479Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 756, in step
+2026-10-05T09:04:49.8277945Z     |     self.client.heartbeat(self.session_id)
+2026-10-05T09:04:49.8278397Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 476, in heartbeat
+2026-10-05T09:04:49.8278979Z     |     result = self._post("/fleet/v1/heartbeat", {"schema": "fleet.heartbeat/1", "session_id": session_id})
+2026-10-05T09:04:49.8279411Z     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8279905Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 463, in _post
+2026-10-05T09:04:49.8280478Z     |     result = self.http.post(path, value, headers, deadline_monotonic=deadline_monotonic)
+2026-10-05T09:04:49.8280861Z     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8281380Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip058b_transport.py", line 58, in post
+2026-10-05T09:04:49.8281825Z     |     return super().post(*args, **kwargs)
+2026-10-05T09:04:49.8282100Z     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-05T09:04:49.8282523Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\fleet\transport.py", line 412, in post
+2026-10-05T09:04:49.8282967Z     |     raise WireError("HTTPS_UNAVAILABLE") from None
+2026-10-05T09:04:49.8283331Z     | vibemql5.fleet.wire.WireError: HTTPS_UNAVAILABLE
+2026-10-05T09:04:49.8286198Z     | TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'TimeoutError', 'elapsed_ms': 1016, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0, 'cause_stack': [{'file': 'transport.py', 'function': 'post', 'line': 386}, {'file': 'client.py', 'function': 'getresponse', 'line': 1430}, {'file': 'client.py', 'function': 'begin', 'line': 331}, {'file': 'client.py', 'function': '_read_status', 'line': 292}, {'file': 'transport.py', 'function': 'readinto', 'line': 362}, {'file': 'socket.py', 'function': 'readinto', 'line': 720}, {'file': 'ssl.py', 'function': 'recv_into', 'line': 1251}, {'file': 'ssl.py', 'function': 'read', 'line': 1103}], 'server_stack': [{'file': 'gateway_control.py', 'function': '_transaction', 'line': 323}, {'file': 'contextlib.py', 'function': '__exit__', 'line': 144}, {'file': 'gateway_control.py', 'function': 'reserve_nonce', 'line': 936}, {'file': 'transport.py', 'function': '_handle', 'line': 149}, {'file': 'transport.py', 'function': 'handle', 'line': 99}, {'file': 'transport.py', 'function': 'do_POST', 'line': 275}, {'file': 'server.py', 'function': 'handle_one_request', 'line': 424}, {'file': 'server.py', 'function': 'handle', 'line': 436}, {'file': 'socketserver.py', 'function': '__init__', 'line': 766}, {'file': 'socketserver.py', 'function': 'finish_request', 'line': 362}, {'file': 'socketserver.py', 'function': 'process_request', 'line': 349}, {'file': 'socketserver.py', 'function': '_handle_request_noblock', 'line': 318}]}
+2026-10-05T09:04:49.8289246Z     +------------------------------------
+2026-10-05T09:04:49.9052997Z _ test_actual_tls_inventory_discovery_read_project_and_production_native_denial _
+2026-10-05T09:04:49.9056121Z 
+2026-10-05T09:04:49.9057880Z project_node = {'root': WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_tls_inventory...ta/Local/Temp/pytest-of-runneradmin/pytest-0/test_actual_tls_inventory_disc0/workspaces/demo/Experts/DemoEA.mq5'), ...}
+2026-10-05T09:04:49.9061646Z composed_service = (<test_tip058b_transport.FixtureHttpsClient object at 0x0000026D9BFB1F70>, <vibemql5.fleet.transport.OwnerClient objec...0000026D9BFB3470>, <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x0000026D9D2BB330>)
+2026-10-05T09:04:49.9064097Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026D9BFB08C0>
+2026-10-05T09:04:49.9064772Z 
+2026-10-05T09:04:49.9065563Z     def test_actual_tls_inventory_discovery_read_project_and_production_native_denial(project_node, composed_service, monkeypatch):
+2026-10-05T09:04:49.9067627Z         facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service)
+2026-10-05T09:04:49.9068612Z         try:
+2026-10-05T09:04:49.9069184Z             node, selected = discover(facade, client, agent)
+2026-10-05T09:04:49.9070164Z             assert selected['terminal_id'] == project_node['registry']['terminals'][0]['terminal_id']
+2026-10-05T09:04:49.9071254Z             read = facade.read('get_account_snapshot', selected, 'read-discovered')
+2026-10-05T09:04:49.9072069Z             agent.step()
+2026-10-05T09:04:49.9072703Z             observed = facade.read_status(read['command_id'])['result']
+2026-10-05T09:04:49.9073717Z             assert observed['resolved_target'] == selected and observed['source'] == 'SYNTHETIC_TEST'
+2026-10-05T09:04:49.9075045Z             queued = facade.domain('/fleet/v1/projects/get', node, 'get-project', {'project_id': 'P'})
+2026-10-05T09:04:49.9075997Z             agent.step()
+2026-10-05T09:04:49.9076780Z             assert facade.command_status(queued['command_id'])['result']['project_id'] == 'P'
+2026-10-05T09:04:49.9077721Z             frozen = freeze(project_node, target=selected)
+2026-10-05T09:04:49.9078423Z             source = project_node['source'].read_bytes()
+2026-10-05T09:04:49.9079378Z             request = native_request(frozen, logical_fixture(), [{'path': 'Experts/DemoEA.mq5',
+2026-10-05T09:04:49.9080445Z                 'sha256': hashlib.sha256(source).hexdigest(), 'bytes': len(source)}])
+2026-10-05T09:04:49.9081506Z             queued = facade.launch_job('native-denial', request)
+2026-10-05T09:04:49.9082509Z >           pump(agent, lambda: facade.get_job(queued['global_job_id'])['state'] == 'FAILED')
+2026-10-05T09:04:49.9083131Z 
+2026-10-05T09:04:49.9083384Z tests\unit\test_tip064_integration.py:449: 
+2026-10-05T09:04:49.9084381Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+2026-10-05T09:04:49.9084866Z 
+2026-10-05T09:04:49.9085318Z agent = <vibemql5.fleet.transport.OutboundNode object at 0x0000026D9BF32780>
+2026-10-05T09:04:49.9087120Z predicate = <function test_actual_tls_inventory_discovery_read_project_and_production_native_denial.<locals>.<lambda> at 0x0000026D9D7796C0>
+2026-10-05T09:04:49.9088395Z seconds = 3
+2026-10-05T09:04:49.9088667Z 
+2026-10-05T09:04:49.9088880Z     def pump(agent, predicate, *, seconds=3):
+2026-10-05T09:04:49.9089652Z         deadline = time.monotonic() + seconds
+2026-10-05T09:04:49.9090275Z         while time.monotonic() < deadline:
+2026-10-05T09:04:49.9090834Z             agent.step()
+2026-10-05T09:04:49.9091334Z             if predicate(): return
+2026-10-05T09:04:49.9091861Z             time.sleep(.005)
+2026-10-05T09:04:49.9092498Z >       pytest.fail('bounded fixture did not reach expected state')
+2026-10-05T09:04:49.9093289Z E       Failed: bounded fixture did not reach expected state
+2026-10-05T09:04:49.9093802Z 
+2026-10-05T09:04:49.9094076Z tests\unit\test_tip064_integration.py:414: Failed
+2026-10-05T09:04:49.9094813Z =========================== short test summary info ===========================
+2026-10-05T09:04:49.9095670Z SKIPPED [1] tests\unit\test_tip040_live_vps.py:363: No deployed MT5-2 root
+2026-10-05T09:04:49.9096856Z SKIPPED [1] tests\unit\test_tip040_live_vps.py:412: No deployed MT5-2 root
+2026-10-05T09:04:49.9097993Z SKIPPED [1] tests\unit\test_tip055a_runtime_forensics_identity.py:261: POSIX symlink fixture; Windows junction evidence is a separate gate
+2026-10-05T09:04:49.9099053Z SKIPPED [1] tests\unit\test_tip055a_runtime_forensics_identity.py:454: Windows paths are observable only in the Windows deployment gate
+2026-10-05T09:04:49.9100038Z SKIPPED [1] tests\unit\test_tip056_scoped.py:197: POSIX FIFO regression requires mkfifo
+2026-10-05T09:04:49.9100927Z SKIPPED [3] tests\unit\test_tip057n_qualification.py:155: POSIX_PERMISSIONS_ONLY; Windows retained-handle ACL gate separate
+2026-10-05T09:04:49.9101943Z SKIPPED [1] tests\unit\test_tip058a_gateway_control.py:292: POSIX symlink spelling; Windows real cooperative writer test is platform-neutral
+2026-10-05T09:04:49.9103026Z SKIPPED [1] tests\unit\test_tip064_integration.py:144: POSIX writable-mode rejection; Windows protected-owner/ACL positive is tested separately
+2026-10-05T09:04:49.9104137Z SKIPPED [1] tests\unit\test_tip065_deployment_preflight.py:186: POSIX symlink control; actual Windows reparse qualification is separate
+2026-10-05T09:04:49.9105205Z SKIPPED [1] tests\unit\test_tip065_deployment_preflight.py:201: POSIX nonblocking FIFO swap control; no Windows FIFO primitive
+2026-10-05T09:04:49.9106004Z 3 failed, 1188 passed, 12 skipped in 403.69s (0:06:43)
+2026-10-05T09:04:50.1830476Z ##[error]Process completed with exit code 1.
+2026-10-05T09:04:50.2094807Z Post job cleanup.
+2026-10-05T09:04:50.3676783Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-05T09:04:50.3891657Z git version 2.55.0.windows.5
+2026-10-05T09:04:50.3949041Z Temporarily overriding HOME='D:\a\_temp\0905ebe8-774a-4537-b5b1-cf5155bd12f8' before making global git config changes
+2026-10-05T09:04:50.3950031Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T09:04:50.3957409Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-05T09:04:50.4225083Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T09:04:50.4455415Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-05T09:04:50.8469772Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T09:04:50.8658943Z http.https://github.com/.extraheader
+2026-10-05T09:04:50.8693288Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-05T09:04:50.8915657Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-05T09:04:51.3061053Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T09:04:51.3291209Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-05T09:04:51.7666606Z Cleaning up orphan processes
+2026-10-05T09:04:51.8172980Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

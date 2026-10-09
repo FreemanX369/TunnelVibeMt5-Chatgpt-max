@@ -1,0 +1,26 @@
+{
+  "scope": "RETAINED_V1_CI_OBSERVATION",
+  "current_VPS_cause": "UNKNOWN",
+  "other_Deep_failure_causes": "UNKNOWN",
+  "logs": [
+    {
+      "path": "deepfix-20261007/candidate-evidence/metadata/job-112573872799-final.raw.log",
+      "bytes": 587047,
+      "sha256": "214c4f017d69873ad0c959091bb9364c4d5a133e7aad5add51753fc527887c0c",
+      "contains_setup_and_teardown_update_current_test_var": 4,
+      "windows_environment_length_errors": 2,
+      "long_error_line_lengths": [
+        130217,
+        130217
+      ]
+    },
+    {
+      "path": "deepfix-20261007/candidate-evidence/metadata/job-112573873251-final.raw.log",
+      "bytes": 305070,
+      "sha256": "6a72aaf1289c36ceb0c892230fe179bf461196b9aa580a1c67e106e21a587a08",
+      "contains_setup_and_teardown_update_current_test_var": 4,
+      "windows_environment_length_errors": 2,
+      "long_error_line_lengths": []
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "source_head": "55b2a12234f858125880f783d81de52feae10bdf",
+  "checkout_merge_head": "4f84a25cadd90236350d8d88e3bae7c9d787f656",
+  "checkout_tree_equivalent": true,
+  "workflow_successes": 6,
+  "workflow_failures": 1,
+  "bootstrap": {
+    "run_id": 37084763091,
+    "job_id": 111092624519,
+    "passed": 605,
+    "skipped": 5,
+    "seconds": 50.57,
+    "log_sha256": "b43ebc75471c806be58975210f9cb7431a8b62907a5f96f274d6e48b53c58227"
+  },
+  "deep_update": {
+    "run_id": 37084763092,
+    "job_id": 111092624505,
+    "passed": 602,
+    "failed": 3,
+    "skipped": 5,
+    "seconds": 97.07,
+    "log_sha256": "27fc919af32f28b6a344b9649c49e33da3a0e8c0ee828c9147662ac19ab78da7",
+    "reason": "Normal backup fixtures use explicit 25 ms SQLite busy/backup deadline, exhausted under Windows CI load. Preserve separate bounded contention coverage; refine normal fixture budget and rerun candidate."
+  },
+  "classification": "SUPERSEDED_SOURCE_CHECKPOINT_NOT_FINAL_WINDOWS_PASS",
+  "physical_vm_sdk_tests": "DEFERRED"
+}

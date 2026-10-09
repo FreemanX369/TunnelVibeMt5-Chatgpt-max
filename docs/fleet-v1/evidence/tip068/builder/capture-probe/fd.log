@@ -1,0 +1,41 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496
+collecting ... collected 1 item
+
+resume-20261006/tip068-investigation/test_control_dump.py::test_control_dump Timeout (0:00:00.100000)!
+Thread 0x00007fb50df0a740 (most recent call first):
+  File "/workspace/scratch/b4674f0ac496/resume-20261006/tip068-investigation/test_control_dump.py", line 3 in test_control_dump
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main

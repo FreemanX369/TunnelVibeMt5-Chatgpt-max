@@ -1,0 +1,34 @@
+...............sss.TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'TimeoutError', 'elapsed_ms': 0, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0}
+.TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'SSLCertVerificationError', 'elapsed_ms': 0, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0}
+.TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'BadStatusLine', 'elapsed_ms': 0, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0}
+.TRANSPORT_HTTPS_FIXTURE {'code': 'OWNER_UNAUTHORIZED', 'cause_type': 'NoneType', 'elapsed_ms': 3, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0}
+.TRANSPORT_HTTPS_FIXTURE {'code': 'HTTPS_UNAVAILABLE', 'cause_type': 'TimeoutError', 'elapsed_ms': 1002, 'http_timeout_ms': 1000, 'server_thread_alive': True, 'server_failure_count': 0}
+...----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 59064)
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 318, in _handle_request_noblock
+    self.process_request(request, client_address)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 349, in process_request
+    self.finish_request(request, client_address)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 408, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1818a0d45fa0/repo/app/vibemql5/fleet/transport.py", line 245, in readinto
+    return self.connection.recv_into(buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/ssl.py", line 1263, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/ssl.py", line 1115, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+............................
+51 passed, 3 skipped in 4.45s

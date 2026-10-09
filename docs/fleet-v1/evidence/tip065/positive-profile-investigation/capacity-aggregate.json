@@ -1,0 +1,52 @@
+{
+  "classification": "CONTROLLED_SCHEDULING_NOT_HISTORICAL_CAUSE",
+  "delays_before_steps": [
+    0.6001137939999808,
+    0.6000963479999939,
+    0.6001015779999932
+  ],
+  "facts": {
+    "callback_count": 2,
+    "completion_set": true,
+    "elapsed_ms": 1899,
+    "outside_observed_posts_ms": 1816,
+    "pending_worker_count": 2,
+    "post_count": 6,
+    "post_elapsed_ms": 83,
+    "posts": [
+      {
+        "elapsed_ms": 4,
+        "outcome": "RETURNED",
+        "route": "HEARTBEAT"
+      },
+      {
+        "elapsed_ms": 24,
+        "outcome": "RETURNED",
+        "route": "POLL"
+      },
+      {
+        "elapsed_ms": 4,
+        "outcome": "RETURNED",
+        "route": "HEARTBEAT"
+      },
+      {
+        "elapsed_ms": 24,
+        "outcome": "RETURNED",
+        "route": "POLL"
+      },
+      {
+        "elapsed_ms": 4,
+        "outcome": "RETURNED",
+        "route": "HEARTBEAT"
+      },
+      {
+        "elapsed_ms": 23,
+        "outcome": "RETURNED",
+        "route": "POLL"
+      }
+    ],
+    "release_set": false,
+    "rows_truncated": false
+  },
+  "real_owner_cleanup_returned": true
+}

@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "causal_gate_plugin_v2",
+    "-p",
+    "no:cacheprovider",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/causal-red.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/causal-red-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit:/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OWNED_CAUSAL_RECEIPT": "/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/causal-red.json"
+  },
+  "timeout_s": 45,
+  "exit_code": 1,
+  "wall_s": 14.856099487000165,
+  "cases": 2,
+  "passed": 0,
+  "failed": 2,
+  "source_entries": 217,
+  "source_unchanged": true
+}

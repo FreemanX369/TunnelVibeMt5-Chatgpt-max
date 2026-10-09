@@ -1,0 +1,62 @@
+[
+  {
+    "phase": "setup",
+    "diagnostic": {
+      "errno": 13,
+      "exception_type": "PermissionError",
+      "file": "tests/unit/test_control.py",
+      "frames": [
+        {
+          "file": "tests/unit/test_control.py",
+          "function": "fixture",
+          "line": 5
+        }
+      ],
+      "function": "test_failed",
+      "ordinal": 1,
+      "phase": "setup"
+    },
+    "junit_exists": false,
+    "progress_rows": 3
+  },
+  {
+    "phase": "call",
+    "diagnostic": {
+      "errno": 13,
+      "exception_type": "PermissionError",
+      "file": "tests/unit/test_control.py",
+      "frames": [
+        {
+          "file": "tests/unit/test_control.py",
+          "function": "test_failed",
+          "line": 7
+        }
+      ],
+      "function": "test_failed",
+      "ordinal": 1,
+      "phase": "call"
+    },
+    "junit_exists": false,
+    "progress_rows": 3
+  },
+  {
+    "phase": "teardown",
+    "diagnostic": {
+      "errno": 13,
+      "exception_type": "PermissionError",
+      "file": "tests/unit/test_control.py",
+      "frames": [
+        {
+          "file": "tests/unit/test_control.py",
+          "function": "fixture",
+          "line": 6
+        }
+      ],
+      "function": "test_failed",
+      "ordinal": 1,
+      "phase": "teardown"
+    },
+    "junit_exists": false,
+    "progress_rows": 3
+  }
+]

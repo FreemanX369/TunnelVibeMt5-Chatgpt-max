@@ -1,0 +1,56 @@
+{
+  "schema": "tip065.legacy-observation-overlay/1",
+  "source_parent": "f25ec99e174a662928b05db5c21f92c5ef47a0cc",
+  "scope": "READ_ONLY_PREFLIGHT_WITH_RETAINED_LEGACY_EXECUTION",
+  "installed_tree": "MIXED_NOT_FULL_SOURCE_CANDIDATE",
+  "physical_qualification": "NOT_RUN",
+  "full_fleet_activation": "OPEN",
+  "files": [
+    {
+      "path": "app/vibemql5/adapters/cli.py",
+      "sha256": "38adc3d69ac1afa11a2c41885e922125525a64bd112bf06021bd1ebff9d901d9",
+      "bytes": 14126,
+      "expected_previous_sha256": "7b01dbdd1e7dfbc027537e09be69246a4ce0d98bfd2d67ca692ab9540ed76719"
+    },
+    {
+      "path": "app/vibemql5/adapters/mcp.py",
+      "sha256": "520a757513230276bca92150e533b934a09dfaa8838cc4ac5d226b9dc1463a57",
+      "bytes": 42001,
+      "expected_previous_sha256": "d50d2896fb80837af113a985ddc65cbc12bffa8ffa26e57b7257726911a9de99"
+    },
+    {
+      "path": "app/vibemql5/core/deployment_preflight.py",
+      "sha256": "ee3a83a601dc5363a70444b8fe446d9624df0687edc41a96a24dfa3973b65b5d",
+      "bytes": 10111,
+      "expected_previous_sha256": ""
+    },
+    {
+      "path": "app/vibemql5/core/native_ownership.py",
+      "sha256": "73183b02324d9e29b72c60f2e7b8b1e1c5e1e07fd6f5742dc3c3690857273514",
+      "bytes": 20187,
+      "expected_previous_sha256": "857bef23426df32fbc41ae58e456a869c6533d3ab59b3dc2f6eba034cad20e87"
+    },
+    {
+      "path": "app/vibemql5/core/provenance.py",
+      "sha256": "57120cc7699acd2f8a4991b544670e6a11342a3c20d17184d83216f09e7bdfd3",
+      "bytes": 3951,
+      "expected_previous_sha256": "a1bfa2ac6f6dfd6a4718ceae104c124c7e769bae6b746fb3526a009a2484fafa"
+    }
+  ],
+  "adapter_derivation": {
+    "retained_mcp_sha256": "d50d2896fb80837af113a985ddc65cbc12bffa8ffa26e57b7257726911a9de99",
+    "overlay_mcp_sha256": "520a757513230276bca92150e533b934a09dfaa8838cc4ac5d226b9dc1463a57",
+    "import_additions": 1,
+    "server_info_field_additions": 1,
+    "other_changes": 0
+  },
+  "schema_binding": {
+    "catalog_count": 85,
+    "legacy_before_schema_sha256": "dd6a0e5b8dc61ee832054b6c0e5f889ef8c362b85f062e1d122a5fae03fd771e",
+    "legacy_overlay_schema_sha256": "dd6a0e5b8dc61ee832054b6c0e5f889ef8c362b85f062e1d122a5fae03fd771e",
+    "full_source_schema_sha256": "64337437115a20a8555cc1214706a503b985195dbdbd219de2adfa35e2c8134d",
+    "legacy_schemas_unchanged": true,
+    "full_source_schemas_unchanged_from_f25": true
+  },
+  "new_path_rule": "EMPTY_EXPECTED_SHA_SERVER_ENFORCED_CREATE_ONLY_CAS_NOT_INVALID_ARGUMENT_ABSENCE"
+}

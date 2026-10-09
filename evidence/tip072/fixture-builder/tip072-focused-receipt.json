@@ -1,0 +1,30 @@
+{
+  "name": "tip072-focused",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/tip072-focused.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/tip072-focused_tmp",
+    "tests/unit/test_tip072_native_denied_publication.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip072-builder/app:/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit"
+  },
+  "limit_seconds": 180,
+  "exit_code": 0,
+  "wall_time_seconds": 0.527764660999992,
+  "case_count": 31,
+  "passed": 31,
+  "skipped": 0,
+  "failures": [],
+  "source_unchanged": true,
+  "source_manifest_entries": 217
+}

@@ -1,0 +1,7 @@
+Independent setup command, before pytest, exit1:
+fatal: cannot change to 'tip067-builder': No such file or directory
+sha256sum: tip067-builder/tests/unit/test_tip064_integration.py: No such file or directory
+sha256sum: tip067-builder/tests/unit/test_tip064_capacity_https.py: No such file or directory
+/bin/bash: line 4: /workspace/scratch/b4674f0ac496/resume-20261006/tip067-contractor/focused.log: No such file or directory
+Cause: cwd already /workspace/scratch/b4674f0ac496/tip067-builder; relative worktree prefix repeated.
+No pytest process started, no source/VPS effect. Corrected command is retained separately.

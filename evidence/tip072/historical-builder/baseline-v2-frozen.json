@@ -1,0 +1,15 @@
+{
+  "source_head": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "source_tree": "29426b4fa2fdf0aefbcc4e0273b1f465d5b554c3",
+  "production_sha256": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+  "new_test_v2_sha256": "8e238ed853dea1d1283c07ac12bde9c2166e339fb14178edd1e74de573494d81",
+  "tests": 31,
+  "failed": 3,
+  "passed": 28,
+  "failed_controls": [
+    "test_live_owner_denial_keeps_ticket_and_owner_as_barrier",
+    "test_qualified_denial_preserves_fifo_until_owner_releases",
+    "test_qualified_denial_keeps_original_zero_wait_deadline"
+  ],
+  "source_manifest_entries": 217
+}

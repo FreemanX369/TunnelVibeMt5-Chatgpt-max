@@ -1,0 +1,12 @@
+{
+  "callback_calls": 1,
+  "classification": "CONTROLLED_FIXTURE_FAILURE_MASKING_NOT_ORIGINAL_CAUSE",
+  "original_identity_propagated": false,
+  "outer_failure_type": "Failed",
+  "terminal_outcomes": [
+    {
+      "reason_code": "EXECUTION_OUTCOME_UNKNOWN",
+      "state": "UNKNOWN"
+    }
+  ]
+}

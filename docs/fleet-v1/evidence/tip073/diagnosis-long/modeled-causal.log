@@ -1,0 +1,97 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000] _
+  + Exception Group Traceback (most recent call last):
+  |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 1467, in test_long_fixture_valid_finite_schedule_requires_aggregate_observation
+  |     run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+  |   File "/workspace/scratch/b4674f0ac496/fix-20261007-1748/long-fixture-builder/causal_gate_plugin.py", line 63, in gated_run
+  |     return run(*args, **kwargs)
+  |            ^^^^^^^^^^^^^^^^^^^^
+  |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 1433, in run_long_fixture
+  |     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
+  |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 1398, in run_long_fixture
+    |     pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 1412, in run_long_fixture
+    |     close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+    |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/fleet_gateway_fixture.py", line 44, in close_dispatcher_fixture
+    |     pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +------------------------------------
+----------------------------- Captured stdout call -----------------------------
+LONG_OWNER_FIXTURE {"latest": {"elapsed_ms": 8147, "job_state": "STARTING", "pending_futures": 1, "pending_native_records": 1, "read_elapsed_ms": 2, "stage": "CONTROL_FINISH", "step_elapsed_ms": 73}, "milestones": {"CALLBACK_START": 154, "CLEANUP_RELEASE": 5118, "CONTROL_FINISH": 8147, "CONTROL_START": 8073, "JOB_READ": 5113, "WORKER_START": 76}, "timeline": [{"elapsed_ms": 6853, "stage": "CONTROL_START"}, {"elapsed_ms": 6925, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 72}, {"elapsed_ms": 6931, "stage": "CONTROL_START"}, {"elapsed_ms": 7005, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 74}, {"elapsed_ms": 7010, "stage": "CONTROL_START"}, {"elapsed_ms": 7089, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 79}, {"elapsed_ms": 7094, "stage": "CONTROL_START"}, {"elapsed_ms": 7174, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 79}, {"elapsed_ms": 7179, "stage": "CONTROL_START"}, {"elapsed_ms": 7257, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 78}, {"elapsed_ms": 7262, "stage": "CONTROL_START"}, {"elapsed_ms": 7342, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 79}, {"elapsed_ms": 7347, "stage": "CONTROL_START"}, {"elapsed_ms": 7420, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 72}, {"elapsed_ms": 7425, "stage": "CONTROL_START"}, {"elapsed_ms": 7498, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 73}, {"elapsed_ms": 7503, "stage": "CONTROL_START"}, {"elapsed_ms": 7578, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 74}, {"elapsed_ms": 7583, "stage": "CONTROL_START"}, {"elapsed_ms": 7660, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 76}, {"elapsed_ms": 7665, "stage": "CONTROL_START"}, {"elapsed_ms": 7739, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 74}, {"elapsed_ms": 7744, "stage": "CONTROL_START"}, {"elapsed_ms": 7825, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 80}, {"elapsed_ms": 7830, "stage": "CONTROL_START"}, {"elapsed_ms": 7907, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 77}, {"elapsed_ms": 7913, "stage": "CONTROL_START"}, {"elapsed_ms": 7987, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 74}, {"elapsed_ms": 7993, "stage": "CONTROL_START"}, {"elapsed_ms": 8068, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 75}, {"elapsed_ms": 8073, "stage": "CONTROL_START"}, {"elapsed_ms": 8147, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 73}], "timeline_dropped": 389, "timeline_limit": 32, "timeline_total": 421}
+_ test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000] _
+
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-2/test_long_fixture_valid_finite1'), 'terminals': [TerminalInfo(alias='...ce': PosixPath('/tmp/pytest-of-root/pytest-2/test_long_fixture_valid_finite1/workspaces/demo/Experts/DemoEA.mq5'), ...}
+composed_service = (<test_tip058b_transport.FixtureHttpsClient object at 0x7f91cb2a1130>, <vibemql5.fleet.transport.OwnerClient object at 0x7f91cb2a1160>, <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f91cb223790>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f91cb4aa450>
+seconds = 10
+
+    @pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+    @pytest.mark.parametrize('seconds', [5, 10])
+    def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(project_node, composed_service, monkeypatch, seconds):
+        from vibemql5.fleet.job_journal import NodeJobJournal
+        from vibemql5.fleet.transport import NodeRpcProxy
+        begin, complete = NodeJobJournal.begin_effect, NodeJobJournal.complete_effect
+        outcome, request = NodeJobJournal._outcome, NodeRpcProxy._request
+        holds, outcomes, requests = [], [], []
+        def held_begin(self, job, phase, event, **kwargs):
+            # Delay before a fresh intent, never an in-flight grant or request.
+            time.sleep(.7); holds.append(('BEGIN', event))
+            return begin(self, job, phase, event, **kwargs)
+        def held_complete(self, job, phase, event, proof, **kwargs):
+            # Delay publication of already-observed harmless completion.
+            time.sleep(.7); holds.append(('COMPLETE', event))
+            return complete(self, job, phase, event, proof, **kwargs)
+        def observed_outcome(self, record, state, result):
+            row = outcome(self, record, state, result)
+            outcomes.append((row['state'], (row['result'] or {}).get('evidence')))
+            return row
+        def observed_request(self, kind, payload):
+            started = time.monotonic()
+            result = request(self, kind, payload)
+            requests.append((kind, time.monotonic() - started))
+            return result
+        monkeypatch.setattr(NodeJobJournal, 'begin_effect', held_begin)
+        monkeypatch.setattr(NodeJobJournal, 'complete_effect', held_complete)
+        monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+        monkeypatch.setattr(NodeRpcProxy, '_request', observed_request)
+        if seconds == 5:
+            with pytest.raises(pytest.fail.Exception, match='^bounded fixture did not reach expected state$'):
+                run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+        else:
+            # Runs every original proof-expiry, fresh-phase, ACK-before-return and
+            # final empty-record assertion, through the same actual TLS helper.
+            run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+        assert len(holds) == 6
+        assert len(requests) == 5
+        assert all(kind == 'START_AUTHORIZE' and elapsed < composed_service[0].policy.http_timeout_ms / 1000
+            for kind, elapsed in requests)
+>       assert outcomes == [('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')]
+E       AssertionError: assert [('UNKNOWN', ...NATIVE_ONLY')] == [('SUCCEEDED'...NATIVE_ONLY')]
+E         
+E         At index 0 diff: ('UNKNOWN', None) != ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+E         Left contains one more item: ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+E         Use -v to get more diff
+
+tests/unit/test_tip064_integration.py:1476: AssertionError
+----------------------------- Captured stdout call -----------------------------
+LONG_OWNER_FIXTURE {"latest": {"elapsed_ms": 5972, "job_state": "SUCCEEDED", "native_state": "SUCCEEDED", "pending_futures": 0, "pending_native_records": 0, "read_elapsed_ms": 3, "stage": "DRAIN_FINISH", "step_elapsed_ms": 68}, "milestones": {"ACK_RELEASE": 5892, "CALLBACK_COMPLETE": 5691, "CALLBACK_START": 128, "CLEANUP_RELEASE": 5971, "CONTROL_FINISH": 5965, "CONTROL_START": 5897, "DRAIN_FINISH": 5972, "JOB_READ": 5968, "NATIVE_RESULT": 5745, "RETURN_FINISH": 5892, "RETURN_WAIT": 5745, "WORKER_START": 54}, "timeline": [{"elapsed_ms": 5252, "job_state": "STARTING", "read_elapsed_ms": 2, "stage": "JOB_READ"}, {"elapsed_ms": 5257, "stage": "CONTROL_START"}, {"elapsed_ms": 5323, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 65}, {"elapsed_ms": 5326, "job_state": "STARTING", "read_elapsed_ms": 3, "stage": "JOB_READ"}, {"elapsed_ms": 5332, "stage": "CONTROL_START"}, {"elapsed_ms": 5402, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 70}, {"elapsed_ms": 5405, "job_state": "STARTING", "read_elapsed_ms": 2, "stage": "JOB_READ"}, {"elapsed_ms": 5410, "stage": "CONTROL_START"}, {"elapsed_ms": 5476, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 66}, {"elapsed_ms": 5479, "job_state": "STARTING", "read_elapsed_ms": 2, "stage": "JOB_READ"}, {"elapsed_ms": 5484, "stage": "CONTROL_START"}, {"elapsed_ms": 5551, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 66}, {"elapsed_ms": 5555, "job_state": "STARTING", "read_elapsed_ms": 3, "stage": "JOB_READ"}, {"elapsed_ms": 5560, "stage": "CONTROL_START"}, {"elapsed_ms": 5630, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 70}, {"elapsed_ms": 5633, "job_state": "STARTING", "read_elapsed_ms": 3, "stage": "JOB_READ"}, {"elapsed_ms": 5638, "stage": "CONTROL_START"}, {"elapsed_ms": 5691, "stage": "CALLBACK_COMPLETE"}, {"elapsed_ms": 5745, "native_state": "SUCCEEDED", "stage": "NATIVE_RESULT"}, {"elapsed_ms": 5745, "stage": "RETURN_WAIT"}, {"elapsed_ms": 5767, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 128}, {"elapsed_ms": 5770, "job_state": "STARTING", "read_elapsed_ms": 3, "stage": "JOB_READ"}, {"elapsed_ms": 5775, "stage": "CONTROL_START"}, {"elapsed_ms": 5887, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 112}, {"elapsed_ms": 5892, "job_state": "SUCCEEDED", "read_elapsed_ms": 4, "stage": "JOB_READ"}, {"elapsed_ms": 5892, "stage": "ACK_RELEASE"}, {"elapsed_ms": 5892, "stage": "RETURN_FINISH"}, {"elapsed_ms": 5897, "stage": "CONTROL_START"}, {"elapsed_ms": 5965, "pending_futures": 0, "pending_native_records": 0, "stage": "CONTROL_FINISH", "step_elapsed_ms": 68}, {"elapsed_ms": 5968, "job_state": "SUCCEEDED", "read_elapsed_ms": 3, "stage": "JOB_READ"}, {"elapsed_ms": 5971, "stage": "CLEANUP_RELEASE"}, {"elapsed_ms": 5972, "pending_futures": 0, "pending_native_records": 0, "stage": "DRAIN_FINISH"}], "timeline_dropped": 336, "timeline_limit": 32, "timeline_total": 368}
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]
+FAILED tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]
+2 failed in 14.60s

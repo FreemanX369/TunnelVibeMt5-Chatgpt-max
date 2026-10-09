@@ -1,0 +1,30 @@
+{
+  "schema": "tip070-v2.contractor-evidence/1",
+  "files": [
+    {
+      "path": "collection.log",
+      "bytes": 6104,
+      "sha256": "68ee8454ad1008163cc9b87675b39754af127a5f26142ea70664dc107ec8547a"
+    },
+    {
+      "path": "focused.junit.xml",
+      "bytes": 16981,
+      "sha256": "4505e5a0edc2250f3c44ef3447bf00ac973a351515327723d5bf36c5923a85bd"
+    },
+    {
+      "path": "focused.log",
+      "bytes": 48291,
+      "sha256": "d2766e0a22b7660ee3b704aff88e81b0ba1a44d4cd1da55cb078b93fa0779238"
+    },
+    {
+      "path": "review-receipt.json",
+      "bytes": 1147,
+      "sha256": "45561e86a623fa022d56f455c07270b3b09a57d64a0f9c2bfc0230f6cb139a41"
+    },
+    {
+      "path": "setup-error.json",
+      "bytes": 228,
+      "sha256": "0ee5005a85ba973ba8774254df2186f4599fdd7b6936b60a57e09e7a16977971"
+    }
+  ]
+}

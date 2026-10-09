@@ -1,0 +1,7 @@
+{
+  "status": "VERIFIER_ASSERTION_ERROR_ONLY",
+  "error": "KeyError: 'function'",
+  "tests_status": "101_PASS",
+  "reason": "Safe observer intentionally omits labels for four malformed-ID cases; ordinal/outcome remain verified",
+  "source_modified": false
+}

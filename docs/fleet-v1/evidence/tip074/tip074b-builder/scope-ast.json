@@ -1,0 +1,31 @@
+{
+  "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "parent_source_files": 217,
+  "fixed_source_files": 218,
+  "changed_existing_paths": [
+    "app/vibemql5/fleet/wire.py"
+  ],
+  "new_paths": [
+    "tests/unit/test_tip074_wire_unicode.py"
+  ],
+  "parent217_unchanged": true,
+  "all216_other_existing_files_byte_identical": true,
+  "all_existing_test_files_byte_identical": true,
+  "production_ast_diff_exactly_one_condition": true,
+  "original_fallback_generator_ast_identical": true,
+  "new_condition": "not (type(value) is str and value.isascii()) and any((55296 <= ord(char) <= 57343 for char in value))",
+  "files": {
+    "wire.parent.py": {
+      "bytes": 9842,
+      "sha256": "48b3d18123e93735107360e899af893abd0bc606a179793dc085b973ae1f398e"
+    },
+    "wire.fixed.py": {
+      "bytes": 9891,
+      "sha256": "7ae01084cb19e922c7d2fb81da222b797bda4b32a91ed1217921e0d1782b557c"
+    },
+    "test_tip074_wire_unicode.fixed.py": {
+      "bytes": 4178,
+      "sha256": "38dbc98571dd4639d02ad0dc3084bb81618fa379d0db6484c94d6f2038a25604"
+    }
+  }
+}

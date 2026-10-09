@@ -1,0 +1,40 @@
+{
+  "cwd": "/workspace/scratch/b4674f0ac496/tip070-builder",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip070-builder/app:/workspace/scratch/b4674f0ac496/tip070-builder/tests/unit",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "tests/unit/test_tip070_sync_test_receipts.py",
+    "tests/unit/test_tip047_049_backend_contracts.py",
+    "tests/unit/test_backend_restore_cas.py",
+    "tests/unit/test_tip066_live_diagnostics.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007/tip070-builder/focused-v1.junit.xml"
+  ],
+  "prior_setup_attempt": {
+    "exit_code": 4,
+    "log": "focused-v0.log",
+    "tests_collected": false,
+    "command": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "fleet_source_progress",
+      "--fleet-source-progress",
+      "tests/unit/test_tip070_sync_test_receipts.py",
+      "tests/unit/test_tip047_049_backend_contracts.py",
+      "tests/unit/test_backend_restore_cas.py",
+      "tests/unit/test_tip066_live_diagnostics.py"
+    ],
+    "freeze_setup_error": "Wrong relative base while cwd was tip070-builder; no freeze record or test collection occurred."
+  }
+}

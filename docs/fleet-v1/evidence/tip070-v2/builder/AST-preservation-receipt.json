@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "parameter_inputs_function_bodies_assertions_and_entire_module_AST_unchanged_except_ids_keyword": true,
+  "explicit_ids": [
+    "bytes",
+    "text",
+    "unicode",
+    "none"
+  ],
+  "other214source_entries_identical_to_exact049": true,
+  "core_sha_unchanged": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18",
+  "changed_parent_source_paths": [
+    "tests/unit/test_tip070_sync_test_receipts.py"
+  ]
+}

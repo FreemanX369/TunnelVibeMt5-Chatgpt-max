@@ -1,0 +1,6 @@
+{
+  "http_and_control_round_ms": 5000,
+  "actual_CONTROL_REPLAY_denial": true,
+  "actual_session_conflict_denial": true,
+  "actual_unauthorized_owner_denial": true
+}

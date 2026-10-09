@@ -1,0 +1,556 @@
+{
+  "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "broker_sdk": "OPEN",
+  "candidate_sha": "6b84209a0af2db23e0f64cf4aa866e1580333555",
+  "elapsed_ms": 10187.000000000011,
+  "error": "WINDOWS_STARTUP_CHECKPOINT_BLOCKED",
+  "error_type": "RuntimeError",
+  "errors": 0,
+  "exact_head_verified": true,
+  "expected_head_sha": "6b84209a0af2db23e0f64cf4aa866e1580333555",
+  "failures": 0,
+  "fixture_exe_sha256": "ec8a787caa2c3259b2a59e9a10a7225343667be5e7d28b6f23e199aee8be3dd0",
+  "full_suite_attempted": false,
+  "git_blob_sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "bbe7ec83099217cde3f96b996bde9bd7316831faad4d654dc210087a533c6305",
+    "run_proof.py": "6263fec47894b960cf4f696add32cfab5ada1011c26c42c8e010288bc757e0d8",
+    "windows_boundary.py": "c248ce8d0abda7cce8bd18fdae8d493009cd36edb649338b38f5478a007c56e6"
+  },
+  "github_event_sha": "0eb76127824484a138891c67a80821fb8ee459e7",
+  "mode": "REAL_WINDOWS_REQUIRED",
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "proof_log": {
+    "original_bytes": 9066,
+    "original_sha256": "76ac6d010bf29ef87617f642e0026e74c86406dec588b588cc9ac4e9baf8fe94",
+    "retained_bytes": 9066,
+    "truncated": false
+  },
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "case": "startup_checkpoint",
+      "cleanup_errors": [],
+      "control_passed": true,
+      "executable_security": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "inherited_handles": "file-backed stdio only",
+      "marker": {
+        "pid": 6584,
+        "positive_marker": true
+      },
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": false,
+      "root_security": {
+        "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "stderr_tail": "",
+      "variant": "plain_unrestricted_console",
+      "writer": {
+        "appcontainer": 0,
+        "child_restricted": 0,
+        "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf\\positive-marker.json",
+        "crt_errno": 0,
+        "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf",
+        "error_source": "NONE",
+        "exit_error": 0,
+        "integrity_rid": 12288,
+        "path_limit_chars": 256,
+        "pid": 6584,
+        "policy_query_ok": 1,
+        "requested_bytes": 36,
+        "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf",
+        "root_attributes": 16,
+        "root_error": 0,
+        "token_error": 0,
+        "win32_error": 0,
+        "write_stage": "COMPLETE",
+        "write_success": true,
+        "written_bytes": 36
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "cleanup_errors": [],
+      "control_passed": false,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-539447314-1306613960-111904545-2031406853-205869076-3920672247-2293281550)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "exit_code": 5,
+      "exit_code_hex": "0x00000005",
+      "inherited_handles": false,
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": false,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-539447314-1306613960-111904545-2031406853-205869076-3920672247-2293281550)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "variant": "granted_unrestricted_console",
+      "worker": {
+        "creation_100ns": 134354141823089142,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-bgkxp_ip\\fixture.exe",
+        "pid": 9072
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "cleanup_errors": [],
+      "control_passed": true,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-3611713298-2085104777-1462239234-3925136739-1953015045-1872252099-2744381079)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "inherited_handles": false,
+      "marker": {
+        "pid": 6164,
+        "positive_marker": true
+      },
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": true,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-3611713298-2085104777-1462239234-3925136739-1953015045-1872252099-2744381079)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "variant": "granted_restricted_console",
+      "worker": {
+        "creation_100ns": 134354141823474124,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-gpk1wto8\\fixture.exe",
+        "pid": 6164
+      },
+      "writer": {
+        "appcontainer": 1,
+        "child_restricted": 1,
+        "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8\\positive-marker.json",
+        "crt_errno": 0,
+        "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8",
+        "error_source": "NONE",
+        "exit_error": 0,
+        "integrity_rid": 4096,
+        "path_limit_chars": 256,
+        "pid": 6164,
+        "policy_query_ok": 1,
+        "requested_bytes": 36,
+        "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8",
+        "root_attributes": 16,
+        "root_error": 0,
+        "token_error": 0,
+        "win32_error": 0,
+        "write_stage": "COMPLETE",
+        "write_success": true,
+        "written_bytes": 36
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "cleanup_errors": [],
+      "control_passed": false,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-934310265-2021559697-1680468797-2521957443-2273656538-3211291927-1484916550)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "inherited_handles": false,
+      "no_console": true,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": false,
+      "restricted": true,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-934310265-2021559697-1680468797-2521957443-2273656538-3211291927-1484916550)S:AI",
+        "security_information": "DACL_AND_LABEL"
+      },
+      "variant": "granted_restricted_no_console",
+      "worker": {
+        "creation_100ns": 134354141823928096,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-o5o7z994\\fixture.exe",
+        "pid": 8784
+      }
+    }
+  ],
+  "schema": "tip057rq.proof/1",
+  "scope": "isolated harmless fixture paths only",
+  "skips": 0,
+  "source_blob_verified": true,
+  "sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "bbe7ec83099217cde3f96b996bde9bd7316831faad4d654dc210087a533c6305",
+    "run_proof.py": "6263fec47894b960cf4f696add32cfab5ada1011c26c42c8e010288bc757e0d8",
+    "windows_boundary.py": "c248ce8d0abda7cce8bd18fdae8d493009cd36edb649338b38f5478a007c56e6"
+  },
+  "startup_checkpoint": {
+    "qualification": "STARTUP_AND_MARKER_ONLY_NO_CHILD_DENIAL_CLAIM",
+    "required_controls_passed": false,
+    "variants": [
+      {
+        "cleanup_errors": [],
+        "control_passed": true,
+        "executable_security": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "inherited_handles": "file-backed stdio only",
+        "marker": {
+          "pid": 6584,
+          "positive_marker": true
+        },
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": false,
+        "root_security": {
+          "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "stderr_tail": "",
+        "variant": "plain_unrestricted_console",
+        "writer": {
+          "appcontainer": 0,
+          "child_restricted": 0,
+          "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf\\positive-marker.json",
+          "crt_errno": 0,
+          "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf",
+          "error_source": "NONE",
+          "exit_error": 0,
+          "integrity_rid": 12288,
+          "path_limit_chars": 256,
+          "pid": 6584,
+          "policy_query_ok": 1,
+          "requested_bytes": 36,
+          "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-42vgmerf",
+          "root_attributes": 16,
+          "root_error": 0,
+          "token_error": 0,
+          "win32_error": 0,
+          "write_stage": "COMPLETE",
+          "write_success": true,
+          "written_bytes": 36
+        }
+      },
+      {
+        "cleanup_errors": [],
+        "control_passed": false,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-539447314-1306613960-111904545-2031406853-205869076-3920672247-2293281550)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "exit_code": 5,
+        "exit_code_hex": "0x00000005",
+        "inherited_handles": false,
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": false,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-539447314-1306613960-111904545-2031406853-205869076-3920672247-2293281550)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "variant": "granted_unrestricted_console",
+        "worker": {
+          "creation_100ns": 134354141823089142,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-bgkxp_ip\\fixture.exe",
+          "pid": 9072
+        }
+      },
+      {
+        "cleanup_errors": [],
+        "control_passed": true,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-3611713298-2085104777-1462239234-3925136739-1953015045-1872252099-2744381079)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "inherited_handles": false,
+        "marker": {
+          "pid": 6164,
+          "positive_marker": true
+        },
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": true,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-3611713298-2085104777-1462239234-3925136739-1953015045-1872252099-2744381079)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "variant": "granted_restricted_console",
+        "worker": {
+          "creation_100ns": 134354141823474124,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-gpk1wto8\\fixture.exe",
+          "pid": 6164
+        },
+        "writer": {
+          "appcontainer": 1,
+          "child_restricted": 1,
+          "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8\\positive-marker.json",
+          "crt_errno": 0,
+          "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8",
+          "error_source": "NONE",
+          "exit_error": 0,
+          "integrity_rid": 4096,
+          "path_limit_chars": 256,
+          "pid": 6164,
+          "policy_query_ok": 1,
+          "requested_bytes": 36,
+          "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-gpk1wto8",
+          "root_attributes": 16,
+          "root_error": 0,
+          "token_error": 0,
+          "win32_error": 0,
+          "write_stage": "COMPLETE",
+          "write_success": true,
+          "written_bytes": 36
+        }
+      },
+      {
+        "cleanup_errors": [],
+        "control_passed": false,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-934310265-2021559697-1680468797-2521957443-2273656538-3211291927-1484916550)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "exit_code": 3221225794,
+        "exit_code_hex": "0xc0000142",
+        "inherited_handles": false,
+        "no_console": true,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": false,
+        "restricted": true,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-934310265-2021559697-1680468797-2521957443-2273656538-3211291927-1484916550)S:AI",
+          "security_information": "DACL_AND_LABEL"
+        },
+        "variant": "granted_restricted_no_console",
+        "worker": {
+          "creation_100ns": 134354141823928096,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-o5o7z994\\fixture.exe",
+          "pid": 8784
+        }
+      }
+    ]
+  },
+  "status": "BLOCKED",
+  "tests_run": 0
+}

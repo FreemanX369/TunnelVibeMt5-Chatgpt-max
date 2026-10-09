@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "whole_module_AST_unchanged_outside_db": true,
+  "normal_connect_signature_SQL_return_unchanged": true,
+  "parent_source_entries_unchanged": 214,
+  "new_test_file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py",
+  "production_files_changed": [
+    "app/vibemql5/fleet/scoped_resources.py"
+  ],
+  "source_entries_frozen": 216,
+  "committed_or_published": false,
+  "VPS_effects": false
+}

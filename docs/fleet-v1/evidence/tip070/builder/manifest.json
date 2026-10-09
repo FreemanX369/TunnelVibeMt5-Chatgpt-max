@@ -1,0 +1,72 @@
+[
+  {
+    "path": "commands.json",
+    "bytes": 1399,
+    "sha256": "a2b90ec9470f1511116a0df3e8e71580447025c4e435fe71ce0cd71a110cb62e"
+  },
+  {
+    "path": "environment.lock.txt",
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  {
+    "path": "focused-v0.log",
+    "bytes": 280,
+    "sha256": "b0474b0a8f72d236b8a8d8da3cd89e3203a682866fefe5f24035e78f0b1dc61a"
+  },
+  {
+    "path": "focused-v1.log",
+    "bytes": 47488,
+    "sha256": "999d30049af0a46d89e124bfa6af6ab69a94ac4e46bff1f6e997afe5f74f2ed1"
+  },
+  {
+    "path": "focused-v1.junit.xml",
+    "bytes": 182987,
+    "sha256": "5f87edd23552bf2d38fd6143087383952142310e34a43b6fffa3204170dc4b70"
+  },
+  {
+    "path": "focused-v1-receipt.json",
+    "bytes": 1383,
+    "sha256": "90f694099ead80b52d9299f7681c3c1d8504d0c4a145f766cf9c4d52acc1cbd4"
+  },
+  {
+    "path": "frozen-v1-files.json",
+    "bytes": 333,
+    "sha256": "5fa0ca06595a79659d064b6949112bfc95b33849551d6ba4436c033c36c6f36b"
+  },
+  {
+    "path": "source-manifest-v1-before.json",
+    "bytes": 28503,
+    "sha256": "3b0f33b37bed6a6ce12f31eb466bb7b0cd08f737cbb63cda81c05a58d5c801aa"
+  },
+  {
+    "path": "source-manifest-v1-after.json",
+    "bytes": 28503,
+    "sha256": "3b0f33b37bed6a6ce12f31eb466bb7b0cd08f737cbb63cda81c05a58d5c801aa"
+  },
+  {
+    "path": "source-manifest-v1-derived-frozen.json",
+    "bytes": 23763,
+    "sha256": "e824eed8f14ba43dc3259c6cc6ef69778a10f584a460af6f604d16f4d54f9c04"
+  },
+  {
+    "path": "source-manifest-v1-supplemental.json",
+    "bytes": 23763,
+    "sha256": "e824eed8f14ba43dc3259c6cc6ef69778a10f584a460af6f604d16f4d54f9c04"
+  },
+  {
+    "path": "causal-probe-v1.log",
+    "bytes": 2306,
+    "sha256": "9fb66b0f06002692aa47e34e5709c07d8eb177e79957d192597b6a5c2d4096a8"
+  },
+  {
+    "path": "causal-probe-v2.log",
+    "bytes": 1459,
+    "sha256": "2c2a3846b82c90d1deb4f1a479e842e9ca3c23d61a400a903cb3103091c524c3"
+  },
+  {
+    "path": "causal-probe-receipt.json",
+    "bytes": 2926,
+    "sha256": "a569c1f4652702e8d75ea36adbae1a77965bce0e1f935fdaf1481bce82fbbf7b"
+  }
+]

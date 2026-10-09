@@ -1,0 +1,504 @@
+{
+  "scope": "B1_RESEARCH_SOURCE_HARMLESS_STUB_ONLY",
+  "sdk": "NOT_RUN_Q2_OPEN",
+  "python_appcontainer_dll_ipc": "NOT_RUN",
+  "production_activation": "UNAVAILABLE",
+  "platform": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "case": "__main__.WindowsStubCases.test_w01_matched_unrestricted_control_writes_protocol_and_native_token",
+      "control": "WORKING",
+      "worker": {
+        "pid": 5964,
+        "creation": "134354427973014695",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-npuf_o5r\\stub.exe"
+      },
+      "native": {
+        "pid": 5964,
+        "appcontainer": 0,
+        "child_policy_flags": 0
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-12288",
+          "appcontainer": 0,
+          "elevated": 1
+        },
+        "child_policy_flags": 0,
+        "no_child_creation": false,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      }
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w02_restricted_roundtrip_binds_before_execution_and_fixture_only_closes",
+      "native": {
+        "pid": 5748,
+        "appcontainer": 1,
+        "child_policy_flags": 1
+      },
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME",
+        "RESUMED"
+      ],
+      "ownership": "CLOSED",
+      "result": {
+        "account": null,
+        "cleanup": {
+          "reason_code": null,
+          "status": "NOT_ATTEMPTED"
+        },
+        "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+        "nonce": "e01b4096f85b0d5220422930ceee82e9",
+        "observed_at_utc": null,
+        "observed_binding": null,
+        "operation": "state",
+        "primary_reason_code": null,
+        "reason_code": "LIVE_ATTACH_ONLY_UNPROVEN",
+        "request_sha256": "44c441e81907d4c3403ef2f69489ad7c4b2d333b74abd986c5ef2e0cf8d5a83c",
+        "schema": "sdk.read.result/1",
+        "status": "FAILED",
+        "terminal": null,
+        "timing_ms": {
+          "expired": false,
+          "total": 0.0
+        }
+      },
+      "failure": null,
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 5748,
+        "creation": "134354427974170399",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-vkf4fv1l\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      },
+      "exit_code": 0,
+      "closure_scope": "KNOWN_HARMLESS_C_STUB_DIRECT_CHILD_PATH_ONLY_NOT_SDK"
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w03_timeout_exact_termination_keeps_shared_authority_active",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME",
+        "RESUMED"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "LIVE_DEADLINE_EXCEEDED",
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 5268,
+        "creation": "134354427975593481",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-s42p_0me\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      }
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w04_missing_or_wrong_nonce_result_is_no_success_and_retains_active",
+      "mode": "noresult",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME",
+        "RESUMED"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_RESULT_INVALID",
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 1800,
+        "creation": "134354427979269022",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-ygrs3mgu\\noresult\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      },
+      "exit_code": 0
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w04_missing_or_wrong_nonce_result_is_no_success_and_retains_active",
+      "mode": "tampered_nonce",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME",
+        "RESUMED"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_RESULT_INVALID",
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 1780,
+        "creation": "134354427980266856",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-ygrs3mgu\\tampered_nonce\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      },
+      "exit_code": 0
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w05_bind_publication_fault_before_after_never_executes_and_retains_active",
+      "fault": "before",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": true
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w05_bind_publication_fault_before_after_never_executes_and_retains_active",
+      "fault": "after",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": true
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w06_restriction_readback_failure_terminates_owned_creation_handle",
+      "cleanup": "EXACT_CREATE_RETURNED_HANDLE_EXIT",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": false
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w07_wrong_creation_identity_cannot_bind_or_resume",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": true
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w08_stub_bytes_changed_cannot_receive_leaf_closure",
+      "changed_bytes": "REFUSED",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME",
+        "RESUMED"
+      ],
+      "ownership": "ACTIVE",
+      "result": {
+        "account": null,
+        "cleanup": {
+          "reason_code": null,
+          "status": "NOT_ATTEMPTED"
+        },
+        "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+        "nonce": "af9c2b89fd8b9610d65da9d6350481de",
+        "observed_at_utc": null,
+        "observed_binding": null,
+        "operation": "state",
+        "primary_reason_code": null,
+        "reason_code": "LIVE_ATTACH_ONLY_UNPROVEN",
+        "request_sha256": "a34a3fd46a1afef708af66b1e860f06e9030d54f0bc243e94bd23ac1141264f1",
+        "schema": "sdk.read.result/1",
+        "status": "FAILED",
+        "terminal": null,
+        "timing_ms": {
+          "expired": false,
+          "total": 0.0
+        }
+      },
+      "failure": null,
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 8312,
+        "creation": "134354427985367279",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-rr0k3erd\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      },
+      "exit_code": 0
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w09_actual_parent_crash_keeps_restarted_controller_blocked",
+      "parent_exit": 73,
+      "orphan_exact_exit": true,
+      "source_sha256": "5ba0f5a8267555275e7428d45ca13b9a8d256d2b3e00297e83be25ee6056da45",
+      "artifact_sha256": "81ed26dbcff62733005957ec8b016c601ab04671d4e50c4ba06389a79922f615",
+      "authority": {
+        "descendants": "UNKNOWN",
+        "disposition": "ACTIVE",
+        "epoch": "e582e18d198a4cc9813713790a00a0cf",
+        "generation": 2,
+        "kind": "research_leaf_stub",
+        "operation_id": "B1-STUB-de7fd3efa142c86c27d27b039fe407bf",
+        "parent": {
+          "creation": "134354427985965642",
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 5664
+        },
+        "phase": "BOUND",
+        "schema": "native.ownership/1",
+        "token": "3bc5643295554f249897db4593da7da6",
+        "worker": {
+          "creation": "134354428005149810",
+          "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-9eg3i1l1\\parent-crash\\stub.exe",
+          "pid": 4220
+        }
+      }
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w10_resume_failure_before_and_after_effect_keeps_active",
+      "resume_fault": "before",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 8484,
+        "creation": "134354428006505979",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-6swyqv6q\\resume-before\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      }
+    },
+    {
+      "case": "__main__.WindowsStubCases.test_w10_resume_failure_before_and_after_effect_keeps_active",
+      "resume_fault": "after",
+      "evidence": "HARMLESS_NATIVE_STUB_ONLY",
+      "ordering": [
+        "LEASE",
+        "ARMED",
+        "CREATE_ATTEMPT",
+        "SUSPENDED_CREATE",
+        "BOUND",
+        "BEFORE_RESUME"
+      ],
+      "ownership": "ACTIVE",
+      "result": null,
+      "failure": "WORKER_START_UNPROVEN",
+      "exact_worker_exit": true,
+      "worker": {
+        "pid": 8816,
+        "creation": "134354428007392195",
+        "image": "c:\\users\\runneradmin\\appdata\\local\\temp\\tip057rb1-6swyqv6q\\resume-after\\stub.exe"
+      },
+      "restrictions": {
+        "token": {
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500",
+          "integrity_sid": "S-1-16-4096",
+          "appcontainer": 1,
+          "elevated": 1
+        },
+        "child_policy_flags": 1,
+        "no_child_creation": true,
+        "source": "GetProcessMitigationPolicy_AND_OpenProcessToken_ACTUAL_SUSPENDED_HANDLE"
+      }
+    }
+  ],
+  "executed": 10,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "source": {
+    "head": "9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0",
+    "exact_head_required": true,
+    "files": {
+      ".github/workflows/verify-tip057rb1.yml": {
+        "bytes": 1588,
+        "sha256": "f9a7611953dd5d5d1934b7c73c6944b8ba78a1e5fe29807e9a7093ac2a7edee4",
+        "git_blob": "c6b3e939dc51d8d4cd51ccceb4423f447b8f1fe1"
+      },
+      "app/vibemql5/core/concurrency.py": {
+        "bytes": 23633,
+        "sha256": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+        "git_blob": "5c9de2edb9b6927d78b6629a58012cf7751e40c0"
+      },
+      "app/vibemql5/core/live_terminal.py": {
+        "bytes": 22736,
+        "sha256": "786c854307b2f4f7922db80baf32a26d9c314eb364a370a8cf945fc9c13a0417",
+        "git_blob": "cdfdc77a95e09c249f8de70fd3ee8a5239c74292"
+      },
+      "app/vibemql5/core/native_ownership.py": {
+        "bytes": 19139,
+        "sha256": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039",
+        "git_blob": "f20a23f548db4012312365348f151fdf111e134f"
+      },
+      "tests/proofs/tip057rb1/controller.py": {
+        "bytes": 7491,
+        "sha256": "99ee2af3c1603eef25d6d5c13ef28283519fc347eac46b733de74fd28b137baa",
+        "git_blob": "29f13a00e10c54ff2c6629d27907ead600bcc6d9"
+      },
+      "tests/proofs/tip057rb1/fixture_stub.c": {
+        "bytes": 2459,
+        "sha256": "5ba0f5a8267555275e7428d45ca13b9a8d256d2b3e00297e83be25ee6056da45",
+        "git_blob": "243864ec7dd7a0e7d0ac25ffa1c1b8b22cfd4a3a"
+      },
+      "tests/proofs/tip057rb1/read_protocol.py": {
+        "bytes": 9773,
+        "sha256": "bc8539ec68e35b287b7a953f5d076db6fd49632f08178bd0afc9ca56be311b40",
+        "git_blob": "2f030b11f78893e6f6ef3c91b4565cbd260ac0fe"
+      },
+      "tests/proofs/tip057rb1/run_proof.py": {
+        "bytes": 21052,
+        "sha256": "5e1fd345d9e348b227c3060cb4041cb3d13a8ee64ec8c7dd9629b81c3601b787",
+        "git_blob": "466a7dfd329869f296b7b6c4a12be3122740eff4"
+      },
+      "tests/proofs/tip057rb1/sdk_worker.py": {
+        "bytes": 8368,
+        "sha256": "9e233ae9b22f58ff217d5aa2ab4018198a7d81e71eba218e3f969932c327a7ae",
+        "git_blob": "51aafe9b7647eb3e9f8e0b07cc34b921531f0561"
+      },
+      "tests/proofs/tip057rb1/test_controller.py": {
+        "bytes": 8448,
+        "sha256": "d2ab16e5f7ff61a45b5f764e4394300a5291aff46fd8998d29fac7e5af556489",
+        "git_blob": "f81cc216f300f8b04e795213cd90452c665d8f54"
+      },
+      "tests/proofs/tip057rb1/test_portable.py": {
+        "bytes": 24817,
+        "sha256": "f30985bd5939a2d81656314b48e0c882d774041d0b44cb46e29dcb9b4a19d66b",
+        "git_blob": "fa9ef3bfbe2321993ab43e6f1761f0cea0e6243d"
+      },
+      "tests/proofs/tip057rb1/windows_adapter.py": {
+        "bytes": 8727,
+        "sha256": "7a09a40702cebf85a24ed1fd6c09d40e307aed3a011ea386e4c2dfa5cecead9f",
+        "git_blob": "ad3c8ab268b241a8007c9ea95f6e84be30134206"
+      },
+      "tests/proofs/tip057rq/fixture_worker.c": {
+        "bytes": 15684,
+        "sha256": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+        "git_blob": "2c719991b358291bdc0fb6aed19a04521fb27e49"
+      },
+      "tests/proofs/tip057rq/run_proof.py": {
+        "bytes": 54136,
+        "sha256": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+        "git_blob": "0a2c57cb6fd0d2d4ab2bbadc27251bd657433185"
+      },
+      "tests/proofs/tip057rq/windows_boundary.py": {
+        "bytes": 20910,
+        "sha256": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84",
+        "git_blob": "fe21edf7ef01ae3263fdcad5cd65f050fa3f440c"
+      }
+    }
+  },
+  "artifact": {
+    "source_sha256": "5ba0f5a8267555275e7428d45ca13b9a8d256d2b3e00297e83be25ee6056da45",
+    "sha256": "24292223ed50511d964688bc391b63b3d79a371c04bd8c490183b7460671d189"
+  },
+  "required_count": 10,
+  "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+  "proof_log": {
+    "bytes": 1806,
+    "sha256": "f627340cee3e58ff9a43688a26b22cd754b7cc1627d1eef292fad753c540265b",
+    "cap": 65536,
+    "truncated": false
+  }
+}

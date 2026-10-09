@@ -1,0 +1,516 @@
+{
+  "schema": "tip065.failed-candidate-receipt/1",
+  "status": "SOURCE_GATE_REJECTED_6_OF_8",
+  "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+  "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+  "main": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "run_attempt": 1,
+  "workflows": [
+    {
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "id": 37286842226,
+      "workflow_id": 357167822,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842226",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-027 Continuity Core",
+      "id": 37286842216,
+      "workflow_id": 357139482,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842216",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "id": 37286842219,
+      "workflow_id": 373332157,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842219",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "id": 37286842290,
+      "workflow_id": 373216678,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842290",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "id": 37286842180,
+      "workflow_id": 372895546,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842180",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-053 Deep Update",
+      "id": 37286842172,
+      "workflow_id": 369987372,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842172",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "id": 37286842214,
+      "workflow_id": 358366702,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842214",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify Fleet v1 integrated source",
+      "id": 37286842215,
+      "workflow_id": 373695570,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37286842215",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+      "run_attempt": 1
+    }
+  ],
+  "bootstrap": {
+    "run": 37286842214,
+    "job": 111687640622,
+    "passed": 1188,
+    "failed": 3,
+    "skipped": 12,
+    "failed_cases": [
+      "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[worktree]",
+      "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+      "test_actual_tls_inventory_discovery_read_project_and_production_native_denial"
+    ]
+  },
+  "deep": {
+    "run": 37286842172,
+    "job": 111687641197,
+    "passed": 1191,
+    "failed": 0,
+    "skipped": 12
+  },
+  "artifacts": {
+    "status": "SOURCE_GATE_REJECTED_6_OF_8",
+    "schema": "fleet.failed-artifacts-independent-verification/1",
+    "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+    "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+    "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+    "physical_qualification": "NOT_RUN",
+    "artifacts": [
+      {
+        "artifact_id": 11333924880,
+        "archive": "artifact-11333924880.zip",
+        "bytes": 63041,
+        "sha256": "4bdf71439a25ad56b5a76a2a2324541c37b8a35dfce5433226bc6846c3bab935",
+        "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+        "run_id": 37286842215,
+        "proofs": [
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 15
+          }
+        ],
+        "source_status": "PASS",
+        "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+        "source_entries": 210,
+        "junit": {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "16",
+          "tests": "1203",
+          "time": "107.511",
+          "timestamp": "2026-10-05T08:57:13.573006+00:00",
+          "hostname": "runnervm8df0l"
+        },
+        "passed": 1187,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 108.609
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 0.666
+          }
+        ]
+      },
+      {
+        "artifact_id": 11334517362,
+        "archive": "artifact-11334517362.zip",
+        "bytes": 8886,
+        "sha256": "4f15dd4a6e2d9c76d2057cb5d9b57535482882da691c59cfbc7759269acc8fe3",
+        "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+        "run_id": 37286842180,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 4
+          }
+        ]
+      },
+      {
+        "artifact_id": 11334693546,
+        "archive": "artifact-11334693546.zip",
+        "bytes": 262462,
+        "sha256": "7a69dd23b3de40d50b901d70baffa6f2fc6d5a66ad34aa7e6cf59debab95c5a9",
+        "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+        "run_id": 37286842215,
+        "proofs": [
+          {
+            "proof": "b1-harmless/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 15
+          },
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 15
+          },
+          {
+            "proof": "g03a-harmless/summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 8
+          },
+          {
+            "proof": "q1-harmless/summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 4
+          }
+        ],
+        "source_status": "FAIL",
+        "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+        "source_entries": 210,
+        "junit": {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "1",
+          "skipped": "12",
+          "tests": "1203",
+          "time": "320.509",
+          "timestamp": "2026-10-05T08:57:43.046388+00:00",
+          "hostname": "runnervmfi6oq"
+        },
+        "passed": 1190,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+            ],
+            "exit_code": 1,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 322.421
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 1.985
+          },
+          {
+            "case": "q1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rq/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 12.359
+          },
+          {
+            "case": "g03a-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rg03a/run_windows.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 1.438
+          },
+          {
+            "case": "b1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 5.828
+          }
+        ]
+      },
+      {
+        "artifact_id": 11334886331,
+        "archive": "artifact-11334886331.zip",
+        "bytes": 2316,
+        "sha256": "78c17ba5f42c4e965b77f17128ad8b8829a3516096ab43a4286dd5bed745b4e1",
+        "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+        "run_id": 37286842290,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 8
+          }
+        ]
+      },
+      {
+        "artifact_id": 11335190616,
+        "archive": "artifact-11335190616.zip",
+        "bytes": 8049,
+        "sha256": "152fb6fcaa189f3ba8140b10465a588c5b615f95772a6fbe5aab15e5da9c94d8",
+        "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+        "run_id": 37286842219,
+        "proofs": [
+          {
+            "proof": "tip057rb1-windows/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 15
+          },
+          {
+            "proof": "tip057rb1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+            "verified_sources": 15
+          }
+        ]
+      }
+    ]
+  },
+  "decoded_logs": {
+    "bootstrap-failed-job-decoded.log": {
+      "schema": "fleet.decoded-job-log/1",
+      "job_id": 111687640622,
+      "bytes": 77685,
+      "sha256": "6b67b5522a45c978beec5a9b503da54ba06a76bc619f171f72d394f47dea4b34",
+      "truncated": false,
+      "format": "CONNECTOR_DECODED_UTF8_ORIGINAL_BOM_CRLF_RETAINED"
+    },
+    "deep-decoded.log": {
+      "schema": "fleet.decoded-job-log/1",
+      "job_id": 111687641197,
+      "bytes": 30420,
+      "sha256": "308f60f665f73cdbdacfa1d42b3c551e83745e67d8c95553615fc221c86bdae3",
+      "truncated": false,
+      "format": "CONNECTOR_DECODED_UTF8_ORIGINAL_BOM_CRLF_RETAINED"
+    },
+    "integrated-windows-failed-job-decoded.log": {
+      "schema": "fleet.decoded-job-log/1",
+      "job_id": 111687640684,
+      "bytes": 28535,
+      "sha256": "04ea1b63a4b8fe8e8828ecc9f39b061558a8411e3ac4df805fde111085f6831d",
+      "truncated": false,
+      "format": "CONNECTOR_DECODED_UTF8_ORIGINAL_BOM_CRLF_RETAINED"
+    }
+  },
+  "required_windows_controls": [
+    {
+      "name": "test_real_process_fifo_and_atomic_resource_writers_share_legacy_lease",
+      "status": "PASS",
+      "time": "0.779",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_real_queued_resource_writer_observing_active_is_denied_without_reservation",
+      "status": "PASS",
+      "time": "0.615",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-False]",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-True]",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-False]",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-True]",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_caps_rows_without_replaying_calls",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_control_post_observation_invalid_unhashable_route_cannot_mask_original_error",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect",
+      "status": "PASS",
+      "time": "1.147",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]",
+      "status": "PASS",
+      "time": "4.614",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+      "status": "PASS",
+      "time": "13.338",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+      "status": "PASS",
+      "time": "3.106",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_windows_retained_identity_positive_and_fresh_path_match",
+      "status": "PASS",
+      "time": "0.039",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_windows_retained_handle_rejects_fresh_path_replacement",
+      "status": "PASS",
+      "time": "0.037",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    }
+  ],
+  "overlay_deployment": "NOT_RUN",
+  "restart": "NOT_RUN",
+  "physical_qualification": "NOT_RUN",
+  "incidents": "OPEN_UNKNOWN_NO_ROOT_CAUSE_OR_FUNCTIONAL_FIX_CLAIM",
+  "workflow_reruns": 0
+}

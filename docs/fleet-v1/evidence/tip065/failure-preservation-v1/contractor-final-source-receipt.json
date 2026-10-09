@@ -1,0 +1,58 @@
+{
+  "schema": "tip065.contractor-final-source-review/1",
+  "base_head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+  "status": "PASS",
+  "source_entries": 210,
+  "exact_frozen_builder_source": true,
+  "changed_source_files": [
+    "tests/unit/test_tip060c_https_restore.py",
+    "tests/unit/test_tip061a_057n.py",
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "prior_full_focused": {
+    "passed": 247,
+    "skips": 5,
+    "errors": 0,
+    "failures": 0,
+    "scope": "PRE_CONTROL_COMPLETION_ORDERING"
+  },
+  "final_changed_control_junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "1",
+    "time": "0.090",
+    "timestamp": "2026-10-05T18:30:40.555168+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "files": {
+    "contractor-final-control.log": {
+      "bytes": 98,
+      "sha256": "59907462a8d5fd93406cdf4c7d1eb2f7b7a96664ae85c4ec202693d419cd019e"
+    },
+    "contractor-final-control.xml": {
+      "bytes": 402,
+      "sha256": "bdca82a5ac2506a13314cf21d4398cf09fc5f495445e60fdf063c58e45a4ee50"
+    },
+    "frozen-source-manifest.json": {
+      "bytes": 49426,
+      "sha256": "14cd84afca90b141bb40f895eb03427abc36a1c222e67bb44e2184781ece689f"
+    }
+  },
+  "overlay_payload_sha256": "0efadd3d855b602e6bd8d58cd7033f092395026b633bceb28629e75fe4003182",
+  "all_product_and_other_207_source_entries_unchanged": true,
+  "physical_qualification": "NOT_RUN",
+  "historical_causes": "OPEN_UNKNOWN",
+  "candidate_gate": "PENDING_8_OF_8",
+  "command": [
+    "source-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip061a_057n.py::test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure"
+  ],
+  "env": {
+    "PYTHONPATH": "app:tests/unit"
+  }
+}

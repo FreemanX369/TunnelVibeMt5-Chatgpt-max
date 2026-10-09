@@ -1,0 +1,42 @@
+{
+  "commands.json": {
+    "bytes": 1428,
+    "sha256": "dc89bf8b7de2930c3eb7795f0bf8bc7428f2895d9000808ac88a0902f60cee1e"
+  },
+  "completion-summary.json": {
+    "bytes": 2052,
+    "sha256": "63bdd5927de181031b466ee87bf74128909999d1ac7716c5e042b566b950b23f"
+  },
+  "diagnostics-v1.junit.xml": {
+    "bytes": 2282,
+    "sha256": "a6c400b2fe95158c8220dbf78b23d13ec915ec7908ea791afdd395e64611539c"
+  },
+  "diagnostics-v1.log": {
+    "bytes": 114,
+    "sha256": "039b07b93cf018c8a8d0614c47f31a63c6897d15e397b7721a2cbadebeaaa9d2"
+  },
+  "environment.lock.txt": {
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  "focused-v2.junit.xml": {
+    "bytes": 25683,
+    "sha256": "ebdc36e1b94704f919e0c3041c9e20ce4e21aaffba9d0920f9f2383b321a222e"
+  },
+  "focused-v2.log": {
+    "bytes": 282,
+    "sha256": "edad850939515a2107559eafb1f42976db4fc85946239e28fe5f56119995f97c"
+  },
+  "source-manifest-focused-v2-after.json": {
+    "bytes": 23422,
+    "sha256": "ba73f6c8ba8ed8b28435bab6a29feda126525603c939ccc6b24fdee3ed480379"
+  },
+  "source-manifest-focused-v2-before.json": {
+    "bytes": 23422,
+    "sha256": "ba73f6c8ba8ed8b28435bab6a29feda126525603c939ccc6b24fdee3ed480379"
+  },
+  "source.diff": {
+    "bytes": 29902,
+    "sha256": "dd4da765c30fb3b6cdbdb19c0466c51a36e44ee45fa9094fc9702f46e30365b4"
+  }
+}

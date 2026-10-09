@@ -1,0 +1,70 @@
+{
+  "schema": "fleet.gateway-config/1",
+  "origin": "https://fleet.example.test:8443",
+  "listen_host": "127.0.0.1",
+  "listen_port": 8443,
+  "certificate_file": "/srv/fleet/secrets/gateway-chain.pem",
+  "tls_key_file": "/srv/fleet/secrets/gateway-tls-key.pem",
+  "owner_token_file": "/srv/fleet/secrets/owner-token.txt",
+  "control_path": "/srv/fleet/gateway/control.sqlite",
+  "control_policy": {
+    "singleton_wait_ms": 2000,
+    "sqlite_busy_timeout_ms": 5000,
+    "grant_ttl_ms": 60000,
+    "clock_skew_ms": 5000,
+    "nonce_retention_ms": 3600000,
+    "grant_secret_bytes": 32,
+    "max_devices": 1024,
+    "max_grants": 4096,
+    "max_nonces": 65536,
+    "max_operations": 65536,
+    "max_nonce_bytes": 128,
+    "max_operation_id_bytes": 1024
+  },
+  "fleet_policy": {
+    "max_body_bytes": 1048576,
+    "max_response_bytes": 1048576,
+    "http_timeout_ms": 5000,
+    "max_pending_reads": 128,
+    "max_retained_results": 4096,
+    "max_targets": 64,
+    "max_poll_commands": 4,
+    "read_deadline_ms": 10000,
+    "session_timeout_ms": 30000,
+    "heartbeat_interval_ms": 1000,
+    "poll_interval_ms": 100,
+    "freshness_ms": 5000,
+    "max_clock_future_ms": 0,
+    "max_rows": 4096,
+    "max_owner_token_bytes": 128,
+    "max_operation_id_bytes": 128
+  },
+  "domain_path": "/srv/fleet/gateway/domain.sqlite",
+  "domain_policy": {
+    "max_records": 65536,
+    "max_payload_bytes": 1048576,
+    "wait_ms": 5000,
+    "max_commands": 4,
+    "start_authorization_ms": 10000
+  },
+  "jobs_path": "/srv/fleet/gateway/jobs.sqlite",
+  "journal_policy": {
+    "max_records": 65536,
+    "max_payload_bytes": 1048576,
+    "wait_ms": 5000
+  },
+  "authority_key_file": "/srv/fleet/secrets/gateway-authority-ed25519.pem",
+  "principal_path": "/srv/fleet/gateway/principals.json",
+  "principal_policy": {
+    "max_principals": 1024,
+    "max_assignments": 4096,
+    "max_operations": 65536,
+    "max_nonces": 65536,
+    "max_payload_bytes": 4194304,
+    "clock_skew_ms": 5000,
+    "phase_ttl_ms": 10000,
+    "wait_ms": 5000
+  },
+  "capacity_owner_public_key": null,
+  "recovery": null
+}

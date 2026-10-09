@@ -1,0 +1,8 @@
+..                                                                       [100%]
+============================= slowest 5 durations ==============================
+2.15s call     tip065-late-failure-investigation-20261006/test_investigation.py::test_capacity_aggregate_can_exceed_limit_with_no_inflight_deadline_extended
+1.54s call     tip065-late-failure-investigation-20261006/test_investigation.py::test_late_wrapper_failure_after_primary_is_discarded[1000]
+0.12s setup    tip065-late-failure-investigation-20261006/test_investigation.py::test_late_wrapper_failure_after_primary_is_discarded[1000]
+0.07s setup    tip065-late-failure-investigation-20261006/test_investigation.py::test_capacity_aggregate_can_exceed_limit_with_no_inflight_deadline_extended
+0.01s teardown tip065-late-failure-investigation-20261006/test_investigation.py::test_capacity_aggregate_can_exceed_limit_with_no_inflight_deadline_extended
+2 passed in 4.00s

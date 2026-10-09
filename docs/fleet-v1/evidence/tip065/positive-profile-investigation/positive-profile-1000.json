@@ -1,0 +1,9 @@
+{
+  "classification": "CONTROLLED_RESPONSE_DELAY_NOT_HISTORICAL_CAUSE",
+  "http_and_control_round_ms": 1000,
+  "response_delay_seconds": 1.2,
+  "actual_durable_install_calls": 1,
+  "durable_roster_count": 1,
+  "outcome": "EXPECTED_TIMEOUT_WITH_UNCERTAIN_RESPONSE",
+  "registration_retries": 0
+}

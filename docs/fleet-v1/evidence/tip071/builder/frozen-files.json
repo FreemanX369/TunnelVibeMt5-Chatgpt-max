@@ -1,0 +1,14 @@
+{
+  "parent_head": "ce621625324a3872faee5302ec27c35b684d5217",
+  "source_files": {
+    "app/vibemql5/fleet/scoped_resources.py": {
+      "bytes": 40771,
+      "sha256": "3bac3def3188c3e2a8440eac90e9d7a5c3cc88118f9b56356f3af1a5494c8f3c"
+    },
+    "tests/unit/test_tip071_scoped_db_setup_cleanup.py": {
+      "bytes": 6918,
+      "sha256": "15c6c65af06400209dfce80692549c5dd01b348c4b8c8aad062411c8df8292b5"
+    }
+  },
+  "entries": 216
+}

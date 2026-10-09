@@ -1,0 +1,9 @@
+{
+  "builder": "TIP074B",
+  "payloads_verified": 50,
+  "manifest_sha256": "a5656acd0e99bd17ea11d6f8ff7506a152e47393c8b17f87a0c6919b1224894e",
+  "one_condition_AST_scope": true,
+  "all_existing_other_module_AST_exact": true,
+  "implementation_authored_by": "Builder",
+  "combined_bytes_match_frozen_output": true
+}

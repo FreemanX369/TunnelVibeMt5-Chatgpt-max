@@ -1,0 +1,553 @@
+FFFFFFFFFF.                                                              [100%]
+=================================== FAILURES ===================================
+_ test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct0')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct0/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct0/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct0/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct0'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct0/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff5cb66d850>
+case = 'capacity-jobs'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+            assert len(retained) == count
+>           assert all(resource._db is None and resource._lock is None and lease_available(resource) for resource in retained.values())
+E           assert False
+E            +  where False = all(<generator object test_partial_fixture_construction_closes_real_owners_with_traceback_retained.<locals>.<genexpr> at 0x7ff5cabe05f0>)
+
+tests/unit/test_tip074_gateway_lifecycle.py:94: AssertionError
+_ test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-domain] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct1')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct1/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct1/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct1/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct1'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct1/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff5cb66f350>
+case = 'capacity-domain'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+            assert len(retained) == count
+>           assert all(resource._db is None and resource._lock is None and lease_available(resource) for resource in retained.values())
+E           assert False
+E            +  where False = all(<generator object test_partial_fixture_construction_closes_real_owners_with_traceback_retained.<locals>.<genexpr> at 0x7ff5cabe2260>)
+
+tests/unit/test_tip074_gateway_lifecycle.py:94: AssertionError
+_ test_partial_fixture_construction_closes_real_owners_with_traceback_retained[composed-principals] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct2')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct2/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct2/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct2/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct2'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct2/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff5cb66fb30>
+case = 'composed-principals'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+            assert len(retained) == count
+>           assert all(resource._db is None and resource._lock is None and lease_available(resource) for resource in retained.values())
+E           assert False
+E            +  where False = all(<generator object test_partial_fixture_construction_closes_real_owners_with_traceback_retained.<locals>.<genexpr> at 0x7ff5cabe2a80>)
+
+tests/unit/test_tip074_gateway_lifecycle.py:94: AssertionError
+_ test_partial_fixture_construction_closes_real_owners_with_traceback_retained[writer-domain] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct3')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct3/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct3/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct3/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct3'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_fixture_construct3/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff5cc73df40>
+case = 'writer-domain'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+            assert len(retained) == count
+>           assert all(resource._db is None and resource._lock is None and lease_available(resource) for resource in retained.values())
+E           assert False
+E            +  where False = all(<generator object test_partial_fixture_construction_closes_real_owners_with_traceback_retained.<locals>.<genexpr> at 0x7ff5cabe3100>)
+
+tests/unit/test_tip074_gateway_lifecycle.py:94: AssertionError
+_ test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_factory_attempts_0')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_factory_attempts_0/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ory_attempts_0/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_factory_attempts_0/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_factory_attempts_0'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-11/test_partial_factory_attempts_0/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff5cb66f860>
+
+    def test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors(tmp_path, tls_files, project_node, monkeypatch):
+        import test_tip064_capacity_https as capacity
+        fault = tmp_path / 'capacity-domain.sqlite'; fault.write_bytes(b'OWNED_EXISTING_STORE')
+        attempted, failures = [], [OSError('OWNED_JOBS_CLOSE'), RuntimeError('OWNED_CONTROL_CLOSE')]
+        for kind, name, secondary in ((GatewayJobJournal, 'jobs', failures[0]), (GatewayControlStore, 'control', failures[1])):
+            original = kind.close
+            def close(self, real=original, label=name, error=secondary):
+                attempted.append(label); real(self); raise error
+            monkeypatch.setattr(kind, 'close', close)
+        generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+>           assert caught is not None and attempted == ['jobs', 'control']
+E           AssertionError: assert (WireError('DOMAIN_EXISTS') is not None and [] == ['jobs', 'control']
+E             
+E             Right contains 2 more items, first extra item: 'jobs'
+E             Use -v to get more diff)
+
+tests/unit/test_tip074_gateway_lifecycle.py:117: AssertionError
+_ test_started_failure_closes_real_controller_owners_and_preserves_error_truth[none] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re0')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re0/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_closes_re0/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re0/server-key.pem'))
+fault = 'none'
+
+    @pytest.mark.parametrize('fault', ['none', 'domain', 'store', 'both', 'before-domain'])
+    def test_started_failure_closes_real_controller_owners_and_preserves_error_truth(tmp_path, tls_files, fault):
+        ca, certificate, private = tls_files
+        stopped, release = threading.Event(), threading.Event()
+        bound, finished, reports = Queue(), Queue(), Queue()
+        acquired, real_close, attempted = {}, {}, []
+        primary = RuntimeError('OWNED_STARTED_FAILURE')
+        domain_error, store_error = OSError('OWNED_DOMAIN_CLOSE_FAILURE'), RuntimeError('OWNED_STORE_CLOSE_FAILURE')
+        def factory(address):
+            origin = 'https://127.0.0.1:' + str(address[1])
+            with ExitStack() as closes:
+                store = GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=control_policy()); closes.callback(store.close)
+                jobs = GatewayJobJournal(tmp_path / 'jobs.sqlite', initialize=True, max_records=20, max_payload_bytes=262144, wait_ms=1000); closes.callback(jobs.close)
+                journal = DomainJournal(tmp_path / 'domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy()); closes.callback(journal.close)
+                domain = GatewayDomain(store, journal, jobs, start_authorization_ms=2000)
+                controller = GatewayController(store, fleet_policy(), audience=origin,
+                    owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+                acquired.update(control=store, jobs=jobs, domain=journal)
+                real_close.update(domain=domain.close, store=store.close)
+                def close_domain():
+                    attempted.append('domain')
+                    if fault == 'before-domain': raise domain_error
+                    real_close['domain']()
+                    if fault in ('domain', 'both'): raise domain_error
+                def close_store():
+                    attempted.append('store'); real_close['store']()
+                    if fault in ('store', 'both'): raise store_error
+                domain.close, store.close = close_domain, close_store
+                closes.pop_all(); return controller
+        def started(address): bound.put(address); raise primary
+        def run():
+            caught = None
+            try: serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=factory, stop_event=stopped, started=started)
+            except BaseException as error: caught = error
+            try:
+                reports.put({name: resource._db.execute('SELECT 1').fetchone()[0] if resource._db is not None else None
+                             for name, resource in acquired.items()})
+                finished.put(caught)
+                assert release.wait(timeout=5)
+            finally:
+                # Owner-thread disposal happens only after parent observes the result.
+                real_close['domain'](); real_close['store']()
+        thread = threading.Thread(target=run, daemon=True); thread.start()
+        try:
+            caught = finished.get(timeout=5); state = reports.get(timeout=1); address = bound.get(timeout=1)
+            graph = errors(caught)
+            assert any(error is primary for error in graph) and primary.__traceback__ is not None
+>           assert attempted == ['domain', 'store']
+E           AssertionError: assert [] == ['domain', 'store']
+E             
+E             Right contains 2 more items, first extra item: 'domain'
+E             Use -v to get more diff
+
+tests/unit/test_tip074_gateway_lifecycle.py:179: AssertionError
+_ test_started_failure_closes_real_controller_owners_and_preserves_error_truth[domain] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re1')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re1/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_closes_re1/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re1/server-key.pem'))
+fault = 'domain'
+
+    @pytest.mark.parametrize('fault', ['none', 'domain', 'store', 'both', 'before-domain'])
+    def test_started_failure_closes_real_controller_owners_and_preserves_error_truth(tmp_path, tls_files, fault):
+        ca, certificate, private = tls_files
+        stopped, release = threading.Event(), threading.Event()
+        bound, finished, reports = Queue(), Queue(), Queue()
+        acquired, real_close, attempted = {}, {}, []
+        primary = RuntimeError('OWNED_STARTED_FAILURE')
+        domain_error, store_error = OSError('OWNED_DOMAIN_CLOSE_FAILURE'), RuntimeError('OWNED_STORE_CLOSE_FAILURE')
+        def factory(address):
+            origin = 'https://127.0.0.1:' + str(address[1])
+            with ExitStack() as closes:
+                store = GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=control_policy()); closes.callback(store.close)
+                jobs = GatewayJobJournal(tmp_path / 'jobs.sqlite', initialize=True, max_records=20, max_payload_bytes=262144, wait_ms=1000); closes.callback(jobs.close)
+                journal = DomainJournal(tmp_path / 'domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy()); closes.callback(journal.close)
+                domain = GatewayDomain(store, journal, jobs, start_authorization_ms=2000)
+                controller = GatewayController(store, fleet_policy(), audience=origin,
+                    owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+                acquired.update(control=store, jobs=jobs, domain=journal)
+                real_close.update(domain=domain.close, store=store.close)
+                def close_domain():
+                    attempted.append('domain')
+                    if fault == 'before-domain': raise domain_error
+                    real_close['domain']()
+                    if fault in ('domain', 'both'): raise domain_error
+                def close_store():
+                    attempted.append('store'); real_close['store']()
+                    if fault in ('store', 'both'): raise store_error
+                domain.close, store.close = close_domain, close_store
+                closes.pop_all(); return controller
+        def started(address): bound.put(address); raise primary
+        def run():
+            caught = None
+            try: serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=factory, stop_event=stopped, started=started)
+            except BaseException as error: caught = error
+            try:
+                reports.put({name: resource._db.execute('SELECT 1').fetchone()[0] if resource._db is not None else None
+                             for name, resource in acquired.items()})
+                finished.put(caught)
+                assert release.wait(timeout=5)
+            finally:
+                # Owner-thread disposal happens only after parent observes the result.
+                real_close['domain'](); real_close['store']()
+        thread = threading.Thread(target=run, daemon=True); thread.start()
+        try:
+            caught = finished.get(timeout=5); state = reports.get(timeout=1); address = bound.get(timeout=1)
+            graph = errors(caught)
+            assert any(error is primary for error in graph) and primary.__traceback__ is not None
+>           assert attempted == ['domain', 'store']
+E           AssertionError: assert [] == ['domain', 'store']
+E             
+E             Right contains 2 more items, first extra item: 'domain'
+E             Use -v to get more diff
+
+tests/unit/test_tip074_gateway_lifecycle.py:179: AssertionError
+_ test_started_failure_closes_real_controller_owners_and_preserves_error_truth[store] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re2')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re2/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_closes_re2/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re2/server-key.pem'))
+fault = 'store'
+
+    @pytest.mark.parametrize('fault', ['none', 'domain', 'store', 'both', 'before-domain'])
+    def test_started_failure_closes_real_controller_owners_and_preserves_error_truth(tmp_path, tls_files, fault):
+        ca, certificate, private = tls_files
+        stopped, release = threading.Event(), threading.Event()
+        bound, finished, reports = Queue(), Queue(), Queue()
+        acquired, real_close, attempted = {}, {}, []
+        primary = RuntimeError('OWNED_STARTED_FAILURE')
+        domain_error, store_error = OSError('OWNED_DOMAIN_CLOSE_FAILURE'), RuntimeError('OWNED_STORE_CLOSE_FAILURE')
+        def factory(address):
+            origin = 'https://127.0.0.1:' + str(address[1])
+            with ExitStack() as closes:
+                store = GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=control_policy()); closes.callback(store.close)
+                jobs = GatewayJobJournal(tmp_path / 'jobs.sqlite', initialize=True, max_records=20, max_payload_bytes=262144, wait_ms=1000); closes.callback(jobs.close)
+                journal = DomainJournal(tmp_path / 'domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy()); closes.callback(journal.close)
+                domain = GatewayDomain(store, journal, jobs, start_authorization_ms=2000)
+                controller = GatewayController(store, fleet_policy(), audience=origin,
+                    owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+                acquired.update(control=store, jobs=jobs, domain=journal)
+                real_close.update(domain=domain.close, store=store.close)
+                def close_domain():
+                    attempted.append('domain')
+                    if fault == 'before-domain': raise domain_error
+                    real_close['domain']()
+                    if fault in ('domain', 'both'): raise domain_error
+                def close_store():
+                    attempted.append('store'); real_close['store']()
+                    if fault in ('store', 'both'): raise store_error
+                domain.close, store.close = close_domain, close_store
+                closes.pop_all(); return controller
+        def started(address): bound.put(address); raise primary
+        def run():
+            caught = None
+            try: serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=factory, stop_event=stopped, started=started)
+            except BaseException as error: caught = error
+            try:
+                reports.put({name: resource._db.execute('SELECT 1').fetchone()[0] if resource._db is not None else None
+                             for name, resource in acquired.items()})
+                finished.put(caught)
+                assert release.wait(timeout=5)
+            finally:
+                # Owner-thread disposal happens only after parent observes the result.
+                real_close['domain'](); real_close['store']()
+        thread = threading.Thread(target=run, daemon=True); thread.start()
+        try:
+            caught = finished.get(timeout=5); state = reports.get(timeout=1); address = bound.get(timeout=1)
+            graph = errors(caught)
+            assert any(error is primary for error in graph) and primary.__traceback__ is not None
+>           assert attempted == ['domain', 'store']
+E           AssertionError: assert [] == ['domain', 'store']
+E             
+E             Right contains 2 more items, first extra item: 'domain'
+E             Use -v to get more diff
+
+tests/unit/test_tip074_gateway_lifecycle.py:179: AssertionError
+_ test_started_failure_closes_real_controller_owners_and_preserves_error_truth[both] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re3')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re3/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_closes_re3/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re3/server-key.pem'))
+fault = 'both'
+
+    @pytest.mark.parametrize('fault', ['none', 'domain', 'store', 'both', 'before-domain'])
+    def test_started_failure_closes_real_controller_owners_and_preserves_error_truth(tmp_path, tls_files, fault):
+        ca, certificate, private = tls_files
+        stopped, release = threading.Event(), threading.Event()
+        bound, finished, reports = Queue(), Queue(), Queue()
+        acquired, real_close, attempted = {}, {}, []
+        primary = RuntimeError('OWNED_STARTED_FAILURE')
+        domain_error, store_error = OSError('OWNED_DOMAIN_CLOSE_FAILURE'), RuntimeError('OWNED_STORE_CLOSE_FAILURE')
+        def factory(address):
+            origin = 'https://127.0.0.1:' + str(address[1])
+            with ExitStack() as closes:
+                store = GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=control_policy()); closes.callback(store.close)
+                jobs = GatewayJobJournal(tmp_path / 'jobs.sqlite', initialize=True, max_records=20, max_payload_bytes=262144, wait_ms=1000); closes.callback(jobs.close)
+                journal = DomainJournal(tmp_path / 'domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy()); closes.callback(journal.close)
+                domain = GatewayDomain(store, journal, jobs, start_authorization_ms=2000)
+                controller = GatewayController(store, fleet_policy(), audience=origin,
+                    owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+                acquired.update(control=store, jobs=jobs, domain=journal)
+                real_close.update(domain=domain.close, store=store.close)
+                def close_domain():
+                    attempted.append('domain')
+                    if fault == 'before-domain': raise domain_error
+                    real_close['domain']()
+                    if fault in ('domain', 'both'): raise domain_error
+                def close_store():
+                    attempted.append('store'); real_close['store']()
+                    if fault in ('store', 'both'): raise store_error
+                domain.close, store.close = close_domain, close_store
+                closes.pop_all(); return controller
+        def started(address): bound.put(address); raise primary
+        def run():
+            caught = None
+            try: serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=factory, stop_event=stopped, started=started)
+            except BaseException as error: caught = error
+            try:
+                reports.put({name: resource._db.execute('SELECT 1').fetchone()[0] if resource._db is not None else None
+                             for name, resource in acquired.items()})
+                finished.put(caught)
+                assert release.wait(timeout=5)
+            finally:
+                # Owner-thread disposal happens only after parent observes the result.
+                real_close['domain'](); real_close['store']()
+        thread = threading.Thread(target=run, daemon=True); thread.start()
+        try:
+            caught = finished.get(timeout=5); state = reports.get(timeout=1); address = bound.get(timeout=1)
+            graph = errors(caught)
+            assert any(error is primary for error in graph) and primary.__traceback__ is not None
+>           assert attempted == ['domain', 'store']
+E           AssertionError: assert [] == ['domain', 'store']
+E             
+E             Right contains 2 more items, first extra item: 'domain'
+E             Use -v to get more diff
+
+tests/unit/test_tip074_gateway_lifecycle.py:179: AssertionError
+_ test_started_failure_closes_real_controller_owners_and_preserves_error_truth[before-domain] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re4')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re4/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_closes_re4/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-11/test_started_failure_closes_re4/server-key.pem'))
+fault = 'before-domain'
+
+    @pytest.mark.parametrize('fault', ['none', 'domain', 'store', 'both', 'before-domain'])
+    def test_started_failure_closes_real_controller_owners_and_preserves_error_truth(tmp_path, tls_files, fault):
+        ca, certificate, private = tls_files
+        stopped, release = threading.Event(), threading.Event()
+        bound, finished, reports = Queue(), Queue(), Queue()
+        acquired, real_close, attempted = {}, {}, []
+        primary = RuntimeError('OWNED_STARTED_FAILURE')
+        domain_error, store_error = OSError('OWNED_DOMAIN_CLOSE_FAILURE'), RuntimeError('OWNED_STORE_CLOSE_FAILURE')
+        def factory(address):
+            origin = 'https://127.0.0.1:' + str(address[1])
+            with ExitStack() as closes:
+                store = GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=control_policy()); closes.callback(store.close)
+                jobs = GatewayJobJournal(tmp_path / 'jobs.sqlite', initialize=True, max_records=20, max_payload_bytes=262144, wait_ms=1000); closes.callback(jobs.close)
+                journal = DomainJournal(tmp_path / 'domain.sqlite', initialize=True, role='GATEWAY', policy=domain_policy()); closes.callback(journal.close)
+                domain = GatewayDomain(store, journal, jobs, start_authorization_ms=2000)
+                controller = GatewayController(store, fleet_policy(), audience=origin,
+                    owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+                acquired.update(control=store, jobs=jobs, domain=journal)
+                real_close.update(domain=domain.close, store=store.close)
+                def close_domain():
+                    attempted.append('domain')
+                    if fault == 'before-domain': raise domain_error
+                    real_close['domain']()
+                    if fault in ('domain', 'both'): raise domain_error
+                def close_store():
+                    attempted.append('store'); real_close['store']()
+                    if fault in ('store', 'both'): raise store_error
+                domain.close, store.close = close_domain, close_store
+                closes.pop_all(); return controller
+        def started(address): bound.put(address); raise primary
+        def run():
+            caught = None
+            try: serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+                controller_factory=factory, stop_event=stopped, started=started)
+            except BaseException as error: caught = error
+            try:
+                reports.put({name: resource._db.execute('SELECT 1').fetchone()[0] if resource._db is not None else None
+                             for name, resource in acquired.items()})
+                finished.put(caught)
+                assert release.wait(timeout=5)
+            finally:
+                # Owner-thread disposal happens only after parent observes the result.
+                real_close['domain'](); real_close['store']()
+        thread = threading.Thread(target=run, daemon=True); thread.start()
+        try:
+            caught = finished.get(timeout=5); state = reports.get(timeout=1); address = bound.get(timeout=1)
+            graph = errors(caught)
+            assert any(error is primary for error in graph) and primary.__traceback__ is not None
+>           assert attempted == ['domain', 'store']
+E           AssertionError: assert [] == ['domain', 'store']
+E             
+E             Right contains 2 more items, first extra item: 'domain'
+E             Use -v to get more diff
+
+tests/unit/test_tip074_gateway_lifecycle.py:179: AssertionError
+============================= slowest 5 durations ==============================
+0.23s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs]
+0.17s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs]
+0.13s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[writer-domain]
+0.13s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors
+0.13s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-domain]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[composed-principals]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_partial_fixture_construction_closes_real_owners_with_traceback_retained[writer-domain]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[none]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[domain]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[store]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[both]
+FAILED tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[before-domain]
+10 failed, 1 passed in 2.76s

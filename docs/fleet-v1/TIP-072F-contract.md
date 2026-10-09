@@ -1,0 +1,15 @@
+# TIP-072F — isolated fake SDK fixture correction
+
+Authorized continuation of the approved continuous source build; Contractor scope decision, 2026-10-07. This separate test-only refinement does not change the TIP-072 production contract or the approved architecture.
+
+The complete pristine TIP-071 parent (216 source entries, exact Git bytes) reproduces the same compatibility result as TIP-072: 230 cases, 228 PASS / 1 SKIP / 1 FAIL. The TIP024 catalog/context test's fake MCP SDK omits `mcp.server.mcpserver.exceptions.ToolError`, required by the unchanged production adapter. The isolated case fails on both heads. Collecting a separate actual-SDK test module masks the omission through cached imports. Preserve all original failures and avoid dependence on collection order.
+
+YAGNI-3: (1) a self-contained fake SDK is necessary for this existing registration contract to run independently; (2) reuse the existing ModuleType and monkeypatch fixture; (3) add only the missing fake exception module/class required by the existing production import. Reuse an existing equivalent fixture helper if it yields a smaller clear correction. No production imports or strict SDK checks may be weakened.
+
+Builder may edit only `tests/unit/test_tip024_multiclient_concurrency.py`, limited to fake SDK setup for `test_tip024_mcp_registers_catalog_and_context_is_invisible_contract`. Keep the TIP-072 frozen production/new-test bytes unchanged. Preserve all original assertions, test identities, counts, budgets, deadlines, ownership/authority checks and other fixtures. No dependencies, workflows, runtime code, MCP surface, deployment or main changes.
+
+Acceptance: reproduce the existing isolated red case first using retained evidence; the isolated corrected test passes without another module preloading the SDK. The original five-module compatibility selection (230 cases) passes with only its existing justified skip, and TIP-072's 31 controls pass. Include a control that the strict production SDK import still fails when its required exception module is truly missing; label all fake-provider controls as stub scope, never real SDK qualification. Capture exact source manifests before/after each run, bounded commands, original/new logs and JUnit, finite case IDs, AST proof that only the existing fake SDK setup changed, and a frozen Completion Report. Do not add production behavior or extra test cases merely to mirror implementation.
+
+Use new evidence paths under `fix-20261007-1644/tip072f-builder/`; do not overwrite TIP-072 or diagnosis evidence. Builder does not commit, publish, rerun prior CI, touch the VPS, restart services, or execute MT5. Contractor independently verifies before any candidate publication.
+
+Unresolved gates remain explicit: TIP-071 source gate 6/8; original Windows owner/mechanism and separate capacity-normal failure UNKNOWN; current five runtime reads return MCP-32603; private VM/two-node/physical Fleet qualification deferred. No claim of deploy/demo readiness follows from local tests.

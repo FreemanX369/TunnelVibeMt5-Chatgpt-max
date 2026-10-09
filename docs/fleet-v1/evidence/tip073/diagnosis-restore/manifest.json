@@ -1,0 +1,97 @@
+{
+  "schema": "tip073.restore-budget-builder-evidence/1",
+  "parent_sha": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "source_mutations": false,
+  "files": [
+    {
+      "name": "causal-review.md",
+      "bytes": 5760,
+      "sha256": "1599fbf841a5fe9cefb30ed508f62383b9fd462df080ea97bffd2d7038233912"
+    },
+    {
+      "name": "commands.json",
+      "bytes": 1008,
+      "sha256": "0187052ddf466b8770b731320c1d4258245b47a5d07187ca1758c82b8c6b4929"
+    },
+    {
+      "name": "frozen-source-receipt.json",
+      "bytes": 1086,
+      "sha256": "e999e509d8ed6f49e7793375a1d0231cf006899d64978a7dc1299f82a6b42a5a"
+    },
+    {
+      "name": "owned-challenge-probe.py",
+      "bytes": 1418,
+      "sha256": "dec80aa9353b2ca9db5a2e03c1f76f308862b6e7ff9710135d8b78337fe00722"
+    },
+    {
+      "name": "owned-challenge-probe.raw.json",
+      "bytes": 364,
+      "sha256": "6ae9b71a54bc016112039d0c7945ba96f5bf305da51de5504faeb41daf2defee"
+    },
+    {
+      "name": "restore-module-receipt.json",
+      "bytes": 415,
+      "sha256": "d09dcb2140593a176f2f5f0e14264ae898d9b5a377ef0bd50486d89c353b4ab3"
+    },
+    {
+      "name": "restore-module-v2-receipt.json",
+      "bytes": 462,
+      "sha256": "315118691a3c8e23643ab15d4f39971a6b33e30f49cada48a8808a260485ec44"
+    },
+    {
+      "name": "restore-module-v2.junit.xml",
+      "bytes": 3340,
+      "sha256": "02be7887048d26cfcbd771997883734b2a789da4846eaf5d086b979bc980fbf5"
+    },
+    {
+      "name": "restore-module-v2.raw.log",
+      "bytes": 4285,
+      "sha256": "841e0e52ad1f8cb22a0c30a3adc777b738fd53ba9e112331cdc95e8845f80ae4"
+    },
+    {
+      "name": "restore-module.raw.log",
+      "bytes": 97,
+      "sha256": "51f5550d86043279227c92b72199d4ee1f66d30623405f70c98442058ffe76c7"
+    },
+    {
+      "name": "shared-case-timings.csv",
+      "bytes": 150369,
+      "sha256": "c48024ef45c26333f2d8eb88006db8ae796b8cc781f5cf90264599ee9dd07224"
+    },
+    {
+      "name": "source-after-v2.json",
+      "bytes": 20590,
+      "sha256": "eefd533b41500ba00e52dcad880812851536917389c5cc018e42d8505ea404df"
+    },
+    {
+      "name": "source-after.json",
+      "bytes": 20590,
+      "sha256": "eefd533b41500ba00e52dcad880812851536917389c5cc018e42d8505ea404df"
+    },
+    {
+      "name": "source-before-v2.json",
+      "bytes": 20590,
+      "sha256": "eefd533b41500ba00e52dcad880812851536917389c5cc018e42d8505ea404df"
+    },
+    {
+      "name": "source-before.json",
+      "bytes": 20590,
+      "sha256": "eefd533b41500ba00e52dcad880812851536917389c5cc018e42d8505ea404df"
+    },
+    {
+      "name": "timing-analysis.json",
+      "bytes": 64693,
+      "sha256": "35742692524bebd84983741e62bea5a08a2721bd1bdef957dec00ed2dc57bf69"
+    },
+    {
+      "name": "windows-restore-case-excerpt.raw.txt",
+      "bytes": 4872,
+      "sha256": "e1c4e1979718d288e20f673bf37c01b1a248c3424ee9c2f0568062b68b60d146"
+    },
+    {
+      "name": "windows-timeout-tail.raw.txt",
+      "bytes": 7749,
+      "sha256": "32003e2af8d86d56ae74047f769b509e36c21c33faff1a59a0b67257ef6d7978"
+    }
+  ]
+}

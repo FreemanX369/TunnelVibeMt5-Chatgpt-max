@@ -1,0 +1,36 @@
+{
+  "head": "f2b65c35cb1c31e523d365c75ae4be328df19476",
+  "cases": [
+    {
+      "name": "test_windows_retained_identity_positive_and_fresh_path_match",
+      "status": "PASS",
+      "time": "0.049",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_windows_retained_handle_rejects_fresh_path_replacement",
+      "status": "PASS",
+      "time": "0.058",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_real_process_fifo_and_atomic_resource_writers_share_legacy_lease",
+      "status": "PASS",
+      "time": "1.045",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_real_queued_resource_writer_observing_active_is_denied_without_reservation",
+      "status": "PASS",
+      "time": "0.899",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+      "status": "PASS",
+      "time": "3.495",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    }
+  ],
+  "source_gate": "REJECTED_6_OF_8"
+}

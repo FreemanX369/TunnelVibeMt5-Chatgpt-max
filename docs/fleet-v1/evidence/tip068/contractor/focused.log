@@ -1,0 +1,184 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip068-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 29 items
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[pass-posix-case_names0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 1139, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[pass-posix-case_names0] PASSED [  3%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1149, "test_elapsed_ms": 10}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[pass-nt-case_names1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 1150, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[pass-nt-case_names1] PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1154, "test_elapsed_ms": 4}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[full-unit-timeout-posix-case_names0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 1155, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[full-unit-timeout-posix-case_names0] PASSED [ 10%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1159, "test_elapsed_ms": 4}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[full-unit-timeout-nt-case_names1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 1159, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[full-unit-timeout-nt-case_names1] PASSED [ 13%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1163, "test_elapsed_ms": 4}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[source-changed-posix-case_names0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 1164, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[source-changed-posix-case_names0] PASSED [ 17%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1167, "test_elapsed_ms": 3}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[source-changed-nt-case_names1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 1167, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_runner.py::test_source_runner_keeps_required_proofs_and_honest_manifest[source-changed-nt-case_names1] PASSED [ 20%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_runner.py", "function": "test_source_runner_keeps_required_proofs_and_honest_manifest", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1172, "test_elapsed_ms": 4}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-passed] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 1172, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-passed] PASSED [ 24%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1491, "test_elapsed_ms": 318}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-failed] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 1491, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-failed] PASSED [ 27%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1927, "test_elapsed_ms": 435}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-skipped] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 1928, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[False-skipped] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2407, "test_elapsed_ms": 478}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-passed] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 2407, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-passed] PASSED [ 34%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2731, "test_elapsed_ms": 323}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-failed] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 2731, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-failed] PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3056, "test_elapsed_ms": 324}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-skipped] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 3056, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_is_opt_in_and_preserves_outcome[True-skipped] PASSED [ 41%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_is_opt_in_and_preserves_outcome", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3721, "test_elapsed_ms": 665}
+
+tests/unit/test_fleet_source_progress.py::test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 3722, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump PASSED [ 44%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_parent_timeout_keeps_flushed_unfinished_start_and_original_raw_handler_dump", "ordinal": 13, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4709, "test_elapsed_ms": 986}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_preserves_fixture_failure_and_junit_error[setup] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_preserves_fixture_failure_and_junit_error", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 4709, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_preserves_fixture_failure_and_junit_error[setup] PASSED [ 48%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_preserves_fixture_failure_and_junit_error", "ordinal": 14, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5136, "test_elapsed_ms": 426}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_preserves_fixture_failure_and_junit_error[teardown] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_preserves_fixture_failure_and_junit_error", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 5137, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_real_pytest_progress_preserves_fixture_failure_and_junit_error[teardown] PASSED [ 51%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_real_pytest_progress_preserves_fixture_failure_and_junit_error", "ordinal": 15, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5670, "test_elapsed_ms": 533}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[None] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 5670, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[None] PASSED [ 55%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 16, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5671, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[nodeid1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 17, "stage": "START", "suite_elapsed_ms": 5671, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[nodeid1] PASSED [ 58%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 17, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5672, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[nodeid2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 18, "stage": "START", "suite_elapsed_ms": 5672, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[nodeid2] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 18, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5672, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[PRIVATE_PARAMETER_TOKEN] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 19, "stage": "START", "suite_elapsed_ms": 5673, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[PRIVATE_PARAMETER_TOKEN] PASSED [ 65%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_omits_malformed_or_nonliteral_ids", "ordinal": 19, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5673, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[/private/test_secret.py::test_secret] 
+SOURCE_TEST_PROGRESS {"ordinal": 20, "stage": "START", "suite_elapsed_ms": 5675, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[/private/test_secret.py::test_secret] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"ordinal": 20, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5676, "test_elapsed_ms": 1}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/../private.py::test_secret] 
+SOURCE_TEST_PROGRESS {"ordinal": 21, "stage": "START", "suite_elapsed_ms": 5677, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/../private.py::test_secret] PASSED [ 72%]
+SOURCE_TEST_PROGRESS {"ordinal": 21, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5678, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/test_control.py::PRIVATE_FUNCTION_TOKEN] 
+SOURCE_TEST_PROGRESS {"ordinal": 22, "stage": "START", "suite_elapsed_ms": 5678, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/test_control.py::PRIVATE_FUNCTION_TOKEN] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"ordinal": 22, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5679, "test_elapsed_ms": 1}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/test_control.py::test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] 
+SOURCE_TEST_PROGRESS {"ordinal": 23, "stage": "START", "suite_elapsed_ms": 5679, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_omits_malformed_or_nonliteral_ids[tests/unit/test_control.py::test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] PASSED [ 79%]
+SOURCE_TEST_PROGRESS {"ordinal": 23, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5680, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_keeps_literal_function_and_omits_all_parameter_data 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_keeps_literal_function_and_omits_all_parameter_data", "ordinal": 24, "stage": "START", "suite_elapsed_ms": 5680, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_keeps_literal_function_and_omits_all_parameter_data PASSED [ 82%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_keeps_literal_function_and_omits_all_parameter_data", "ordinal": 24, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5682, "test_elapsed_ms": 1}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_caps_rows_flushes_and_marks_truncation 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_caps_rows_flushes_and_marks_truncation", "ordinal": 25, "stage": "START", "suite_elapsed_ms": 5682, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_caps_rows_flushes_and_marks_truncation PASSED [ 86%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_caps_rows_flushes_and_marks_truncation", "ordinal": 25, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5683, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_finish_without_call_report_is_honestly_unknown 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_finish_without_call_report_is_honestly_unknown", "ordinal": 26, "stage": "START", "suite_elapsed_ms": 5683, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_source_progress_finish_without_call_report_is_honestly_unknown PASSED [ 89%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_source_progress_finish_without_call_report_is_honestly_unknown", "ordinal": 26, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5683, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_live_progress_requires_newline_but_rejects_malformed_complete_rows 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_live_progress_requires_newline_but_rejects_malformed_complete_rows", "ordinal": 27, "stage": "START", "suite_elapsed_ms": 5683, "test_elapsed_ms": 0}
+
+tests/unit/test_fleet_source_progress.py::test_live_progress_requires_newline_but_rejects_malformed_complete_rows PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_fleet_source_progress.py", "function": "test_live_progress_requires_newline_but_rejects_malformed_complete_rows", "ordinal": 27, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5684, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_capacity_https.py", "function": "test_capacity_callback_original_survives_unknown_and_armed_scope", "ordinal": 28, "stage": "START", "suite_elapsed_ms": 5684, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False] PASSED [ 96%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_capacity_https.py", "function": "test_capacity_callback_original_survives_unknown_and_armed_scope", "ordinal": 28, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6616, "test_elapsed_ms": 931}
+
+tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[True] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_capacity_https.py", "function": "test_capacity_callback_original_survives_unknown_and_armed_scope", "ordinal": 29, "stage": "START", "suite_elapsed_ms": 6616, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[True] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_capacity_https.py", "function": "test_capacity_callback_original_survives_unknown_and_armed_scope", "ordinal": 29, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 7339, "test_elapsed_ms": 722}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/resume-20261006/tip068-contractor/focused.junit.xml -
+============================== 29 passed in 7.31s ==============================

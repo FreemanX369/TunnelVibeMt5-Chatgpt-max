@@ -1,0 +1,26 @@
+{
+  "schema": "owned-foreign-activity/1",
+  "exit_status": 0,
+  "rows": [
+    {
+      "stage": "FOREIGN_BEGIN",
+      "code": "JOB_UNKNOWN",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "FOREIGN_COMPLETE",
+      "code": "NATIVE_AUTHORIZATION_UNVERIFIED",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "FOREIGN_OUTCOME",
+      "code": "JOB_UNKNOWN",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "FOREIGN_RPC",
+      "kind": "DOMAIN_RESULT",
+      "result": "HARMLESS_QUEUE_CONTROL"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "fleet.decoded-job-log/1",
+  "job_id": 111687640684,
+  "bytes": 28535,
+  "sha256": "04ea1b63a4b8fe8e8828ecc9f39b061558a8411e3ac4df805fde111085f6831d",
+  "truncated": false,
+  "format": "CONNECTOR_DECODED_UTF8_ORIGINAL_BOM_CRLF_RETAINED"
+}

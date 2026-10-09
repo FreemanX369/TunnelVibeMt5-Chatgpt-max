@@ -1,0 +1,294 @@
+{
+  "schema": "fleet.ci-checkpoint/1",
+  "status": "FAILED_OVERALL_CAPACITY_FIXTURE_OPEN",
+  "head_sha": "154e954aa631c63c39db639aa93a529e9807f42c",
+  "tree_sha": "2d29bc02cb7fc13dabeb32c886f3fa8e3a705561",
+  "checkout_merge_sha": "edb8f16033065afb2eea6f109f664661cda672cb",
+  "merge_vs_source_diff": [],
+  "workflow_runs": [
+    {
+      "id": 37113614999,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 187,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614999/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614999/logs",
+      "workflow_id": 357139482
+    },
+    {
+      "id": 37113615012,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 186,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615012/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615012/logs",
+      "workflow_id": 357167822
+    },
+    {
+      "id": 37113614901,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 15,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614901/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614901/logs",
+      "workflow_id": 373216678
+    },
+    {
+      "id": 37113615010,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 11,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615010/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615010/logs",
+      "workflow_id": 373332157
+    },
+    {
+      "id": 37113615003,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 24,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615003/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615003/logs",
+      "workflow_id": 372895546
+    },
+    {
+      "id": 37113614996,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 71,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614996/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614996/logs",
+      "workflow_id": 369987372
+    },
+    {
+      "id": 37113615062,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 174,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615062/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113615062/logs",
+      "workflow_id": 358366702
+    },
+    {
+      "id": 37113614943,
+      "name": "Verify Fleet v1 integrated source",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 4,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614943/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37113614943/logs",
+      "workflow_id": 373695570
+    }
+  ],
+  "workflow_success": 7,
+  "workflow_failed": 1,
+  "linux": {
+    "schema": "fleet.ci-artifact-verification/1",
+    "artifact_id": 11271041751,
+    "zip_sha256": "498574ab7cf6a088cba459c118f273b99e363521d6143a1e7dd51957ff59ba70",
+    "zip_bytes": 59774,
+    "head_sha": "154e954aa631c63c39db639aa93a529e9807f42c",
+    "tree_sha": "2d29bc02cb7fc13dabeb32c886f3fa8e3a705561",
+    "status": "PASS",
+    "unit": {
+      "tests": 1135,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 14,
+      "passed": 1121,
+      "seconds": 92.072
+    },
+    "skips": [
+      {
+        "test": "test_tip039_shell_executes_powershell_and_cmd_on_windows",
+        "reason": "requires Windows PowerShell"
+      },
+      {
+        "test": "test_tip040_live_mt5_2_account_chart_and_png",
+        "reason": "requires the interactive Windows VPS"
+      },
+      {
+        "test": "test_tip041_live_each_open_chart_16_9_and_exact_layout_rollback",
+        "reason": "requires the interactive Windows VPS"
+      },
+      {
+        "test": "test_ac08_windows_junction_duplicate_and_retarget",
+        "reason": "Windows junction fixture requires Windows"
+      },
+      {
+        "test": "test_actual_windows_deny_delete_handle_recovers_within_release_bound",
+        "reason": "Actual Windows deny-delete handle gate requires Windows; injected faults are separate evidence"
+      },
+      {
+        "test": "test_actual_windows_persistent_deny_delete_stays_retryable",
+        "reason": "Actual Windows persistent deny-delete gate requires Windows"
+      },
+      {
+        "test": "test_actual_suspended_bind_resume_descendant_boundary_and_exact_exit",
+        "reason": "HARmless_WINDOWS_JOB_OBJECT_ONLY"
+      },
+      {
+        "test": "test_fault_before_resume_keeps_bound_authority_until_exact_owned_cleanup",
+        "reason": "HARmless_WINDOWS_JOB_OBJECT_ONLY"
+      },
+      {
+        "test": "test_actual_parent_crash_contains_worker_but_never_claims_durable_closure",
+        "reason": "HARmless_WINDOWS_JOB_OBJECT_ONLY"
+      },
+      {
+        "test": "test_expiry_during_durable_create_attempt_blocks_actual_create_and_retains_fence",
+        "reason": "HARmless_WINDOWS_JOB_OBJECT_ONLY"
+      },
+      {
+        "test": "test_harmless_windows_api_and_structure_construction",
+        "reason": "Actual Win32 API construction requires Windows; no SDK"
+      },
+      {
+        "test": "test_windows_private_acl_roundtrip_reports_public_semantics",
+        "reason": "Actual retained-handle numeric ACL fixture requires Windows"
+      },
+      {
+        "test": "test_windows_private_key_foreign_owner_denied_on_retained_handle",
+        "reason": "Actual retained-handle Windows ownership fixture requires Windows"
+      },
+      {
+        "test": "test_windows_staging_directory_cannot_be_renamed_while_held",
+        "reason": "Actual protected staging-directory handle fixture requires Windows"
+      }
+    ],
+    "critical_windows_cases": {},
+    "manifest_files": 206,
+    "manifest_verified": true,
+    "source_unchanged": true,
+    "physical_qualification": "NOT_RUN",
+    "cases": [
+      {
+        "case": "full-unit",
+        "exit_code": 0,
+        "timeout_seconds": 600,
+        "timed_out": false,
+        "elapsed_seconds": 93.438
+      },
+      {
+        "case": "b1-portable",
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 0.616
+      }
+    ],
+    "proofs": {
+      "b1-portable": {
+        "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+        "passed": 39,
+        "skipped": 0,
+        "head_verified": true
+      }
+    }
+  },
+  "windows": {
+    "artifact_id": 11270942308,
+    "zip_sha256": "4be96e3bd6c927b5f7807f3de790e45948cb0528bc969c594e0208a8ceee1a8e",
+    "zip_bytes": 259300,
+    "head_sha": "154e954aa631c63c39db639aa93a529e9807f42c",
+    "tree_sha": "2d29bc02cb7fc13dabeb32c886f3fa8e3a705561",
+    "status": "FAIL",
+    "unit": {
+      "tests": 1135,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 10,
+      "passed": 1124,
+      "seconds": 358.073
+    },
+    "source_unchanged": true,
+    "manifest_files": 206,
+    "manifest_verified": true,
+    "cases": [
+      {
+        "case": "full-unit",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "-m",
+          "pytest",
+          "tests/unit",
+          "-v",
+          "--tb=short",
+          "--durations=20",
+          "-o",
+          "faulthandler_timeout=90",
+          "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+        ],
+        "exit_code": 1,
+        "timeout_seconds": 600,
+        "timed_out": false,
+        "elapsed_seconds": 359.484
+      },
+      {
+        "case": "b1-portable",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rb1/run_proof.py",
+          "--portable",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 5.062
+      },
+      {
+        "case": "q1-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rq/run_proof.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 17.157
+      },
+      {
+        "case": "g03a-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rg03a/run_windows.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 1.89
+      },
+      {
+        "case": "b1-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rb1/run_proof.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 8.141
+      }
+    ]
+  },
+  "failure_summary": "Capacity two-slot fixture final3-job completion observation did not reach SUCCEEDED in pump default3s. Actual terminal states not logged; no product cause proven. Earlier positive startup/admission fixes passed both Deep and Bootstrap.",
+  "physical_qualification": "NOT_RUN"
+}

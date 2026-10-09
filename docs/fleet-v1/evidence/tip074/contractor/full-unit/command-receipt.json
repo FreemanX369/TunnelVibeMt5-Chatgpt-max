@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "tests/unit",
+    "--basetemp=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/contractor/full-unit/owned-tmp",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/contractor/full-unit/unit-junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip074-candidate",
+  "external_timeout_seconds": 600,
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 118.97390010500021,
+  "source_count": 219,
+  "source_unchanged": true,
+  "cases": 1466,
+  "failed": 0,
+  "skipped": 41,
+  "passed": 1425,
+  "scope": "owned local Linux; unpublished frozen source; not Windows, CI or VPS qualification"
+}

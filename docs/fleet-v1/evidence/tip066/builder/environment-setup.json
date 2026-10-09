@@ -1,0 +1,27 @@
+{
+  "classification": "LOCAL_TEST_ENVIRONMENT_FAILURES",
+  "source_test_failures": 0,
+  "observations": [
+    {
+      "step": "saved_venv_executable",
+      "exit_code": 127,
+      "raw_error": "/bin/bash: line 1: /workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python: No such file or directory",
+      "reason": "saved bin/python symlink points to absent bin/python3"
+    },
+    {
+      "step": "saved_site_packages_import_mcp",
+      "exit_code": 135,
+      "raw_error": "Fatal Python error: Bus error",
+      "location": "saved cryptography/exceptions.py:9 -> native create_module",
+      "test_execution": "NOT_RUN"
+    },
+    {
+      "step": "fresh_local_test_venv",
+      "state": "PASS",
+      "old_environment_changed": false,
+      "constraint_file": "requirements-bootstrap.lock",
+      "unconstrained_initial_install_log": "dependency-install.log",
+      "constrained_final_install_log": "dependency-constrained-install.log"
+    }
+  ]
+}

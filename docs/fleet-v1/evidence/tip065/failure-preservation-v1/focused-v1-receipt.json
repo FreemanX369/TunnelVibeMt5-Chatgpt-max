@@ -1,0 +1,42 @@
+{
+  "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+  "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip061a_057n.py",
+    "tests/unit/test_tip060c_https_restore.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "-v",
+    "--tb=short",
+    "--durations=12",
+    "-o",
+    "faulthandler_timeout=90",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-failure-preservation-20261005/focused-v1.xml"
+  ],
+  "cwd": "/workspace/scratch/1818a0d45fa0/repo",
+  "environment_overrides": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "harness_timeout_seconds": 300,
+  "exit_code": 0,
+  "elapsed_seconds": 25.806,
+  "source_count": 210,
+  "source_unchanged_during_run": true,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "3",
+    "tests": "200",
+    "time": "25.296",
+    "timestamp": "2026-10-05T18:26:36.291640+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "log_sha256": "4c9cc5471ce67e3517e5bad140e44626cb1a1723ef55fc24c1675d77dada9dbd",
+  "junit_sha256": "4fb65ca9c9aaa7e97d9f8d622daa517a201b58d14bfbdae965453fa206a336ab",
+  "physical_qualification": "NOT_RUN"
+}

@@ -1,0 +1,13 @@
+..........................                                               [100%]
+============================= slowest 10 durations =============================
+0.06s setup    tests/unit/test_tip060c_restore.py::test_complete_signed_checkpoint_restores_both_and_remains_ready_after_new_admission
+0.03s call     tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[job_finalized:after_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:before_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_ready:before_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[control_commit:after_commit]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:after_commit]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:after_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[route]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:before_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[registry]
+26 passed in 0.78s

@@ -1,0 +1,24 @@
+.....FF................                                                  [100%]
+=================================== FAILURES ===================================
+_ test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[record] _
+tests/unit/test_tip064_capacity_https.py:611: in test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed
+    assert scopes[0].load()['phase'] == 'ARMED' and scopes[0].load()['status'] == 'UNKNOWN'
+E   AssertionError: assert ('CLOSED' == 'ARMED'
+E     
+E     - ARMED
+E     + CLOSED)
+----------------------------- Captured stdout call -----------------------------
+CAPACITY_SCOPE_FIXTURE {"failure_count": 1, "last_failure": {"owner_count": 0, "owner_status": "UNKNOWN", "owners": [], "owners_dropped": 0, "request_thread": 2, "wait_ms": 0}, "timeline": [], "timeline_dropped": 0, "timeline_limit": 32, "timeline_total": 0}
+_ test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure] _
+tests/unit/test_tip064_capacity_https.py:611: in test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed
+    assert scopes[0].load()['phase'] == 'ARMED' and scopes[0].load()['status'] == 'UNKNOWN'
+E   AssertionError: assert ('CLOSED' == 'ARMED'
+E     
+E     - ARMED
+E     + CLOSED)
+----------------------------- Captured stdout call -----------------------------
+CAPACITY_SCOPE_FIXTURE {"failure_count": 0, "last_failure": null, "timeline": [{"elapsed_ms": 351, "stage": "DB_CONNECT", "thread": 3}, {"elapsed_ms": 351, "stage": "VALIDATE", "thread": 3}, {"elapsed_ms": 352, "stage": "BODY", "thread": 3}, {"elapsed_ms": 352, "stage": "EXIT", "thread": 3}, {"elapsed_ms": 352, "stage": "FINISH", "thread": 3}, {"elapsed_ms": 569, "stage": "REQUEST", "thread": 1}, {"elapsed_ms": 569, "stage": "REQUEST", "thread": 2}, {"elapsed_ms": 570, "stage": "DB_CONNECT", "thread": 2}, {"elapsed_ms": 570, "stage": "FINISH", "thread": 2}, {"elapsed_ms": 570, "stage": "REQUEST", "thread": 2}, {"elapsed_ms": 571, "stage": "DB_CONNECT", "thread": 2}, {"elapsed_ms": 573, "stage": "VALIDATE", "thread": 2}, {"elapsed_ms": 574, "stage": "BODY", "thread": 2}, {"elapsed_ms": 574, "stage": "EXIT", "thread": 2}, {"elapsed_ms": 575, "stage": "FINISH", "thread": 2}, {"elapsed_ms": 584, "stage": "DB_CONNECT", "thread": 1}, {"elapsed_ms": 585, "stage": "VALIDATE", "thread": 1}, {"elapsed_ms": 593, "stage": "BODY", "thread": 1}, {"elapsed_ms": 595, "stage": "EXIT", "thread": 1}, {"elapsed_ms": 596, "stage": "FINISH", "thread": 1}, {"elapsed_ms": 596, "stage": "REQUEST", "thread": 1}, {"elapsed_ms": 596, "stage": "DB_CONNECT", "thread": 1}, {"elapsed_ms": 600, "stage": "VALIDATE", "thread": 1}, {"elapsed_ms": 604, "stage": "BODY", "thread": 1}, {"elapsed_ms": 604, "stage": "EXIT", "thread": 1}, {"elapsed_ms": 606, "stage": "FINISH", "thread": 1}, {"elapsed_ms": 691, "stage": "REQUEST", "thread": 3}, {"elapsed_ms": 692, "stage": "DB_CONNECT", "thread": 3}, {"elapsed_ms": 692, "stage": "VALIDATE", "thread": 3}, {"elapsed_ms": 693, "stage": "BODY", "thread": 3}, {"elapsed_ms": 693, "stage": "EXIT", "thread": 3}, {"elapsed_ms": 693, "stage": "FINISH", "thread": 3}], "timeline_dropped": 37, "timeline_limit": 32, "timeline_total": 69}
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[record]
+FAILED tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure]
+2 failed, 21 passed, 64 deselected in 35.77s

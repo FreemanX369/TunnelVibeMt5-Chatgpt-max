@@ -1,0 +1,9 @@
+{
+  "schema": "fleet.legacy-catalog-verification/1",
+  "scope": "SCHEMA_ONLY_SYNTHETIC_ROOT_NO_PRODUCER",
+  "count": 85,
+  "expected_count": 85,
+  "catalog_sha256": "915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef",
+  "expected_catalog": "915a87d829983cbb26125cc26350876e1ece5cdde95e77c76c98881e4b74fdef",
+  "generated_schema_sha256": "64337437115a20a8555cc1214706a503b985195dbdbd219de2adfa35e2c8134d"
+}

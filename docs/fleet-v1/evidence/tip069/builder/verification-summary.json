@@ -1,0 +1,38 @@
+{
+  "status": "FOCUSED_PASS_NOT_CI_ACCEPTANCE",
+  "parent_head": "d9254cd82c996b646ec38d74d2c5467d653f4c84",
+  "parent_tree": "6e3f7d406dd9652e0932155857a18c4530fcc80f",
+  "focused_v2": {
+    "tests": 23,
+    "passed": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "deselected": 64,
+    "elapsed_seconds": 31.83
+  },
+  "retained_builder_v1": {
+    "passed": 21,
+    "failures": 2,
+    "elapsed_seconds": 35.77
+  },
+  "retained_contractor_v1": {
+    "passed": 113,
+    "failures": 1,
+    "elapsed_seconds": 62.255
+  },
+  "manifest_entries": 214,
+  "source_unchanged_during_focused_v2": true,
+  "changed_source_entries": [
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "unchanged_parent_source_entries": 212,
+  "unchanged_app_entries": 89,
+  "production_changes": false,
+  "authority_clocks_or_budgets_changed": false,
+  "physical_qualification": "NOT_RUN",
+  "runtime_effects": "NONE",
+  "commit_push_ci": "NOT_RUN",
+  "original_windows_causes": "UNKNOWN_NO_BEHAVIORAL_FIX_CLAIM"
+}

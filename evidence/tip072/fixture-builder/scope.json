@@ -1,0 +1,13 @@
+{
+  "only_changed_since_tip072_frozen": [
+    "tests/unit/test_tip024_multiclient_concurrency.py"
+  ],
+  "source_entries": 217,
+  "ast_identical_outside_named_fixture": true,
+  "original_body_nodes_preserved_in_order": true,
+  "added_fixture_nodes": 3,
+  "tip072_production_sha256": "0bf1db9cf1a97c36714bcc87f6229922f8d666b38d904ab0534a7c4aff474db4",
+  "tip072_test_sha256": "8e238ed853dea1d1283c07ac12bde9c2166e339fb14178edd1e74de573494d81",
+  "tip024_before_sha256": "07f822793d3ad08d946e0dedade8f2b2ba3b0f6b07631cd7ec851d112cbfcc3c",
+  "tip024_after_sha256": "e33edee22aa54f3ca8fe5f91177324f9fdf6bdd147993781ec431160b0a7e7ee"
+}

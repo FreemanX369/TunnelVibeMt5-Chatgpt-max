@@ -1,0 +1,32 @@
+{
+  "command": "PYTHONPATH=<cached dependencies>:app:tests/unit python -m pytest -q --tb=short tests/unit/test_tip064_integration.py tests/unit/test_tip064_capacity_https.py tests/unit/test_tip064_writer_resolution_https.py tests/unit/test_tip060c_https_restore.py --junitxml=<receipt-directory>/integration.junit.xml",
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 45
+  },
+  "duration_seconds": 10.019,
+  "git_base_head": "943294e8f74463a31684322d6520f3de4e57f09d",
+  "owned_source_sha256": {
+    ".github/workflows/verify-fleet-v1.yml": "a711c08c3dce0010f19582e8887ddf7c64ab6a431e39eec9411df9c23e6d59fe",
+    "app/vibemql5/adapters/fleet_cli.py": "7e1d7e6aa2e3b1bf62ad30b90b9aa6c4f4b8074f0726c359cbbd8f3c4c2a65b8",
+    "app/vibemql5/adapters/fleet_client_tools.py": "48ab5c3422b3bb8603ff3dc9d8a4ee71d30e199a1af19c970ccc5062b06889f5",
+    "app/vibemql5/adapters/fleet_mcp.py": "5cba5803e7e28b8732309f0365ae8b4720ab806589d16c650ec1110ff3639168",
+    "app/vibemql5/core/facade.py": "c09553cc0561bb07118dde6b9a3fe8ba2780f109b59d36c3fb6ecca79a3b9d70",
+    "app/vibemql5/fleet/domain.py": "20aa7e67f8b7cbb3d18709de819ccc8bad95fb0f92290d8ab15b1002d7b35500",
+    "app/vibemql5/fleet/reads.py": "857fb4c453cc2d17c97f8cde08a3fba9b960f60e00750704f91e6d4e1c943e92",
+    "tests/proofs/fleet_v1/run_source.py": "bb6b480c5f6f5bbeb474273e2abfd43ac64a3613cc67bfb0038b9f6f5c6ecef9",
+    "tests/unit/test_tip058a_gateway_control.py": "246856c69d5f7be42ad2ac2d800bfdced03fa323f957b01fee0d92a35bb67fb9",
+    "tests/unit/test_tip064_integration.py": "690bde062343174dec6ec4bd8dc79835a5ef4f425366b289eaf60dd0ad38d7e4"
+  },
+  "physical_qualification": "NOT_RUN",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "qualification_boundary": "Contractor exact-HEAD Linux/Windows CI pending; this base Git HEAD does not attest uncommitted worktree source.",
+  "schema": "fleet.integration-source-receipt/1",
+  "scope": "FROZEN_WORKTREE_SOURCE_HARMLESS_AND_SYNTHETIC_FIXTURES",
+  "source_manifest_sha256": "7c48fe66b96505da90b140765ae5cfe315650864edcd9f0c0502a7753052b49b",
+  "source_unchanged_during_run": true,
+  "status": "PASS"
+}

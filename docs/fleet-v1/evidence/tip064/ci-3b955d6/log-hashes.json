@@ -1,0 +1,38 @@
+{
+  "job-111134214912.raw.log": {
+    "raw_sha256": "80643afef691b2464e4cc94a5af42c372edad0ce108922deecae3016e2bf826b",
+    "raw_bytes": 2026089,
+    "gzip_sha256": "a4b069ce0e6a09ef676ed0fce97b30bfe444a04dbb0b91e674da89cb307593c1",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  },
+  "linux-job.raw.log": {
+    "raw_sha256": "2f25cf4a419e968d98bc22f3273ec321cf9256e880383bee5bbd3d962b0ccd1f",
+    "raw_bytes": 28752,
+    "gzip_sha256": "35ba3d24b3041556c00a9e0b403e484103833fbbca8d904540068fe75e3fcefb",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  },
+  "job-111134214991.raw.log": {
+    "raw_sha256": "ab9ab22bff90626fc587aa8074dafcb33f242df55565e9fab1808d2c06bec1e8",
+    "raw_bytes": 1432334,
+    "gzip_sha256": "66d422e5fb0feab94e1b635a556c393ffaa33e2f4b87626d9bbef921d3b9a997",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  },
+  "job-111134215560.raw.log": {
+    "raw_sha256": "975a4f78bd07cc3376f155c627e71330de853a1ad697790274e075fa72bd427b",
+    "raw_bytes": 28552,
+    "gzip_sha256": "037e750cd4374e6a6e0692683d5e109d48ce34f189a427fb16d31a692fe6f2ca",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  },
+  "linux/full-unit.log": {
+    "raw_sha256": "de7d215c829ee10e46dd114c9be078b1c616956d7ff8a36147f46a0b55cf495a",
+    "raw_bytes": 7789,
+    "gzip_sha256": "349a0f8d335dba856e8cbfdecf891c2a4b308bbef60bca30533ec77da6ca15db",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  },
+  "windows/full-unit.log": {
+    "raw_sha256": "4a1032797dec1fc162a1081cc56e4d8e6aac0a78479f8149e426ea646122bb6c",
+    "raw_bytes": 1229345,
+    "gzip_sha256": "6c40068ae7a0d43ad0d2881cb638c3deb122ca418e3cbdceb4a2e390a9543d97",
+    "encoding": "lossless gzip, UTF-8 decoded raw API log or raw artifact log"
+  }
+}

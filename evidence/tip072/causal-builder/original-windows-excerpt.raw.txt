@@ -1,0 +1,43 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 1401, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 465405, "test_elapsed_ms": 125}
+
+================================== FAILURES ===================================
+_____________ test_tip024_native_fifo_order_for_multiple_waiters ______________
+tests\unit\test_tip024_multiclient_concurrency.py:169: in test_tip024_native_fifo_order_for_multiple_waiters
+    assert order == ["B", "C"]
+E   AssertionError: assert ['C'] == ['B', 'C']
+E     
+E     At index 0 diff: 'C' != 'B'
+E     Right contains one more item: 'C'
+E     
+E     Full diff:
+E       [
+E     -     'B',
+E           'C',
+E       ]
+============================== warnings summary ===============================
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_order_for_multiple_waiters
+  C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-14 (waiter)
+  
+  Traceback (most recent call last):
+    File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+      self.run()
+    File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+      self._target(*self._args, **self._kwargs)
+    File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip024_multiclient_concurrency.py", line 158, in waiter
+      lease = acquire_native_execution(root, name, kind="test", wait_seconds=3)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\core\concurrency.py", line 437, in acquire_native_execution
+      ).acquire()
+        ^^^^^^^^^
+    File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\core\concurrency.py", line 330, in acquire
+      if self._try_acquire(first=first == self.ticket_path):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\core\concurrency.py", line 291, in _try_acquire
+      return self._publish_owner() if first else False
+             ^^^^^^^^^^^^^^^^^^^^^
+    File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\app\vibemql5\core\concurrency.py", line 296, in _publish_owner
+      fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  PermissionError: [Errno 13] Permission denied: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pytest-of-runneradmin\\pytest-0\\test_tip024_native_fifo_order_0\\VibeMQL5\\runs\\.active.lock'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
