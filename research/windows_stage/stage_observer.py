@@ -123,6 +123,7 @@ class Observation:
         self.restores, self.bound = [], set()
         self.exit_profiler = ExitProfiler(self)
         self.pump = PumpObservation(self)
+        self.prerequisite = PrerequisiteObservation(self)
 
     def safe(self, function, *args):
         try:
@@ -247,6 +248,8 @@ class Observation:
                                      "missing": not getattr(self.local, "exit_profile_active", False),
                                      "record": getattr(self.local, "transaction_record", None)}
         pump_step = self.safe(self.pump.step_begin, original) if stage == "CONTROL_STEP" else None
+        admission_step = self.safe(self.prerequisite.step_begin, original) if stage == "CONTROL_STEP" else None
+        admission_span = self.safe(self.prerequisite.span_begin, stage) if stage != "CONTROL_STEP" else None
         try:
             return original(*args, **kwargs)
         except BaseException as error:
@@ -255,6 +258,10 @@ class Observation:
                 category = "OTHER"
             raise
         finally:
+            if admission_span is not None:
+                self.safe(self.prerequisite.span_end, admission_span, category)
+            if admission_step is not None:
+                self.safe(self.prerequisite.step_end, admission_step, category)
             if pump_step is not None:
                 self.safe(self.pump.step_end, pump_step, category)
             if stage == "SCOPE_TX.EXIT":
@@ -427,10 +434,24 @@ class Observation:
         from vibemql5.fleet import native, scoped_resources, job_journal
         from vibemql5.core import jobs
         self.safe(self.exit_profiler.configure, scoped_resources, jobs)
+        if self.case in PrerequisiteObservation.CAPACITY_CASES:
+            self.safe(self.prerequisite.configure, module)
         if self.case == 5:
             self.safe(self.pump.configure, module)
-            if self.pump.configuration == "AVAILABLE":
-                self.safe(self.patch, module, "pump", self.pump.wrapper)
+        if self.prerequisite.configuration == "AVAILABLE" or self.pump.configuration == "AVAILABLE":
+            def router(original):
+                @functools.wraps(original)
+                def wrapped(*args, **kwargs):
+                    caller = self.safe(sys._getframe, 2)
+                    if caller is None:
+                        return original(*args, **kwargs)
+                    selected = self.prerequisite if caller.f_code is self.prerequisite.codes.get("helper") and caller.f_lineno == 313 else self.pump
+                    delegated = self.safe(lambda: selected.wrapper(original, caller=caller))
+                    if delegated is None:
+                        return original(*args, **kwargs)
+                    return delegated(*args, **kwargs)
+                return wrapped
+            self.safe(self.patch, module, "pump", router)
         from vibemql5.core.native_ownership import OwnershipAuthority
         self.constructor(OwnershipAuthority, self.bind_authority, nested_stage="AUTHORITY_INIT")
         for obj, stage in ((native, "NATIVE_FILE_LOCK"), (scoped_resources, "SCOPE_FILE_LOCK"), (jobs, "JOB_FILE_LOCK")):
@@ -465,6 +486,7 @@ class Observation:
                                "original_fixture": {"domain": "time.monotonic", "origins_absolute_seconds": list(self.fixture_origins),
                                                     "thread_labels_are_actor_ids": False}},
                     "transactions": self.transactions.snapshot(self.exit_profiler.states), "final_pump": self.pump.snapshot(),
+                    "prerequisite_pump": self.prerequisite.snapshot(),
                     "exit_profile": {"configuration": self.exit_profiler.configuration,
                                      "threads": {key: dict(value) for key, value in self.exit_profiler.states.items()},
                                      "coverage": ("NOT_APPLICABLE" if not self.exit_profiler.coordinators else
@@ -559,17 +581,17 @@ class PumpObservation:
                 and getattr(checked, "__code__", None) is self.codes["run_capacity_fixture.<locals>.checked"]
                 and getattr(callback, "__code__", None) is self.codes["run_capacity_fixture.<locals>.raise_callback_failure"])
 
-    def wrapper(self, original):
+    def wrapper(self, original, *, caller=None):
         @functools.wraps(original)
         def wrapped(*args, **kwargs):
             agent = args[0] if args else kwargs.get("agent")
             predicate = args[1] if len(args) > 1 else kwargs.get("predicate")
-            caller = self.observer.safe(sys._getframe, 2)
-            recognized = self.observer.safe(self.recognize, caller, agent, predicate, kwargs.get("seconds", 3))
+            source_caller = caller if caller is not None else self.observer.safe(sys._getframe, 2)
+            recognized = self.observer.safe(self.recognize, source_caller, agent, predicate, kwargs.get("seconds", 3))
             if not recognized:
                 return original(*args, **kwargs)
             self.calls = min(LIMIT, self.calls + 1)
-            self.current = {"agent": agent, "predicate": predicate, "completed": caller.f_locals["completed"],
+            self.current = {"agent": agent, "predicate": predicate, "completed": source_caller.f_locals["completed"],
                             "frame": None, "predicate_frame": None, "predicate_start": None}
             self.phase = "DURING_FINAL_PUMP"
             self.observer.safe(self.mark, "OBSERVED_ENTRY")
@@ -651,6 +673,210 @@ class PumpObservation:
                 "marker_retention": "SAMPLED" if self.total > 64 else "COMPLETE",
                 "entry_semantics": "OBSERVED_WRAPPER_ENTRY_NOT_RECONSTRUCTED_ORIGINAL_START",
                 "profile_return_semantics": "UNCLASSIFIED_NOT_SUCCESS_PROOF"}
+
+
+class LinkedRetention:
+    """Finite first/latest/largest inclusive rows, without adding nested durations."""
+    def __init__(self, first, latest, largest):
+        self.first_limit, self.largest_limit = first, largest
+        self.first, self.latest, self.largest = [], deque(maxlen=latest), []
+        self.total = self.incomplete = 0
+
+    def add(self, row):
+        self.total = min(LIMIT, self.total + 1)
+        self.incomplete = min(LIMIT, self.incomplete + bool(row["incomplete"]))
+        if len(self.first) < self.first_limit:
+            self.first.append(row)
+        self.latest.append(row)
+        self.largest.append(row)
+        self.largest.sort(key=lambda value: (-(value["duration_seconds"] or 0), value["ordinal"]))
+        del self.largest[self.largest_limit:]
+
+    def snapshot(self):
+        unique = {row["ordinal"]: row for rows in (self.first, self.latest, self.largest) for row in rows}
+        return {"total": self.total, "retained": len(unique), "dropped": max(0, self.total - len(unique)),
+                "incomplete_total": self.incomplete, "rows": [unique[key] for key in sorted(unique)]}
+
+
+class PrerequisiteObservation(PumpObservation):
+    """The original helper313/default3 admission, separate from case5 final pump."""
+    CAPACITY_CASES = frozenset((0, 1, 4, 5, 6, 7, 8, 9, 10, 11))
+
+    def __init__(self, observer):
+        super().__init__(observer)
+        self.applicable = observer.case in self.CAPACITY_CASES
+        self.configuration = "UNCONFIGURED" if self.applicable else "NOT_APPLICABLE"
+        self.phase = "BEFORE_PREREQUISITE"
+        self.steps = LinkedRetention(8, 8, 16)
+        self.step = None
+        self.step_serial = self.span_serial = self.pending_overflow = self.unmatched = 0
+        self.actual_seconds, self.default_changed = None, False
+
+    def configure(self, module):
+        super().configure(module)
+        if self.configuration != "AVAILABLE":
+            return
+        defaults = self.original.__kwdefaults__ or {}
+        if type(defaults.get("seconds")) is not int or defaults["seconds"] != 3:
+            self.configuration = "SOURCE_SEAM_MISMATCH"
+            return
+        def find(code):
+            for value in code.co_consts:
+                if type(value) is type(code):
+                    if value.co_name == "<lambda>" and value.co_firstlineno == 313:
+                        yield value
+                    yield from find(value)
+        found = list(find(self.codes["helper"]))
+        if len(found) != 1 or found[0].co_freevars != ("entered",):
+            self.configuration = "SOURCE_SEAM_MISMATCH"
+            return
+        self.codes["prerequisite_predicate"] = found[0]
+
+    def recognize(self, caller, agent, predicate, seconds):
+        if (not self.applicable or self.configuration != "AVAILABLE" or self.observer.actor() != "CONTROL"
+                or self.current is not None or self.calls or caller is None or caller.f_code is not self.codes["helper"]
+                or caller.f_lineno != 313 or type(seconds) is not int or seconds != 3):
+            return False
+        values = caller.f_locals
+        if values.get("agent") is not agent or getattr(predicate, "__code__", None) is not self.codes["run_capacity_fixture.<locals>.checked.<locals>.observed"]:
+            return False
+        closure = dict(zip(predicate.__code__.co_freevars, (cell.cell_contents for cell in predicate.__closure__)))
+        target, callback, checked = closure.get("predicate"), values.get("raise_callback_failure"), values.get("checked")
+        if getattr(target, "__code__", None) is not self.codes["prerequisite_predicate"]:
+            return False
+        inner = dict(zip(target.__code__.co_freevars, (cell.cell_contents for cell in target.__closure__)))
+        if getattr(checked, "__code__", None) is not self.codes["run_capacity_fixture.<locals>.checked"]:
+            return False
+        checked_closure = dict(zip(checked.__code__.co_freevars, (cell.cell_contents for cell in checked.__closure__)))
+        return (inner.get("entered") is values.get("entered") and inner.get("entered") is not None
+                and closure.get("raise_callback_failure") is callback and checked_closure.get("raise_callback_failure") is callback
+                and getattr(callback, "__code__", None) is self.codes["run_capacity_fixture.<locals>.raise_callback_failure"])
+
+    def wrapper(self, original, *, caller=None):
+        @functools.wraps(original)
+        def wrapped(*args, **kwargs):
+            agent = args[0] if args else None
+            predicate = args[1] if len(args) == 2 else None
+            source_caller = caller if caller is not None else self.observer.safe(sys._getframe, 2)
+            recognized = not kwargs and self.observer.safe(self.recognize, source_caller, agent, predicate, 3)
+            if not recognized:
+                return original(*args, **kwargs)
+            valid_default = self.observer.safe(lambda: type((self.original.__kwdefaults__ or {}).get("seconds")) is int
+                                                and self.original.__kwdefaults__["seconds"] == 3)
+            if not valid_default:
+                self.default_changed = True
+                self.configuration = "DEFAULT_MISMATCH"
+                return original(*args, **kwargs)
+            closure = self.observer.safe(lambda: dict(zip(predicate.__code__.co_freevars, (cell.cell_contents for cell in predicate.__closure__))))
+            if closure is None:
+                return original(*args, **kwargs)
+            self.calls = min(LIMIT, self.calls + 1)
+            self.current = {"agent": agent, "predicate": predicate, "completed": closure["predicate"],
+                            "frame": None, "predicate_frame": None, "predicate_start": None}
+            self.phase = "DURING_PREREQUISITE"
+            self.observer.safe(self.mark, "OBSERVED_ENTRY")
+            try:
+                result = original(*args, **kwargs)
+            except BaseException as error:
+                self.error = type(error).__name__ if type(error).__name__ in ERRORS | {"Failed", "BaseExceptionGroup", "ExceptionGroup"} else "OTHER"
+                self.phase = "AFTER_ORIGINAL_PREREQUISITE_FAILURE"
+                self.observer.safe(lambda: self.mark("ORIGINAL_EXCEPTION", error=self.error))
+                raise
+            else:
+                self.phase = "AFTER_ORIGINAL_PREREQUISITE_RETURN"
+                self.observer.safe(self.mark, "ORIGINAL_RETURN")
+                return result
+            finally:
+                if self.step is not None:
+                    self.unmatched = min(LIMIT, self.unmatched + 1)
+                    self.observer.safe(self.step_end, self.step, "OTHER")
+                self.current = None
+        return wrapped
+
+    def event(self, frame, event, arg):
+        current = self.current
+        if (current is not None and self.observer.actor() == "CONTROL" and event == "call"
+                and frame.f_code is self.codes["pump"] and frame.f_locals.get("agent") is current["agent"]
+                and frame.f_locals.get("predicate") is current["predicate"]):
+            seconds = frame.f_locals.get("seconds")
+            self.actual_seconds = seconds if type(seconds) is int and 0 <= seconds <= LIMIT else None
+            if type(seconds) is not int or seconds != 3:
+                self.default_changed = True
+                self.configuration = "ORIGINAL_SECONDS_MISMATCH"
+        super().event(frame, event, arg)
+
+    def step_begin(self, original):
+        if self.current is None or self.observer.actor() != "CONTROL" or getattr(original, "__self__", None) is not self.current["agent"]:
+            return None
+        if self.step is not None:
+            self.unmatched = min(LIMIT, self.unmatched + 1)
+            return None
+        self.step_serial = min(LIMIT, self.step_serial + 1)
+        self.step = {"ordinal": self.step_serial, "start": self.observer.monotonic_now(),
+                     "children": LinkedRetention(16, 16, 32), "pending": [], "incomplete": False}
+        self.mark("STEP_ENTRY")
+        return self.step
+
+    def step_end(self, step, error):
+        if self.step is not step:
+            self.unmatched = min(LIMIT, self.unmatched + 1)
+            return
+        interval = self.observer.interval(step["start"], self.observer.monotonic_now(), error)
+        pending = len(step["pending"])
+        self.unmatched = min(LIMIT, self.unmatched + pending)
+        children = step["children"].snapshot()
+        ids = {row["ordinal"] for row in children["rows"]}
+        missing = sum(row["parent"] is not None and row["parent"] not in ids for row in children["rows"])
+        children.update({"limit": 64, "selection": "FIRST16_LATEST16_LARGEST32_DEDUPLICATED", "missing_parent_rows": missing})
+        row = {"ordinal": step["ordinal"], **interval, "children": children,
+               "incomplete": step["incomplete"] or bool(pending or missing or children["incomplete_total"]) or interval["duration_seconds"] is None}
+        self.steps.add(row)
+        self.step = None
+        self.mark("STEP_EXIT", start=step["start"], error=error)
+
+    def span_begin(self, stage):
+        step = self.step
+        if step is None or self.current is None or self.observer.actor() != "CONTROL" or stage not in STAGES:
+            return None
+        if len(step["pending"]) >= 64:
+            self.pending_overflow = min(LIMIT, self.pending_overflow + 1)
+            step["incomplete"] = True
+            return None
+        self.span_serial = min(LIMIT, self.span_serial + 1)
+        row = {"ordinal": self.span_serial, "step": step["ordinal"], "stage": stage,
+               "parent": step["pending"][-1]["ordinal"] if step["pending"] else None,
+               "start": self.observer.monotonic_now()}
+        step["pending"].append(row)
+        return row
+
+    def span_end(self, row, error):
+        step = self.step
+        if step is None or self.observer.actor() != "CONTROL" or not any(row is value for value in step["pending"]):
+            self.unmatched = min(LIMIT, self.unmatched + 1)
+            return
+        if step["pending"][-1] is not row:
+            step["incomplete"] = True
+            self.unmatched = min(LIMIT, self.unmatched + 1)
+        step["pending"].remove(row)
+        interval = self.observer.interval(row["start"], self.observer.monotonic_now(), error)
+        step["children"].add({key: value for key, value in row.items() if key != "start"} | interval |
+                             {"incomplete": interval["duration_seconds"] is None})
+
+    def snapshot(self):
+        result = super().snapshot()
+        complete = (self.configuration == "AVAILABLE" and self.calls == 1 and self.deadline is not None
+                    and not self.deadline_changed and not self.clock_missing and self.current is None and self.step is None
+                    and not self.observer.faults and not self.pending_overflow and not self.unmatched)
+        steps = self.steps.snapshot()
+        result.update({"recognition": "RECOGNIZED" if self.calls else "UNEXECUTED" if self.configuration == "AVAILABLE" else "UNAVAILABLE" if self.applicable else "NOT_APPLICABLE",
+                       "original_seconds": self.actual_seconds if self.calls else 3 if self.applicable and self.configuration == "AVAILABLE" else None,
+                       "expected_seconds": 3 if self.applicable else None, "default_changed": self.default_changed,
+                       "coverage": "COMPLETE" if complete else "UNEXECUTED" if self.applicable and not self.calls and self.configuration == "AVAILABLE" else "INCOMPLETE" if self.applicable else "NOT_APPLICABLE",
+                       "steps": steps | {"limit": 32, "selection": "FIRST8_LATEST8_LARGEST16_DEDUPLICATED",
+                                           "pending_overflow": self.pending_overflow, "unmatched": self.unmatched,
+                                           "linkage": "INCOMPLETE" if steps["incomplete_total"] or self.pending_overflow or self.unmatched else "COMPLETE",
+                                           "semantics": "INCLUSIVE_NESTED_INTERVALS_NOT_ADDITIVE_NOT_PHYSICAL_IO"}})
+        return result
 
 
 class ExitProfiler:
@@ -773,6 +999,7 @@ class ExitProfiler:
                 if observer.actor() != actor:
                     return
                 observer.pump.event(frame, event, method)
+                observer.prerequisite.event(frame, event, method)
                 if event not in ("c_call", "c_return", "c_exception"):
                     return
                 if frame.f_code is not self.transaction_code and frame.f_code is not self.guard_code:
@@ -911,11 +1138,14 @@ class ObservedContext:
         if self.entered is not None and self.observer.actor() is not None:
             self.observer.safe(self.entered, result)
         self.body = self.observer.now()
+        self.admission_body = self.observer.safe(self.observer.prerequisite.span_begin, self.stage + ".BODY")
         return result
 
     def __exit__(self, typ, error, traceback):
         self.observer.safe(self.observer.record, self.stage + ".BODY", self.body)
         category = type(error).__name__ if error is not None and type(error).__name__ in ERRORS else "OTHER" if error is not None else "NONE"
+        if self.admission_body is not None:
+            self.observer.safe(self.observer.prerequisite.span_end, self.admission_body, category)
         start = self.observer.monotonic_now() if self.transaction is not None else None
         if self.transaction is not None:
             self.transaction["body_error"] = category
@@ -957,6 +1187,7 @@ def pytest_runtest_call(item):
         with observation.exit_profiler.scope():
             outcome = yield
             observation.safe(observation.pump.outcome, outcome)
+            observation.safe(observation.prerequisite.outcome, outcome)
     finally:
         observation.safe(observation.stop)
         def publish():

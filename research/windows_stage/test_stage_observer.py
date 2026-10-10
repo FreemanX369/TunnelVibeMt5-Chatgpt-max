@@ -1045,3 +1045,284 @@ def test_cached_original_transaction_is_explicitly_unattributed_not_complete(tmp
         assert facts['transactions']['observed_context_counts_exclude_unattributed_transactions']
     finally:
         observer.stop()
+
+
+def prerequisite_control(observer, *, ready=True):
+    from types import FunctionType
+    from queue import Queue
+    import test_tip064_capacity_https as capacity
+    admission = observer.prerequisite
+    admission.configure(capacity)
+    assert admission.configuration == 'AVAILABLE'
+    def cell(value): return (lambda: value).__closure__[0]
+    def function(code, values):
+        return FunctionType(code, capacity.__dict__, closure=tuple(cell(values[key]) for key in code.co_freevars))
+    callback = function(admission.codes['run_capacity_fixture.<locals>.raise_callback_failure'], {'callback_failures': []})
+    checked = function(admission.codes['run_capacity_fixture.<locals>.checked'], {'raise_callback_failure': callback})
+    entered = Queue()
+    if ready:
+        entered.put(None); entered.put(None)
+    target = function(admission.codes['prerequisite_predicate'], {'entered': entered})
+    return capacity, target, checked, callback, entered
+
+
+@pytest.mark.parametrize('case', range(12))
+def test_prerequisite_applicability_and_early_unexecuted_does_not_claim_deadline(case):
+    observer = Observation(case)
+    if case in stage_observer.PrerequisiteObservation.CAPACITY_CASES:
+        prerequisite_control(observer)
+        value = observer.prerequisite.snapshot()
+        assert value['recognition'] == value['coverage'] == 'UNEXECUTED'
+        assert value['original_seconds'] == 3 and value['original_deadline_absolute_monotonic_seconds'] is None
+    else:
+        assert observer.prerequisite.snapshot()['coverage'] == 'NOT_APPLICABLE'
+    assert observer.pump.snapshot()['original_seconds'] == (10 if case == 5 else None)
+    observer.stop()
+
+
+@pytest.mark.parametrize('wrong', ['none', 'caller_code', 'caller_line', 'predicate', 'entered', 'callback', 'agent', 'seconds', 'active', 'foreign_thread'])
+def test_prerequisite_exact_code_line_closure_queue_agent_budget_and_thread(wrong):
+    observer = Observation(10)
+    capacity, target, checked, callback, entered = prerequisite_control(observer)
+    agent, foreign = object(), object()
+    predicate = checked(target)
+    frame = SimpleNamespace(f_code=observer.prerequisite.codes['helper'], f_lineno=313,
+        f_locals={'agent': agent, 'checked': checked, 'raise_callback_failure': callback, 'entered': entered})
+    assert target.__code__.co_firstlineno == 313 and target.__code__.co_freevars == ('entered',)
+    if wrong == 'caller_code': frame.f_code = callback.__code__
+    if wrong == 'caller_line': frame.f_lineno = 382
+    if wrong == 'predicate': predicate = checked(lambda: True)
+    if wrong == 'entered': frame.f_locals['entered'] = object()
+    if wrong == 'callback': frame.f_locals['raise_callback_failure'] = lambda: None
+    if wrong == 'active': observer.prerequisite.current = {}
+    result = []
+    def call(): result.append(observer.prerequisite.recognize(frame, foreign if wrong == 'agent' else agent, predicate, 10 if wrong == 'seconds' else 3))
+    if wrong == 'foreign_thread':
+        thread = threading.Thread(target=call); thread.start(); thread.join(2); assert not thread.is_alive()
+    else: call()
+    assert result == [wrong == 'none']
+    observer.prerequisite.current = None
+    observer.stop()
+
+
+@pytest.mark.parametrize('mode', ['return', 'original_exception', 'deadline_failure', 'observer_fault'])
+def test_original_default3_pump_exact_deadline_outcome_nested_calls_and_original_identity(tmp_path, monkeypatch, mode):
+    import sys
+    from vibemql5.fleet import scoped_resources
+    from vibemql5.core import jobs
+    observer = Observation(10)
+    capacity, target, checked, callback, entered = prerequisite_control(observer, ready=mode != 'deadline_failure')
+    observer.exit_profiler.configure(scoped_resources, jobs)
+    fault, cause = RuntimeError('PRIVATE_ORIGINAL'), ValueError('PRIVATE_CAUSE')
+    fault.add_note('PRIVATE_NOTE')
+    calls = []
+    class Agent:
+        def step(self):
+            calls.append('step')
+            observer.invoke('NODE_POST', lambda: calls.append('http'))
+            if mode in ('original_exception', 'observer_fault'): raise fault from cause
+    agent = Agent(); observer.method(agent, 'step', 'CONTROL_STEP')
+    frame = SimpleNamespace(f_code=observer.prerequisite.codes['helper'], f_lineno=313,
+        f_locals={'agent': agent, 'checked': checked, 'raise_callback_failure': callback, 'entered': entered})
+    if mode == 'observer_fault':
+        monkeypatch.setattr(observer.prerequisite, 'mark', lambda *args, **kwargs: (_ for _ in ()).throw(LookupError('PRIVATE_OBSERVER')))
+    wrapped = observer.prerequisite.wrapper(observer.prerequisite.original, caller=frame)
+    try:
+        with observer.exit_profiler.scope():
+            if mode == 'return': assert wrapped(agent, checked(target)) is None
+            else:
+                with pytest.raises(BaseException) as caught: wrapped(agent, checked(target))
+                if mode != 'deadline_failure':
+                    assert caught.value is fault and fault.__cause__ is cause and fault.__notes__ == ['PRIVATE_NOTE']
+                    assert any(item.name == 'pump' and item.lineno == 436 for item in __import__('traceback').extract_tb(fault.__traceback__))
+        result = observer.prerequisite.snapshot()
+        assert result['original_seconds'] == 3 and result['calls'] == 1
+        assert result['original_deadline_absolute_monotonic_seconds'] is not None and not result['deadline_changed']
+        assert result['failure_branch_439'] is (mode == 'deadline_failure')
+        assert result['observed_predicate_true'] is (mode == 'return')
+        assert result['coverage'] == ('INCOMPLETE' if mode == 'observer_fault' else 'COMPLETE')
+        assert result['steps']['total'] == len(calls) // 2
+        assert all(row['children']['total'] == 1 for row in result['steps']['rows'])
+        assert len(calls) == 2 if mode != 'deadline_failure' else len(calls) > 2
+        assert observer.pump.snapshot()['calls'] == 0 and sys.getprofile() is None
+        assert 'PRIVATE' not in json.dumps(observer.snapshot())
+    finally: observer.stop()
+    assert observer.prerequisite.current is None and observer.prerequisite.step is None and 'step' not in agent.__dict__
+
+
+@pytest.mark.parametrize('keyword', [3, 10, True])
+def test_prerequisite_rejects_explicit_seconds_without_replaying_original(keyword):
+    observer = Observation(10)
+    _, target, checked, callback, entered = prerequisite_control(observer)
+    agent = object(); calls = []
+    frame = SimpleNamespace(f_code=observer.prerequisite.codes['helper'], f_lineno=313,
+        f_locals={'agent': agent, 'checked': checked, 'raise_callback_failure': callback, 'entered': entered})
+    token = object()
+    def original(*args, **kwargs): calls.append((args, kwargs)); return token
+    wrapped = observer.prerequisite.wrapper(original, caller=frame)
+    assert wrapped(agent, checked(target), seconds=keyword) is token
+    assert len(calls) == 1 and calls[0][1] == {'seconds': keyword} and observer.prerequisite.calls == 0
+    observer.stop()
+
+
+def test_prerequisite_retains_slow_middle_step_nested_span_and_explicit_drops(monkeypatch):
+    observer = Observation(10); admission = observer.prerequisite
+    class Agent:
+        def step(self): pass
+    agent = Agent(); admission.current = {'agent': agent}; clock = [100.0]
+    monkeypatch.setattr(observer, 'monotonic_now', lambda: clock[0])
+    for ordinal in range(48):
+        step = admission.step_begin(agent.step)
+        for index in range(100):
+            row = admission.span_begin('NODE_POST')
+            clock[0] += 100 if ordinal == 23 and index == 50 else .01
+            admission.span_end(row, 'NONE')
+        admission.step_end(step, 'NONE')
+    admission.current = None
+    result = admission.snapshot()['steps']
+    assert result['total'] == 48 and result['retained'] <= 32 and result['dropped'] == 48 - result['retained']
+    selected = next(row for row in result['rows'] if row['ordinal'] == 24)
+    assert selected['duration_seconds'] > 100 and selected['children']['total'] == 100
+    assert selected['children']['retained'] <= 64 and selected['children']['dropped'] > 0
+    assert max(row['duration_seconds'] for row in selected['children']['rows']) == 100
+    assert selected['children']['missing_parent_rows'] == 0 and result['linkage'] == 'COMPLETE'
+    assert admission.snapshot()['marker_retention'] == 'SAMPLED'
+    observer.stop()
+
+
+@pytest.mark.parametrize('mode', ['pending_overflow', 'clock', 'unmatched', 'missing_parent'])
+def test_prerequisite_linkage_faults_never_report_complete(mode, monkeypatch):
+    observer = Observation(10); admission = observer.prerequisite
+    class Agent:
+        def step(self): pass
+    agent = Agent(); admission.current = {'agent': agent}
+    step = admission.step_begin(agent.step)
+    if mode == 'pending_overflow':
+        for _ in range(64): assert admission.span_begin('NODE_POST') is not None
+        assert admission.span_begin('NODE_POST') is None
+    elif mode == 'clock':
+        monkeypatch.setattr(observer, 'monotonic_now', lambda: None)
+        row = admission.span_begin('NODE_POST'); admission.span_end(row, 'NONE')
+    elif mode == 'unmatched':
+        parent = admission.span_begin('NODE_POST'); child = admission.span_begin('HTTP_POST')
+        admission.span_end(parent, 'NONE'); admission.span_end(child, 'NONE')
+    else:
+        clock = [observer.monotonic_now()]
+        monkeypatch.setattr(observer, 'monotonic_now', lambda: clock[0])
+        parent = admission.span_begin('NODE_POST')
+        for _ in range(20):
+            child = admission.span_begin('HTTP_POST'); clock[0] += .01
+            admission.span_end(child, 'NONE')
+        admission.span_end(parent, 'NONE')
+        for _ in range(40):
+            sibling = admission.span_begin('DISPATCH'); clock[0] += 1
+            admission.span_end(sibling, 'NONE')
+    admission.step_end(step, 'NONE'); admission.current = None
+    assert admission.snapshot()['steps']['linkage'] == 'INCOMPLETE'
+    observer.stop()
+
+
+def test_prerequisite_config_rejects_mutated_original_default(monkeypatch):
+    import test_tip064_capacity_https as capacity
+    observer = Observation(10)
+    monkeypatch.setattr(capacity.pump, '__kwdefaults__', {'seconds': 10})
+    observer.prerequisite.configure(capacity)
+    assert observer.prerequisite.configuration == 'SOURCE_SEAM_MISMATCH'
+    observer.stop()
+
+
+@pytest.mark.parametrize('mode', ['source_hash', 'loaded_code'])
+@pytest.mark.parametrize('seam', ['helper', 'pump'])
+def test_prerequisite_source_and_loaded_pytest_code_identity_reject_changes(monkeypatch, mode, seam):
+    from types import FunctionType
+    import test_tip064_capacity_https as capacity
+    observer = Observation(10)
+    name = 'run_capacity_fixture' if seam == 'helper' else 'pump'; original = getattr(capacity, name)
+    if mode == 'source_hash':
+        read = Path.read_bytes
+        def changed(path):
+            data = read(path)
+            return data + b'\n' if path == Path(original.__code__.co_filename) else data
+        monkeypatch.setattr(Path, 'read_bytes', changed)
+    else:
+        changed = FunctionType(original.__code__.replace(co_firstlineno=original.__code__.co_firstlineno + 1), original.__globals__)
+        monkeypatch.setattr(capacity, name, changed)
+    observer.prerequisite.configure(capacity)
+    assert observer.prerequisite.configuration == 'SOURCE_SEAM_MISMATCH'
+    assert observer.prerequisite.snapshot()['recognition'] == 'UNAVAILABLE'
+    observer.stop()
+
+
+@pytest.mark.parametrize('fault_at', ['step_begin', 'span_begin', 'span_end', 'step_end'])
+def test_prerequisite_retention_fault_cannot_replace_original_exception(fault_at, monkeypatch):
+    observer = Observation(10); admission = observer.prerequisite
+    fault, cause = RuntimeError('PRIVATE_ORIGINAL'), LookupError('PRIVATE_CAUSE')
+    fault.add_note('PRIVATE_NOTE'); calls = []
+    class Agent:
+        def step(self):
+            calls.append('step')
+            def nested(): calls.append('nested'); raise fault from cause
+            observer.invoke('NODE_POST', nested)
+    agent = Agent(); observer.method(agent, 'step', 'CONTROL_STEP'); admission.current = {'agent': agent}
+    def broken(*args): raise ValueError('PRIVATE_OBSERVER')
+    monkeypatch.setattr(admission, fault_at, broken)
+    try:
+        with pytest.raises(RuntimeError) as caught: agent.step()
+        assert caught.value is fault and fault.__cause__ is cause and fault.__notes__ == ['PRIVATE_NOTE']
+        assert calls == ['step', 'nested'] and observer.faults > 0
+    finally:
+        admission.current = None; observer.stop()
+    assert 'step' not in agent.__dict__ and 'PRIVATE' not in json.dumps(observer.snapshot())
+
+
+@pytest.mark.parametrize('foreign', ['code', 'self'])
+def test_prerequisite_original_failure_code_and_callable_identity(foreign):
+    observer = Observation(10)
+    _, target, checked, _, _ = prerequisite_control(observer)
+    admission = observer.prerequisite
+    frame = SimpleNamespace(f_code=admission.codes['pump'], f_lineno=439, f_locals={})
+    admission.current = {'agent': object(), 'predicate': checked(target), 'completed': target,
+                         'frame': frame, 'predicate_frame': None, 'predicate_start': None}
+    child = SimpleNamespace(f_code=admission.fail_code, f_back=frame, f_locals={'self': admission.fail_owner})
+    if foreign == 'code': child.f_code = target.__code__
+    else: child.f_locals['self'] = object()
+    admission.event(child, 'call', None); assert not admission.failure_branch
+    child.f_code, child.f_locals['self'] = admission.fail_code, admission.fail_owner
+    admission.event(child, 'call', None); assert admission.failure_branch
+    admission.current = None; observer.stop()
+
+
+def test_prerequisite_default_changed_after_configure_delegates_original_once(monkeypatch):
+    observer = Observation(10)
+    capacity, target, checked, callback, entered = prerequisite_control(observer)
+    calls = []
+    class Agent:
+        def step(self): calls.append('step')
+    agent = Agent()
+    frame = SimpleNamespace(f_code=observer.prerequisite.codes['helper'], f_lineno=313,
+        f_locals={'agent': agent, 'checked': checked, 'raise_callback_failure': callback, 'entered': entered})
+    monkeypatch.setattr(capacity.pump, '__kwdefaults__', {'seconds': 10})
+    assert observer.prerequisite.wrapper(capacity.pump, caller=frame)(agent, checked(target)) is None
+    facts = observer.prerequisite.snapshot()
+    assert calls == ['step'] and facts['calls'] == 0 and facts['default_changed']
+    assert facts['configuration'] == 'DEFAULT_MISMATCH' and facts['coverage'] == 'INCOMPLETE'
+    assert facts['original_seconds'] is None and facts['original_deadline_absolute_monotonic_seconds'] is None
+    observer.stop()
+
+
+def test_pump_dispatcher_construction_fault_delegates_original_once(monkeypatch):
+    import test_tip064_capacity_https as capacity
+    observer = Observation(10); calls = []
+    class Http:
+        def post(self, *args, **kwargs): raise AssertionError('must not issue HTTP')
+    class Agent:
+        def step(self): calls.append('step')
+    original = capacity.pump
+    observer.install(capacity, Http())
+    def broken(*args, **kwargs): raise LookupError('PRIVATE_OBSERVER')
+    monkeypatch.setattr(observer.pump, 'wrapper', broken)
+    try:
+        assert capacity.pump(Agent(), lambda: True) is None
+        assert calls == ['step'] and observer.faults == 1
+    finally: observer.stop()
+    assert capacity.pump is original
