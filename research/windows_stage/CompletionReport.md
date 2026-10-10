@@ -1,3 +1,21 @@
+# Scoped-exit research v6 — approved one-attempt continuation
+
+STATUS: BUILDER_DONE / FROZEN_REPORT_CANDIDATE / CONTRACTOR_PENDING / NOT_PUBLISHED / NOT_RUN. Historical cause UNKNOWN; source CI remains 6/8, NOT_ACCEPTED / NOT_DEPLOYED.
+
+Owner approval: “Duyệt tiếp tục theo plan”, 2026-10-10T14:19:50+07:00, accepting ScopedExit-v6 MeasurementContract. Expected publication parent is 7f77cfd360ce0b7f05a4c39b113ea4cfaddebeda, tree 16a5e2ac0d1f4ee8de1ec34ee8f2e0647f72f310. Canonical source remains 4757afbdd5c8fa399b41ff897c5baaa7a2ed1dfd, tree ce437da748d2eadc16b1221ad516f4104214f404; workflow checks that source out separately.
+
+YAGNI-3: (1) A new measurement is needed only to seek a failed original deadline with transaction correlation from the same attempt. (2) Reuse the byte-frozen v5 observer, 90 controls, runner, 224-entry source manifest, original 12-case allowlist and full-suite workflow. (3) Change only this report; no new executable code, tests, dependencies or workflow.
+
+Previous v5 run 37986515624 / attempt 1 completed with 90 controls PASS and 1556 PASS / 12 original SKIP / 0 FAIL, 396.907s. Case5 passed; that successful trace does not explain the historical failed v4 trace. Historical cause remains UNKNOWN. Existing v5 receipts apply only to unchanged executable bytes; no new local tests are needed for a report-only change.
+
+Execution authorization: exactly one new Windows research run, attempt 1, via a new PR66 synchronize event after Contractor verification and exact-parent CAS publication with force=false. Run unchanged controls then original tests/unit once. Keep 600s subprocess, 90s faulthandler, 20-minute job, zero retries and original 1s/3s/10s deadlines. Keep SQL/DB identity, FULL checkpoint, FIFO/guard through file close, original node/skip/error identities and UNKNOWN. No main/PR65 merge, production change, runtime restart/deploy, native/SDK/VM test or MT5 setting change.
+
+At completion preserve the actual new head/run/attempt, artifact, all hashes before/after, case5 exact original deadline/outcome and same-transaction/actor/clock-domain records. Cached-context correlation gaps stay INCOMPLETE; case6 with 0 calls stays UNEXECUTED and long cases2/3 stay NOT_APPLICABLE. If failure does not recur or attribution is insufficient, retain UNKNOWN and stop after this attempt; no automatic additional attempt.
+
+FILES CHANGED: research/windows_stage/CompletionReport.md only. The complete previous report follows unchanged as historical evidence; its earlier statuses describe the v5 Builder checkpoint.
+
+---
+
 # Scoped-exit research v5 — Builder Completion Report
 
 STATUS: DONE — latest local candidate verified and FROZEN; CONTRACTOR_PENDING, NOT_PUBLISHED, NOT_RUN_ON_WINDOWS. Historical cause UNKNOWN; no production fix or release acceptance.
