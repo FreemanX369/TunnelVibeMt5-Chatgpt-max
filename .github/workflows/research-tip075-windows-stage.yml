@@ -1,0 +1,53 @@
+name: Research fixed Windows full-suite scoped transaction exits
+
+on:
+  pull_request:
+    branches: [feat/fleet-v1-continuous-source-20261003]
+    paths:
+      - 'research/windows_stage/**'
+      - '.github/workflows/research-tip075-windows-stage.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-source-timing:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: research
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: 4757afbdd5c8fa399b41ff897c5baaa7a2ed1dfd
+          path: source
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the original locked source dependencies
+        run: python -m pip install -c source/requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Run observer controls
+        env:
+          PYTHONPATH: "research/research/windows_stage;source/app;source/tests/unit"
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m pytest -q research/research/windows_stage --junitxml=windows-exit-evidence/observer-controls.junit.xml
+      - name: Run the fixed original Windows full unit suite once
+        run: python research/research/windows_stage/run_research.py --source source --output windows-exit-evidence
+      - name: Preserve research output even when original tests fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoped-exit-research-${{ github.event.pull_request.head.sha }}
+          path: windows-exit-evidence/
+          retention-days: 14
+          if-no-files-found: error
