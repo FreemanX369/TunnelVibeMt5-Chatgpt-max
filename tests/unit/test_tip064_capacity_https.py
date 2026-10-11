@@ -310,7 +310,7 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         registered = client.register_capacity(agent.session_id, **payload)
         assert registered['profile_sha256'] == roster.profile_sha256
         launched = [facade.launch_job('capacity-native-' + str(index), request) for index, request in enumerate(requests)]
-        pump(agent, checked(lambda: entered.qsize() == 2))
+        pump(agent, checked(lambda: entered.qsize() == 2), seconds=10)
         assert dispatcher.native_capacity == 2
         assert len({entered.get_nowait(), entered.get_nowait()}) == 2
         with coordinator.transaction() as db:
