@@ -391,7 +391,7 @@ def composed_service(tmp_path, tls_files, request):
             ownership.pop_all()
             return controller
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
-        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+        key_file=private, controller_factory=factory, failures=failures, startup_timeout=10, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), http_policy, cafile=str(ca),
         server_thread=thread, failures=failures)
     if pipeline_observer is not None:

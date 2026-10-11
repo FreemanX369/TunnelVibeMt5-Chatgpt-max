@@ -63,7 +63,7 @@ def test_shared_fixture_keeps_three_arg_manual_factory_failure(tmp_path, monkeyp
     monkeypatch.setattr(integration, 'start_gateway_fixture', start)
     generator = integration.composed_service.__wrapped__(tmp_path, ('ca', 'cert', 'key'), SimpleNamespace())
     with pytest.raises(RuntimeError) as caught: next(generator)
-    assert caught.value is sentinel and calls == [5]
+    assert caught.value is sentinel and calls == [10]
 
 
 @pytest.mark.parametrize('kind', [RuntimeError, KeyboardInterrupt, SystemExit])
