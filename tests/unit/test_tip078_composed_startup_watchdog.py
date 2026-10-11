@@ -2,6 +2,7 @@
 from pathlib import Path
 from types import SimpleNamespace
 import ast
+import socket
 import time
 
 import pytest
@@ -16,7 +17,7 @@ from vibemql5.fleet.gateway_control import GatewayControlStore
 def pad_owned_component(resource, began, minimum_seconds):
     """Own a returned constructor value until factory ExitStack registration."""
     try:
-        time.sleep(max(0, minimum_seconds - (time.monotonic() - began)))
+        time.sleep(max(0, minimum_seconds - (time.perf_counter() - began)))
     except BaseException as original:
         try: resource.close()
         except BaseException as cleanup:
@@ -24,22 +25,22 @@ def pad_owned_component(resource, began, minimum_seconds):
         raise
 
 
-def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, original_five=False, minimum_seconds=2.7):
+def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, original_five=False, minimum_seconds=2.7, startup_only=False):
     state = {'components': [], 'resources': [], 'stops': [], 'invalid': [],
              'thread': None, 'startup_error': None, 'yielded': False,
-             'original_assertions_completed': False, 'factory_calls': 0}
+             'original_assertions_completed': False, 'tls_readiness_completed': False, 'factory_calls': 0}
     control_init, domain_init = GatewayControlStore.initialize, DomainJournal.__init__
     start, stop = integration.start_gateway_fixture, gateway.stop_gateway_fixture
 
     def control_initialize(cls, *args, **kwargs):
         selected = Path(args[0]) == tmp_path / 'composed-control.sqlite'
-        began = time.monotonic()
+        began = time.perf_counter()
         result = control_init(*args, **kwargs)
         if selected:
             pad_owned_component(result, began, minimum_seconds)
         if selected:
             state['resources'].append(result)
-            elapsed = time.monotonic() - began
+            elapsed = time.perf_counter() - began
             state['components'].append(elapsed)
             if elapsed >= 5:
                 state['invalid'].append('CONTROL_COMPONENT_EXCEEDED_5S')
@@ -48,13 +49,13 @@ def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, origin
     def domain_initialize(self, *args, **kwargs):
         selected = (Path(args[0]) == tmp_path / 'composed-domain.sqlite'
                     and kwargs.get('role') == 'GATEWAY')
-        began = time.monotonic()
+        began = time.perf_counter()
         result = domain_init(self, *args, **kwargs)
         if selected:
             pad_owned_component(self, began, minimum_seconds)
         if selected:
             state['resources'].append(self)
-            elapsed = time.monotonic() - began
+            elapsed = time.perf_counter() - began
             state['components'].append(elapsed)
             if elapsed >= 5:
                 state['invalid'].append('DOMAIN_COMPONENT_EXCEEDED_5S')
@@ -106,9 +107,19 @@ def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, origin
         service = next(fixture)
         state['yielded'] = True
         assert service[0].policy.http_timeout_ms == service[0].policy.heartbeat_interval_ms == 5000
-        integration.test_long_fixture_preserves_callback_error_identity_and_cleanup(
-            project_node, service, monkeypatch, cleanup_fails=False)
-        state['original_assertions_completed'] = True
+        if startup_only:
+            http = service[0]
+            assert http.server_thread.is_alive()
+            # Certificate-verified TLS readiness precedes every grant/POST/job.
+            with socket.create_connection((http._parsed.hostname, http._parsed.port),
+                    timeout=http.policy.http_timeout_ms / 1000) as raw:
+                with http.context.wrap_socket(raw, server_hostname=http._parsed.hostname) as channel:
+                    assert channel.version() in {'TLSv1.2', 'TLSv1.3'}
+                    state['tls_readiness_completed'] = True
+        else:
+            integration.test_long_fixture_preserves_callback_error_identity_and_cleanup(
+                project_node, service, monkeypatch, cleanup_fails=False)
+            state['original_assertions_completed'] = True
     except BaseException as error:
         outer = error
     finally:
@@ -162,12 +173,18 @@ def test_original_five_second_composed_startup_remains_bounded_negative_with_own
     assert not state['yielded'] and not state['original_assertions_completed']
 
 
-def test_zero_schedule_runs_original_callback_assertions_with_original_startup_five(
+def test_zero_readiness_owned_cleanup_keeps_original_startup_five(
         tmp_path, tls_files, project_node, monkeypatch):
+    posts = []
+    def forbidden_post(*args, **kwargs):
+        posts.append(True)
+        pytest.fail('startup-only readiness invoked a post-grant HTTP operation')
+    monkeypatch.setattr(integration.FixtureHttpsClient, 'post', forbidden_post)
     state = controlled_startup(tmp_path, tls_files, project_node, monkeypatch,
-                               original_five=True, minimum_seconds=0)
+                               original_five=True, minimum_seconds=0, startup_only=True)
     assert state['requested_startup_seconds'] == 10 and state['actual_startup_seconds'] == 5
-    assert state['startup_error'] is None and state['original_assertions_completed']
+    assert state['startup_error'] is None and state['tls_readiness_completed']
+    assert not state['original_assertions_completed'] and posts == []
 
 
 @pytest.mark.parametrize('kind', ['control', 'domain'])
@@ -186,7 +203,7 @@ def test_padding_interruption_closes_unregistered_real_constructor_and_preserves
     monkeypatch.setattr(time, 'sleep', interrupted_sleep)
     if cleanup_fails: monkeypatch.setattr(resource, 'close', failed_close)
     with pytest.raises(BaseException) as observed:
-        pad_owned_component(resource, time.monotonic(), 2.7)
+        pad_owned_component(resource, time.perf_counter(), 2.7)
     if cleanup_fails:
         assert isinstance(observed.value, BaseExceptionGroup)
         assert observed.value.exceptions == (original, cleanup)

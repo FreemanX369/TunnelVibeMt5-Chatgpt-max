@@ -1,6 +1,7 @@
 """Finite instance-owned facts from the long fixture's original native calls."""
 from collections import deque
 import json
+import sys
 import threading
 import time
 
@@ -23,6 +24,7 @@ class LongFixtureNativeObservations:
 
     def __init__(self):
         self.rows, self.error_rows = deque(maxlen=32), deque(maxlen=32)
+        self.handled_signals, self.handled_signal_total = deque(maxlen=32), 0
         self.errors, self.originals, self.observation_errors = [], [], []
         self.counts, self.total, self.error_total, self.errors_dropped = {}, 0, 0, 0
         self.lock = threading.Lock()
@@ -52,20 +54,31 @@ class LongFixtureNativeObservations:
             counts['returns' if outcome == 'RETURNED' else 'errors'] += 1
             if stage == 'EXECUTE' and type(result) is dict and type(result.get('state')) is str and result['state'] in self.STATES:
                 row['native_state'] = result['state']
-            current, seen = error, []
-            for depth in range(4):
-                if current is None or any(current is prior for prior in seen): break
-                seen.append(current)
-                name = type(current).__name__
-                safe = {'stage': stage, 'depth': depth,
-                    'error_type': name if name in self.TYPES else 'OTHER',
-                    'error_index': self.error_index(current)}
-                code = getattr(current, 'code', None)
-                if type(code) is str and code in self.CODES: safe['code'] = code
-                self.error_total += 1; self.error_rows.append(safe)
-                if depth == 0: row.update({key:value for key,value in safe.items() if key not in {'stage','depth'}})
-                current = current.__cause__ if current.__cause__ is not None else current.__context__
+            row.update(self.error_facts(stage, error))
             self.total += 1; self.rows.append(row)
+
+    def error_facts(self, stage, error):
+        current, seen, first = error, [], {}
+        for depth in range(4):
+            if current is None or any(current is prior for prior in seen): break
+            seen.append(current)
+            name = type(current).__name__
+            safe = {'stage': stage, 'depth': depth,
+                'error_type': name if name in self.TYPES else 'OTHER',
+                'error_index': self.error_index(current)}
+            code = getattr(current, 'code', None)
+            if type(code) is str and code in self.CODES: safe['code'] = code
+            self.error_total += 1; self.error_rows.append(safe)
+            if depth == 0: first = {key:value for key,value in safe.items() if key not in {'stage','depth'}}
+            current = current.__cause__ if current.__cause__ is not None else current.__context__
+        return first
+
+    def record_handled(self, error):
+        if not isinstance(error, BaseException): return
+        with self.lock:
+            row = {'stage': 'EXECUTE_HANDLED_ERROR', **self.error_facts('EXECUTE_HANDLED_ERROR', error)}
+            self.handled_signal_total += 1
+            self.handled_signals.append(row)
 
     def call(self, stage, callback, *args, **kwargs):
         began = time.monotonic()
@@ -86,6 +99,17 @@ class LongFixtureNativeObservations:
     def bind(self, dispatcher):
         self.install(dispatcher.native, 'execute', 'EXECUTE')
         for name, stage in self.METHODS: self.install(dispatcher.native_adapter, name, stage)
+        journal = dispatcher.native
+        original, had, prior = journal._outcome, '_outcome' in journal.__dict__, journal.__dict__.get('_outcome')
+        self.originals.append((journal, '_outcome', had, prior))
+        def observed_outcome(record, state, result):
+            handled = sys.exception()
+            if type(state) is str and state == 'UNKNOWN' and type(result) is dict and type(result.get('reason_code')) is str and result['reason_code'] == 'EXECUTION_OUTCOME_UNKNOWN' and handled is not None:
+                # Execute may internally handle an error outside adapter seams.
+                # This is an observed signal, never an additional delegate call.
+                self.observe(self.record_handled, handled)
+            return original(record, state, result)
+        journal._outcome = observed_outcome
 
     def restore(self):
         failures = []
@@ -106,6 +130,8 @@ class LongFixtureNativeObservations:
                 'error_rows_dropped': max(0,self.error_total-32),
                 'error_identity_count': len(self.errors), 'error_identity_limit': 32,
                 'error_identities_dropped': self.errors_dropped,
+                'handled_signals': list(self.handled_signals), 'handled_signal_total': self.handled_signal_total,
+                'handled_signal_limit': 32, 'handled_signals_dropped': max(0,self.handled_signal_total-32),
                 'delegate_counts': {stage:dict(counts) for stage,counts in self.counts.items()}}
 
     def publish(self):
