@@ -593,16 +593,30 @@ def test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed(pro
     fault.add_note('original note'); diagnostic.add_note('diagnostic note'); restoration.add_note('restoration note')
     connect, close, restore, outcome = ScopedResourceCoordinator._db, ScopedLease.close_zero_attempt, ScopeFixtureObservations.restore, NodeJobJournal._outcome
     pending, scopes, outcomes = threading.local(), [], []
+    first_exited = threading.Event()
+    execution = ScopedResourceCoordinator.execution
+    @contextmanager
+    def observed_execution(self, *args, **kwargs):
+        scope = None
+        try:
+            with execution(self, *args, **kwargs) as scope: yield scope
+        finally:
+            if scopes and scope is scopes[0]: first_exited.set()
     def failed_connect(self):
         if getattr(pending, 'armed', False): pending.armed = False; raise fault from cause
         return connect(self)
     def close_once(self, expected):
         if not scopes: scopes.append(self); pending.armed = True
+        elif self is not scopes[0]:
+            # Diagnostic identity positive: let the first real scope exit before
+            # the second close. Actual guard contention is tested separately.
+            assert first_exited.wait(3), 'FIRST_SCOPE_EXIT_NOT_OBSERVED'
         return close(self, expected)
     def broken(*args, **kwargs): raise diagnostic
     def broken_restore(self): restore(self); raise restoration
     def observed_outcome(self, record, state, result):
         row = outcome(self, record, state, result); outcomes.append((row['state'], (row['result'] or {}).get('reason_code'))); return row
+    monkeypatch.setattr(ScopedResourceCoordinator, 'execution', observed_execution)
     monkeypatch.setattr(ScopedResourceCoordinator, '_db', failed_connect)
     monkeypatch.setattr(ScopedLease, 'close_zero_attempt', close_once)
     monkeypatch.setattr(ScopeFixtureObservations, broken_stage, broken)

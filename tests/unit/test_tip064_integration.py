@@ -1334,6 +1334,8 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
     grants, events = [], []
     authorization_diagnostics = FixtureAuthorizationDiagnostics()
     owner_observations = LongFixtureObservations()
+    from long_native_fixture_observations import LongFixtureNativeObservations
+    native_observations = LongFixtureNativeObservations()
     worker_failures = []
     def preserve_worker_call(callback, *args):
         try: return callback(*args)
@@ -1416,6 +1418,7 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
                 pending_futures=len(dispatcher._futures), pending_native_records=len(dispatcher._native_records))
     agent.step = observed_step
     try:
+        native_observations.bind(dispatcher)
         node, selected = discover(facade, client, agent)
         frozen = freeze(project_node, target=selected); raw = project_node['source'].read_bytes()
         request = native_request(frozen, logical_fixture(), [{'path': 'Experts/DemoEA.mq5', 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}])
@@ -1451,12 +1454,16 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             except BaseException as restoration: failures.append(restoration)
             try: authorization_diagnostics.restore()
             except BaseException as restoration: failures.append(restoration)
+            try: native_observations.restore()
+            except BaseException as restoration: failures.append(restoration)
     try: owner_observations.publish()
+    except BaseException as observation: failures.append(observation)
+    try: native_observations.publish()
     except BaseException as observation: failures.append(observation)
     # Cleanup may release the wrapper and expose another original failure.
     # Collect only after the normal bounded owner drain has finished.
     originals = []
-    for failure in failures + worker_failures + owner_observations.observation_errors:
+    for failure in failures + worker_failures + owner_observations.observation_errors + native_observations.observation_errors:
         if not any(failure is original for original in originals): originals.append(failure)
     if len(originals) == 1: raise originals[0]
     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None

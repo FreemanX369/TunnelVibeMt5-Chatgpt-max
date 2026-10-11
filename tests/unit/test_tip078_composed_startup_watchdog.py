@@ -13,7 +13,18 @@ from vibemql5.fleet.domain import DomainJournal
 from vibemql5.fleet.gateway_control import GatewayControlStore
 
 
-def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, original_five=False):
+def pad_owned_component(resource, began, minimum_seconds):
+    """Own a returned constructor value until factory ExitStack registration."""
+    try:
+        time.sleep(max(0, minimum_seconds - (time.monotonic() - began)))
+    except BaseException as original:
+        try: resource.close()
+        except BaseException as cleanup:
+            raise BaseExceptionGroup('padding and owned close failed', [original, cleanup]) from None
+        raise
+
+
+def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, original_five=False, minimum_seconds=2.7):
     state = {'components': [], 'resources': [], 'stops': [], 'invalid': [],
              'thread': None, 'startup_error': None, 'yielded': False,
              'original_assertions_completed': False, 'factory_calls': 0}
@@ -23,9 +34,9 @@ def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, origin
     def control_initialize(cls, *args, **kwargs):
         selected = Path(args[0]) == tmp_path / 'composed-control.sqlite'
         began = time.monotonic()
-        if selected:
-            time.sleep(2.7)
         result = control_init(*args, **kwargs)
+        if selected:
+            pad_owned_component(result, began, minimum_seconds)
         if selected:
             state['resources'].append(result)
             elapsed = time.monotonic() - began
@@ -38,9 +49,9 @@ def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, origin
         selected = (Path(args[0]) == tmp_path / 'composed-domain.sqlite'
                     and kwargs.get('role') == 'GATEWAY')
         began = time.monotonic()
-        if selected:
-            time.sleep(2.7)
         result = domain_init(self, *args, **kwargs)
+        if selected:
+            pad_owned_component(self, began, minimum_seconds)
         if selected:
             state['resources'].append(self)
             elapsed = time.monotonic() - began
@@ -114,7 +125,7 @@ def controlled_startup(tmp_path, tls_files, project_node, monkeypatch, *, origin
         raise outer
 
     assert not state['invalid'] and state['factory_calls'] == 1
-    assert len(state['components']) == 2 and all(2.7 <= elapsed < 5 for elapsed in state['components'])
+    assert len(state['components']) == 2 and all(minimum_seconds <= elapsed < 5 for elapsed in state['components'])
     resources = state['resources']
     assert sorted(type(resource).__name__ for resource in resources) == sorted(
         ['GatewayControlStore', 'DomainJournal', 'GatewayJobJournal', 'GatewayPrincipalAuthority'])
@@ -149,3 +160,36 @@ def test_original_five_second_composed_startup_remains_bounded_negative_with_own
     assert facts['timeout_seconds'] == 5 and facts['server_thread_alive']
     assert facts['server_failure_count'] == 0
     assert not state['yielded'] and not state['original_assertions_completed']
+
+
+def test_zero_schedule_runs_original_callback_assertions_with_original_startup_five(
+        tmp_path, tls_files, project_node, monkeypatch):
+    state = controlled_startup(tmp_path, tls_files, project_node, monkeypatch,
+                               original_five=True, minimum_seconds=0)
+    assert state['requested_startup_seconds'] == 10 and state['actual_startup_seconds'] == 5
+    assert state['startup_error'] is None and state['original_assertions_completed']
+
+
+@pytest.mark.parametrize('kind', ['control', 'domain'])
+@pytest.mark.parametrize('cleanup_fails', [False, True])
+def test_padding_interruption_closes_unregistered_real_constructor_and_preserves_errors(
+        tmp_path, monkeypatch, kind, cleanup_fails):
+    resource = (GatewayControlStore.initialize(tmp_path / 'control.sqlite', policy=integration.control_policy())
+        if kind == 'control' else DomainJournal(tmp_path / 'domain.sqlite', initialize=True,
+                                               role='GATEWAY', policy=integration.domain_policy()))
+    original, cleanup = RuntimeError('PADDING_INTERRUPTION'), RuntimeError('OWNED_CLOSE_FAILURE')
+    original.add_note('original padding note'); cleanup.add_note('original close note')
+    close = resource.close
+    def interrupted_sleep(seconds): raise original
+    def failed_close():
+        close(); raise cleanup
+    monkeypatch.setattr(time, 'sleep', interrupted_sleep)
+    if cleanup_fails: monkeypatch.setattr(resource, 'close', failed_close)
+    with pytest.raises(BaseException) as observed:
+        pad_owned_component(resource, time.monotonic(), 2.7)
+    if cleanup_fails:
+        assert isinstance(observed.value, BaseExceptionGroup)
+        assert observed.value.exceptions == (original, cleanup)
+    else: assert observed.value is original
+    assert original.__notes__ == ['original padding note'] and cleanup.__notes__ == ['original close note']
+    assert resource._db is None and resource._lock is None
