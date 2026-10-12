@@ -1298,7 +1298,9 @@ def test_long_owner_observation_keeps_late_milestones_and_omits_unsafe_values():
     assert 'PRIVATE_TOKEN' not in json.dumps(facts) and '/private/path' not in json.dumps(facts)
 
 
-@pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+# Give this positive diagnostic-fault path its own signed grant allowance.
+@pytest.mark.parametrize('composed_service', [pytest.param(
+    {'authorization_ms': 2000, 'positive_transport': True}, id='positive-2000')], indirect=True)
 @pytest.mark.parametrize('broken_stage', ['mark', 'publish'])
 def test_long_broken_observation_keeps_original_worker_unknown_and_restores_step(project_node, composed_service, monkeypatch, broken_stage):
     import sys
