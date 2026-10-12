@@ -7,6 +7,7 @@ import pytest
 import test_tip064_capacity_https as capacity
 from test_tip064_capacity_https import capacity_service, project_node, tls_files
 from vibemql5.fleet.domain import NodeDomainDispatcher
+from vibemql5.fleet.native_authorization import NativeAuthorizationVerifier
 from vibemql5.fleet.transport import OutboundNode
 from vibemql5.fleet.wire import WireError
 
@@ -16,10 +17,13 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
     assert http.policy.http_timeout_ms == http.policy.heartbeat_interval_ms == 5000
     state = {'agent': None, 'dispatcher': None, 'initial': False, 'entry_calls': 0,
              'components': [], 'workers': [], 'predicates': [], 'denials': [],
-             'invalid': [], 'fixture_error': None, 'initial_error': None}
+             'invalid': [], 'fixture_error': None, 'initial_error': None,
+             'verified_phases': [], 'negative_schedule': []}
     gate = threading.Event()
+    first_done, fresh_step, cohort_lock = threading.Event(), threading.Event(), threading.Lock()
     init, native_work, pump, run, post = (OutboundNode.__init__, NodeDomainDispatcher._native_work,
                                          capacity.pump, capacity.run_capacity_fixture, http.post)
+    step, verify = OutboundNode.step, NativeAuthorizationVerifier.verify
     state['original_pump_code'] = pump.__code__
     routes = ['/fleet/v1/heartbeat', '/fleet/v1/poll']
 
@@ -27,29 +31,71 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
         result = init(self, *args, **kwargs)
         if self.client.http is http:
             state['agent'], state['dispatcher'] = self, self._domain_dispatcher
+            state['verifier'] = self._domain_dispatcher.authorization_verifier
+            state['verifier_clock'] = state['verifier'].clock
         return result
 
     def held_worker(self, *args, **kwargs):
-        if self is state['dispatcher'] and len(state['workers']) < 2:
-            state['workers'].append(threading.current_thread())
+        index = None
+        if self is state['dispatcher']:
+            with cohort_lock:
+                if len(state['workers']) < 2:
+                    state['workers'].append(threading.current_thread())
+                    index = len(state['workers'])
+        if index is not None:
             # Scheduling precedes the original worker body and any request/proof.
             if not gate.wait(5):
                 state['invalid'].append('PRE_REQUEST_GATE_TIMEOUT')
-        return native_work(self, *args, **kwargs)
+            if original_three and index == 2:
+                deadline = time.monotonic() + 5
+                if not first_done.wait(max(0, deadline - time.monotonic())):
+                    state['invalid'].append('FIRST_WORKER_EXIT_TIMEOUT')
+                if not fresh_step.wait(max(0, deadline - time.monotonic())):
+                    state['invalid'].append('FRESH_CONTROL_STEP_TIMEOUT')
+                with cohort_lock:
+                    state['negative_schedule'].append('SECOND_NATIVE_RELEASE')
+        try:
+            return native_work(self, *args, **kwargs)
+        finally:
+            if original_three and index == 1:
+                with cohort_lock:
+                    state['negative_schedule'].append('FIRST_NATIVE_EXIT')
+                first_done.set()
+
+    def stepped(self, *args, **kwargs):
+        if self is state['agent'] and original_three and first_done.is_set():
+            with cohort_lock:
+                if not fresh_step.is_set():
+                    state['negative_schedule'].append('FRESH_CONTROL_STEP')
+                    fresh_step.set()
+        return step(self, *args, **kwargs)
+
+    def verified(self, *args, **kwargs):
+        if self is not state.get('verifier'):
+            return verify(self, *args, **kwargs)
+        clock = state['verifier_clock']
+        assert self.clock is clock
+        try:
+            result = verify(self, *args, **kwargs)
+        finally:
+            assert self.clock is clock
+        state['verified_phases'].append(kwargs['phase'])
+        return result
 
     def scheduled_post(*args, **kwargs):
         path = args[0] if args else kwargs.get('path')
         selected = state['initial'] and routes and path == routes[0]
-        began = time.monotonic()
+        began = time.perf_counter()
         if selected:
             routes.pop(0)
-            time.sleep(1.6)
         try:
             result = post(*args, **kwargs)
         except BaseException as error:
             state['denials'].append((path, error))
             raise  # Preserve any unexpected original transport error unchanged.
-        elapsed = time.monotonic() - began
+        if selected:
+            time.sleep(max(0, 1.6 - (time.perf_counter() - began)))
+        elapsed = time.perf_counter() - began
         if elapsed >= 5:
             state['invalid'].append('ORIGINAL_POST_COMPONENT_EXCEEDED_5S')
         if selected:
@@ -90,6 +136,8 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
             raise
 
     monkeypatch.setattr(OutboundNode, '__init__', initialized)
+    monkeypatch.setattr(OutboundNode, 'step', stepped)
+    monkeypatch.setattr(NativeAuthorizationVerifier, 'verify', verified)
     monkeypatch.setattr(NodeDomainDispatcher, '_native_work', held_worker)
     monkeypatch.setattr(http, 'post', scheduled_post)
     monkeypatch.setattr(capacity, 'pump', entry_pump)
@@ -114,6 +162,11 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
     assert state['entry_elapsed'] > 3 and state['predicates'][0] is False
     assert all(not worker.is_alive() for worker in state['workers'])
     assert state['dispatcher']._closed and not state['dispatcher'].has_pending_work()
+    assert len(state['verified_phases']) == 4
+    assert state['verified_phases'].count('reserve') == state['verified_phases'].count('start') == 2
+    assert state['verifier'].clock is state['verifier_clock']
+    assert state['negative_schedule'] == (['FIRST_NATIVE_EXIT', 'FRESH_CONTROL_STEP', 'SECOND_NATIVE_RELEASE']
+                                          if original_three else [])
     assert len(state['denials']) == 1
     path, denial = state['denials'][0]
     assert path == '/fleet/v1/capacity/register'
