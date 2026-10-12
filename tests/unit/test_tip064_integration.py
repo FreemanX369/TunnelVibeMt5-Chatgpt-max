@@ -1332,7 +1332,7 @@ def test_long_broken_observation_keeps_original_worker_unknown_and_restores_step
     assert 'step' not in agents[0].__dict__ and publications == [True]
 
 
-def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None):
+def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None, expected_handled_error=None):
     grants, events = [], []
     authorization_diagnostics = FixtureAuthorizationDiagnostics()
     owner_observations = LongFixtureObservations()
@@ -1394,7 +1394,27 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             raise
         owner_observations.observe('RETURN_FINISH')
         return result
-    monkeypatch.setattr(dispatcher, '_native_work', lambda *args: preserve_worker_call(delayed_return, *args))
+    return_started, return_finished = threading.Event(), threading.Event()
+    phase_result, phase_failures = [], []
+    def phase_delayed_return(*args):
+        owner_observations.observe('WORKER_START')
+        result = native_work(*args)
+        phase_result.append(result)
+        owner_observations.observe('NATIVE_RESULT', native_state=result.get('state') if type(result) is dict else None)
+        owner_observations.observe('RETURN_WAIT')
+        return_started.set()
+        try:
+            try: assert release_return.wait(timeout=3), 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT'
+            except BaseException as error:
+                phase_failures.append(error)
+                owner_observations.observe('RETURN_FAILURE')
+                raise
+            owner_observations.observe('RETURN_FINISH')
+            return result
+        finally:
+            return_finished.set()
+    selected_return = delayed_return if expected_handled_error is None else phase_delayed_return
+    monkeypatch.setattr(dispatcher, '_native_work', lambda *args: preserve_worker_call(selected_return, *args))
     def succeeded_and_drained(global_job_id):
         raise_worker_failure()
         began = time.monotonic()
@@ -1429,7 +1449,33 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         # Its future must finish and pass through the normal owner drain too.
         # This aggregate observation spans all phases; each authorization/RPC,
         # producer, worker-return and cleanup bound remains independent.
-        pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+        if expected_handled_error is None:
+            pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+        else:
+            # Negative-only contract: prerequisite observation10, then a NEW
+            # independent terminal observation10 after original RETURN_WAIT.
+            # This deliberately permits total observation up to20 seconds.
+            def expected_return_started():
+                # Check phase admission first: an already finished original
+                # return3 failure still needs exact handled-error validation.
+                if return_started.is_set(): return True
+                raise_worker_failure()
+                return False
+            pump(agent, expected_return_started, seconds=10)
+            assert len(phase_result) == 1 and phase_result[0].get('state') == 'UNKNOWN'
+            facts = native_observations.snapshot()
+            assert facts['handled_signal_total'] == 1 and len(facts['handled_signals']) == 1
+            signal = facts['handled_signals'][0]
+            assert signal['stage'] == 'EXECUTE_HANDLED_ERROR'
+            error = native_observations.errors[signal['error_index']]
+            matched = expected_handled_error(error) if callable(expected_handled_error) else error is expected_handled_error
+            if not matched: raise error
+            assert 'FIXTURE_CALLBACK' not in facts['delegate_counts']
+            assert return_finished.wait(10), 'LONG_FIXTURE_TERMINAL_OBSERVATION_TIMEOUT'
+            # The original wait exception was captured before terminal-event
+            # publication; no race with the preserving delegate's error list.
+            if phase_failures: raise phase_failures[0]
+            raise AssertionError('LONG_FIXTURE_EXPECTED_RETURN_FAILURE_NOT_OBSERVED')
         raise_worker_failure()
         assert observed_return_race == [True]
         assert events == ['long-step-entered', 'fresh-next-phase']

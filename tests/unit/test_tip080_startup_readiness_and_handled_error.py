@@ -53,7 +53,7 @@ def test_handled_execute_error_before_start_keeps_identity_unknown_and_original_
     callback = RuntimeError('CONTROLLED_CALLBACK_FAILURE'); callback.add_note('original callback note')
     monkeypatch.setattr(NodeJobJournal, 'begin_effect', lambda *args, **kwargs: (_ for _ in ()).throw(callback))
     with pytest.raises(AssertionError) as observed:
-        integration.run_long_fixture(project_node, composed_service, monkeypatch)
+        integration.run_long_fixture(project_node, composed_service, monkeypatch, expected_handled_error=lambda error: (error is fault and error.__cause__ is cause) if mode == 'controlled-verify-error' else bool(expired) and error is expired[0])
     assert 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT' in str(observed.value)
     assert verification_calls == ['reserve', 'start'] and outcome_calls == ['UNKNOWN']
     observer, result = created[0], runtimes[0]

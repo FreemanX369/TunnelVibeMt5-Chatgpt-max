@@ -113,7 +113,7 @@ def test_long_native_observation_preserves_original_callback_and_precallback_unc
         monkeypatch.setattr(NodeJobJournal, 'begin_effect', lambda *args, **kwargs: (_ for _ in ()).throw(callback))
         monkeypatch.setattr(integration.FixtureAuthorizationDiagnostics, 'restore', broken_restore)
         with pytest.raises(BaseExceptionGroup) as observed:
-            integration.run_long_fixture(project_node, composed_service, monkeypatch)
+            integration.run_long_fixture(project_node, composed_service, monkeypatch, expected_handled_error=lambda error: error.__context__ is fault and error.__suppress_context__ and fault.__cause__ is cause)
         timeout, restored = observed.value.exceptions
         assert isinstance(timeout, AssertionError) and 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT' in str(timeout)
         assert restored is restoration and restoration.__notes__ == ['restoration note']
