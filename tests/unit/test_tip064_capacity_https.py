@@ -97,8 +97,10 @@ def capacity_service(tmp_path, tls_files, request):
                 owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
             ownership.pop_all()
             return controller
+    # TIP082 observes positive pre-grant construction independently of HTTP
+    # deadlines; the generic startup5 negative and stop3 remain unchanged.
     stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
-        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+        key_file=private, controller_factory=factory, failures=failures, startup_timeout=10, stop_timeout=3)
     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),
         server_thread=thread, failures=failures)
     try:
