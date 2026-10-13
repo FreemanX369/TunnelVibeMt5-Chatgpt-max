@@ -1332,9 +1332,15 @@ def test_long_broken_observation_keeps_original_worker_unknown_and_restores_step
     assert 'step' not in agents[0].__dict__ and publications == [True]
 
 
-def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None, expected_handled_error=None, observe_cleanup_phases=False):
-    if observe_cleanup_phases and expected_handled_error is not None:
+def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None, expected_handled_error=None, observe_cleanup_phases=False, observe_positive_phases=False):
+    if (observe_cleanup_phases and expected_handled_error is not None) or (observe_positive_phases and (observe_cleanup_phases or expected_handled_error is not None)):
         raise ValueError('conflicting fixture phase contracts')
+    positive_phases = ('WORKER_START', 'CALLBACK_START', 'BEGIN_SNAPSHOT', 'COMPLETE_SNAPSHOT',
+        'BEGIN_COMPILE', 'COMPLETE_COMPILE', 'BEGIN_CAPTURE', 'COMPLETE_CAPTURE', 'CALLBACK_COMPLETE', 'RETURN_WAIT')
+    positive_marks, positive_lock = [], threading.Lock()
+    def positive_mark(name):
+        if observe_positive_phases:
+            with positive_lock: positive_marks.append((name, time.monotonic()))
     callback_started = threading.Event()
     grants, events = [], []
     authorization_diagnostics = FixtureAuthorizationDiagnostics()
@@ -1353,16 +1359,20 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         if worker_failures: raise worker_failures[0]
     def start_fixture(request, fence):
         owner_observations.observe('CALLBACK_START')
+        positive_mark('CALLBACK_START')
         def begin(phase, event):
             return authorization_diagnostics.call('BEGIN', phase, event, fence['begin_effect'], phase, event)
         def require(proof, phase, event):
             return authorization_diagnostics.call('REQUIRE', phase, event,
                 lambda: proof.require(**proof.binding), proof=proof)
         snapshot = begin('deploy', 'snapshot_prepare:0001')
+        positive_mark('BEGIN_SNAPSHOT')
         require(snapshot, 'deploy', 'snapshot_prepare:0001')
         fence['complete_effect']('deploy', 'snapshot_prepare:0001', snapshot,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
+        positive_mark('COMPLETE_SNAPSHOT')
         compile_step = begin('deploy', 'compile_run_prepare:0001')
+        positive_mark('BEGIN_COMPILE')
         require(compile_step, 'deploy', 'compile_run_prepare:0001')
         grants.append(compile_step); events.append('long-step-entered')
         # This harmless producer return lasts longer than its entry proof TTL.
@@ -1372,12 +1382,16 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         from vibemql5.fleet.job_journal import JournalError
         with pytest.raises(JournalError, match='NATIVE_AUTHORIZATION_EXPIRED'):
             require(compile_step, 'deploy', 'compile_run_prepare:0001')
+        positive_mark('COMPLETE_COMPILE')
         capture = begin('capture', 'compile_log_capture:0001')
+        positive_mark('BEGIN_CAPTURE')
         require(capture, 'capture', 'compile_log_capture:0001'); grants.append(capture)
         fence['complete_effect']('capture', 'compile_log_capture:0001', capture,
             outcome='NOT_ATTEMPTED', evidence={'source': 'SYNTHETIC_NO_NATIVE_ATTEMPT'})
+        positive_mark('COMPLETE_CAPTURE')
         events.append('fresh-next-phase')
         owner_observations.observe('CALLBACK_COMPLETE')
+        positive_mark('CALLBACK_COMPLETE')
         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
     def phase_start_fixture(*args):
         callback_started.set()
@@ -1391,9 +1405,11 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
     native_work = dispatcher._native_work
     def delayed_return(*args):
         owner_observations.observe('WORKER_START')
+        positive_mark('WORKER_START')
         result = native_work(*args)
         owner_observations.observe('NATIVE_RESULT', native_state=result.get('state') if type(result) is dict else None)
         owner_observations.observe('RETURN_WAIT')
+        positive_mark('RETURN_WAIT')
         try: assert release_return.wait(timeout=3), 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT'
         except BaseException:
             owner_observations.observe('RETURN_FAILURE')
@@ -1505,6 +1521,34 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             # fault read before another control cycle can consume worker3.
             succeeded_and_drained(row['global_job_id'])
             raise AssertionError('LONG_FIXTURE_EXPECTED_CLEANUP_FAULT_NOT_OBSERVED')
+        elif observe_positive_phases:
+            # Explicit positive-only contract: ten unique original semantic
+            # milestones plus terminal observation, each independently10.
+            # Heartbeats/arbitrary progress never renew a fixture deadline.
+            phase_index, deadline = 0, time.monotonic() + 10
+            while True:
+                raise_worker_failure()
+                with positive_lock: marks = list(positive_marks)
+                while phase_index < len(marks):
+                    name, completed_at = marks[phase_index]
+                    if phase_index >= len(positive_phases) or name != positive_phases[phase_index]:
+                        # Original execute may return UNKNOWN after swallowing
+                        # a genuine verification error. Preserve its already
+                        # observed exact identity before any fixture-order error.
+                        facts = native_observations.snapshot()
+                        signals = facts['handled_signals']
+                        if len(signals) == 1 and signals[0]['stage'] == 'EXECUTE_HANDLED_ERROR':
+                            raise native_observations.errors[signals[0]['error_index']]
+                        raise AssertionError('LONG_FIXTURE_POSITIVE_PHASE_ORDER')
+                    if completed_at > deadline: pytest.fail('bounded fixture did not reach expected state')
+                    deadline = completed_at + 10
+                    phase_index += 1
+                # Observe ready terminal ACK before another control cycle can
+                # unnecessarily spend the original worker-return3 allowance.
+                if phase_index == len(positive_phases) and succeeded_and_drained(row['global_job_id']): break
+                if time.monotonic() >= deadline: pytest.fail('bounded fixture did not reach expected state')
+                agent.step()
+                time.sleep(.005)
         elif expected_handled_error is None:
             pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
         else:
@@ -1617,7 +1661,7 @@ def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(proje
     else:
         # Runs every original proof-expiry, fresh-phase, ACK-before-return and
         # final empty-record assertion, through the same actual TLS helper.
-        run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds, return_barrier=release_holds)
+        run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds, return_barrier=release_holds, observe_positive_phases=True)
     assert len(holds) == 6
     assert len(requests) == 5
     assert all(kind == 'START_AUTHORIZE' and elapsed < composed_service[0].policy.http_timeout_ms / 1000

@@ -258,6 +258,11 @@ def run_capacity_fixture(project_node, capacity_service, observation_order, *, o
             raise_callback_failure()
             return result
         return observed
+    # Harmless fixture schedule; original scoped transactions/guard unchanged.
+    first_admitted = threading.Event()
+    cohort_finished = [threading.Event(), threading.Event()]
+    admission_lock, completion_turn = threading.Lock(), threading.Lock()
+    admission_count, native_thread = [0], threading.local()
     completion, timers = threading.Event(), []
     if observation_order == 'normal': completion.set()
     class ScopedHarmlessAdapter:
@@ -269,20 +274,30 @@ def run_capacity_fixture(project_node, capacity_service, observation_order, *, o
         def start_reserved(self, local_job_id, request, exact_fence):
             assert type(exact_fence['authorization']) is NativeAuthorization
             selected = request['placement']['target']
-            with coordinator.execution(local_job_id, kind='tester', terminal_id=selected['terminal_id'],
-                    terminal_generation=selected['terminal_generation'], wait_ms=1000) as scope:
-                # Capture before the context manager's durable release, which
-                # can independently fail and replace the callback exception.
-                @preserve_callback
-                def held_scope():
-                    armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
-                    # One finite harmless hold budget includes test observations
-                    # and the controlled delayed-completion regression barrier.
-                    hold_deadline = time.monotonic() + 20
-                    assert release.wait(max(0, hold_deadline - time.monotonic()))
-                    assert completion.wait(max(0, hold_deadline - time.monotonic()))
-                    scope.close_zero_attempt(armed)
-                held_scope()
+            completion_owned = False
+            try:
+                with coordinator.execution(local_job_id, kind='tester', terminal_id=selected['terminal_id'],
+                        terminal_generation=selected['terminal_generation'], wait_ms=1000) as scope:
+                    # Capture before the context manager's durable release, which
+                    # can independently fail and replace the callback exception.
+                    @preserve_callback
+                    def held_scope():
+                        nonlocal completion_owned
+                        armed = scope.arm(); calls.append(local_job_id); entered.put(local_job_id)
+                        if native_thread.index == 0: first_admitted.set()
+                        # One finite harmless hold budget includes test observations
+                        # and the controlled delayed-completion regression barrier.
+                        hold_deadline = time.monotonic() + 20
+                        assert release.wait(max(0, hold_deadline - time.monotonic()))
+                        assert completion.wait(max(0, hold_deadline - time.monotonic()))
+                        assert completion_turn.acquire(timeout=max(0, hold_deadline - time.monotonic())), 'CAPACITY_COMPLETION_TURN_TIMEOUT'
+                        completion_owned = True
+                        scope.close_zero_attempt(armed)
+                    held_scope()
+            finally:
+                # Do not release after close_zero_attempt alone: original
+                # execution context release still owns durable scoped work.
+                if completion_owned: completion_turn.release()
             return {'schema': 'fleet.native.effect/1', 'phase': 'start', 'evidence': 'SYNTHETIC_NATIVE_ONLY',
                 'payload': {'execution': {'status': 'COMPLETED'}, 'process': current_identity()}}
     key = Ed25519PrivateKey.generate()
@@ -305,12 +320,27 @@ def run_capacity_fixture(project_node, capacity_service, observation_order, *, o
     native_entries = Queue()
     native_work = dispatcher._native_work
     had_native_work, prior_native_work = '_native_work' in dispatcher.__dict__, dispatcher.__dict__.get('_native_work')
+    @preserve_callback
     def observed_native_admission(*args):
         # Original worker entry precedes any request or signed authorization.
         native_entries.put(args[0])
-        return native_work(*args)
-    if observe_admission_phases:
-        dispatcher._native_work = observed_native_admission
+        with admission_lock:
+            index = admission_count[0]; admission_count[0] += 1
+        native_thread.index = index
+        # Event waits precede the original body and any authorization request.
+        # Hold no mutex across existing external pre-request fixture gates.
+        try:
+            if index == 1:
+                assert first_admitted.wait(10), 'CAPACITY_FIRST_ADMISSION_TIMEOUT'
+            elif index >= 2:
+                deadline = time.monotonic() + 10
+                for finished in cohort_finished:
+                    assert finished.wait(max(0, deadline - time.monotonic())), 'CAPACITY_COHORT_FINISH_TIMEOUT'
+            return native_work(*args)
+        finally:
+            if index < 2: cohort_finished[index].set()
+            if index == 0: first_admitted.set()
+    dispatcher._native_work = observed_native_admission
     failures = []
     try:
         agent.step()
@@ -416,9 +446,8 @@ def run_capacity_fixture(project_node, capacity_service, observation_order, *, o
             failures.append(cleanup)
         finally:
             try:
-                if observe_admission_phases:
-                    if had_native_work: dispatcher._native_work = prior_native_work
-                    else: del dispatcher._native_work
+                if had_native_work: dispatcher._native_work = prior_native_work
+                else: del dispatcher._native_work
             except BaseException as restoration: failures.append(restoration)
             try: scope_observations.restore()
             except BaseException as restoration: failures.append(restoration)
