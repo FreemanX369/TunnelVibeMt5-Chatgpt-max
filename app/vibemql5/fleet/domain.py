@@ -805,7 +805,7 @@ class GatewayDomain:
             min(max_commands, self.journal.policy.max_commands), frozenset(permitted))
 
     @_domain_errors
-    def handle_node(self, proof, value, *, now_ms, monotonic_ms):
+    def handle_node(self, proof, value, *, now_ms, monotonic_ms, native_authorization_clock=None, retain_authorization_time=None):
         if proof.path == "/fleet/v1/reconcile":
             if self.recovery is None:
                 raise WireError("RECONCILIATION_REQUIRED")
@@ -849,8 +849,11 @@ class GatewayDomain:
                 "local_job_id", "phase", "sequence", "challenge", "event", "predecessor", "process_sha256"})
             if value["schema"] != "fleet.start-authorize/1" or self.native_signer is None:
                 raise WireError("DOMAIN_INVALID")
+            if not callable(native_authorization_clock) or not callable(retain_authorization_time):
+                raise WireError("NATIVE_AUTHORIZATION_TRUST_INVALID")
             return self.native.authorize_start(proof.device_id, route_generation=proof.route_generation,
                 now_ms=now_ms, ttl_ms=self.start_authorization_ms, signer=self.native_signer,
+                issuance_clock=native_authorization_clock, retain_observed_time=retain_authorization_time,
                 **{key: value[key] for key in ("session_id", "global_job_id", "node_operation_id", "request_sha256",
                     "local_job_id", "phase", "sequence", "challenge", "event", "predecessor", "process_sha256")},
                 frozen_target=value["target"])

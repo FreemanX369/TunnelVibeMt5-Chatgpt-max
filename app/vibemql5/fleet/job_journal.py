@@ -784,12 +784,19 @@ class GatewayJobJournal(_Journal):
     def authorize_start(self, device_id, *, route_generation, session_id, global_job_id,
                         node_operation_id, request_sha256, frozen_target, now_ms, ttl_ms,
                         signer, local_job_id, phase, sequence, challenge, event="phase_admission", predecessor=None,
-                        process_sha256=None):
+                        process_sha256=None, issuance_clock=None, retain_observed_time=None):
         """One durable start authorization, supplied over authenticated HTTPS.
 
         The service event owner rechecks enrollment immediately before this call.
         An expired/lost grant is uncertainty, never permission to issue a new grant.
         """
+        # With both callbacks absent, mandatory now_ms is the documented
+        # direct-Python deterministic API. Production native/start forbids
+        # that mode. A supplied invalid/failing pair never falls back to it.
+        owner_clock = issuance_clock is not None or retain_observed_time is not None
+        if owner_clock and (not callable(issuance_clock) or not callable(retain_observed_time)):
+            raise JournalError("NATIVE_AUTHORIZATION_TRUST_INVALID")
+        latest_observed, observation_attempted = None, False
         _integer(now_ms, positive=False); _integer(ttl_ms); _id(session_id); _id(local_job_id); _integer(sequence)
         from .native_authorization import PHASES, effect_event, completion_receipt, advance_effect
         if phase not in PHASES:
@@ -798,70 +805,106 @@ class GatewayJobJournal(_Journal):
         if predecessor is not None: predecessor = completion_receipt(predecessor)
         if parsed is None and predecessor is not None: raise JournalError("NATIVE_EFFECT_GRAPH_INVALID")
         authorization_key = digest({"global_job_id": global_job_id, "phase": phase, "sequence": sequence})
-        with self.transaction():
-            self._ready(); rec = self._row(global_job_id)
-            if (rec["target"] != target(frozen_target) or rec["node_operation_id"] != node_operation_id
-                    or rec["request_sha256"] != request_sha256 or rec["session_id"] != session_id
-                    or rec["target"]["device_id"] != device_id or rec["target"]["route_generation"] != route_generation):
-                raise JournalError("JOB_BINDING_MISMATCH")
-            if rec["local_job_id"] not in (None, local_job_id):
-                raise JournalError("JOB_BINDING_MISMATCH")
-            if phase == "cancel":
-                progress = (rec["result"] or {}).get("result") if isinstance(rec["result"], dict) else None
-                observed = progress.get("process_identity") if isinstance(progress, dict) else None
-                if (not _identity_valid(observed) or process_sha256 != digest(observed)
-                        or rec["state"] not in {"STARTING", "RUNNING", "RESULT_PENDING"}):
-                    raise JournalError("PROCESS_IDENTITY_UNPROVEN")
-            elif process_sha256 is not None:
-                raise JournalError("NATIVE_AUTHORIZATION_INVALID")
-            old = self._db.execute("SELECT receipt FROM starts WHERE authorization_key=?", (authorization_key,)).fetchone()
-            if old:
-                grant = _decode(old[0])
-                body = grant["body"]
-                if (body["local_job_id"] != local_job_id or body["challenge"] != challenge
-                        or body["sequence"] != sequence or body["event"] != event
-                        or body["process_sha256"] != process_sha256):
-                    raise JournalError("NATIVE_AUTHORIZATION_MISMATCH")
-                if parsed is not None:
-                    step = next((s for s in self._effect_history(global_job_id) if s["sequence"] == sequence), None)
-                    if step is None or step["predecessor_sha256"] != (digest(predecessor) if predecessor else None):
+        try:
+            with self.transaction():
+                self._ready(); rec = self._row(global_job_id)
+                if (rec["target"] != target(frozen_target) or rec["node_operation_id"] != node_operation_id
+                        or rec["request_sha256"] != request_sha256 or rec["session_id"] != session_id
+                        or rec["target"]["device_id"] != device_id or rec["target"]["route_generation"] != route_generation):
+                    raise JournalError("JOB_BINDING_MISMATCH")
+                if rec["local_job_id"] not in (None, local_job_id):
+                    raise JournalError("JOB_BINDING_MISMATCH")
+                if phase == "cancel":
+                    progress = (rec["result"] or {}).get("result") if isinstance(rec["result"], dict) else None
+                    observed = progress.get("process_identity") if isinstance(progress, dict) else None
+                    if (not _identity_valid(observed) or process_sha256 != digest(observed)
+                            or rec["state"] not in {"STARTING", "RUNNING", "RESULT_PENDING"}):
+                        raise JournalError("PROCESS_IDENTITY_UNPROVEN")
+                elif process_sha256 is not None:
+                    raise JournalError("NATIVE_AUTHORIZATION_INVALID")
+                old = self._db.execute("SELECT receipt FROM starts WHERE authorization_key=?", (authorization_key,)).fetchone()
+                if old:
+                    grant = _decode(old[0])
+                    body = grant["body"]
+                    if (body["local_job_id"] != local_job_id or body["challenge"] != challenge
+                            or body["sequence"] != sequence or body["event"] != event
+                            or body["process_sha256"] != process_sha256):
                         raise JournalError("NATIVE_AUTHORIZATION_MISMATCH")
-                if now_ms < body["issued_ms"]:
-                    raise JournalError("CLOCK_ROLLBACK")
-                if now_ms >= body["expires_ms"]:
-                    raise JournalError("START_AUTHORIZATION_UNRESOLVED")
-                return grant
-            if rec["state"] not in {"DELIVERED", "RESERVED", "STARTING", "RUNNING", "RESULT_PENDING"}:
-                raise JournalError("START_AUTHORIZATION_UNAVAILABLE")
-            if self._db.execute("SELECT count(*) FROM starts").fetchone()[0] >= self.policy["max_records"]:
-                raise JournalError("JOURNAL_CAPACITY")
-            if parsed is not None:
-                history = self._effect_history(global_job_id)
-                lane = [s for s in history if effect_event(s["phase"], s["event"])["lane"] == parsed["lane"]]
-                if history and sequence <= history[-1]["sequence"]:
-                    raise JournalError("NATIVE_EFFECT_GRAPH_INVALID")
-                if lane:
-                    if predecessor is None: raise JournalError("NATIVE_EFFECT_UNRESOLVED")
-                    self._complete_gateway_effect(global_job_id, predecessor, expected=lane[-1])
+                    if parsed is not None:
+                        step = next((s for s in self._effect_history(global_job_id) if s["sequence"] == sequence), None)
+                        if step is None or step["predecessor_sha256"] != (digest(predecessor) if predecessor else None):
+                            raise JournalError("NATIVE_AUTHORIZATION_MISMATCH")
+                    if owner_clock:
+                        highwater = self._authorization_issued_highwater()
+                        latest_observed = _integer(issuance_clock(), positive=False)
+                        if latest_observed < now_ms or latest_observed < highwater:
+                            raise JournalError("CLOCK_ROLLBACK")
+                        now_ms = latest_observed
+                    if now_ms < body["issued_ms"]:
+                        raise JournalError("CLOCK_ROLLBACK")
+                    if now_ms >= body["expires_ms"]:
+                        raise JournalError("START_AUTHORIZATION_UNRESOLVED")
+                    if owner_clock:
+                        observation_attempted = True
+                        retain_observed_time(now_ms)
+                    return grant
+                if rec["state"] not in {"DELIVERED", "RESERVED", "STARTING", "RUNNING", "RESULT_PENDING"}:
+                    raise JournalError("START_AUTHORIZATION_UNAVAILABLE")
+                if self._db.execute("SELECT count(*) FROM starts").fetchone()[0] >= self.policy["max_records"]:
+                    raise JournalError("JOURNAL_CAPACITY")
+                if parsed is not None:
                     history = self._effect_history(global_job_id)
-                elif predecessor is not None:
-                    raise JournalError("NATIVE_EFFECT_GRAPH_INVALID")
-                advance_effect(history, phase, event)
-            grant = signer.issue(issued_ms=now_ms, expires_ms=_integer(now_ms + ttl_ms),
-                authorization_id="start_" + uuid.uuid4().hex, audience=signer.audience,
-                global_job_id=global_job_id, local_job_id=local_job_id, node_operation_id=node_operation_id,
-                request_sha256=request_sha256, target=rec["target"], session_id=session_id,
-                phase=phase, sequence=sequence, challenge=challenge, event=event, process_sha256=process_sha256)
-            if rec["local_job_id"] is None:
-                rec.update(local_job_id=local_job_id, sequence=rec["sequence"] + 1)
-                self._save(rec)
-            self._db.execute("INSERT INTO starts VALUES (?,?)", (authorization_key, canonical(grant).decode()))
-            if parsed is not None:
-                self._save_effect({"schema": "fleet.native-effect-intent/1", "global_job_id": global_job_id,
-                    "sequence": sequence, "phase": phase, "event": event, "challenge": challenge,
-                    "state": "INTENT", "grant_sha256": digest(grant), "completion": None,
-                    "predecessor_sha256": digest(predecessor) if predecessor else None}, insert=True)
-            return grant
+                    lane = [s for s in history if effect_event(s["phase"], s["event"])["lane"] == parsed["lane"]]
+                    if history and sequence <= history[-1]["sequence"]:
+                        raise JournalError("NATIVE_EFFECT_GRAPH_INVALID")
+                    if lane:
+                        if predecessor is None: raise JournalError("NATIVE_EFFECT_UNRESOLVED")
+                        self._complete_gateway_effect(global_job_id, predecessor, expected=lane[-1])
+                        history = self._effect_history(global_job_id)
+                    elif predecessor is not None:
+                        raise JournalError("NATIVE_EFFECT_GRAPH_INVALID")
+                    advance_effect(history, phase, event)
+                if owner_clock:
+                    highwater = self._authorization_issued_highwater()
+                    latest_observed = _integer(issuance_clock(), positive=False)
+                    if latest_observed < now_ms or latest_observed < highwater:
+                        raise JournalError("CLOCK_ROLLBACK")
+                    now_ms = latest_observed
+                grant = signer.issue(issued_ms=now_ms, expires_ms=_integer(now_ms + ttl_ms),
+                    authorization_id="start_" + uuid.uuid4().hex, audience=signer.audience,
+                    global_job_id=global_job_id, local_job_id=local_job_id, node_operation_id=node_operation_id,
+                    request_sha256=request_sha256, target=rec["target"], session_id=session_id,
+                    phase=phase, sequence=sequence, challenge=challenge, event=event, process_sha256=process_sha256)
+                if rec["local_job_id"] is None:
+                    rec.update(local_job_id=local_job_id, sequence=rec["sequence"] + 1)
+                    self._save(rec)
+                self._db.execute("INSERT INTO starts VALUES (?,?)", (authorization_key, canonical(grant).decode()))
+                if parsed is not None:
+                    self._save_effect({"schema": "fleet.native-effect-intent/1", "global_job_id": global_job_id,
+                        "sequence": sequence, "phase": phase, "event": event, "challenge": challenge,
+                        "state": "INTENT", "grant_sha256": digest(grant), "completion": None,
+                        "predecessor_sha256": digest(predecessor) if predecessor else None}, insert=True)
+                return grant
+
+        except BaseException as error:
+            # NEW success retains its final time in the original signed starts
+            # receipt. OLD/denied or failed-sign/commit paths must additionally
+            # retain a final observed time, even when no receipt was committed.
+            if owner_clock and latest_observed is not None and not observation_attempted:
+                observation_attempted = True
+                try: retain_observed_time(latest_observed)
+                except BaseException as observation:
+                    raise BaseExceptionGroup('native authorization and observed-time retention failed', [error, observation]) from None
+            raise
+
+    def _authorization_issued_highwater(self):
+        # Starts are bounded existing signed receipts, already included in
+        # export/recovery heads. No schema/meta migration or SQLite JSON1.
+        highwater = 0
+        for row in self._db.execute("SELECT receipt FROM starts"):
+            value = _integer(_decode(row[0])['body']['issued_ms'], positive=False)
+            highwater = max(highwater, value)
+        return highwater
 
     def _complete_gateway_effect(self, global_job_id, completion, *, expected=None):
         from .native_authorization import completion_receipt

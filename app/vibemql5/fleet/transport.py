@@ -104,6 +104,47 @@ class GatewayController:
                         "transport_request_sha256": proof.request_sha256}
         return response
 
+    def _native_issuance_context(self, proof, session_id, admitted_ms):
+        # This Python capability is built by the sole gateway event owner.
+        # It is never accepted as a wire field or supplied by a node.
+        def retain(now_ms):
+            if threading.get_ident() != self._owner_thread:
+                raise WireError("GATEWAY_OWNER_THREAD_REQUIRED")
+            self.store._observe_wall(now_ms)
+        def current_time():
+            if threading.get_ident() != self._owner_thread:
+                raise WireError("GATEWAY_OWNER_THREAD_REQUIRED")
+            if self.domain is None:
+                raise WireError("DOMAIN_NOT_CONFIGURED")
+            route = self.domain._route({'device_id':proof.device_id, 'route_generation':proof.route_generation})
+            head_wall = self.store._control()['last_wall_ms']
+            if (route['state'] != 'ACTIVE' or route['status'] != 'READY_CONTROL_ONLY'
+                    or route['route_generation'] != proof.route_generation
+                    or route['public_key'] != proof.public_key):
+                raise WireError("DOMAIN_ROUTE_STALE")
+            # All structural DB reads precede the final timestamp. Retain
+            # preliminary observed time through the existing durable wall head.
+            preliminary, _ = self._times()
+            if preliminary < admitted_ms or preliminary < head_wall:
+                raise GatewayControlError("CONTROL_CLOCK_ROLLBACK")
+            retain(preliminary)
+            final, monotonic_ms = self._times()
+            if final < preliminary or final < admitted_ms or final < head_wall:
+                raise GatewayControlError("CONTROL_CLOCK_ROLLBACK")
+            try:
+                if abs(proof.timestamp_ms - final) > self.store.policy.clock_skew_ms:
+                    raise GatewayControlError("CONTROL_TIME_INVALID")
+                self._session(proof, session_id, final, monotonic_ms)
+            except BaseException as error:
+                try: retain(final)
+                except BaseException as observation:
+                    raise BaseExceptionGroup('native admission and observed-time retention failed', [error, observation]) from None
+                raise
+            # No DB write/read or changed clock follows this final sample
+            # before the journal's pure timestamp guards and original signer.
+            return final
+        return current_time, retain
+
     def _handle(self, method, path, header_pairs, body):
         if threading.get_ident() != self._owner_thread:
             raise WireError("GATEWAY_OWNER_THREAD_REQUIRED")
@@ -185,6 +226,10 @@ class GatewayController:
         if path in DOMAIN_NODE_PATHS or value.get("schema") != "fleet.result/1":
             if self.domain is None:
                 raise WireError("DOMAIN_NOT_CONFIGURED")
+            if path == '/fleet/v1/native/start':
+                clock, retain = self._native_issuance_context(proof, value.get('session_id'), now_ms)
+                return self.domain.handle_node(proof, value, now_ms=now_ms, monotonic_ms=monotonic_ms,
+                    native_authorization_clock=clock, retain_authorization_time=retain)
             return self.domain.handle_node(proof, value, now_ms=now_ms, monotonic_ms=monotonic_ms)
         return self.broker.commit(value, device_id=proof.device_id, route_generation=proof.route_generation,
             session_id=value["session_id"], now_ms=now_ms, monotonic_ms=monotonic_ms, current_route=route)
