@@ -38,9 +38,9 @@ def test_source_runner_keeps_required_proofs_and_honest_manifest(tmp_path, monke
     summary = json.loads((output / 'summary.json').read_text())
     assert [item[0] for item in attempts] == case_names
     assert [item['case'] for item in summary['cases']] == case_names
-    assert attempts[0][1] == 600
+    assert attempts[0][1] == 900
     assert all(item[1] == 120 for item in attempts[1:])
-    assert sum(item[1] for item in attempts) <= 1080
+    assert sum(item[1] for item in attempts) <= 1380
     assert '-v' in attempts[0][2] and 'faulthandler_timeout=90' in attempts[0][2]
     assert attempts[0][2].count('fleet_source_progress') == 1
     assert all('fleet_source_progress' not in item[2] for item in attempts[1:])

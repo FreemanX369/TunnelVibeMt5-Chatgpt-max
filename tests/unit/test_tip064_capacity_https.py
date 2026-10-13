@@ -232,7 +232,7 @@ class ScopeFixtureObservations:
         print('CAPACITY_SCOPE_FIXTURE ' + json.dumps(self.snapshot(), sort_keys=True), flush=True)
 
 
-def run_capacity_fixture(project_node, capacity_service, observation_order):
+def run_capacity_fixture(project_node, capacity_service, observation_order, *, observe_admission_phases=False):
     http, owner, signer_key, owner_key, policy = capacity_service
     root, device = project_node['root'], project_node['registry']['device_id']
     signed, load, closure, requests = signed_roster(project_node, owner_key)
@@ -302,6 +302,15 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
     agent = OutboundNode(client, root, policy, session_id='session-capacity', domain_dispatcher=dispatcher, synthetic_read_adapter=positive)
     facade = FleetClientFacade(owner)
     scope_observations = ScopeFixtureObservations(coordinator)
+    native_entries = Queue()
+    native_work = dispatcher._native_work
+    had_native_work, prior_native_work = '_native_work' in dispatcher.__dict__, dispatcher.__dict__.get('_native_work')
+    def observed_native_admission(*args):
+        # Original worker entry precedes any request or signed authorization.
+        native_entries.put(args[0])
+        return native_work(*args)
+    if observe_admission_phases:
+        dispatcher._native_work = observed_native_admission
     failures = []
     try:
         agent.step()
@@ -312,6 +321,10 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         registered = client.register_capacity(agent.session_id, **payload)
         assert registered['profile_sha256'] == roster.profile_sha256
         launched = [facade.launch_job('capacity-native-' + str(index), request) for index, request in enumerate(requests)]
+        if observe_admission_phases:
+            # Only the held-control regression opts in: actual native-entry10,
+            # then armed-two10. Original20 worker hold starts only at arm.
+            pump(agent, checked(lambda: native_entries.qsize() >= 2), seconds=10)
         pump(agent, checked(lambda: entered.qsize() == 2), seconds=10)
         assert dispatcher.native_capacity == 2
         assert len({entered.get_nowait(), entered.get_nowait()}) == 2
@@ -402,6 +415,11 @@ def run_capacity_fixture(project_node, capacity_service, observation_order):
         except BaseException as cleanup:
             failures.append(cleanup)
         finally:
+            try:
+                if observe_admission_phases:
+                    if had_native_work: dispatcher._native_work = prior_native_work
+                    else: del dispatcher._native_work
+            except BaseException as restoration: failures.append(restoration)
             try: scope_observations.restore()
             except BaseException as restoration: failures.append(restoration)
     try: scope_observations.publish()
@@ -464,7 +482,7 @@ def test_capacity_control_returns_while_workers_held_past_old_aggregate(project_
         return step(self, *args, **kwargs)
     monkeypatch.setattr(sys.modules[__name__], 'observe_control_posts', observed_posts)
     monkeypatch.setattr(OutboundNode, 'step', held_step)
-    run_capacity_fixture(project_node, capacity_service, 'normal')
+    run_capacity_fixture(project_node, capacity_service, 'normal', observe_admission_phases=True)
     assert len(delays) == 3 and facts[0]['elapsed_ms'] >= 1800
     assert facts[0]['post_count'] == 6 and not facts[0]['rows_truncated']
     assert all(row['outcome'] == 'RETURNED' for row in facts[0]['posts'])

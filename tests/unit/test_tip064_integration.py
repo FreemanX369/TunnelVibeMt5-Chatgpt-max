@@ -1332,7 +1332,10 @@ def test_long_broken_observation_keeps_original_worker_unknown_and_restores_step
     assert 'step' not in agents[0].__dict__ and publications == [True]
 
 
-def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None, expected_handled_error=None):
+def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10, return_barrier=None, expected_handled_error=None, observe_cleanup_phases=False):
+    if observe_cleanup_phases and expected_handled_error is not None:
+        raise ValueError('conflicting fixture phase contracts')
+    callback_started = threading.Event()
     grants, events = [], []
     authorization_diagnostics = FixtureAuthorizationDiagnostics()
     owner_observations = LongFixtureObservations()
@@ -1376,8 +1379,11 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         events.append('fresh-next-phase')
         owner_observations.observe('CALLBACK_COMPLETE')
         return {'process': current_identity(), 'execution': {'status': 'COMPLETED'}}
+    def phase_start_fixture(*args):
+        callback_started.set()
+        return preserve_worker_call(start_fixture, *args)
     adapter = SyntheticNativeAdapter(project_node['root'], callbacks={
-        'start': lambda *args: preserve_worker_call(start_fixture, *args)})
+        'start': phase_start_fixture if observe_cleanup_phases else lambda *args: preserve_worker_call(start_fixture, *args)})
     facade, client, agent, dispatcher, jobs, domains, transport = runtime(project_node, composed_service,
         adapter=adapter, authorization_diagnostics=authorization_diagnostics)
     release_return = threading.Event() if return_barrier is None else return_barrier
@@ -1413,7 +1419,46 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
             return result
         finally:
             return_finished.set()
-    selected_return = delayed_return if expected_handled_error is None else phase_delayed_return
+    def cleanup_phase_return(*args):
+        owner_observations.observe('WORKER_START')
+        result = native_work(*args)
+        phase_result.append(result)
+        owner_observations.observe('NATIVE_RESULT', native_state=result.get('state') if type(result) is dict else None)
+        owner_observations.observe('RETURN_WAIT')
+        return_started.set()
+        try:
+            try: assert release_return.wait(timeout=3), 'LONG_FIXTURE_WORKER_RETURN_TIMEOUT'
+            except BaseException:
+                owner_observations.observe('RETURN_FAILURE')
+                raise
+            owner_observations.observe('RETURN_FINISH')
+            return result
+        finally:
+            return_finished.set()
+    def observe_cleanup_phase(ready):
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            # Ready-first avoids an extra authenticated control cycle before
+            # the original wrapper fault is injected in its actual wait3.
+            if ready():
+                raise_worker_failure()
+                return
+            raise_worker_failure()
+            if return_started.is_set():
+                facts = native_observations.snapshot()
+                signals = facts['handled_signals']
+                if len(signals) == 1:
+                    raise native_observations.errors[signals[0]['error_index']]
+                raise AssertionError('LONG_FIXTURE_UNEXPECTED_NATIVE_RESULT')
+            agent.step()
+            if ready():
+                raise_worker_failure()
+                return
+            raise_worker_failure()
+            time.sleep(.005)
+        pytest.fail('bounded fixture did not reach expected state')
+    selected_return = (cleanup_phase_return if observe_cleanup_phases else
+        delayed_return if expected_handled_error is None else phase_delayed_return)
     monkeypatch.setattr(dispatcher, '_native_work', lambda *args: preserve_worker_call(selected_return, *args))
     def succeeded_and_drained(global_job_id):
         raise_worker_failure()
@@ -1449,7 +1494,18 @@ def run_long_fixture(project_node, composed_service, monkeypatch, *, seconds=10,
         # Its future must finish and pass through the normal owner drain too.
         # This aggregate observation spans all phases; each authorization/RPC,
         # producer, worker-return and cleanup bound remains independent.
-        if expected_handled_error is None:
+        if observe_cleanup_phases:
+            # Negative cleanup-fault contract: callback-start10, then a new
+            # independent native-return-ready10; original worker3/cleanup3.
+            observe_cleanup_phase(callback_started.is_set)
+            observe_cleanup_phase(return_started.is_set)
+            raise_worker_failure()
+            assert len(phase_result) == 1 and phase_result[0].get('state') == 'SUCCEEDED'
+            # This original predicate performs the original targeted facade
+            # fault read before another control cycle can consume worker3.
+            succeeded_and_drained(row['global_job_id'])
+            raise AssertionError('LONG_FIXTURE_EXPECTED_CLEANUP_FAULT_NOT_OBSERVED')
+        elif expected_handled_error is None:
             pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
         else:
             # Negative-only contract: prerequisite observation10, then a NEW
@@ -1674,7 +1730,7 @@ def test_long_fixture_preserves_worker_failure_released_by_cleanup(project_node,
         monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
         monkeypatch.setattr(sys.modules[__name__], 'close_dispatcher_fixture', failed_cleanup)
     with pytest.raises(BaseExceptionGroup) as observed:
-        run_long_fixture(project_node, composed_service, monkeypatch, return_barrier=ReturnBarrier())
+        run_long_fixture(project_node, composed_service, monkeypatch, return_barrier=ReturnBarrier(), observe_cleanup_phases=True)
     expected = (primary, cleanup, late) if cleanup_fails else (primary, late)
     if observed.value.exceptions != expected: raise observed.value
     assert raised.is_set() and injected == [True]

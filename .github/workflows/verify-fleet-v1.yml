@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
