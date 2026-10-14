@@ -20,12 +20,19 @@ class AuthorizationScopeProbe:
     def __init__(self):
         self.local, self.lock, self.rows, self.dropped = threading.local(), threading.Lock(), [], 0
         self.observation_errors = 0
+        self._initial_jobs = {}
 
     @contextmanager
     def native_entry(self, entry, job_id):
         prior = getattr(self.local, 'native', None)
         self.local.native = (entry, job_id)
-        try: yield
+        try:
+            try:
+                if type(entry) is int and entry in (1, 2) and type(job_id) is str:
+                    with self.lock: self._initial_jobs.setdefault(entry, job_id)
+            except (Exception, pytest.fail.Exception):
+                self.observation_errors = min(8, self.observation_errors + 1)
+            yield
         finally:
             if prior is None: del self.local.native
             else: self.local.native = prior
@@ -39,8 +46,13 @@ class AuthorizationScopeProbe:
             expected = kwargs.get('global_job_id')
             row = {'entry': entry,
                    'phase': phase if phase in ('reserve', 'start') else 'UNKNOWN',
-                   'binding_match': expected == job_id if entry and type(expected) is str and type(job_id) is str else None}
+                   'binding_match': expected == job_id if entry and type(expected) is str and type(job_id) is str else None,
+                   'cohort_binding': 'UNKNOWN'}
             with self.lock:
+                if row['binding_match'] is True:
+                    if expected == self._initial_jobs.get(1): row['cohort_binding'] = 'FIRST'
+                    elif expected == self._initial_jobs.get(2): row['cohort_binding'] = 'SECOND'
+                    elif len(self._initial_jobs) == 2: row['cohort_binding'] = 'OUTSIDE'
                 if len(self.rows) < 8: self.rows.append(row)
                 else: self.dropped += 1
         except (Exception, pytest.fail.Exception):
@@ -51,7 +63,7 @@ class AuthorizationScopeProbe:
         try:
             with self.lock:
                 printer('TIP077_AUTHORIZATION_SCOPE ' + json.dumps(
-                    {'rows': self.rows, 'rows_dropped': self.dropped,
+                    {'schema': 'tip077.authorization-scope/2', 'rows': self.rows, 'rows_dropped': self.dropped,
                      'observation_errors': self.observation_errors}, sort_keys=True), flush=True)
         except (Exception, pytest.fail.Exception):
             self.observation_errors = min(8, self.observation_errors + 1)

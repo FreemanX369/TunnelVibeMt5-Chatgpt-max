@@ -31,13 +31,19 @@ def test_reused_thread_clears_logical_marker_and_preserves_original_verifier(fai
             assert probe.verify(original, verifier, 'grant', phase='start', global_job_id='second') is result
     def reused():
         assert probe.verify(original, verifier, 'grant', phase='reserve', global_job_id='third') is result
+    def reentered_first():
+        with probe.native_entry(3, 'first'):
+            assert probe.verify(original, verifier, 'grant', phase='reserve', global_job_id='first') is result
     with ThreadPoolExecutor(max_workers=1) as executor:
         executor.submit(first).result(timeout=5)
+        executor.submit(reentered_first).result(timeout=5)
         executor.submit(reused).result(timeout=5)
-    assert len(calls) == 4 and all(call[0] is verifier for call in calls)
-    assert [row['entry'] for row in probe.rows] == ([1, 2, 0] if fails else [1, 3, 2, 0])
+    assert len(calls) == 5 and all(call[0] is verifier for call in calls)
+    assert [row['entry'] for row in probe.rows] == ([1, 2, 3, 0] if fails else [1, 3, 2, 3, 0])
+    assert [row['cohort_binding'] for row in probe.rows] == (
+        ['FIRST', 'SECOND', 'FIRST', 'UNKNOWN'] if fails else ['FIRST', 'OUTSIDE', 'SECOND', 'FIRST', 'UNKNOWN'])
     assert all(row['binding_match'] is True for row in probe.rows[:-1])
-    assert probe.rows[-1] == {'entry': 0, 'phase': 'reserve', 'binding_match': None}
+    assert probe.rows[-1] == {'entry': 0, 'phase': 'reserve', 'binding_match': None, 'cohort_binding': 'UNKNOWN'}
     assert probe.dropped == 0
 
 
