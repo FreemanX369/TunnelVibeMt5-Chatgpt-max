@@ -303,3 +303,52 @@ def test_makereport_metadata_failure_returns_original_report(monkeypatch):
     assert next(hook) is None
     with pytest.raises(StopIteration): hook.send(SimpleNamespace(get_result=lambda: report))
     assert report.failed is True and report._source_failure_metadata == {'exception_type': 'UNKNOWN', 'frames': []}
+
+
+@pytest.mark.parametrize('enabled', [False, True])
+@pytest.mark.parametrize('outcome', ['passed', 'failed'])
+def test_checkpoint_pytest_failed_preserves_original_result_and_teardown(tmp_path, enabled, outcome):
+    directory = tmp_path / 'tests' / 'unit'; directory.mkdir(parents=True)
+    body = '    assert True\n' if outcome == 'passed' else "    raise ValueError('ORIGINAL_TEST_FAILURE')\n"
+    (directory / 'test_control.py').write_text(
+        'import pytest\nfrom pathlib import Path\n'
+        '@pytest.fixture\ndef fixture(monkeypatch):\n'
+        "    def broken(*args, **kwargs): pytest.fail('CONTROLLED_CHECKPOINT_FAILURE')\n"
+        "    monkeypatch.setattr(Path, 'write_text', broken)\n"
+        "    yield\n    monkeypatch.undo()\n    Path('teardown.marker').write_text('CLOSED')\n"
+        'def test_control(fixture):\n' + body)
+    command = [sys.executable, '-m', 'pytest', *(['-p', 'fleet_source_progress'] if enabled else []),
+        'tests/unit/test_control.py', '-q', '--junitxml=' + str(tmp_path / 'child.junit.xml')]
+    environment = child_environment()
+    environment['FLEET_SOURCE_PROGRESS_PATH'] = str(tmp_path / 'control.progress.json')
+    (tmp_path / 'child-command.json').write_text(json.dumps(command))
+    with (tmp_path / 'child.log').open('w') as output:
+        result = subprocess.run(command, cwd=tmp_path, env=environment,
+            stdout=output, stderr=subprocess.STDOUT, timeout=30, check=False)
+    text = (tmp_path / 'child.log').read_text()
+    assert result.returncode == (1 if outcome == 'failed' else 0) and 'INTERNALERROR' not in text
+    assert (tmp_path / 'teardown.marker').read_text() == 'CLOSED'
+    cases = list(ET.parse(tmp_path / 'child.junit.xml').getroot().iter('testcase'))
+    assert len(cases) == 1 and cases[0].find('error') is None
+    failure = cases[0].find('failure')
+    assert (failure is not None) is (outcome == 'failed')
+    if failure is not None:
+        assert 'ORIGINAL_TEST_FAILURE' in failure.get('message', '')
+        assert 'CONTROLLED_CHECKPOINT_FAILURE' not in failure.get('message', '')
+    rows = progress_rows(text)
+    if enabled:
+        assert sum('SOURCE_CHECKPOINT_FAILED' in line for line in text.splitlines()) == 1
+        assert [row['stage'] for row in rows] == ['START', 'FINISH']
+        assert rows[-1]['outcome'] == outcome.upper()
+    else:
+        assert not rows and 'SOURCE_CHECKPOINT_FAILED' not in text
+
+
+@pytest.mark.parametrize('interrupt', [KeyboardInterrupt, SystemExit])
+def test_checkpoint_does_not_swallow_process_interrupt(tmp_path, interrupt):
+    error = interrupt()
+    def broken(*args, **kwargs): raise error
+    observer = SourceProgress(SimpleNamespace(), tmp_path / 'control.progress.json')
+    observer.checkpoint_path = SimpleNamespace(with_suffix=lambda suffix: SimpleNamespace(write_text=broken))
+    with pytest.raises(interrupt) as raised: observer.checkpoint({'stage': 'START'})
+    assert raised.value is error and not observer.checkpoint_failed

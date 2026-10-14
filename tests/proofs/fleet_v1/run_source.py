@@ -145,6 +145,7 @@ def source_manifest():
         paths.extend((ROOT / prefix).rglob("*.py"))
     paths.extend((ROOT / ".github/workflows").glob("*.yml"))
     paths.extend((ROOT / "ops/windows").rglob("*.ps1"))
+    paths.extend((ROOT / "scripts").glob("*.ps1"))
     # Build and operator inputs are part of the source qualification candidate.
     paths.extend(ROOT.glob("pyproject.toml"))
     paths.extend(ROOT.glob("requirements*"))

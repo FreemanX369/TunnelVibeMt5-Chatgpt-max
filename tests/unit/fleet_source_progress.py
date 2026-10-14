@@ -62,16 +62,16 @@ class SourceProgress:
             temporary.write_text(json.dumps({**row, 'pid': os.getpid(),
                 'observed_utc': datetime.now(timezone.utc).isoformat()}, sort_keys=True) + '\n', encoding='utf-8')
             temporary.replace(self.checkpoint_path)
-        except Exception:
+        except (Exception, pytest.fail.Exception):
             if not self.checkpoint_failed:
                 self.checkpoint_failed = True
-                reporter = self.config.pluginmanager.get_plugin('terminalreporter')
-                if reporter is not None:
-                    try:
+                try:
+                    reporter = self.config.pluginmanager.get_plugin('terminalreporter')
+                    if reporter is not None:
                         reporter.write_line('SOURCE_CHECKPOINT_FAILED scope=DIAGNOSTIC_ONLY')
                         reporter.flush()
-                    except Exception:
-                        pass
+                except (Exception, pytest.fail.Exception):
+                    pass
 
     @staticmethod
     def literal(nodeid):

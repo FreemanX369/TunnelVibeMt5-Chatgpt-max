@@ -248,3 +248,25 @@ def test_final_manifest_failure_is_terminal_error_and_keeps_completed_cases(tmp_
     assert summary['cases'] == [{'case': 'full-unit', 'exit_code': 0}]
     assert summary['source_before'] == {'frozen.py': 'fixture-hash'}
     assert summary['active_case']['case'] == 'full-unit' and 'finished_utc' in summary
+
+
+def test_required_operator_script_drift_invalidates_source_qualification(tmp_path, monkeypatch):
+    monkeypatch.delenv('FLEET_V1_EXPECTED_SHA', raising=False)
+    runner = load_runner()
+    monkeypatch.setattr(runner, 'ROOT', tmp_path)
+    monkeypatch.setattr(runner, 'git_value', lambda argument: 'fixture-head')
+    script = tmp_path / 'scripts' / 'backend-admin-restart.ps1'
+    script.parent.mkdir()
+    script.write_text("Write-Output 'original'\n")
+    def run_case(name, *args):
+        script.write_text("Write-Output 'changed'\n")
+        return {'case': name, 'exit_code': 0}
+    monkeypatch.setattr(runner, 'run_case', run_case)
+    output = tmp_path / 'receipt'
+    assert runner.main(['--output', str(output), '--unit-only']) == 1
+    summary = json.loads((output / 'summary.json').read_text())
+    key = 'scripts/backend-admin-restart.ps1'
+    assert key in summary['source_before'] and key in summary['source_after']
+    assert summary['source_before'][key] != summary['source_after'][key]
+    assert summary['status'] == 'FAIL' and summary['source_unchanged_during_run'] is False
+    assert summary['cases'] == [{'case': 'full-unit', 'exit_code': 0}]
