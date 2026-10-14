@@ -1,7 +1,9 @@
 """Opt-in source-harness timing; no fixture locals or parameter values are emitted."""
 import json
+import os
 import re
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -42,11 +44,34 @@ def _failure_metadata(item, call):
 
 
 class SourceProgress:
-    def __init__(self, config):
+    def __init__(self, config, checkpoint_path=None):
         self.config, self.origin = config, time.monotonic()
         self.started, self.ordinal, self.rows, self.truncated = None, 0, 0, False
         self.outcome = 'UNKNOWN'
         self.failure_rows, self.failure_truncated = 0, False
+        target = checkpoint_path
+        self.checkpoint_path = (Path(target).with_name(Path(target).stem + f'.{os.getpid()}.json')
+                                if target else None)
+        self.checkpoint_failed = False
+
+    def checkpoint(self, row):
+        if self.checkpoint_path is None: return
+        # Diagnostic only: atomic visibility, without per-test fsync or outcome changes.
+        try:
+            temporary = self.checkpoint_path.with_suffix('.json.tmp')
+            temporary.write_text(json.dumps({**row, 'pid': os.getpid(),
+                'observed_utc': datetime.now(timezone.utc).isoformat()}, sort_keys=True) + '\n', encoding='utf-8')
+            temporary.replace(self.checkpoint_path)
+        except Exception:
+            if not self.checkpoint_failed:
+                self.checkpoint_failed = True
+                reporter = self.config.pluginmanager.get_plugin('terminalreporter')
+                if reporter is not None:
+                    try:
+                        reporter.write_line('SOURCE_CHECKPOINT_FAILED scope=DIAGNOSTIC_ONLY')
+                        reporter.flush()
+                    except Exception:
+                        pass
 
     @staticmethod
     def literal(nodeid):
@@ -71,6 +96,7 @@ class SourceProgress:
         row = {'stage': stage, 'ordinal': self.ordinal, 'suite_elapsed_ms': max(0, int((now - self.origin) * 1000)),
                'test_elapsed_ms': max(0, int((now - self.started) * 1000)), **self.literal(nodeid)}
         if stage == 'FINISH': row['outcome'] = self.outcome
+        self.checkpoint(row)
         self.rows += 1
         reporter.write_line('SOURCE_TEST_PROGRESS ' + json.dumps(row, sort_keys=True))
         reporter.flush()
@@ -84,6 +110,12 @@ class SourceProgress:
         if report.failed: self.outcome = 'FAILED'
         elif report.skipped and self.outcome != 'FAILED': self.outcome = 'SKIPPED'
         elif report.when == 'call' and report.passed and self.outcome == 'UNKNOWN': self.outcome = 'PASSED'
+        if self.checkpoint_path is not None:
+            self.checkpoint({'stage': 'PHASE', 'ordinal': self.ordinal,
+                'phase': report.when if report.when in ('setup', 'call', 'teardown') else 'UNKNOWN',
+                'outcome': self.outcome,
+                'suite_elapsed_ms': max(0, int((time.monotonic() - self.origin) * 1000)),
+                **self.literal(getattr(report, 'nodeid', None))})
         if report.failed: self.failure(report)
 
     def failure(self, report):
@@ -127,7 +159,7 @@ class SourceProgress:
 
 def pytest_configure(config):
     global _progress
-    _progress = SourceProgress(config)
+    _progress = SourceProgress(config, os.environ.get('FLEET_SOURCE_PROGRESS_PATH'))
 
 
 @pytest.hookimpl(hookwrapper=True)
