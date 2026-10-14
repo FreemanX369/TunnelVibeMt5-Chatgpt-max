@@ -1,0 +1,107 @@
+name: Research release full unit context
+
+on:
+  pull_request:
+    branches: [feat/fleet-v1-continuous-source-20261003]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-full-context:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+      TIP077_AUTHORIZATION_SCOPE_PROBE: '1'
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      PYTEST_ADDOPTS: '-o junit_logging=system-out -o junit_log_passing_tests=True'
+      PYTEST_PLUGINS: ''
+      PYTEST_CURRENT_TEST: ''
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Record isolation and prepare trusted ephemeral temp
+        shell: python
+        env:
+          RESEARCH_RUN_ID: ${{ github.run_id }}
+          RESEARCH_RUN_ATTEMPT: ${{ github.run_attempt }}
+          RESEARCH_RUNNER_OS: ${{ runner.os }}
+        run: |
+          import json, os, stat, tempfile
+          from pathlib import Path
+          packet = Path('full-context-setup')
+          packet.mkdir()
+          receipt = {
+              'schema': 'fleet.research-full-context/1',
+              'status': 'RUNNING',
+              'expected_sha': os.environ['FLEET_V1_EXPECTED_SHA'],
+              'run_id': os.environ['RESEARCH_RUN_ID'],
+              'run_attempt': os.environ['RESEARCH_RUN_ATTEMPT'],
+              'runner_os': os.environ['RESEARCH_RUNNER_OS'],
+              'scope': 'INDEPENDENT_EPHEMERAL_SOURCE_UNITS',
+              'physical_qualification': 'NOT_RUN',
+              'previous_local_attempt': 'UNKNOWN_RETAINED_NOT_REPLACED',
+              'automatic_retries': 0,
+              'unit_timeout_seconds': 900,
+              'junit_passing_output': True,
+              'basetemp_override': False
+          }
+          path = packet / 'isolation.receipt.json'
+          path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          try:
+              if os.name != 'nt':
+                  task_temp = Path(tempfile.mkdtemp(prefix='fleet-full-context-', dir='/tmp'))
+                  task_temp.chmod(0o700)
+                  for ancestor in (task_temp, *task_temp.parents):
+                      info = ancestor.lstat()
+                      if not stat.S_ISDIR(info.st_mode) or ancestor.is_symlink():
+                          raise RuntimeError('RESEARCH_TEMP_ANCESTOR_NOT_REAL_DIRECTORY')
+                      if info.st_mode & 0o022 and not info.st_mode & stat.S_ISVTX:
+                          raise RuntimeError('RESEARCH_TEMP_ANCESTOR_UNSAFE_WRITE')
+                  info = task_temp.stat()
+                  if stat.S_IMODE(info.st_mode) != 0o700 or info.st_uid != os.getuid():
+                      raise RuntimeError('RESEARCH_TEMP_NOT_PRIVATE')
+                  with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                      for key in ('TMPDIR', 'TMP', 'TEMP'):
+                          environment.write(key + '=' + str(task_temp) + '\n')
+                  receipt['temp_policy'] = 'FRESH_TMP_0700_TRUSTED_ANCESTORS'
+              else:
+                  receipt['temp_policy'] = 'WINDOWS_RUNNER_DEFAULT_ORIGINAL_ACL_TESTS'
+              receipt['status'] = 'PASS'
+          except BaseException as error:
+              receipt.update(status='ERROR', error_type=type(error).__name__)
+              raise
+          finally:
+              path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+      - name: Install existing locked source test dependencies
+        run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Observe Linux complete original unit context
+        if: runner.os == 'Linux'
+        run: python tests/proofs/fleet_v1/run_source.py --unit-only --output full-context-source
+      - name: Observe Windows complete original unit context
+        if: runner.os == 'Windows'
+        run: python tests/proofs/fleet_v1/run_source.py --require-windows --unit-only --output full-context-source
+      - name: Preserve isolation, exact manifests, receipts, logs and JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-full-context-${{ matrix.os }}-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            full-context-setup/
+            full-context-source/
+          retention-days: 14
+          if-no-files-found: error
