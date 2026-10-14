@@ -1,6 +1,9 @@
 """Positive entry observation and the retained original three-second boundary."""
+import json
+import os
 import threading
 import time
+from contextlib import contextmanager, nullcontext
 
 import pytest
 
@@ -12,6 +15,48 @@ from vibemql5.fleet.transport import OutboundNode
 from vibemql5.fleet.wire import WireError
 
 
+class AuthorizationScopeProbe:
+    """Opt-in diagnostic of logical calls, including reused executor threads."""
+    def __init__(self):
+        self.local, self.lock, self.rows, self.dropped = threading.local(), threading.Lock(), [], 0
+        self.observation_errors = 0
+
+    @contextmanager
+    def native_entry(self, entry, job_id):
+        prior = getattr(self.local, 'native', None)
+        self.local.native = (entry, job_id)
+        try: yield
+        finally:
+            if prior is None: del self.local.native
+            else: self.local.native = prior
+
+    def verify(self, original, verifier, *args, **kwargs):
+        result = original(verifier, *args, **kwargs)
+        try:
+            entry, job_id = getattr(self.local, 'native', (0, None))
+            entry = entry if type(entry) is int and 1 <= entry <= 3 else 0
+            phase = kwargs.get('phase')
+            expected = kwargs.get('global_job_id')
+            row = {'entry': entry,
+                   'phase': phase if phase in ('reserve', 'start') else 'UNKNOWN',
+                   'binding_match': expected == job_id if entry and type(expected) is str and type(job_id) is str else None}
+            with self.lock:
+                if len(self.rows) < 8: self.rows.append(row)
+                else: self.dropped += 1
+        except (Exception, pytest.fail.Exception):
+            self.observation_errors = min(8, self.observation_errors + 1)
+        return result
+
+    def publish(self, printer=print):
+        try:
+            with self.lock:
+                printer('TIP077_AUTHORIZATION_SCOPE ' + json.dumps(
+                    {'rows': self.rows, 'rows_dropped': self.dropped,
+                     'observation_errors': self.observation_errors}, sort_keys=True), flush=True)
+        except (Exception, pytest.fail.Exception):
+            self.observation_errors = min(8, self.observation_errors + 1)
+
+
 def controlled_entry(project_node, capacity_service, monkeypatch, *, original_three=False):
     http = capacity_service[0]
     assert http.policy.http_timeout_ms == http.policy.heartbeat_interval_ms == 5000
@@ -21,6 +66,8 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
              'verified_phases': [], 'negative_schedule': []}
     gate = threading.Event()
     first_done, fresh_step, cohort_lock = threading.Event(), threading.Event(), threading.Lock()
+    scope_probe = AuthorizationScopeProbe() if os.environ.get('TIP077_AUTHORIZATION_SCOPE_PROBE') == '1' else None
+    native_entries = [0]
     init, native_work, pump, run, post = (OutboundNode.__init__, NodeDomainDispatcher._native_work,
                                          capacity.pump, capacity.run_capacity_fixture, http.post)
     step, verify = OutboundNode.step, NativeAuthorizationVerifier.verify
@@ -36,9 +83,12 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
         return result
 
     def held_worker(self, *args, **kwargs):
-        index = None
+        index, entry = None, 0
         if self is state['dispatcher']:
             with cohort_lock:
+                if scope_probe is not None:
+                    native_entries[0] += 1
+                    entry = native_entries[0]
                 if len(state['workers']) < 2:
                     state['workers'].append(threading.current_thread())
                     index = len(state['workers'])
@@ -55,7 +105,9 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
                 with cohort_lock:
                     state['negative_schedule'].append('SECOND_NATIVE_RELEASE')
         try:
-            return native_work(self, *args, **kwargs)
+            with (scope_probe.native_entry(entry, args[0] if args else kwargs.get('global_job_id'))
+                    if scope_probe is not None else nullcontext()):
+                return native_work(self, *args, **kwargs)
         finally:
             if original_three and index == 1:
                 with cohort_lock:
@@ -76,7 +128,8 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
         clock = state['verifier_clock']
         assert self.clock is clock
         try:
-            result = verify(self, *args, **kwargs)
+            result = (scope_probe.verify(verify, self, *args, **kwargs) if scope_probe is not None
+                      else verify(self, *args, **kwargs))
         finally:
             assert self.clock is clock
         state['verified_phases'].append(kwargs['phase'])
@@ -162,6 +215,7 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
     assert state['entry_elapsed'] > 3 and state['predicates'][0] is False
     assert all(not worker.is_alive() for worker in state['workers'])
     assert state['dispatcher']._closed and not state['dispatcher'].has_pending_work()
+    if scope_probe is not None: scope_probe.publish()
     assert len(state['verified_phases']) == 4
     assert state['verified_phases'].count('reserve') == state['verified_phases'].count('start') == 2
     assert state['verifier'].clock is state['verifier_clock']
