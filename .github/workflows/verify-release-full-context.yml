@@ -80,7 +80,24 @@ jobs:
                           environment.write(key + '=' + str(task_temp) + '\n')
                   receipt['temp_policy'] = 'FRESH_TMP_0700_TRUSTED_ANCESTORS'
               else:
-                  receipt['temp_policy'] = 'WINDOWS_RUNNER_DEFAULT_ORIGINAL_ACL_TESTS'
+                  original_temp = Path(tempfile.gettempdir())
+                  runner_temp = Path(os.environ['RUNNER_TEMP'])
+                  if runner_temp.is_symlink() or runner_temp.is_junction():
+                      raise RuntimeError('RESEARCH_WINDOWS_RUNNER_TEMP_REPARSE')
+                  if original_temp.stat().st_dev == runner_temp.stat().st_dev:
+                      raise RuntimeError('RESEARCH_WINDOWS_DISTINCT_TEMP_VOLUME_NOT_OBSERVED')
+                  task_temp = Path(tempfile.mkdtemp(prefix='fleet-full-context-', dir=runner_temp))
+                  if task_temp.is_symlink() or task_temp.is_junction():
+                      raise RuntimeError('RESEARCH_WINDOWS_TASK_TEMP_REPARSE')
+                  with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                      for key in ('TMPDIR', 'TMP', 'TEMP'):
+                          environment.write(key + '=' + str(task_temp) + '\n')
+                  receipt.update(temp_policy='FRESH_RUNNER_TEMP_ORIGINAL_INHERITED_ACL_GUARDS',
+                      temp_drive=task_temp.drive, temp_st_dev=task_temp.stat().st_dev,
+                      previous_temp_drive=original_temp.drive,
+                      previous_temp_st_dev=original_temp.stat().st_dev,
+                      windows_acl_policy='UNCHANGED_ORIGINAL_GUARD_TESTS_REQUIRED',
+                      basis='C1_D_C2_77f3b53_RUN38701330816_NOT_CAUSAL_PROOF_OF_OLD_FAILURES')
               receipt['status'] = 'PASS'
           except BaseException as error:
               receipt.update(status='ERROR', error_type=type(error).__name__)
