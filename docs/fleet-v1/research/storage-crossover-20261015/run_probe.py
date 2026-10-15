@@ -34,7 +34,7 @@ try:
         began = time.perf_counter()
         db.commit()
         samples.append(round((time.perf_counter() - began) * 1000, 3))
-    print(json.dumps({'schema': 'fleet.sqlite-path-probe/1', 'commit_ms': samples,
+    print('STORAGE_IO_OBSERVATION ' + json.dumps({'schema': 'fleet.sqlite-path-probe/1', 'commit_ms': samples,
         'journal_mode': db.execute('PRAGMA journal_mode').fetchone()[0],
         'synchronous': db.execute('PRAGMA synchronous').fetchone()[0]}), flush=True)
 finally:
@@ -46,6 +46,18 @@ def research_manifest():
     return {str(path.relative_to(ROOT)).replace('\\', '/'): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in (Path(__file__), HERE / 'README.md',
             ROOT / '.github/workflows/research-windows-storage-crossover.yml')}
+
+
+def parse_io_observation(log_text):
+    records = [line.removeprefix('STORAGE_IO_OBSERVATION ') for line in log_text.splitlines()
+               if line.startswith('STORAGE_IO_OBSERVATION ')]
+    if len(records) != 1:
+        raise RuntimeError('STORAGE_IO_RECORD_COUNT_MISMATCH')
+    value = json.loads(records[0])
+    if (value.get('schema') != 'fleet.sqlite-path-probe/1' or value.get('journal_mode') != 'delete'
+            or value.get('synchronous') != 2 or len(value.get('commit_ms', ())) != 8):
+        raise RuntimeError('STORAGE_IO_RECORD_SCHEMA_MISMATCH')
+    return value
 
 
 def main(argv=None):
@@ -100,8 +112,7 @@ def main(argv=None):
             runner.checkpoint(packet / 'summary.json', summary)
             if probe['exit_code'] != 0 or probe['direct_child_closure'] != 'EXITED':
                 raise RuntimeError('STORAGE_EXPERIMENT_IO_PROBE_FAILED_OR_CLOSURE_UNKNOWN')
-            lines = (output / 'io-probe.log').read_text(encoding='utf-8').splitlines()
-            arm['io_observation'] = json.loads(lines[-1])
+            arm['io_observation'] = parse_io_observation((output / 'io-probe.log').read_text(encoding='utf-8'))
             env['FLEET_SOURCE_PROGRESS_PATH'] = str(output / 'selected.progress.json')
             command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress', '-v', '--tb=short',
                 '-o', 'faulthandler_timeout=60', *SELECTED, '--junitxml=' + str(output / 'selected.junit.xml')]

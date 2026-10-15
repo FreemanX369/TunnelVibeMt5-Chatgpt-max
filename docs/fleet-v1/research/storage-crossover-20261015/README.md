@@ -51,3 +51,18 @@ Publish as a separate research PR targeting research/release-resume-20261014-r1.
 The old full-context and diagnostic workflows target the implementation branch,
 so this experiment must not silently launch another full suite. Freeze inputs
 and save the contract before creating the PR. Main/PR65/runtime remain unchanged.
+
+## Parser correction, distinct frozen revision
+
+Attempt38700825701/a0e861a is retained as HARNESS_ERROR/JSONDecodeError.
+Its C1 IO child exited0, but run_case appends SOURCE_CASE_FINISHED after the
+JSON payload; reading the last line was incorrect. No original tests or D/C2
+arms were dispatched. Artifact11955513590 and source/research before-after are
+verified. It is not a C-versus-D result or a product failure.
+
+The corrected child emits one STORAGE_IO_OBSERVATION-tagged JSON record.
+Parsing selects exactly one tagged record and validates schema/sample count,
+ignoring the real runner footer. Pure-data framing controls use the recovered
+log and cover footer, missing, duplicate, malformed and schema-invalid records.
+All experiment arms, product bytes, windows and caps remain unchanged. Publish
+only after saving this new freeze; use a fresh run_id, not a rerun of a0e861a.
