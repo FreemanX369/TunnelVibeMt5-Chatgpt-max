@@ -1,0 +1,57 @@
+[
+  {
+    "archive": "artifact-11325149096.zip",
+    "proof": "summary.json",
+    "status": "FIXTURE_PASS_Q03_OPEN",
+    "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+    "verified_source_files": 4,
+    "executed": 16,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  {
+    "archive": "artifact-11325655047.zip",
+    "proof": "tip057rb1-portable/summary.json",
+    "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+    "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+    "verified_source_files": 15,
+    "executed": 39,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  {
+    "archive": "artifact-11325655047.zip",
+    "proof": "tip057rb1-windows/summary.json",
+    "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+    "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+    "verified_source_files": 15,
+    "executed": 10,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  {
+    "archive": "artifact-11325224082.zip",
+    "proof": "b1-portable/summary.json",
+    "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+    "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+    "verified_source_files": 15,
+    "executed": 39,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  {
+    "archive": "artifact-11325377129.zip",
+    "proof": "summary.json",
+    "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+    "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+    "verified_source_files": 8,
+    "executed": 8,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  }
+]

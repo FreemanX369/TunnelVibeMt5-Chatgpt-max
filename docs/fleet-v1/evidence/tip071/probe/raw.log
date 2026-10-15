@@ -1,0 +1,15 @@
+{"case": "real_busy_setup", "configured_lock_wait_ms": 1000, "db_descriptors_after_failure_before_traceback_read": 2, "db_descriptors_before": 1, "elapsed_ms": 1002, "exception_type": "OperationalError", "sqlite_errorcode": 5, "sqlite_errorname": "SQLITE_BUSY"}
+Traceback (most recent call last):
+  File "/workspace/scratch/b4674f0ac496/continuation-20261007/builder-sqlite-probe-v1/probe.py", line 60, in <module>
+    unexpected = coordinator._db()
+                 ^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/b4674f0ac496/tip070-v2-builder/app/vibemql5/fleet/scoped_resources.py", line 311, in _db
+    db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA synchronous=FULL")
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+{"case": "traceback_retains_open_db", "independent_exclusive_transaction_succeeded": true, "persistent_sqlite_lock_in_this_control": false, "proven_retention": "OPEN_SQLITE_CONNECTION_AND_OWNED_DB_FILE_DESCRIPTOR", "retained_db_in_transaction": false, "retained_db_select42_succeeded": true, "same_original_exception_retained": true}
+{"case": "explicit_close_control", "closed_db_programming_error": true, "owned_db_descriptors_restored_to_before_failure": true}
+{"actual_sqlite_connection": true, "case": "normal_return_control", "journal_mode": "wal", "select42_succeeded": true, "synchronous": "FULL"}
+{"case": "guard_finite_busy_control", "configured_control_timeout_ms": 200, "physical_windows_qualification": false, "timeout_preserved": true}
+{"case": "guard_release_control", "original_guard_reacquired_after_owned_release": true}
+FINITE_OWNED_SQLITE_AND_GUARD_CONTROLS_PASS

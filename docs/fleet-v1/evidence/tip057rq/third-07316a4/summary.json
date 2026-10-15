@@ -1,0 +1,372 @@
+{
+  "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "broker_sdk": "OPEN",
+  "candidate_sha": "07316a4a66301eb471112528c2c0e31f781f2bc6",
+  "elapsed_ms": 12391.000000000076,
+  "errors": 0,
+  "exact_head_verified": true,
+  "expected_head_sha": "07316a4a66301eb471112528c2c0e31f781f2bc6",
+  "failures": 12,
+  "fixture_exe_sha256": "3a38edd4d9fa7a6ec3b8abeda19c916abe852c5171eeb22316c9f02eaa593f97",
+  "git_blob_sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "1329f7edd038f800c32ead096acb2abc5026669cd093b0c79382c296cc598a14",
+    "run_proof.py": "05a447abbc55648885d9388fd154ff82db96c0437ae1fb02210417b0d1d57c27",
+    "windows_boundary.py": "e9bad995c98254636729d56c86146b319ee6b926053dc4c03f260d976af20f33"
+  },
+  "github_event_sha": "f24e5bf0db052742d1e93e2515497ecb716eee51",
+  "mode": "REAL_WINDOWS_REQUIRED",
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "proof_log": {
+    "original_bytes": 29186,
+    "original_sha256": "02891cf0fa55fac1f820aae4780642d1eba080b3f5c55ee0860772ad244bba77",
+    "retained_bytes": 29186,
+    "truncated": false
+  },
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "case": "__main__.PortableCases.test_create_attempt_without_binding_cannot_release",
+      "elapsed_ms": 62.00000000001182,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear",
+      "elapsed_ms": 62.99999999998818,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent",
+      "elapsed_ms": 62.00000000001182,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_no_attempt_release",
+      "elapsed_ms": 62.99999999998818,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_partial_intent_is_fail_closed",
+      "elapsed_ms": 46.00000000004911,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values",
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_stale_recovery_cannot_clear_successor",
+      "elapsed_ms": 125.0,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_unresolved_descendant_rejects_clear",
+      "elapsed_ms": 62.99999999998818,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123226066767,
+        "pid": 4884
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "exit_code": 95,
+      "exit_code_hex": "0x0000005f",
+      "lifetime": {
+        "creation_100ns": 134354123226729416,
+        "pid": 6868
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "exit_code": 95,
+      "exit_code_hex": "0x0000005f",
+      "lifetime": {
+        "creation_100ns": 134354123227701341,
+        "pid": 7720
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123228836266,
+        "pid": 6500
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123229715838,
+        "pid": 6120
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123230536884,
+        "pid": 1420
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123231355493,
+        "pid": 552
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123232200748,
+        "pid": 8112
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123233085735,
+        "pid": 1476
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "controller_exit_code": 1,
+      "controller_phase_tail": "{\"phase\": \"BOUND_BEFORE_RESUME\", \"pid\": 7300, \"worker\": {\"creation_100ns\": 134354123235665364, \"image\": \"c:\\\\users\\\\runner~1\\\\appdata\\\\local\\\\temp\\\\tip057rq-windows-r9ksygc0\\\\crash-parent\\\\fixture.exe\", \"pid\": 8560}}",
+      "controller_pid": 7300,
+      "stderr_tail": "{\"crash_fixture_cleanup_errors\": []}\r\nTraceback (most recent call last):\r\n  File \"D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\tests\\proofs\\tip057rq\\run_proof.py\", line 39, in wait_json\r\n    return json.loads(path.read_text(encoding=\"utf-8\"))\r\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\pathlib.py\", line 1027, in read_text\r\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\r\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\pathlib.py\", line 1013, in open\r\n    return io.open(self, mode, buffering, encoding, errors, newline)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tip057rq-windows-r9ksygc0\\\\crash-parent\\\\started.json'\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\tests\\proofs\\tip057rq\\run_proof.py\", line 746, in <module>\r\n    raise SystemExit(main())\r\n                     ^^^^^^\r\n  File \"D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\tests\\proofs\\tip057rq\\run_proof.py\", line 682, in main\r\n    crash_parent(options.crash_parent, options.executable)\r\n  File \"D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\tests\\proofs\\tip057rq\\run_proof.py\", line 619, in crash_parent\r\n    wait_json(root / \"started.json\", process=worker, case=\"crash-parent-helper\")\r\n  File \"D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\tests\\proofs\\tip057rq\\run_proof.py\", line 47, in wait_json\r\n    raise AssertionError(f\"FIXTURE_EXIT_BEFORE_OUTPUT:{path.name}:0x{code:08x}\")\r\nAssertionError: FIXTURE_EXIT_BEFORE_OUTPUT:started.json:0xc0000142\r\n",
+      "stdout_tail": ""
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "cleanup_errors": [
+        "CRASH_OWNED_WORKER_CLEANUP_UNPROVEN:OSError:[WinError 87] The parameter is incorrect."
+      ]
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123237311623,
+        "pid": 8276
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "lifetime": {
+        "creation_100ns": 134354123238145145,
+        "pid": 8284
+      },
+      "missing_output": "started.json",
+      "phase_markers": {
+        "breakaway-child.json": false,
+        "cleanup-attempted.json": false,
+        "direct-child.json": false,
+        "entry.json": false,
+        "go.txt": false,
+        "initialize-attempted.json": false,
+        "observation-attempted.json": false,
+        "observation.json": false,
+        "result.json": false,
+        "started.json": false
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "error_type": "AssertionError",
+      "status": "FAIL"
+    }
+  ],
+  "schema": "tip057rq.proof/1",
+  "scope": "isolated harmless fixture paths only",
+  "skips": 0,
+  "source_blob_verified": true,
+  "sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "1329f7edd038f800c32ead096acb2abc5026669cd093b0c79382c296cc598a14",
+    "run_proof.py": "05a447abbc55648885d9388fd154ff82db96c0437ae1fb02210417b0d1d57c27",
+    "windows_boundary.py": "e9bad995c98254636729d56c86146b319ee6b926053dc4c03f260d976af20f33"
+  },
+  "status": "FAIL",
+  "tests_run": 16
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.038" timestamp="2026-10-07T00:26:49.454336+09:00" hostname="e54ea59580aa"><testcase classname="tests.unit.test_control" name="test_control" time="0.001"><error message="failed on setup with &quot;RuntimeError: CONTROLLED_SETUP_FAILURE&quot;">@pytest.fixture
+    def fixture():
+&gt;       raise RuntimeError('CONTROLLED_SETUP_FAILURE')
+E       RuntimeError: CONTROLLED_SETUP_FAILURE
+
+tests/unit/test_control.py:4: RuntimeError</error></testcase></testsuite></testsuites>

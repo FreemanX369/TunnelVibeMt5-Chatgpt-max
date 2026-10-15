@@ -1,0 +1,32 @@
+{
+  "parent_head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+  "parent_tree": "34c788a21dcb5f48102987b58828d6085e583b7a",
+  "source_entries": 211,
+  "unchanged_source_entries": 209,
+  "production_files_unchanged": 89,
+  "changed_files": {
+    "tests/unit/test_tip064_capacity_https.py": {
+      "bytes": 19679,
+      "sha256": "f6390897e1fe091fd62363a70a3a0b71026075a35351b348f91ea8ad84cb0091"
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "bytes": 76176,
+      "sha256": "c3e876ea5bb5ae82c81d3f1a78d8467038057cbe0b9d27d76f2416ec77ee79ba"
+    }
+  },
+  "original_phase_callback_ast_unchanged": true,
+  "tests": {
+    "passed": 149,
+    "skipped": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped_cases": [
+      "test_windows_private_acl_roundtrip_reports_public_semantics",
+      "test_windows_private_key_foreign_owner_denied_on_retained_handle",
+      "test_windows_staging_directory_cannot_be_renamed_while_held"
+    ]
+  },
+  "historical_latency_causes": "UNKNOWN",
+  "physical_qualification": "NOT_RUN",
+  "published": false
+}

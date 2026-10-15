@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip060c_restore.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/restore-budget-builder/restore-module.junit.xml",
+    "--durations=0"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "timeout_seconds": 30,
+  "exit_code": 1,
+  "wall_seconds": 0.015825959000039802,
+  "source_equal": true
+}

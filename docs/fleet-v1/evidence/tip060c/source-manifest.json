@@ -1,0 +1,40 @@
+{
+  "schema": "fleet.source-manifest/1",
+  "scope": "tip060c",
+  "source_status": "SOURCE_COMPLETE",
+  "platform": "Linux portable source tests",
+  "physical_qualification": "DEFERRED",
+  "files": [
+    {
+      "path": "app/vibemql5/fleet/gateway_control.py",
+      "bytes": 55398,
+      "sha256": "fa6404d768536c152d77237c0e8d17cfc849b02cce243c60d23fc521351c7c81"
+    },
+    {
+      "path": "app/vibemql5/fleet/restore_coordination.py",
+      "bytes": 27559,
+      "sha256": "315032f85bf8abfd638ff3b689494f96b4e3a1aeef0fa5379fca6d5b97a60be2"
+    },
+    {
+      "path": "tests/unit/test_tip058a_gateway_control.py",
+      "bytes": 45516,
+      "sha256": "246856c69d5f7be42ad2ac2d800bfdced03fa323f957b01fee0d92a35bb67fb9"
+    },
+    {
+      "path": "tests/unit/test_tip060c_restore.py",
+      "bytes": 11234,
+      "sha256": "2641da7ab35579ce1fdd2d4805fe9bfc3eda723c619c13e5626f6984dfd3edde"
+    },
+    {
+      "path": "tests/unit/test_tip060c_https_restore.py",
+      "bytes": 16243,
+      "sha256": "c126e415dae9de63d71d598c3dd8b4a35dd133dbf2cb80901c5fe548b623a769"
+    },
+    {
+      "path": "docs/fleet-v1/TIP-060C-completion.md",
+      "bytes": 5176,
+      "sha256": "835c5e22cd8dc48b90e2ee52680dedca96f19783e58cf1a75a5dd9f73e9f7a9c"
+    }
+  ],
+  "refinement_note": "Current shared test fixture hashes after numeric IPv4/IP-SAN loopback refinement. Previous manifests and original test receipts remain retained; canonical integrated CI is pending."
+}

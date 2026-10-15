@@ -1,0 +1,141 @@
+{
+  "source_gate": "NOT_ACCEPTED_6_OF_8",
+  "platforms": {
+    "windows": {
+      "head": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+      "tree": "af49d4d7e32b6ab11f4bc2e944e180be0cb54a26",
+      "source_count": 217,
+      "manifest_exact": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "-m",
+            "pytest",
+            "-p",
+            "fleet_source_progress",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+          ],
+          "exit_code": 124,
+          "timeout_seconds": 600,
+          "timed_out": true,
+          "elapsed_seconds": 600.047
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 5.5
+        },
+        {
+          "case": "q1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rq/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 56.266
+        },
+        {
+          "case": "g03a-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rg03a/run_windows.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 5.937
+        },
+        {
+          "case": "b1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 12.219
+        }
+      ],
+      "hasJUnit": false
+    },
+    "linux": {
+      "head": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+      "tree": "af49d4d7e32b6ab11f4bc2e944e180be0cb54a26",
+      "source_count": 217,
+      "manifest_exact": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "-m",
+            "pytest",
+            "-p",
+            "fleet_source_progress",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 163.517
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 0.666
+        }
+      ],
+      "hasJUnit": true
+    }
+  },
+  "linux_total": 1432,
+  "linux_TIP072_pass": 31,
+  "windows_full_unit": "TIMEOUT_600_SECONDS_PARTIAL_NO_JUNIT",
+  "Windows_TIP072_full_unit": "NOT_REACHED",
+  "unknown_restore_error": "setup/teardown traceback unavailable",
+  "physical_qualification": "NOT_RUN"
+}

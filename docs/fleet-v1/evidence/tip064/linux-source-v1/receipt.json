@@ -1,0 +1,17 @@
+{
+  "schema": "fleet.integration-diagnostic/1",
+  "scope": "SOURCE_HARMLESS_AND_SYNTHETIC_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "passed": 43,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 10.47,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "git_base_head": "943294e8f74463a31684322d6520f3de4e57f09d",
+  "qualification": "DIAGNOSTIC_WORKTREE_BEFORE_EMPTY_ABSENCE_REFINEMENT",
+  "source_manifest_attestation": "NOT_CAPTURED_BEFORE_THIS_DIAGNOSTIC",
+  "logs": [
+    "integration.log",
+    "integration.junit.xml"
+  ]
+}

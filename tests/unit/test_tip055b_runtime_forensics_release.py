@@ -1,6 +1,8 @@
 """Isolated release regressions selected by the supported runtime_forensics suite."""
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import ctypes
 import errno
 import json
@@ -16,6 +18,7 @@ from vibemql5.core.concurrency import ConcurrencyManager, acquire_native_executi
 
 @pytest.fixture
 def lease(tmp_path):
+    install_closed(tmp_path / "bridge")
     return acquire_native_execution(tmp_path / "bridge", "RELEASE-FIXTURE", kind="fixture", wait_seconds=2)
 
 
@@ -289,6 +292,7 @@ def test_same_lease_concurrent_release_preserves_an_acquired_successor(lease, mo
 
 @pytest.mark.parametrize("namespace", ["native", "mutation"])
 def test_native_and_mutation_context_cleanup_recover_transient_release(tmp_path, monkeypatch, namespace):
+    install_closed(tmp_path / "bridge")
     manager = ConcurrencyManager(tmp_path / "bridge")
     lock = manager.state_root / "mutation.lock" if namespace == "mutation" else manager.root / "runs" / ".active.lock"
     original = Path.unlink

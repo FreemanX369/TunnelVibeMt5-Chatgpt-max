@@ -1,0 +1,23 @@
+{
+  "ops/windows/Start-VibeMQL5TunnelSupervisor.ps1": "d500fdfb5977ed09ac62e5b2eb450d17ff86d235e717f38da741a66ec3295442",
+  "ops/windows/Invoke-TIP017ReleaseQualification.ps1": "262c5e114a9563eae1f688df2cfbfeca7a47e8706c9bf11d79724a0b4e64c721",
+  "ops/windows/Install-VibeMQL5ScheduledTasks.ps1": "c423773a83552a3d98f1bd4207e4857c27dec5e73ff70b5ade631ec01cf91838",
+  "ops/windows/VibeMQL5.Provenance.ps1": "358e0be46c2fb013c633eb246e484aee4627040b03d1bcebe24cfe3472834b1b",
+  "ops/windows/Invoke-VibeMQL5Watchdog.ps1": "379bb92e43c4cd196caed51de3e8f02e4c2e390e6b0bdfd301897310ec3d709b",
+  "ops/windows/Apply-TIP019.ps1": "912d693767b8b97540b936096a16bbfa83827c8d03d0b9d35013386e2234cbda",
+  "ops/windows/Invoke-TIP013FailureInjection.ps1": "36bda20799f04c3c25bd29a8a0901f8066ee5dc3bc8ba40d86ea984fdbde3aa4",
+  "ops/windows/Invoke-TIP018ForwardQualification.ps1": "49408e327446877eb094b85e07486d6196a6bd67cb985a58f5dc42d1401803bb",
+  "ops/windows/Apply-TIP018.ps1": "e764664a12418ba6b5b198a5181aebe46f13ce43a60e8e310474d1794b7c3dae",
+  "ops/windows/Test-TIP016.ps1": "e3405d2935fd86e89e16136f99050befb74e51a6839fbfcadcb735102430ad95",
+  "ops/windows/Test-TIP015C.ps1": "cc95013151b764a64d41c4c131a2c16b7335219d919a6fc574a8943cc61ec4b8",
+  "ops/windows/Apply-TIP017.ps1": "3387b841b7367234b9b332f99f4b289b09f5c98768d26f5c480a3bc22abaa4a7",
+  "ops/windows/Start-VibeMQL5InteractiveEntry.ps1": "ddf96bcbbc241d9b8867c2251c979a098ce304a493bacad4f5739035e1d4c01e",
+  "ops/windows/Invoke-TIP019ReadOnlyQualification.ps1": "b1aaa3242fcf02741c847ab9009cdb6043ff3d821a32d864c16a1a0a5eefc02c",
+  "ops/windows/Apply-TIP015C.ps1": "b464457ece9c56119659145fb1e56fce3438e0271feae6e7dab38bee493464a3",
+  "ops/windows/Invoke-TIP013Soak.ps1": "749a5031448add18aac8c7db3899172b39cacd46e8f9b6f2f69f7d2a57b60c86",
+  "ops/windows/Test-TIP017.ps1": "d8c539882174dcab38e94f72826fd243f17e7a4d43f611c89664ec4409b12166",
+  "ops/windows/Test-TIP019.ps1": "f5fcde45418d012b723c827da6b60af2f122bcf725ae01230d5b52a53ea24ce2",
+  "ops/windows/Test-TIP018.ps1": "b48a049ee3c01df849e19841a5ac4a87fa9fa2e50398b24a7e94a86b3db42c2b",
+  "ops/windows/Apply-TIP016.ps1": "19d1ebc12af656a90e80163e9dc8e07ebe3881025392c1ec5f1b8992fcb41f10",
+  "ops/windows/VibeMQL5.AtomicFile.ps1": "61bab16ab6268a3108881aa27df5d7ded8bf0e3d107337e1cc9a1ddf1bbb06d2"
+}

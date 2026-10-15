@@ -1,0 +1,10 @@
+{
+  "app/vibemql5/backend_admin/core.py": {
+    "bytes": 78852,
+    "sha256": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18"
+  },
+  "tests/unit/test_tip070_sync_test_receipts.py": {
+    "bytes": 18294,
+    "sha256": "fd1fc0782f40d84267e3eee54719393d5bb76031fba4505497c20b74be851b98"
+  }
+}

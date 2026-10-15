@@ -1,0 +1,5 @@
+{
+  "original_fixture_sha256": "f607707a0335035e09c77ffcf604d6656cdcb5e52e600a239f34e56bec8a125d",
+  "probe_sha256": "fbf2496401d24523ac0512984b272524d00ea2b11b82375c0becbe04c4d10a43",
+  "fault": "force original5second hold expiry before explicit release; retain normal node/gateway/lease behavior"
+}

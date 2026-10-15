@@ -1,0 +1,8 @@
+............                                                             [100%]
+============================= slowest 5 durations ==============================
+0.21s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_successful_body_cleanup_failure_does_not_group_unrelated_enclosing_exception
+0.16s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_normal_tls_request_and_stop_transfer_owners_once
+0.13s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[none]
+0.12s setup    tests/unit/test_tip074_gateway_lifecycle.py::test_started_failure_closes_real_controller_owners_and_preserves_error_truth[both]
+0.12s call     tests/unit/test_tip074_gateway_lifecycle.py::test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors
+12 passed in 2.30s

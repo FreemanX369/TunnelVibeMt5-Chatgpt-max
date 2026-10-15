@@ -1,0 +1,72 @@
+{
+  "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+  "cases": [
+    {
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_restore_handoff_retains_owners_only_after_success[False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_restore_handoff_retains_owners_only_after_success[True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure",
+      "status": "PASS",
+      "time": "0.034",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[FAILED]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[NOT_RUN]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[CANCELLED]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_native_denial_observation_retains_only_original_reads_and_safe_last_state",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_native_denial_original_predicate_failure_and_cleanup_identity_are_preserved",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "name": "test_native_denial_timeout_retains_last_predicate_state_without_additional_read",
+      "status": "PASS",
+      "time": "0.000",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    }
+  ],
+  "source_gate": "REJECTED_7_OF_8"
+}

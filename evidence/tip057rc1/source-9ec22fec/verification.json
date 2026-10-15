@@ -1,0 +1,193 @@
+{
+  "schema": "tip057rc1.verification/1",
+  "scope": "PRODUCT_REQUEST_VALIDATION_ONLY_NO_SDK_OR_PROCESS_EFFECTS",
+  "parent": "5583204f698dcbf664ad20ddae8106d96019c8d2",
+  "candidate": "9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0",
+  "tree": "3eea6cf2c47abdbacbc2d6dcf80ee8922eae335b",
+  "merge_tree_equivalent": "b91c87a5a956d24e91fd431237c78afcce78bd55",
+  "source": [
+    {
+      "path": "app/vibemql5/fleet/reads.py",
+      "sha256": "5cfa9e08ccdce9a274aa298dfb237b5e316b0e1da2f90bc25c966a6d442c07c5",
+      "blob_sha": "64984bc7ea9287e92c91d7540ca03032318caf1d"
+    },
+    {
+      "path": "app/vibemql5/core/facade.py",
+      "sha256": "692dd3d33b7ed7bbbe09eeb3729b43c0235662adffe4e0d0c9068e92bc69e12b",
+      "blob_sha": "d104c53f20244a68f1bcad14e34a22b5b9467a78"
+    },
+    {
+      "path": "app/vibemql5/adapters/mcp.py",
+      "sha256": "de83c6fb5e11c107812e1f8b82e64f6fa5708bc7bf0cd7b81b72a159ac213e3c",
+      "blob_sha": "f595fa5bf7bcdbfaa21825dca30e1d08d49fe890"
+    },
+    {
+      "path": "tests/unit/test_tip057rc1.py",
+      "sha256": "63205fae09f1cd862e28102fdf4cffd54c8523e2ca5f976ccefebf96b52f8257",
+      "blob_sha": "100fb082e0553c7bdb85c060a0d577d52111ddd4"
+    }
+  ],
+  "focused": {
+    "executed": 62,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "platform": "Linux"
+  },
+  "linux_unit": {
+    "passed": 464,
+    "skipped": 26,
+    "failures": 0
+  },
+  "windows_unit": {
+    "passed": 486,
+    "skipped": 4,
+    "failures": 0,
+    "run_id": 37054091718,
+    "job_id": 110994378031,
+    "seconds": 38.05
+  },
+  "schema_comparison": {
+    "catalog_count": 85,
+    "changed": [
+      "get_terminal_live_state",
+      "get_account_snapshot"
+    ],
+    "unchanged_count": 83,
+    "unchanged_sha256": "16ceef873678e7d7598874c6e612393e23de35c934f18ab6a31b09ad15bd7541"
+  },
+  "workflows": [
+    {
+      "id": 37054091766,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 179,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091766/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091766/logs",
+      "workflow_id": 357167822
+    },
+    {
+      "id": 37054091594,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 180,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091594/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091594/logs",
+      "workflow_id": 357139482
+    },
+    {
+      "id": 37054091785,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 4,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091785/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091785/logs",
+      "workflow_id": 373332157
+    },
+    {
+      "id": 37054091676,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 8,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091676/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091676/logs",
+      "workflow_id": 373216678
+    },
+    {
+      "id": 37054091586,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 17,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091586/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091586/logs",
+      "workflow_id": 372895546
+    },
+    {
+      "id": 37054091718,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 64,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091718/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091718/logs",
+      "workflow_id": 369987372
+    },
+    {
+      "id": 37054091602,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 167,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091602/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37054091602/logs",
+      "workflow_id": 358366702
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11247374319,
+      "name": "tip057rb1-harmless-9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0",
+      "size_in_bytes": 8058,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11247374319",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11247374319/zip",
+      "expired": false,
+      "created_at": "2026-10-02T19:26:41Z",
+      "expires_at": "2026-10-16T19:26:41Z",
+      "updated_at": "2026-10-02T19:26:41Z",
+      "digest": "sha256:e3edc6bb250791161f10c2bc8a63446a56e21287030e302737a2db2d47f0ce0f",
+      "workflow_run": {
+        "id": 37054091785,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/tip057r-c1-target-validation-20261003",
+        "head_sha": "9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0"
+      }
+    },
+    {
+      "id": 11248140572,
+      "name": "tip057rg03a-windows-9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0",
+      "size_in_bytes": 2315,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11248140572",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11248140572/zip",
+      "expired": false,
+      "created_at": "2026-10-02T19:26:27Z",
+      "expires_at": "2026-10-16T19:26:26Z",
+      "updated_at": "2026-10-02T19:26:27Z",
+      "digest": "sha256:d66fc1eaebec0f1fb7a3b4baffadc86930023f2d76baf10419aba1d63eec7f9d",
+      "workflow_run": {
+        "id": 37054091676,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/tip057r-c1-target-validation-20261003",
+        "head_sha": "9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0"
+      }
+    },
+    {
+      "id": 11247578729,
+      "name": "tip057rq-windows-9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0",
+      "size_in_bytes": 8882,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11247578729",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11247578729/zip",
+      "expired": false,
+      "created_at": "2026-10-02T19:26:37Z",
+      "expires_at": "2026-10-16T19:26:36Z",
+      "updated_at": "2026-10-02T19:26:37Z",
+      "digest": "sha256:aee2567bc3bc8d629490980db805f976160e324b0e0fe4f8fc5824c81d059641",
+      "workflow_run": {
+        "id": 37054091586,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/tip057r-c1-target-validation-20261003",
+        "head_sha": "9ec22fec63c64bcaf2aae0df85f1d10d70dfd1e0"
+      }
+    }
+  ],
+  "sdk": "NOT_RUN_Q2_OPEN",
+  "vm": "DEFERRED_BY_OWNER",
+  "m1": "OPEN"
+}

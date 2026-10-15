@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.208" timestamp="2026-10-07T18:47:18.974781+09:00" hostname="bc2fcc3c9523"><testcase classname="tests.unit.test_tip024_multiclient_concurrency" name="test_tip024_mcp_registers_catalog_and_context_is_invisible_contract" time="0.024"><failure message="RuntimeError: MCP SDK v2 is required. Run: pip install -e &quot;.[mcp]&quot;">root = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-isolated-tip024_tmp/test_tip024_mcp_registers_cata0/VibeMQL5')
+transport = 'stdio'
+
+    def create_server(root: Path, transport: str = "unknown"):
+        try:
+            from mcp.server.mcpserver import MCPServer, Context
+&gt;           from mcp.server.mcpserver.exceptions import ToolError
+E           ModuleNotFoundError: No module named 'mcp.server.mcpserver.exceptions'; 'mcp.server.mcpserver' is not a package
+
+app/vibemql5/adapters/mcp.py:57: ModuleNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f35e3384320&gt;
+tmp_path = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-isolated-tip024_tmp/test_tip024_mcp_registers_cata0')
+
+    def test_tip024_mcp_registers_catalog_and_context_is_invisible_contract(monkeypatch, tmp_path: Path):
+        class FakeContext:
+            pass
+    
+        class FakeMCPServer:
+            def __init__(self, name, **kwargs):
+                self.name = name
+                self.instructions = kwargs.get("instructions", "")
+                self.tools = {}
+                self.resources = {}
+            def tool(self, **kwargs):
+                def deco(fn):
+                    self.tools[fn.__name__] = fn
+                    return fn
+                return deco
+            def resource(self, uri, **kwargs):
+                def deco(fn):
+                    self.resources[uri] = fn
+                    return fn
+                return deco
+    
+        fake_server_mod = types.ModuleType("mcp.server.mcpserver")
+        fake_server_mod.MCPServer = FakeMCPServer
+        fake_server_mod.Context = FakeContext
+        monkeypatch.setitem(sys.modules, "mcp", types.ModuleType("mcp"))
+        monkeypatch.setitem(sys.modules, "mcp.server", types.ModuleType("mcp.server"))
+        monkeypatch.setitem(sys.modules, "mcp.server.mcpserver", fake_server_mod)
+        types_mod = types.ModuleType("mcp.types")
+        class _Model:
+            def __init__(self, **kwargs):
+                self.__dict__.update(kwargs)
+        for model_name in ("CallToolResult", "ResourceLink", "TextContent", "ToolAnnotations"):
+            setattr(types_mod, model_name, _Model)
+        monkeypatch.setitem(sys.modules, "mcp.types", types_mod)
+    
+        from vibemql5.adapters.mcp import create_server
+        root = _root(tmp_path)
+&gt;       server = create_server(root, transport="stdio")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_tip024_multiclient_concurrency.py:294: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-isolated-tip024_tmp/test_tip024_mcp_registers_cata0/VibeMQL5')
+transport = 'stdio'
+
+    def create_server(root: Path, transport: str = "unknown"):
+        try:
+            from mcp.server.mcpserver import MCPServer, Context
+            from mcp.server.mcpserver.exceptions import ToolError
+            from mcp.types import CallToolResult, ResourceLink, TextContent, ToolAnnotations
+        except ImportError as exc:
+&gt;           raise RuntimeError('MCP SDK v2 is required. Run: pip install -e ".[mcp]"') from exc
+E           RuntimeError: MCP SDK v2 is required. Run: pip install -e ".[mcp]"
+
+app/vibemql5/adapters/mcp.py:60: RuntimeError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,2164 @@
+{
+  "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "broker_sdk": "OPEN",
+  "candidate_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+  "elapsed_ms": 15250.0,
+  "errors": 0,
+  "exact_head_verified": true,
+  "expected_head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+  "failures": 0,
+  "fixture_exe_sha256": "df6dd2ac373dd98d38a61682166509dc1d69ed3bf01a4cb6ee09cd2aab72dacb",
+  "full_suite_attempted": true,
+  "git_blob_sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+    "run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+    "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+  },
+  "github_event_sha": "12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd",
+  "mode": "REAL_WINDOWS_REQUIRED",
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "proof_log": {
+    "original_bytes": 2272,
+    "original_sha256": "784a696a9cd7cd2d0527504f18185d2aeabaa2c6b446e8489e57fa0e9a5385a2",
+    "retained_bytes": 2272,
+    "truncated": false
+  },
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "case": "startup_checkpoint",
+      "cleanup_errors": [],
+      "control_passed": true,
+      "executable_security": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "executable_security_before_boundary": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "inherited_handles": "file-backed stdio only",
+      "marker": {
+        "pid": 8352,
+        "positive_marker": true
+      },
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": false,
+      "root_security": {
+        "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "stderr_tail": "",
+      "variant": "plain_unrestricted_console",
+      "writer": {
+        "appcontainer": 0,
+        "child_restricted": 0,
+        "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5\\positive-marker.json",
+        "crt_errno": 0,
+        "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+        "error_source": "NONE",
+        "exit_error": 0,
+        "integrity_rid": 12288,
+        "path_limit_chars": 256,
+        "pid": 8352,
+        "policy_query_ok": 1,
+        "requested_bytes": 36,
+        "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+        "root_attributes": 16,
+        "root_error": 0,
+        "token_error": 0,
+        "win32_error": 0,
+        "write_stage": "COMPLETE",
+        "write_success": true,
+        "written_bytes": 36
+      },
+      "writer_exit_diagnostic": {
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+        "raw_exit": 0,
+        "raw_exit_hex": "0x00000000"
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "child_token_before_resume": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "cleanup_errors": [],
+      "control_passed": true,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AINO_ACCESS_CONTROL",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "NULL_SELECTED_LABEL_ACL",
+          "label_aces": [],
+          "null_acl": true,
+          "present": true
+        }
+      },
+      "executable_security_before_boundary": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "inherited_handles": false,
+      "label_applicability": {
+        "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+        "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+        "executable_label_matches_before_boundary": true,
+        "passed": true,
+        "root_directory_only_low_label": true
+      },
+      "marker": {
+        "pid": 5472,
+        "positive_marker": true
+      },
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": false,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "ace_count": 1,
+          "acl_bytes": 28,
+          "defaulted": false,
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "label_aces": [
+            {
+              "flags": 0,
+              "index": 0,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "null_acl": false,
+          "parse_limit_aces": 64,
+          "present": true,
+          "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+          "truncated": false
+        }
+      },
+      "suspended_token_matches_fixture_role": true,
+      "unrestricted_token_matches_parent": true,
+      "variant": "granted_unrestricted_console",
+      "worker": {
+        "creation_100ns": 134354276427279270,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-pevm_qnu\\fixture.exe",
+        "pid": 5472
+      },
+      "writer": {
+        "appcontainer": 0,
+        "child_restricted": 0,
+        "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu\\positive-marker.json",
+        "crt_errno": 0,
+        "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+        "error_source": "NONE",
+        "exit_error": 0,
+        "integrity_rid": 12288,
+        "path_limit_chars": 256,
+        "pid": 5472,
+        "policy_query_ok": 1,
+        "requested_bytes": 36,
+        "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+        "root_attributes": 16,
+        "root_error": 0,
+        "token_error": 0,
+        "win32_error": 0,
+        "write_stage": "COMPLETE",
+        "write_success": true,
+        "written_bytes": 36
+      },
+      "writer_exit_diagnostic": {
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+        "raw_exit": 0,
+        "raw_exit_hex": "0x00000000"
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "child_token_before_resume": {
+        "appcontainer": 1,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-4096",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "cleanup_errors": [],
+      "control_passed": true,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AINO_ACCESS_CONTROL",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "NULL_SELECTED_LABEL_ACL",
+          "label_aces": [],
+          "null_acl": true,
+          "present": true
+        }
+      },
+      "executable_security_before_boundary": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "exit_code": 0,
+      "exit_code_hex": "0x00000000",
+      "inherited_handles": false,
+      "label_applicability": {
+        "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+        "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+        "executable_label_matches_before_boundary": true,
+        "passed": true,
+        "root_directory_only_low_label": true
+      },
+      "marker": {
+        "pid": 8180,
+        "positive_marker": true
+      },
+      "no_console": false,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": true,
+      "restricted": true,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "ace_count": 1,
+          "acl_bytes": 28,
+          "defaulted": false,
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "label_aces": [
+            {
+              "flags": 0,
+              "index": 0,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "null_acl": false,
+          "parse_limit_aces": 64,
+          "present": true,
+          "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+          "truncated": false
+        }
+      },
+      "suspended_token_matches_fixture_role": true,
+      "variant": "granted_restricted_console",
+      "worker": {
+        "creation_100ns": 134354276427758022,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ma9atm6y\\fixture.exe",
+        "pid": 8180
+      },
+      "writer": {
+        "appcontainer": 1,
+        "child_restricted": 1,
+        "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y\\positive-marker.json",
+        "crt_errno": 0,
+        "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+        "error_source": "NONE",
+        "exit_error": 0,
+        "integrity_rid": 4096,
+        "path_limit_chars": 256,
+        "pid": 8180,
+        "policy_query_ok": 1,
+        "requested_bytes": 36,
+        "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+        "root_attributes": 16,
+        "root_error": 0,
+        "token_error": 0,
+        "win32_error": 0,
+        "write_stage": "COMPLETE",
+        "write_success": true,
+        "written_bytes": 36
+      },
+      "writer_exit_diagnostic": {
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+        "raw_exit": 0,
+        "raw_exit_hex": "0x00000000"
+      }
+    },
+    {
+      "case": "startup_checkpoint",
+      "child_token_before_resume": {
+        "appcontainer": 1,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-4096",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "cleanup_errors": [],
+      "control_passed": false,
+      "exact_handle_exit": true,
+      "executable_security": {
+        "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AINO_ACCESS_CONTROL",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "NULL_SELECTED_LABEL_ACL",
+          "label_aces": [],
+          "null_acl": true,
+          "present": true
+        }
+      },
+      "executable_security_before_boundary": {
+        "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "defaulted": false,
+          "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+          "label_aces": [],
+          "null_acl": true,
+          "present": false
+        }
+      },
+      "exit_code": 3221225794,
+      "exit_code_hex": "0xc0000142",
+      "inherited_handles": false,
+      "label_applicability": {
+        "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+        "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+        "executable_label_matches_before_boundary": true,
+        "passed": true,
+        "root_directory_only_low_label": true
+      },
+      "no_console": true,
+      "parent_token_after": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_token_before": {
+        "appcontainer": 0,
+        "elevated": 1,
+        "integrity_sid": "S-1-16-12288",
+        "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+      },
+      "parent_write_after": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "parent_write_before": {
+        "create_error": 0,
+        "flush_error": 0,
+        "write_attempted": true,
+        "write_error": 0,
+        "written_bytes": 3
+      },
+      "required_positive_control": false,
+      "restricted": true,
+      "root_security": {
+        "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AI",
+        "security_information": "DACL_AND_LABEL",
+        "selected_label_descriptor": {
+          "ace_count": 1,
+          "acl_bytes": 28,
+          "defaulted": false,
+          "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+          "label_aces": [
+            {
+              "flags": 0,
+              "index": 0,
+              "mask": 1,
+              "sid": "S-1-16-4096"
+            }
+          ],
+          "null_acl": false,
+          "parse_limit_aces": 64,
+          "present": true,
+          "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+          "truncated": false
+        }
+      },
+      "suspended_token_matches_fixture_role": true,
+      "variant": "granted_restricted_no_console",
+      "worker": {
+        "creation_100ns": 134354276428191907,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ika07otn\\fixture.exe",
+        "pid": 7796
+      },
+      "writer_exit_diagnostic": {
+        "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+        "raw_exit": 3221225794,
+        "raw_exit_hex": "0xc0000142"
+      }
+    },
+    {
+      "case": "__main__.PortableCases.test_create_attempt_without_binding_cannot_release",
+      "elapsed_ms": 63.0000000000166,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear",
+      "elapsed_ms": 61.9999999999834,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent",
+      "elapsed_ms": 63.0000000000166,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_no_attempt_release",
+      "elapsed_ms": 46.999999999997044,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_partial_intent_is_fail_closed",
+      "elapsed_ms": 125.0,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values",
+      "elapsed_ms": 14.999999999986358,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_stale_recovery_cannot_clear_successor",
+      "elapsed_ms": 110.00000000001364,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.PortableCases.test_unresolved_descendant_rejects_clear",
+      "elapsed_ms": 62.00000000001182,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 2,
+        "lease_token": "05fc83eca7284ca0a4621b5c2b55d818",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276435043959,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-madktseu\\fixture.exe",
+          "pid": 8060
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 8060
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 8060,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276435043959,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-madktseu\\fixture.exe",
+        "pid": 8060
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276435043959,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-madktseu\\fixture.exe",
+        "pid": 8060
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": {
+          "synthetic": true
+        },
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": null
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": true,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "elapsed_ms": 187.99999999998818,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "intent": {
+        "descendants": "UNRESOLVED",
+        "generation": 1,
+        "lease_token": "ddf267c266eb4914bbf8fcc482b6f703",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276436891366,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-dwou7v44\\fixture.exe",
+          "pid": 2256
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 2256
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 2256,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276436891366,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-dwou7v44\\fixture.exe",
+        "pid": 2256
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276436891366,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-dwou7v44\\fixture.exe",
+        "pid": 2256
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": null
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 5,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 367,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "exact_target": {
+        "creation_100ns": 134354276436112413,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-dwou7v44\\target\\fixture.exe",
+        "pid": 1840
+      },
+      "target_exit_ms": 0.0
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_exit_between_discovery_and_launch",
+      "elapsed_ms": 203.00000000000296,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "intent": {
+        "descendants": "UNRESOLVED",
+        "generation": 1,
+        "lease_token": "e954d7a8635a4961b870ca516b8f049a",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276438408782,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+          "pid": 2272
+        }
+      },
+      "restriction": {
+        "appcontainer": 0,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": 8904,
+          "argument": 912,
+          "attempted": true,
+          "disposition": "API_RETURNED_PID",
+          "exception_code": null,
+          "returned_pid": 8904,
+          "win32_error": null,
+          "worker_pid": 2272
+        },
+        "child_restricted": 0,
+        "inherited_parent_pid": 8904,
+        "parent_create_error": 0,
+        "parent_vm_write_error": 0,
+        "pid": 2272,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276438408782,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+        "pid": 2272
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276438408782,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+        "pid": 2272
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": null
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 5,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 1,
+        "direct_error": 0,
+        "direct_terminated": 1,
+        "observed": false,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "intent": {
+        "descendants": "UNRESOLVED",
+        "generation": 2,
+        "lease_token": "0315d06f27aa48489190b12a35f47764",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276439851643,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+          "pid": 8524
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 912,
+          "attempted": true,
+          "disposition": "INVALID_HANDLE_EXCEPTION",
+          "exception_code": 3221225480,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 8524
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 8524,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276439851643,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+        "pid": 8524
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276439851643,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-jra53xci\\fixture.exe",
+        "pid": 8524
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": null
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 5,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 367,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "breakaway_causal_qualification": "OPEN_CONTROL_NOT_QUALIFIED_HOST_JOB_MAY_DENY",
+      "breakaway_control_error": 5,
+      "broker_sdk": "OPEN",
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "scope": "CreateProcessW fixture paths only"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+      "elapsed_ms": 328.00000000000296,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "19c4330ba0624051ac8c776e5a331399",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276442613454,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-zzmp5wsa\\fixture.exe",
+          "pid": 7852
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 7852
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 7852,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276442613454,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-zzmp5wsa\\fixture.exe",
+        "pid": 7852
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276442613454,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-zzmp5wsa\\fixture.exe",
+        "pid": 7852
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "mode": "init_false",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 0,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "00926fdb134f48048408059e3d3c8ab6",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276443911881,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-kzgpcp7k\\fixture.exe",
+          "pid": 3536
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 3536
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 3536,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276443911881,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-kzgpcp7k\\fixture.exe",
+        "pid": 3536
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276443911881,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-kzgpcp7k\\fixture.exe",
+        "pid": 3536
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "mode": "init_raise",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "4b1c12a565fe4a30a780966de8520c10",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276445271958,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-4uuzwruz\\fixture.exe",
+          "pid": 736
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 736
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 736,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276445271958,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-4uuzwruz\\fixture.exe",
+        "pid": 736
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276445271958,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-4uuzwruz\\fixture.exe",
+        "pid": 736
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_OBSERVATION_UNAVAILABLE"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_OBSERVATION_UNAVAILABLE"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "mode": "observe_raise",
+      "response": {
+        "account": null,
+        "cleanup": "PROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_OBSERVATION_UNAVAILABLE"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "PROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": true,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_OBSERVATION_UNAVAILABLE"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "6116757769d54eaf9aef2b1362de1ed4",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276446482181,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-q59jylmx\\fixture.exe",
+          "pid": 6848
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 6848
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 6848,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276446482181,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-q59jylmx\\fixture.exe",
+        "pid": 6848
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276446482181,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-q59jylmx\\fixture.exe",
+        "pid": 6848
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "UNPROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_CLEANUP_UNPROVEN"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "UNPROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": false,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": true,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "mode": "shutdown_raise",
+      "response": {
+        "account": null,
+        "cleanup": "UNPROVEN",
+        "expired": false,
+        "primary_reason_code": null,
+        "reason_code": "LIVE_CLEANUP_UNPROVEN"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 1,
+        "cleanup": "UNPROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": false,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": true,
+        "primary_reason_code": null
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "6956b43e95c9446cb6bcc6242fa7257a",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276448041881,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-nc3eos0v\\fixture.exe",
+          "pid": 8504
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 8504
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 8504,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276448041881,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-nc3eos0v\\fixture.exe",
+        "pid": 8504
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+      "exact_exit": true,
+      "exited_identity": {
+        "creation_100ns": 134354276448041881,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-nc3eos0v\\fixture.exe",
+        "pid": 8504
+      },
+      "identity_basis": "SAME_HANDLE_LIVE_IMAGE_PLUS_PID_CREATION_AND_SIGNAL",
+      "response": {
+        "account": null,
+        "cleanup": "UNPROVEN",
+        "expired": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED",
+        "reason_code": "LIVE_CLEANUP_UNPROVEN"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 2,
+        "cleanup": "UNPROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": false,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "mode": "init_raise_shutdown_raise",
+      "response": {
+        "account": null,
+        "cleanup": "UNPROVEN",
+        "expired": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED",
+        "reason_code": "LIVE_CLEANUP_UNPROVEN"
+      },
+      "result": {
+        "account": null,
+        "breakaway_created": 0,
+        "breakaway_error": 0,
+        "breakaway_terminated": 0,
+        "caught_exceptions": 2,
+        "cleanup": "UNPROVEN",
+        "cleanup_attempted": true,
+        "cleanup_completed": false,
+        "direct_created": 0,
+        "direct_error": 0,
+        "direct_terminated": 0,
+        "observed": false,
+        "primary_reason_code": "LIVE_IPC_INITIALIZE_FAILED"
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults",
+      "elapsed_ms": 750.0,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "aaf42b0c3dd94c4c8fcdee897b95a3ef",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276449329094,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-sk5xxfug\\fixture.exe",
+          "pid": 5504
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 5504
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 5504,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276449329094,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-sk5xxfug\\fixture.exe",
+        "pid": 5504
+      }
+    },
+    {
+      "actual_total_ms": 358.99999999998045,
+      "case": "__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination",
+      "hard_10s_claim": false,
+      "observation_budget_ms": 250,
+      "post_exit_identity": {
+        "creation_100ns": 134354276449329094,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-sk5xxfug\\fixture.exe",
+        "pid": 5504
+      },
+      "post_exit_lifetime": {
+        "creation_100ns": 134354276449329094,
+        "pid": 5504
+      },
+      "termination_ms": 0.0
+    },
+    {
+      "case": "__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination",
+      "elapsed_ms": 389.99999999998636,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "crashed_parent": {
+        "creation_100ns": 134354276452684647,
+        "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+        "pid": 5772
+      },
+      "failure_marker_absent": true,
+      "termination_ms": 0.0,
+      "worker": {
+        "creation_100ns": 134354276454205522,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-vjq_x4g1\\crash-parent\\fixture.exe",
+        "pid": 6488
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "controller_exit_code": 73,
+      "controller_phase_tail": "{\"phase\": \"ABOUT_TO_CRASH\", \"pid\": 5772, \"worker\": {\"creation_100ns\": 134354276454205522, \"image\": \"c:\\\\users\\\\runner~1\\\\appdata\\\\local\\\\temp\\\\tip057rq-windows-vjq_x4g1\\\\crash-parent\\\\fixture.exe\", \"pid\": 6488}}",
+      "controller_pid": 5772,
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "case": "__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker",
+      "elapsed_ms": 282.0000000000107,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "intent": {
+        "descendants": "UNRESOLVED",
+        "generation": 1,
+        "lease_token": "74fc73178a414f788a820c4f70e5b0f3",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276455952700,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-do9fwyd2\\fixture.exe",
+          "pid": 4376
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 4376
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 4376,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276455952700,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-do9fwyd2\\fixture.exe",
+        "pid": 4376
+      }
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "fresh_dead_error": "RuntimeError:LIVE_IMAGE_NOT_CAPTURED_BEFORE_EXIT",
+      "fresh_dead_identity": "UNPROVEN_NO_LIVE_IMAGE_CACHE"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "descendant_disposition": "RECOVERY_REQUIRED",
+      "pid_reuse": "simulated creation-time mismatch against a real process"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants",
+      "elapsed_ms": 109.00000000000887,
+      "status": "PASS"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "intent": {
+        "descendants": "NONE_FOR_FIXTURE_PATH",
+        "generation": 1,
+        "lease_token": "f398d7c8951743e5ae2c1877c48d9476",
+        "parent": {
+          "creation_100ns": 134354276285543359,
+          "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+          "pid": 8904
+        },
+        "phase": "BOUND_BEFORE_RESUME",
+        "schema": "tip057rq.intent/1",
+        "worker": {
+          "creation_100ns": 134354276456920938,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-ljzm8i55\\fixture.exe",
+          "pid": 6152
+        }
+      },
+      "restriction": {
+        "appcontainer": 1,
+        "before_work": true,
+        "borrowed_handle_probe": {
+          "api": "GetProcessId",
+          "api_return_value": null,
+          "argument": 0,
+          "attempted": false,
+          "disposition": "NOT_ATTEMPTED_ZERO_ARGUMENT",
+          "exception_code": null,
+          "returned_pid": null,
+          "win32_error": null,
+          "worker_pid": 6152
+        },
+        "child_restricted": 1,
+        "inherited_parent_pid": null,
+        "parent_create_error": 5,
+        "parent_vm_write_error": 5,
+        "pid": 6152,
+        "policy_query_ok": 1
+      },
+      "worker": {
+        "creation_100ns": 134354276456920938,
+        "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-windows-ljzm8i55\\fixture.exe",
+        "pid": 6152
+      }
+    },
+    {
+      "caller_exit_code": 0,
+      "caller_pid": 4496,
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "stderr_tail": "",
+      "stdout_tail": "{\"status\": \"BLOCKED\", \"parent\": {\"pid\": 4496, \"creation_100ns\": 134354276457187672, \"image\": \"c:\\\\hostedtoolcache\\\\windows\\\\python\\\\3.12.10\\\\x64\\\\python.exe\"}}\r\n"
+    },
+    {
+      "caller_exit_code": 0,
+      "caller_pid": 7976,
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "stderr_tail": "",
+      "stdout_tail": "{\"status\": \"BLOCKED\", \"parent\": {\"pid\": 7976, \"creation_100ns\": 134354276457269959, \"image\": \"c:\\\\hostedtoolcache\\\\windows\\\\python\\\\3.12.10\\\\x64\\\\python.exe\"}}\r\n"
+    },
+    {
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "generations": [
+        1,
+        2
+      ],
+      "process_callers": [
+        {
+          "parent": {
+            "creation_100ns": 134354276457187672,
+            "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+            "pid": 4496
+          },
+          "status": "BLOCKED"
+        },
+        {
+          "parent": {
+            "creation_100ns": 134354276457269959,
+            "image": "c:\\hostedtoolcache\\windows\\python\\3.12.10\\x64\\python.exe",
+            "pid": 7976
+          },
+          "status": "BLOCKED"
+        }
+      ],
+      "recovery_thread_race": [
+        "STALE_REJECTED",
+        "BLOCKED"
+      ]
+    },
+    {
+      "case": "__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race",
+      "elapsed_ms": 233.99999999998045,
+      "status": "PASS"
+    }
+  ],
+  "schema": "tip057rq.proof/1",
+  "scope": "isolated harmless fixture paths only",
+  "skips": 0,
+  "source_blob_verified": true,
+  "sources": {
+    "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+    "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+    "run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+    "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+  },
+  "startup_checkpoint": {
+    "qualification": "STARTUP_AND_MARKER_ONLY_NO_CHILD_DENIAL_CLAIM",
+    "required_controls_passed": true,
+    "variants": [
+      {
+        "cleanup_errors": [],
+        "control_passed": true,
+        "executable_security": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "executable_security_before_boundary": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "inherited_handles": "file-backed stdio only",
+        "marker": {
+          "pid": 8352,
+          "positive_marker": true
+        },
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": false,
+        "root_security": {
+          "sddl": "D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "stderr_tail": "",
+        "variant": "plain_unrestricted_console",
+        "writer": {
+          "appcontainer": 0,
+          "child_restricted": 0,
+          "computed_path": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5\\positive-marker.json",
+          "crt_errno": 0,
+          "cwd": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+          "error_source": "NONE",
+          "exit_error": 0,
+          "integrity_rid": 12288,
+          "path_limit_chars": 256,
+          "pid": 8352,
+          "policy_query_ok": 1,
+          "requested_bytes": 36,
+          "root": "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tip057rq-checkpoint-gav2tp_5",
+          "root_attributes": 16,
+          "root_error": 0,
+          "token_error": 0,
+          "win32_error": 0,
+          "write_stage": "COMPLETE",
+          "write_success": true,
+          "written_bytes": 36
+        },
+        "writer_exit_diagnostic": {
+          "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+          "raw_exit": 0,
+          "raw_exit_hex": "0x00000000"
+        }
+      },
+      {
+        "child_token_before_resume": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "cleanup_errors": [],
+        "control_passed": true,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AINO_ACCESS_CONTROL",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "NULL_SELECTED_LABEL_ACL",
+            "label_aces": [],
+            "null_acl": true,
+            "present": true
+          }
+        },
+        "executable_security_before_boundary": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "inherited_handles": false,
+        "label_applicability": {
+          "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+          "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+          "executable_label_matches_before_boundary": true,
+          "passed": true,
+          "root_directory_only_low_label": true
+        },
+        "marker": {
+          "pid": 5472,
+          "positive_marker": true
+        },
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": false,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-102984753-2175013648-1875059423-955894005-1781669109-3104807911-3623322638)S:AI",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "ace_count": 1,
+            "acl_bytes": 28,
+            "defaulted": false,
+            "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+            "label_aces": [
+              {
+                "flags": 0,
+                "index": 0,
+                "mask": 1,
+                "sid": "S-1-16-4096"
+              }
+            ],
+            "null_acl": false,
+            "parse_limit_aces": 64,
+            "present": true,
+            "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+            "truncated": false
+          }
+        },
+        "suspended_token_matches_fixture_role": true,
+        "unrestricted_token_matches_parent": true,
+        "variant": "granted_unrestricted_console",
+        "worker": {
+          "creation_100ns": 134354276427279270,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-pevm_qnu\\fixture.exe",
+          "pid": 5472
+        },
+        "writer": {
+          "appcontainer": 0,
+          "child_restricted": 0,
+          "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu\\positive-marker.json",
+          "crt_errno": 0,
+          "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+          "error_source": "NONE",
+          "exit_error": 0,
+          "integrity_rid": 12288,
+          "path_limit_chars": 256,
+          "pid": 5472,
+          "policy_query_ok": 1,
+          "requested_bytes": 36,
+          "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-pevm_qnu",
+          "root_attributes": 16,
+          "root_error": 0,
+          "token_error": 0,
+          "win32_error": 0,
+          "write_stage": "COMPLETE",
+          "write_success": true,
+          "written_bytes": 36
+        },
+        "writer_exit_diagnostic": {
+          "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+          "raw_exit": 0,
+          "raw_exit_hex": "0x00000000"
+        }
+      },
+      {
+        "child_token_before_resume": {
+          "appcontainer": 1,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-4096",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "cleanup_errors": [],
+        "control_passed": true,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AINO_ACCESS_CONTROL",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "NULL_SELECTED_LABEL_ACL",
+            "label_aces": [],
+            "null_acl": true,
+            "present": true
+          }
+        },
+        "executable_security_before_boundary": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "inherited_handles": false,
+        "label_applicability": {
+          "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+          "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+          "executable_label_matches_before_boundary": true,
+          "passed": true,
+          "root_directory_only_low_label": true
+        },
+        "marker": {
+          "pid": 8180,
+          "positive_marker": true
+        },
+        "no_console": false,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": true,
+        "restricted": true,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-3016701714-1466595598-1185819252-2947961753-2551331781-3359432128-864190106)S:AI",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "ace_count": 1,
+            "acl_bytes": 28,
+            "defaulted": false,
+            "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+            "label_aces": [
+              {
+                "flags": 0,
+                "index": 0,
+                "mask": 1,
+                "sid": "S-1-16-4096"
+              }
+            ],
+            "null_acl": false,
+            "parse_limit_aces": 64,
+            "present": true,
+            "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+            "truncated": false
+          }
+        },
+        "suspended_token_matches_fixture_role": true,
+        "variant": "granted_restricted_console",
+        "worker": {
+          "creation_100ns": 134354276427758022,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ma9atm6y\\fixture.exe",
+          "pid": 8180
+        },
+        "writer": {
+          "appcontainer": 1,
+          "child_restricted": 1,
+          "computed_path": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y\\positive-marker.json",
+          "crt_errno": 0,
+          "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+          "error_source": "NONE",
+          "exit_error": 0,
+          "integrity_rid": 4096,
+          "path_limit_chars": 256,
+          "pid": 8180,
+          "policy_query_ok": 1,
+          "requested_bytes": 36,
+          "root": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\tip057rq-checkpoint-ma9atm6y",
+          "root_attributes": 16,
+          "root_error": 0,
+          "token_error": 0,
+          "win32_error": 0,
+          "write_stage": "COMPLETE",
+          "write_success": true,
+          "written_bytes": 36
+        },
+        "writer_exit_diagnostic": {
+          "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+          "raw_exit": 0,
+          "raw_exit_hex": "0x00000000"
+        }
+      },
+      {
+        "child_token_before_resume": {
+          "appcontainer": 1,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-4096",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "cleanup_errors": [],
+        "control_passed": false,
+        "exact_handle_exit": true,
+        "executable_security": {
+          "sddl": "D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)(A;ID;FA;;;LA)(A;ID;FA;;;SY)(A;ID;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AINO_ACCESS_CONTROL",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "NULL_SELECTED_LABEL_ACL",
+            "label_aces": [],
+            "null_acl": true,
+            "present": true
+          }
+        },
+        "executable_security_before_boundary": {
+          "sddl": "D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;OW)",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "defaulted": false,
+            "disposition": "ABSENT_SELECTED_LABEL_DESCRIPTOR",
+            "label_aces": [],
+            "null_acl": true,
+            "present": false
+          }
+        },
+        "exit_code": 3221225794,
+        "exit_code_hex": "0xc0000142",
+        "inherited_handles": false,
+        "label_applicability": {
+          "binary_comparison": "COMPLETE_MANDATORY_ACE_TYPE_FLAGS_MASK_SID_SEMANTICS",
+          "disposition": "ACTUAL_LABEL_APPLICABILITY_READBACK_ONLY",
+          "executable_label_matches_before_boundary": true,
+          "passed": true,
+          "root_directory_only_low_label": true
+        },
+        "no_console": true,
+        "parent_token_after": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_token_before": {
+          "appcontainer": 0,
+          "elevated": 1,
+          "integrity_sid": "S-1-16-12288",
+          "user_sid": "S-1-5-21-1643835476-1616584234-1346609752-500"
+        },
+        "parent_write_after": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "parent_write_before": {
+          "create_error": 0,
+          "flush_error": 0,
+          "write_attempted": true,
+          "write_error": 0,
+          "written_bytes": 3
+        },
+        "required_positive_control": false,
+        "restricted": true,
+        "root_security": {
+          "sddl": "D:PAI(A;OICI;FA;;;LA)(A;OICI;FA;;;SY)(A;OICI;0x1201bf;;;S-1-15-2-2671696808-147609541-2292330606-2044960375-612464139-204570622-2516447481)S:AI",
+          "security_information": "DACL_AND_LABEL",
+          "selected_label_descriptor": {
+            "ace_count": 1,
+            "acl_bytes": 28,
+            "defaulted": false,
+            "disposition": "OBSERVED_SELECTED_LABEL_ACL_ONLY",
+            "label_aces": [
+              {
+                "flags": 0,
+                "index": 0,
+                "mask": 1,
+                "sid": "S-1-16-4096"
+              }
+            ],
+            "null_acl": false,
+            "parse_limit_aces": 64,
+            "present": true,
+            "raw_acl_sha256": "3f635cc662d9ae9f2741f3d6e7287018c774f1e96e99187990c9d6bf1f17a556",
+            "truncated": false
+          }
+        },
+        "suspended_token_matches_fixture_role": true,
+        "variant": "granted_restricted_no_console",
+        "worker": {
+          "creation_100ns": 134354276428191907,
+          "image": "c:\\users\\runner~1\\appdata\\local\\temp\\tip057rq-checkpoint-ika07otn\\fixture.exe",
+          "pid": 7796
+        },
+        "writer_exit_diagnostic": {
+          "disposition": "FULL_RAW_DWORD_PRESERVED_STAGE_UNAVAILABLE",
+          "raw_exit": 3221225794,
+          "raw_exit_hex": "0xc0000142"
+        }
+      }
+    ]
+  },
+  "status": "FIXTURE_PASS_Q03_OPEN",
+  "tests_run": 16
+}

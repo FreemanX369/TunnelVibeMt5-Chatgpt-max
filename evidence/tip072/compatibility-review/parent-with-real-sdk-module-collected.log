@@ -1,0 +1,298 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-source
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 48 items
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 739, "test_elapsed_ms": 0}
+
+tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_mcp_registers_catalog_and_context_is_invisible_contract PASSED [  2%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip024_multiclient_concurrency.py", "function": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 750, "test_elapsed_ms": 11}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 751, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-get_terminal_live_state] PASSED [  4%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 844, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 844, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-get_account_snapshot] PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 941, "test_elapsed_ms": 96}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 941, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[FIXED_TERMINAL_NOT_RUNNING-inspect_terminal] PASSED [  8%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1034, "test_elapsed_ms": 92}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 1034, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-get_terminal_live_state] PASSED [ 10%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1189, "test_elapsed_ms": 154}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 1189, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-get_account_snapshot] PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1283, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 1283, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_IPC_INITIALIZE_FAILED-inspect_terminal] PASSED [ 14%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1374, "test_elapsed_ms": 90}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 1375, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-get_terminal_live_state] PASSED [ 16%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1473, "test_elapsed_ms": 98}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 1473, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-get_account_snapshot] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1688, "test_elapsed_ms": 215}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 1689, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_INFO_UNAVAILABLE-inspect_terminal] PASSED [ 20%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1804, "test_elapsed_ms": 115}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 1804, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-get_terminal_live_state] PASSED [ 22%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1926, "test_elapsed_ms": 122}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 1926, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-get_account_snapshot] PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2089, "test_elapsed_ms": 162}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 2089, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_TERMINAL_BINDING_MISMATCH-inspect_terminal] PASSED [ 27%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 13, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2184, "test_elapsed_ms": 95}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 2185, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-get_terminal_live_state] PASSED [ 29%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 14, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2277, "test_elapsed_ms": 91}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 2277, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-get_account_snapshot] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 15, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2370, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 2371, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_finite_live_failure_survives_actual_sdk[MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE-inspect_terminal] PASSED [ 33%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_finite_live_failure_survives_actual_sdk", "ordinal": 16, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2637, "test_elapsed_ms": 266}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 17, "stage": "START", "suite_elapsed_ms": 2638, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-get_terminal_live_state] PASSED [ 35%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 17, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2735, "test_elapsed_ms": 97}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 18, "stage": "START", "suite_elapsed_ms": 2736, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-get_account_snapshot] PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 18, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2832, "test_elapsed_ms": 96}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 19, "stage": "START", "suite_elapsed_ms": 2832, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error0-inspect_terminal] PASSED [ 39%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 19, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 2944, "test_elapsed_ms": 111}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 20, "stage": "START", "suite_elapsed_ms": 2944, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-get_terminal_live_state] PASSED [ 41%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 20, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3128, "test_elapsed_ms": 183}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 21, "stage": "START", "suite_elapsed_ms": 3128, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-get_account_snapshot] PASSED [ 43%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 21, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3224, "test_elapsed_ms": 95}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 22, "stage": "START", "suite_elapsed_ms": 3224, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error1-inspect_terminal] PASSED [ 45%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 22, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3320, "test_elapsed_ms": 95}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 23, "stage": "START", "suite_elapsed_ms": 3320, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-get_terminal_live_state] PASSED [ 47%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 23, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3504, "test_elapsed_ms": 183}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 24, "stage": "START", "suite_elapsed_ms": 3504, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-get_account_snapshot] PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 24, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3604, "test_elapsed_ms": 100}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 25, "stage": "START", "suite_elapsed_ms": 3605, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error2-inspect_terminal] PASSED [ 52%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 25, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3722, "test_elapsed_ms": 117}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 26, "stage": "START", "suite_elapsed_ms": 3722, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-get_terminal_live_state] PASSED [ 54%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 26, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3828, "test_elapsed_ms": 105}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 27, "stage": "START", "suite_elapsed_ms": 3828, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-get_account_snapshot] PASSED [ 56%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 27, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 3943, "test_elapsed_ms": 114}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 28, "stage": "START", "suite_elapsed_ms": 3943, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error3-inspect_terminal] PASSED [ 58%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 28, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4193, "test_elapsed_ms": 249}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 29, "stage": "START", "suite_elapsed_ms": 4194, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-get_terminal_live_state] PASSED [ 60%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 29, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4313, "test_elapsed_ms": 119}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 30, "stage": "START", "suite_elapsed_ms": 4313, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-get_account_snapshot] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 30, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4415, "test_elapsed_ms": 101}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 31, "stage": "START", "suite_elapsed_ms": 4415, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error4-inspect_terminal] PASSED [ 64%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 31, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4529, "test_elapsed_ms": 114}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 32, "stage": "START", "suite_elapsed_ms": 4530, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-get_terminal_live_state] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 32, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4631, "test_elapsed_ms": 100}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 33, "stage": "START", "suite_elapsed_ms": 4631, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-get_account_snapshot] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 33, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 4912, "test_elapsed_ms": 281}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 34, "stage": "START", "suite_elapsed_ms": 4912, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_other_failures_remain_original_and_sdk_masked[error5-inspect_terminal] PASSED [ 70%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_other_failures_remain_original_and_sdk_masked", "ordinal": 34, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5022, "test_elapsed_ms": 109}
+
+tests/unit/test_tip066_live_diagnostics.py::test_known_reason_outside_selected_reads_is_not_converted[list_live_charts] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_known_reason_outside_selected_reads_is_not_converted", "ordinal": 35, "stage": "START", "suite_elapsed_ms": 5023, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_known_reason_outside_selected_reads_is_not_converted[list_live_charts] PASSED [ 72%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_known_reason_outside_selected_reads_is_not_converted", "ordinal": 35, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5116, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_known_reason_outside_selected_reads_is_not_converted[read_terminal_journal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_known_reason_outside_selected_reads_is_not_converted", "ordinal": 36, "stage": "START", "suite_elapsed_ms": 5116, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_known_reason_outside_selected_reads_is_not_converted[read_terminal_journal] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_known_reason_outside_selected_reads_is_not_converted", "ordinal": 36, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5218, "test_elapsed_ms": 101}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[get_terminal_live_state-arguments0] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 37, "stage": "START", "suite_elapsed_ms": 5218, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[get_terminal_live_state-arguments0] PASSED [ 77%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 37, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5316, "test_elapsed_ms": 97}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[get_account_snapshot-arguments1] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 38, "stage": "START", "suite_elapsed_ms": 5316, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[get_account_snapshot-arguments1] PASSED [ 79%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 38, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5414, "test_elapsed_ms": 97}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[inspect_terminal-arguments2] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 39, "stage": "START", "suite_elapsed_ms": 5414, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_invalid_arguments_still_fail_sdk_validation[inspect_terminal-arguments2] PASSED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_invalid_arguments_still_fail_sdk_validation", "ordinal": 39, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5507, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 40, "stage": "START", "suite_elapsed_ms": 5508, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[get_terminal_live_state] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 40, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5825, "test_elapsed_ms": 317}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 41, "stage": "START", "suite_elapsed_ms": 5826, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[get_account_snapshot] PASSED [ 85%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 41, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 5917, "test_elapsed_ms": 91}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[inspect_terminal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 42, "stage": "START", "suite_elapsed_ms": 5918, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_success_preserves_payload_and_restores_actor[inspect_terminal] PASSED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_success_preserves_payload_and_restores_actor", "ordinal": 42, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6010, "test_elapsed_ms": 92}
+
+tests/unit/test_tip066_live_diagnostics.py::test_routed_target_stays_denied_without_legacy_or_native_call[get_terminal_live_state] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_routed_target_stays_denied_without_legacy_or_native_call", "ordinal": 43, "stage": "START", "suite_elapsed_ms": 6011, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_routed_target_stays_denied_without_legacy_or_native_call[get_terminal_live_state] PASSED [ 89%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_routed_target_stays_denied_without_legacy_or_native_call", "ordinal": 43, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6104, "test_elapsed_ms": 93}
+
+tests/unit/test_tip066_live_diagnostics.py::test_routed_target_stays_denied_without_legacy_or_native_call[get_account_snapshot] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_routed_target_stays_denied_without_legacy_or_native_call", "ordinal": 44, "stage": "START", "suite_elapsed_ms": 6104, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_routed_target_stays_denied_without_legacy_or_native_call[get_account_snapshot] PASSED [ 91%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_routed_target_stays_denied_without_legacy_or_native_call", "ordinal": 44, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6194, "test_elapsed_ms": 89}
+
+tests/unit/test_tip066_live_diagnostics.py::test_catalog_and_all_input_output_schemas_match_accepted_parent 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_catalog_and_all_input_output_schemas_match_accepted_parent", "ordinal": 45, "stage": "START", "suite_elapsed_ms": 6194, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_catalog_and_all_input_output_schemas_match_accepted_parent PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_catalog_and_all_input_output_schemas_match_accepted_parent", "ordinal": 45, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6285, "test_elapsed_ms": 90}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[anticipated] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 46, "stage": "START", "suite_elapsed_ms": 6285, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[anticipated] PASSED [ 95%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 46, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6376, "test_elapsed_ms": 91}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[unexpected] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 47, "stage": "START", "suite_elapsed_ms": 6377, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[unexpected] PASSED [ 97%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 47, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6470, "test_elapsed_ms": 92}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[invalid_arguments] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 48, "stage": "START", "suite_elapsed_ms": 6470, "test_elapsed_ms": 0}
+
+tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result[invalid_arguments] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip066_live_diagnostics.py", "function": "test_protocol_handler_returns_safe_error_result", "ordinal": 48, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6801, "test_elapsed_ms": 330}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-with-real-sdk-module-collected.junit.xml -
+============================== 48 passed in 6.79s ==============================

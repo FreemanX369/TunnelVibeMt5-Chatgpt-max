@@ -1,0 +1,102 @@
+{
+  "status": "PASS_CAUSAL_SCAN_CONTROLS",
+  "source_head": "7a4535b1cdaed3d7cb5d484642c099239944ab6b",
+  "native_effects": false,
+  "production_source_modified": false,
+  "proven": "SYNC_TEST_TIMEOUT_ESCAPES_WITHOUT_DURABLE_INVOCATION_RECEIPT",
+  "negative": "SDK_SYNC_TOOLS_DO_NOT_STARVE_EVENT_LOOP_IN_THIS_CONTROL",
+  "current_VPS_cause": "UNKNOWN",
+  "old_sync_run_status": "UNKNOWN_NO_RECEIPT",
+  "source_hashes": {
+    "app/vibemql5/backend_admin/core.py": {
+      "bytes": 71407,
+      "sha256": "4f5b4b9b5002279d6daa1f8ad49e3d3701be719197e648fda87864bf50348573"
+    },
+    "app/vibemql5/backend_admin/tools.py": {
+      "bytes": 4001,
+      "sha256": "b1eac2805743e24c93eaf9ecf81001220f694916fb57dc1f0c32a898338b818d"
+    },
+    "app/vibemql5/backend_admin/multitunnel.py": {
+      "bytes": 6258,
+      "sha256": "efb49b676fa37bb05688ce23592ab5a7fd19bbb645285309aec0b784b14c8c7c"
+    }
+  },
+  "observations": [
+    {
+      "case": "success",
+      "returned": true,
+      "payload": {
+        "status": "PASS",
+        "suite": "unit",
+        "returncode": 0,
+        "stdout_tail": "CONTROL_SUCCESS\n",
+        "stderr_tail": ""
+      },
+      "is_error": false,
+      "elapsed_seconds": 0.020127,
+      "calls": [
+        {
+          "requested_timeout": 300,
+          "requested_module": "pytest",
+          "controlled_timeout": 3
+        }
+      ],
+      "receipt_files_before": [],
+      "receipt_files_after": []
+    },
+    {
+      "case": "nonzero",
+      "returned": true,
+      "payload": {
+        "status": "FAIL",
+        "suite": "unit",
+        "returncode": 7,
+        "stdout_tail": "CONTROL_FAILURE\n",
+        "stderr_tail": ""
+      },
+      "is_error": false,
+      "elapsed_seconds": 0.013719,
+      "calls": [
+        {
+          "requested_timeout": 300,
+          "requested_module": "pytest",
+          "controlled_timeout": 3
+        }
+      ],
+      "receipt_files_before": [],
+      "receipt_files_after": []
+    },
+    {
+      "case": "timeout",
+      "returned": false,
+      "sdk_type": "UnexpectedToolError",
+      "sdk_message": "Error executing tool backend_run_tests",
+      "original_type": "TimeoutExpired",
+      "original_timeout": 0.2,
+      "original_output": "CONTROL_START\n",
+      "elapsed_seconds": 0.202711,
+      "calls": [
+        {
+          "requested_timeout": 300,
+          "requested_module": "pytest",
+          "controlled_timeout": 0.2
+        }
+      ],
+      "receipt_files_before": [],
+      "receipt_files_after": []
+    },
+    {
+      "case": "unexpected_error",
+      "sdk_type": "UnexpectedToolError",
+      "sdk_message": "Error executing tool backend_run_tests",
+      "original_type": "ValueError",
+      "private_value_omitted": true
+    },
+    {
+      "case": "concurrent_read_control",
+      "health_returned_while_test_pending": true,
+      "native_effects": false,
+      "synchronous_tool_worker": "MCP_SDK_EXISTING_ANYIO_THREAD"
+    }
+  ]
+}

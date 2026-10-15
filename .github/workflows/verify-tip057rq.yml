@@ -1,0 +1,41 @@
+name: Verify TIP-057R-Q1 isolated Windows proof
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-proof:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      TIP057RQ_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run real isolated Windows proof with no skipped gate
+        shell: cmd
+        run: python tests/proofs/tip057rq/run_proof.py --require-windows --output tip057rq-evidence
+      - name: Retain bounded exact-head proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tip057rq-windows-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            tip057rq-evidence/summary.json
+            tip057rq-evidence/proof.log
+            tip057rq-evidence/compiler.log
+          retention-days: 14
+          if-no-files-found: error

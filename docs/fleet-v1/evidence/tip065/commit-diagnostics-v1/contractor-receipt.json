@@ -1,0 +1,50 @@
+{
+  "schema": "tip065.contractor-commit-diagnostics/1",
+  "base_head": "f2b65c35cb1c31e523d365c75ae4be328df19476",
+  "status": "PASS",
+  "passed": 151,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "5",
+    "tests": "156",
+    "time": "21.516",
+    "timestamp": "2026-10-05T17:50:19.204219+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "app_files_exact_base_bytes": 89,
+  "source_manifest_entries": 210,
+  "source_unchanged_against_frozen_builder_before_after": true,
+  "overlay_payload_unchanged": true,
+  "retained_capacity_assertion_seconds": 1.5,
+  "retained_http_timeout_ms": 1000,
+  "historical_cause": "OPEN_UNKNOWN",
+  "qualification": "TEST_FIXTURE_ONLY_NOT_PHYSICAL",
+  "candidate_gate": "PENDING_8_OF_8",
+  "command": [
+    "source-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-s",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip065_deployment_preflight.py"
+  ],
+  "env": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "files": {
+    "contractor-focused.xml": {
+      "sha256": "fa880a481b1d0f5603f41744888e7f8032d4faaaa4c31099b11612a7c9b21484",
+      "bytes": 25539
+    },
+    "contractor-focused.log": {
+      "sha256": "9f8ed3efe768caf5966ec3aa920e51ce7b672ce0fcb330dcb927527b9e6a2ab7",
+      "bytes": 9917
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "reason": "Output directory was made relative to worktree instead of absolute evidence directory; shell redirection failed before Python/pytest started",
+  "tests_collected": 0,
+  "source_effects": false
+}

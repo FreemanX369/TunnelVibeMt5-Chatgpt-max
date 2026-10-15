@@ -1,0 +1,10 @@
+{
+  "tests/unit/test_tip064_capacity_https.py": {
+    "bytes": 37339,
+    "sha256": "e1a8cef3c6bf5c279310d66d536834122ab9f3c0cd9d823948508b88804561e5"
+  },
+  "tests/unit/test_tip064_integration.py": {
+    "bytes": 97385,
+    "sha256": "c258487bb6ffda0856c1cbcac07d5b3be43d264dc0cc623066fcc096cb5cda4c"
+  }
+}

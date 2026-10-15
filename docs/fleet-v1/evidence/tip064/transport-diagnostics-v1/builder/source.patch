@@ -1,0 +1,141 @@
+diff --git a/tests/unit/test_tip058b_transport.py b/tests/unit/test_tip058b_transport.py
+index 36fb113..7062445 100644
+--- a/tests/unit/test_tip058b_transport.py
++++ b/tests/unit/test_tip058b_transport.py
+@@ -1,7 +1,9 @@
+ from __future__ import annotations
+ 
++import ast
+ import copy
+ import hashlib
++import http.client as http_client
+ import ipaddress
+ import os
+ import socket
+@@ -40,6 +42,33 @@ def control_policy():
+         nonce_retention_ms=10000,grant_secret_bytes=32,max_devices=5,max_grants=10,max_nonces=100,
+         max_operations=100,max_nonce_bytes=128,max_operation_id_bytes=128)
+ 
++
++class FixtureHttpsClient(HttpsClient):
++    """Keep safe cause/timing evidence without changing transport behavior."""
++    def __init__(self, *args, server_thread, failures, **kwargs):
++        super().__init__(*args, **kwargs)
++        self.server_thread, self.failures = server_thread, failures
++
++    def post(self, *args, **kwargs):
++        begun = time.monotonic()
++        try:
++            return super().post(*args, **kwargs)
++        except WireError as error:
++            # Never include exception text, headers, URLs, paths or bodies.
++            frame = error.__context__.__traceback__ if error.__context__ is not None else None
++            stack = []
++            while frame is not None and len(stack) < 8:
++                stack.append({"file": os.path.basename(frame.tb_frame.f_code.co_filename),
++                    "function": frame.tb_frame.f_code.co_name, "line": frame.tb_lineno})
++                frame = frame.tb_next
++            error.add_note("TRANSPORT_HTTPS_FIXTURE " + str({
++                "code": error.code, "cause_type": type(error.__context__).__name__,
++                "elapsed_ms": round((time.monotonic() - begun) * 1000),
++                "http_timeout_ms": self.policy.http_timeout_ms,
++                "server_thread_alive": self.server_thread.is_alive(),
++                "server_failure_count": self.failures.qsize(), "cause_stack": stack}))
++            raise
++
+ def signed(key, body, *, nonce="1"*48, route=1, path="/fleet/v1/heartbeat", origin="https://localhost", timestamp=100):
+     raw = encode_body(body,32768)
+     headers=sign_request(key,device_id=DEVICE,route_generation=route,timestamp_ms=timestamp,nonce=nonce,path=path,body=raw,audience=origin)
+@@ -191,7 +220,8 @@ def service(tmp_path,tls_files):
+         try:serve_gateway(("127.0.0.1",0),certificate=certificate,key_file=private,controller_factory=factory,stop_event=stopping,started=ready.put)
+         except BaseException as exc:failures.put(exc)
+     thread=threading.Thread(target=run,daemon=True);thread.start();address=ready.get(timeout=5)
+-    http=HttpsClient("https://127.0.0.1:"+str(address[1]),fleet_policy(),cafile=str(ca))
++    http=FixtureHttpsClient("https://127.0.0.1:"+str(address[1]),fleet_policy(),cafile=str(ca),
++        server_thread=thread,failures=failures)
+     yield http,OwnerClient(http,TOKEN),address,stopping,thread
+     stopping.set();thread.join(timeout=3)
+     assert not thread.is_alive()
+@@ -218,6 +248,82 @@ def test_actual_https_pair_retry_replay_sessions_and_no_secrets(service):
+     with pytest.raises(WireError,match="OWNER_UNAUTHORIZED"):
+         OwnerClient(http,"x"*40).read("get_account_snapshot",TARGET,"badowner")
+ 
++
++@pytest.mark.parametrize("cause", [TimeoutError, ssl.SSLCertVerificationError, http_client.BadStatusLine])
++def test_transport_fixture_preserves_error_cause_without_retry_or_sensitive_text(service, monkeypatch, cause):
++    http, owner, *_ = service
++    attempts = []
++    fault = cause("fixture-sensitive-exception-text")
++    request = {"device_id": DEVICE,
++        "public_key": ed25519.Ed25519PrivateKey.generate().public_key().public_bytes_raw().hex(),
++        "operation_id": "fault-before-send", "expected_revision": 1, "expected_route_generation": None}
++    def fail_connect(connection):
++        attempts.append("connect")
++        raise fault
++    with monkeypatch.context() as fixture:
++        fixture.setattr(http_client.HTTPSConnection, "connect", fail_connect)
++        with pytest.raises(WireError, match="HTTPS_UNAVAILABLE") as caught:
++            owner.admin("grant", request)
++    assert caught.value.__context__ is fault and caught.value.__suppress_context__
++    note = caught.value.__notes__[0]
++    diagnostic = ast.literal_eval(note.removeprefix("TRANSPORT_HTTPS_FIXTURE "))
++    assert cause.__name__ in note and "'http_timeout_ms': 1000" in note
++    assert TOKEN not in note and request["public_key"] not in note and str(fault) not in note
++    assert 1 <= len(diagnostic["cause_stack"]) <= 8
++    assert diagnostic["cause_stack"][-1]["function"] == "fail_connect"
++    assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["cause_stack"])
++    assert attempts == ["connect"]
++    receipt = owner.admin("grant", {**request, "operation_id": "after-controlled-fault"})
++    assert receipt["receipt"]["revision"] == 2
++    print(note)
++
++
++def test_transport_fixture_keeps_owner_denial_and_safe_notes(service):
++    http, *_ = service
++    with pytest.raises(WireError, match="OWNER_UNAUTHORIZED") as caught:
++        OwnerClient(http, "x" * 40).read_status("fixture-sensitive-command")
++    note = caught.value.__notes__[0]
++    assert "OWNER_UNAUTHORIZED" in note and "fixture-sensitive-command" not in note and "x" * 40 not in note
++    print(note)
++
++
++def test_transport_fixture_timeout_can_follow_committed_grant_without_replay(service, monkeypatch):
++    http, owner, *_ = service
++    original = GatewayController.handle
++    committed, release = threading.Event(), threading.Event()
++    calls = []
++    request = {"device_id": DEVICE,
++        "public_key": ed25519.Ed25519PrivateKey.generate().public_key().public_bytes_raw().hex(),
++        "operation_id": "held-after-commit", "expected_revision": 1, "expected_route_generation": None}
++    def hold_response(controller, method, path, headers, body):
++        result = original(controller, method, path, headers, body)
++        if path == "/fleet/v1/admin/grant":
++            calls.append(result["receipt"]["revision"])
++            committed.set()
++            release.wait(timeout=3)
++        return result
++    with monkeypatch.context() as fixture:
++        fixture.setattr(GatewayController, "handle", hold_response)
++        try:
++            with pytest.raises(WireError, match="HTTPS_UNAVAILABLE") as caught:
++                owner.admin("grant", request)
++            assert committed.is_set() and calls == [2]
++            assert isinstance(caught.value.__context__, TimeoutError)
++            note = caught.value.__notes__[0]
++            diagnostic = ast.literal_eval(note.removeprefix("TRANSPORT_HTTPS_FIXTURE "))
++            assert "TimeoutError" in note and "'http_timeout_ms': 1000" in note
++            assert 1 <= len(diagnostic["cause_stack"]) <= 8
++            assert any(frame["function"] == "getresponse" for frame in diagnostic["cause_stack"])
++            assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["cause_stack"])
++            assert TOKEN not in note and request["public_key"] not in note
++            print(note)
++        finally:
++            release.set()
++    # A failed HTTPS receipt cannot establish absence of the persisted effect.
++    with pytest.raises(WireError, match="CONTROL_REVISION_CONFLICT"):
++        owner.admin("grant", {**request, "operation_id": "confirm-retained-revision"})
++    assert calls == [2]
++
+ def positive(command):
+     result=unavailable(command,"fixture")
+     terminal={key:None for key in TERMINAL_FIELDS};terminal.update(alias="FIXTURE",build=1,connected=True,trade_allowed=False)

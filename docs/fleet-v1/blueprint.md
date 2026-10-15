@@ -2,6 +2,10 @@
 
 Version: 1.0. Date: 2026-10-01. **Approved at original revision 063d6a3**, per the [owner approval record](approval-2026-10-02.md); implementation/capability gates remain active.
 
+After Q1's scoped Windows fixture PASS, the owner approved the [TIP-057R boundary amendment](TIP-057R-boundary-amendment.md) at **2026-10-02T21:21:49+07:00**, binding PR #61 head `0ee42c9`. The addition authorizes G03-A common product ownership/admission source/tests and specifies a future installation protocol. Actual migration/activation and Q2 environment gates remain distinct; the original fleet delivery order remains unchanged.
+
+The **2026-10-02T22:56:16+07:00** continuation authorizes next [G03-B contract preparation](TIP-057R-G03B.md). Its isolated SDK-worker/compatibility-first direction is **PROPOSED FOR REVIEW**, not an approved producer/transfer architecture or SDK execution manifest. The [Builder scan](TIP-057R-G03B-source-scan.md) and [feasibility](TIP-057R-G03B-feasibility.md) explain why broad mechanical producer wrapping cannot close the current lifetime contract. G03-A FOUNDATION PASS and the original delivery order remain unchanged.
+
 ## 1. Product outcome and delivery scope
 
 ChatGPT can identify and inspect the correct registered VPS/MT5 through one domain tool surface. Later it can run a bounded native job on an immutable target and retrieve verifiable evidence. The system must preserve existing checkpoint/CAS, guarded iteration, Continuity and exact process ownership rather than replace them with generic developer abstractions.

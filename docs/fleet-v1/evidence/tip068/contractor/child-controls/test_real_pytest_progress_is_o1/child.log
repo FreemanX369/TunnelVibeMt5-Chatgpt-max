@@ -1,0 +1,15 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________________ test_control[PRIVATE_PARAMETER_TOKEN] _____________________
+
+value = 'PRIVATE_PARAMETER_TOKEN'
+
+    @pytest.mark.parametrize('value', ['PRIVATE_PARAMETER_TOKEN'])
+    def test_control(value):
+>       raise RuntimeError('CONTROLLED_FAILURE')
+E       RuntimeError: CONTROLLED_FAILURE
+
+tests/unit/test_control.py:4: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/unit/test_control.py::test_control[PRIVATE_PARAMETER_TOKEN] - Ru...
+1 failed in 0.05s

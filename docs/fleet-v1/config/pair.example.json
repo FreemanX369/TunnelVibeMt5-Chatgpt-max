@@ -1,0 +1,7 @@
+{
+  "schema": "fleet.pair/1",
+  "grant_id": "REPLACE_WITH_INITIAL_GRANT_ID",
+  "secret": "REPLACE_WITH_INITIAL_SECRET_IN_PROTECTED_FILE",
+  "operation_id": "REPLACE_WITH_STABLE_PAIR_OPERATION_ID",
+  "expected_revision": 2
+}

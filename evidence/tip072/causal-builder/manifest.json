@@ -1,0 +1,38 @@
+{
+  "schema": "owned-evidence-manifest/1",
+  "source_head": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "original_excerpt_source": "fix-20261007-1439/candidate-evidence/metadata/windows-failure-log-extract.txt",
+  "original_excerpt_source_sha256": "f4e50f95b20f877e2740f77c27ed8765f8cbe78e13a88b05f62a890300856909",
+  "files": [
+    {
+      "name": "probe-v1.py",
+      "bytes": 8933,
+      "sha256": "065f9442501e5e2f2443adda1ddedab26f398d068fa3e92a60519bd837de5c4e"
+    },
+    {
+      "name": "raw-v1.log",
+      "bytes": 3779,
+      "sha256": "4b0900ffd19beec3cf8ad367f24a6072aa1200d792dc0dfc3ae4430e16537ce3"
+    },
+    {
+      "name": "receipt-v1.json",
+      "bytes": 2575,
+      "sha256": "661cb60f79788f8bff3d2654a26f53284afc17472cc3d07a80dbddcf35d306a9"
+    },
+    {
+      "name": "causal-review.md",
+      "bytes": 6709,
+      "sha256": "3cd074f3376b0a2e6f28941414d5e8c4d868acb80f0a174298dfab0af82b9070"
+    },
+    {
+      "name": "commands.json",
+      "bytes": 688,
+      "sha256": "b5c5bd9aa6e30ee1dabff22e7a302d380a682799516a0b47e522c32f46e10a34"
+    },
+    {
+      "name": "original-windows-excerpt.raw.txt",
+      "bytes": 2961,
+      "sha256": "04d022453d22e3e9e0cc648960551bb1131b7bfa604a86d64f682c203a439d44"
+    }
+  ]
+}

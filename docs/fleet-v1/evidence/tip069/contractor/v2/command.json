@@ -1,0 +1,34 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-p",
+    "fleet_source_progress",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_fleet_source_progress.py",
+    "tests/unit/test_fleet_source_runner.py",
+    "-v",
+    "--tb=short",
+    "--durations=20",
+    "-o",
+    "faulthandler_timeout=90",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip069-contractor/v2/focused.junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip069-builder",
+  "timeout_seconds": 600,
+  "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip069-builder/app:/workspace/scratch/b4674f0ac496/tip069-builder/tests/unit",
+  "parent": "d9254cd82c996b646ec38d74d2c5467d653f4c84",
+  "frozen_files": {
+    "tests/unit/test_tip064_capacity_https.py": {
+      "bytes": 37387,
+      "sha256": "8ee8b65f3756e2cd7c39c84d1c4419b02ee06d1f54224abae9f1c2104d749e6d"
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "bytes": 97385,
+      "sha256": "c258487bb6ffda0856c1cbcac07d5b3be43d264dc0cc623066fcc096cb5cda4c"
+    }
+  },
+  "python": "3.12.14"
+}

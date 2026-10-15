@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip060_authorization.py",
+    "-q",
+    "--tb=short",
+    "--durations=12",
+    "-o",
+    "faulthandler_timeout=45",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-long-fixture-contractor-20261005/contractor.junit.xml"
+  ],
+  "PYTHONPATH": "app:tests/unit",
+  "exit_code": 0,
+  "elapsed_seconds": 41.18571730100007,
+  "source_entries": 211,
+  "source_unchanged": true,
+  "parent_head": "30bcc584953b29a8564bff717b3b4d5819a02798",
+  "candidate_test_sha256": "9db3aac856ec9f97a54d8582f024fb7f21edf6d2a68f9a33285f814bc076cb1b",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "3",
+    "tests": "142",
+    "time": "40.534",
+    "timestamp": "2026-10-05T23:00:16.175037+09:00",
+    "hostname": "96bfb3fe9c28"
+  },
+  "scope": "LOCAL_UNPUBLISHED_TEST_ONLY_CANDIDATE",
+  "physical_qualification": "NOT_RUN"
+}

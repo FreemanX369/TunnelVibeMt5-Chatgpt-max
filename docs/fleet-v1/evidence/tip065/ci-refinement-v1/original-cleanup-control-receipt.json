@@ -1,0 +1,40 @@
+{
+  "control": "exact-retained-fixture-versus-corrected-helper",
+  "results": [
+    {
+      "original": true,
+      "observed_type": "AttributeError",
+      "primary_identity_retained": true,
+      "cleanup_identity_retained": false,
+      "runtime_closed": false,
+      "resource_open": true,
+      "events": [],
+      "primary_notes": [
+        "CONTROLLED_PRIMARY_TIMEOUT"
+      ],
+      "cleanup_notes": [
+        "CONTROLLED_CLEANUP_PENDING"
+      ]
+    },
+    {
+      "original": false,
+      "observed_type": "ExceptionGroup",
+      "primary_identity_retained": true,
+      "cleanup_identity_retained": true,
+      "runtime_closed": false,
+      "resource_open": true,
+      "events": [
+        "step"
+      ],
+      "primary_notes": [
+        "CONTROLLED_PRIMARY_TIMEOUT"
+      ],
+      "cleanup_notes": [
+        "CONTROLLED_CLEANUP_PENDING"
+      ]
+    }
+  ],
+  "source_sha256": "d69470576df13e0081d4489e37f4ac747191c486a255316867c9a8d768001ef8",
+  "qualification": "TEST_FIXTURE_ONLY",
+  "original_http_timeout_cause": "OPEN"
+}

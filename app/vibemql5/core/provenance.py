@@ -17,8 +17,12 @@ def _mcp_catalog_authority() -> dict[str, Any]:
     }
 
 
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
 def sha256_file(path: Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return sha256_bytes(Path(path).read_bytes())
 
 
 def load_bridge_provenance(root: Path | None = None) -> dict[str, Any]:

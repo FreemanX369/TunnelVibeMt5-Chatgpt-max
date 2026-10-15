@@ -1,0 +1,46 @@
+name: Verify TIP-057R-B1 isolated read-worker research build
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  harmless-windows-stub:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    env:
+      TIP057RB1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify portable synthetic protocol and worker faults
+        shell: cmd
+        run: python tests/proofs/tip057rb1/run_proof.py --portable --output tip057rb1-portable
+      - name: Required actual Windows harmless stub cases, no SDK or skipped gate
+        shell: cmd
+        run: python tests/proofs/tip057rb1/run_proof.py --require-windows --output tip057rb1-windows
+      - name: Preserve exact-head harmless source and process receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tip057rb1-harmless-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            tip057rb1-portable/summary.json
+            tip057rb1-portable/proof.log
+            tip057rb1-windows/summary.json
+            tip057rb1-windows/proof.log
+            tip057rb1-windows/compiler.log
+          retention-days: 14
+          if-no-files-found: error

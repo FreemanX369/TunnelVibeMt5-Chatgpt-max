@@ -1,0 +1,6 @@
+{
+  "baseline_path": "/workspace/scratch/1818a0d45fa0/tip065-ci-refinement-20261005/baseline/tests/unit/test_tip064_integration.py",
+  "baseline_sha256": "b8fd8faa529378e37b79ddf775edb839cf5fc8696c50540356c79edbed45afba",
+  "original_initialization_statement_count": 5,
+  "extraction": "Exact top-level stopping assignments and existing finally body from original named fixture test; no product or repository modification."
+}

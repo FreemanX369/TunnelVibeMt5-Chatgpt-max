@@ -1,0 +1,11 @@
+{
+  "source_entries": 211,
+  "changed": [
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "unchanged_app_entries": 89,
+  "overlay_payload_sha256": "0efadd3d855b602e6bd8d58cd7033f092395026b633bceb28629e75fe4003182",
+  "production_unchanged": true,
+  "physical_qualification": "NOT_RUN"
+}

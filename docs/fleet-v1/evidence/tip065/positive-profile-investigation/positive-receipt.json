@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "/workspace/scratch/1818a0d45fa0/tip065-late-failure-investigation-20261006/test_positive_profiles.py",
+    "-q",
+    "--tb=short",
+    "--durations=5",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-late-failure-investigation-20261006/positive-profiles.junit.xml"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 5.640843720000021,
+  "source_unchanged": true,
+  "source_entries": 211,
+  "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+  "physical_qualification": "NOT_RUN"
+}

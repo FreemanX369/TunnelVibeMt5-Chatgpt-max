@@ -1,0 +1,41 @@
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[newer] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 955, "stage": "START", "suite_elapsed_ms": 163561, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[newer] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 955, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 164031, "test_elapsed_ms": 469}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[missing] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 956, "stage": "START", "suite_elapsed_ms": 164031, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[missing] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 956, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 164453, "test_elapsed_ms": 422}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[pending] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 957, "stage": "START", "suite_elapsed_ms": 164453, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[pending] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 957, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 164921, "test_elapsed_ms": 468}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[registry] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 958, "stage": "START", "suite_elapsed_ms": 164921, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[registry] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 958, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 165358, "test_elapsed_ms": 437}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[route] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 959, "stage": "START", "suite_elapsed_ms": 165358, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[route] PASSED [ 66%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 959, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 166531, "test_elapsed_ms": 1172}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[challenge] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 960, "stage": "START", "suite_elapsed_ms": 166531, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[challenge] ERROR [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_uncertain_or_changed_witness_cannot_clear_recovery", "ordinal": 960, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 171406, "test_elapsed_ms": 4875}
+
+tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen", "ordinal": 961, "stage": "START", "suite_elapsed_ms": 171406, "test_elapsed_ms": 0}
+
+tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen PASSED [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip060c_restore.py", "function": "test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen", "ordinal": 961, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 180531, "test_elapsed_ms": 9125}

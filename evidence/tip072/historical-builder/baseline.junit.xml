@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="31" time="0.272" timestamp="2026-10-07T13:39:31.701237+05:00" hostname="0cd60d4e9ba3"><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_live_owner_denial_keeps_ticket_and_owner_as_barrier" time="0.005"><failure message="PermissionError: [Errno 13] modeled publication denial: '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_live_owner_denial_keeps_t0/runs/.active.lock'">held = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f592290b290&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5922912270&gt;
+
+    def test_live_owner_denial_keeps_ticket_and_owner_as_barrier(held, monkeypatch):
+        candidate = _lease(held.root, "B")
+        candidate.ticket_path = candidate._new_ticket()
+        ticket = candidate.ticket_path
+        before = held.lock_path.read_bytes()
+        error = PermissionError(errno.EACCES, "modeled publication denial", str(candidate.lock_path))
+        calls = _deny(monkeypatch, candidate, error)
+        monkeypatch.setattr(candidate, "_remove_dead_owner", _never_reclaim)
+        original_reader, reads = concurrency._read_json_object, []
+    
+        def read(path, **kwargs):
+            reads.append((path, kwargs))
+            return original_reader(path, **kwargs)
+    
+        monkeypatch.setattr(concurrency, "_read_json_object", read)
+        try:
+&gt;           assert candidate._try_acquire(first=True) is False
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_tip072_native_denied_publication.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/vibemql5/core/concurrency.py:291: in _try_acquire
+    return self._publish_owner() if first else False
+           ^^^^^^^^^^^^^^^^^^^^^
+app/vibemql5/core/concurrency.py:296: in _publish_owner
+    fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_live_owner_denial_keeps_t0/runs/.active.lock'
+flags = 193, args = (), kwargs = {}
+
+    def boundary(path, flags, *args, **kwargs):
+        if str(path) == str(candidate.lock_path) and flags == FLAGS and condition():
+            calls.append((str(path), flags))
+&gt;           raise error
+E           PermissionError: [Errno 13] modeled publication denial: '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_live_owner_denial_keeps_t0/runs/.active.lock'
+
+tests/unit/test_tip072_native_denied_publication.py:53: PermissionError</failure></testcase><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_qualified_denial_preserves_fifo_until_owner_releases" time="0.004"><failure message="AssertionError: assert (PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') is not None and False)&#10; +  where PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922912f00&gt;.ticket_path&#10; +  and   False = is_file()&#10; +    where is_file = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json').is_file&#10; +      where PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922912f00&gt;.ticket_path">held = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922912db0&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5922912f60&gt;
+
+    def test_qualified_denial_preserves_fifo_until_owner_releases(held, monkeypatch):
+        b, c = _lease(held.root, "B"), _lease(held.root, "C")
+        before = held.lock_path.read_bytes()
+        error = PermissionError(errno.EACCES, "modeled publication denial", str(b.lock_path))
+        decision, errors, order = threading.Event(), [], []
+        original_attempt = b._try_acquire
+    
+        def attempt(*, first):
+            try:
+                return original_attempt(first=first)
+            finally:
+                decision.set()
+    
+        monkeypatch.setattr(b, "_try_acquire", attempt)
+        calls = _deny(monkeypatch, b, error, condition=lambda:
+            threading.current_thread().name == "tip072-B" and not calls)
+    
+        def waiter(candidate):
+            try:
+                candidate.acquire()
+                try:
+                    order.append(candidate.operation_id)
+                finally:
+                    candidate.release()
+            except BaseException as failed:
+                errors.append(failed)
+    
+        threads = [threading.Thread(target=waiter, args=(b,), name="tip072-B"),
+                   threading.Thread(target=waiter, args=(c,), name="tip072-C")]
+        try:
+            threads[0].start()
+            assert decision.wait(1)
+            assert errors == []
+&gt;           assert b.ticket_path is not None and b.ticket_path.is_file()
+E           AssertionError: assert (PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') is not None and False)
+E            +  where PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922912f00&gt;.ticket_path
+E            +  and   False = is_file()
+E            +    where is_file = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json').is_file
+E            +      where PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_preserve0/state/concurrency/native-waiters/00000000000000000002-b478924eafdd49b799f85cdcdd0ea603.json') = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922912f00&gt;.ticket_path
+
+tests/unit/test_tip072_native_denied_publication.py:135: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_qualified_denial_keeps_original_zero_wait_deadline" time="0.005"><failure message="PermissionError: [Errno 13] modeled publication denial: '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_keeps_or0/runs/.active.lock'">held = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922913a40&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5922955430&gt;
+
+    def test_qualified_denial_keeps_original_zero_wait_deadline(held, monkeypatch):
+        candidate = _lease(held.root, "B", wait=0)
+        before = held.lock_path.read_bytes()
+        error = PermissionError(errno.EACCES, "modeled publication denial", str(candidate.lock_path))
+        _deny(monkeypatch, candidate, error)
+        monkeypatch.setattr(candidate, "_remove_dead_owner", _never_reclaim)
+        with pytest.raises(TimeoutError, match="CONCURRENCY_NATIVE_WAIT_TIMEOUT"):
+&gt;           candidate.acquire()
+
+tests/unit/test_tip072_native_denied_publication.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/vibemql5/core/concurrency.py:330: in acquire
+    if self._try_acquire(first=first == self.ticket_path):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/vibemql5/core/concurrency.py:291: in _try_acquire
+    return self._publish_owner() if first else False
+           ^^^^^^^^^^^^^^^^^^^^^
+app/vibemql5/core/concurrency.py:296: in _publish_owner
+    fd = os.open(str(self.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_keeps_or0/runs/.active.lock'
+flags = 193, args = (), kwargs = {}
+
+    def boundary(path, flags, *args, **kwargs):
+        if str(path) == str(candidate.lock_path) and flags == FLAGS and condition():
+            calls.append((str(path), flags))
+&gt;           raise error
+E           PermissionError: [Errno 13] modeled publication denial: '/workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/baseline_tmp/test_qualified_denial_keeps_or0/runs/.active.lock'
+
+tests/unit/test_tip072_native_denied_publication.py:53: PermissionError</failure></testcase><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_real_existing_owner_and_successful_release_are_unchanged" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[missing]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[corrupt]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[foreign]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[schema]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[wrong-id]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[blank-token]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[invalid-token]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[own-token]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[pid-text]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[pid-bool]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[pid-zero]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[pid-mismatch]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[invalid-id]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[read-denied]" time="0.002" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[stat-denied]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[unobserved]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[dead-owner]" time="0.005"><failure message="vibemql5.core.native_ownership.OwnershipBlocked: LIVE_RECOVERY_REQUIRED: native_ownership:PROCESS_NAMESPACE_UNQUALIFIED">held = &lt;vibemql5.core.concurrency._QueuedFileLease object at 0x7f5922957440&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f59229106b0&gt;
+case = 'dead-owner'
+
+    @pytest.mark.parametrize("case", NEGATIVE_CASES)
+    def test_unqualified_denial_keeps_original_error_and_owner(held, monkeypatch, case):
+        candidate = _lease(held.root, "B", namespace="mutation" if case == "non-native" else "native")
+        if case == "wrong-root":
+            candidate.lock_path = held.root / "runs" / "other.lock"
+            candidate.lock_path.write_bytes(held.lock_path.read_bytes())
+        path = candidate.lock_path
+        owner = json.loads(path.read_bytes())
+        if case == "foreign": owner["namespace"] = "mutation"
+        if case == "schema": owner["schema_version"] = "future"
+        if case == "wrong-id": owner["identity"]["creation"] = str(int(owner["identity"]["creation"]) + 1)
+        if case == "blank-token": owner["token"] = ""
+        if case == "invalid-token": owner["token"] = "g" * 32
+        if case == "own-token": owner["token"] = candidate.token
+        if case == "pid-text": owner["pid"] = str(owner["pid"])
+        if case == "pid-bool": owner["pid"] = True
+        if case == "pid-zero": owner["pid"] = 0
+        if case == "pid-mismatch": owner["pid"] += 1
+        if case == "invalid-id": owner["identity"] = {"pid": owner["pid"]}
+        if case == "dead-owner":
+            child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(10)"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            try:
+                with ObservedProcess(child.pid) as process:
+&gt;                   owner["identity"] = process.identity()
+                                        ^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_tip072_native_denied_publication.py:211: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;vibemql5.core.native_ownership.ObservedProcess object at 0x7f5922c7d3a0&gt;
+
+    def identity(self) -&gt; dict[str, Any]:
+        if self._live_identity is not None:
+            if self.handle is None:
+                raise OwnershipBlocked("PROCESS_HANDLE_CLOSED")
+            if self.handle != self._identity_handle:
+                raise OwnershipBlocked("PROCESS_HANDLE_CHANGED")
+            if os.name == "nt" and any(self._live_identity[key] != value
+                                      for key, value in self._windows_lifetime().items()):
+                raise OwnershipBlocked("PROCESS_LIFETIME_CHANGED")
+            return dict(self._live_identity)
+        if self.exited():
+            raise OwnershipBlocked("LIVE_IMAGE_NOT_CAPTURED_BEFORE_EXIT")
+        if os.name == "nt":
+            W = self._W
+            lifetime = self._windows_lifetime()
+            image = ctypes.create_unicode_buffer(32768)
+            length = W.DWORD(len(image))
+            if not self.kernel.QueryFullProcessImageNameW(self.handle, 0, image, ctypes.byref(length)):
+                raise OwnershipBlocked("PROCESS_IDENTITY_UNPROVEN")
+            if not image.value or not length.value or not os.path.isabs(image.value):
+                raise OwnershipBlocked("PROCESS_IDENTITY_UNPROVEN")
+            observed = {**lifetime, "image": os.path.normcase(os.path.realpath(image.value))}
+        else:
+            try:
+                namespace_matches = int(Path("/proc/self/stat").read_text().split(" ", 1)[0]) == os.getpid()
+            except (OSError, ValueError):
+                namespace_matches = False
+            if not namespace_matches and self.pid != os.getpid():
+&gt;               raise OwnershipBlocked("PROCESS_NAMESPACE_UNQUALIFIED")
+E               vibemql5.core.native_ownership.OwnershipBlocked: LIVE_RECOVERY_REQUIRED: native_ownership:PROCESS_NAMESPACE_UNQUALIFIED
+
+app/vibemql5/core/native_ownership.py:127: OwnershipBlocked</failure></testcase><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[wrong-error]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[wrong-root]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[non-native]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[symlink-stat]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[reparse-stat]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[ancestor-alias]" time="0.003" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_unqualified_denial_keeps_original_error_and_owner[other-errno]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_actual_bad_path_does_not_become_owner_wait" time="0.002" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_authority_blocks_before_denied_publication[active]" time="0.004" /><testcase classname="tests.unit.test_tip072_native_denied_publication" name="test_authority_blocks_before_denied_publication[unknown]" time="0.003" /></testsuite></testsuites>

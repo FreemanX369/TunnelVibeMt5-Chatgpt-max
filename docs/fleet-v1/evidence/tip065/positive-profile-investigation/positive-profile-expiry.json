@@ -1,0 +1,7 @@
+{
+  "signed_ttl_ms": 1000,
+  "http_and_control_round_ms": 5000,
+  "original_expired_entry_proof_denial": true,
+  "fresh_next_phase_success": true,
+  "native_effects": "SYNTHETIC_ONLY"
+}

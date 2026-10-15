@@ -1,0 +1,21 @@
+{
+  "source_parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "verified": [
+    {
+      "folder": "mcp-outage-builder",
+      "manifest_sha256": "24e2a522038a4f732a0dab9d3eefea08452ff2d260cfa78e46714b41255ec9f6",
+      "verified_payloads": 8
+    },
+    {
+      "folder": "sqlite-lifecycle-builder",
+      "manifest_sha256": "4c4eff752846481bf91acd52fdbc12a414a3b6fd65586688fffc0f6b5bec0743",
+      "verified_payloads": 17
+    },
+    {
+      "folder": "runtime-cost-builder",
+      "manifest_sha256": "fbd428f004db0c4e36cd2e8296c11cdbbf6d4e4e06685fab3a6b5bd9a7a4c81a",
+      "verified_payloads": 16
+    }
+  ],
+  "private_generated_TLS_material_copied": false
+}

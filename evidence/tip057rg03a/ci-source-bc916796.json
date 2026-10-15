@@ -1,0 +1,566 @@
+{
+  "baseline_checkout": {
+    "github_pr_merge_sha": "12f6b67d7a10af0aca1e2bd2bc5709457da8c8fd",
+    "qualification": "Baselines checkout PR merge; dedicated G03/Q1 checkout exact candidate head.",
+    "source_candidate_tree_sha": "e9bd991b173d3c05581ac4c9aad3dd2e2eebd745",
+    "tree_identical_verified": true,
+    "tree_sha": "e9bd991b173d3c05581ac4c9aad3dd2e2eebd745"
+  },
+  "baseline_jobs": [
+    {
+      "job": {
+        "conclusion": "success",
+        "id": 110898838504,
+        "logs_url": null,
+        "name": "fresh-checkout",
+        "run_id": 37025462208,
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install deterministic bootstrap dependencies",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Fresh import",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify tool catalog authority",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile Python tree",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Full unit suite",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify sanitized Windows config",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Windows bootstrap dry-run",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify bootstrap manifest and runbook",
+            "number": 11,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Secret and runtime-state boundary",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 23,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "status": "completed"
+          }
+        ]
+      },
+      "run_id": 37025462208
+    },
+    {
+      "job": {
+        "conclusion": "success",
+        "id": 110898839271,
+        "logs_url": null,
+        "name": "windows-unit",
+        "run_id": 37025462241,
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install locked runtime and editable package",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile candidate Python surface",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run unit suite",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 11,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed"
+          }
+        ]
+      },
+      "run_id": 37025462241
+    },
+    {
+      "job": {
+        "conclusion": "success",
+        "id": 110898836941,
+        "logs_url": null,
+        "name": "idempotent-bindings",
+        "run_id": 37025461890,
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile TIP-028 surfaces",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify binding contract",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "status": "completed"
+          }
+        ]
+      },
+      "run_id": 37025461890
+    },
+    {
+      "job": {
+        "conclusion": "success",
+        "id": 110898837371,
+        "logs_url": null,
+        "name": "continuity-core",
+        "run_id": 37025462009,
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install test dependency",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile changed Python surfaces",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run Continuity Core tests",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify ordered tool catalog",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 13,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "status": "completed"
+          }
+        ]
+      },
+      "run_id": 37025462009
+    }
+  ],
+  "proofs": [
+    {
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11234742196/zip",
+        "created_at": "2026-10-02T15:13:53Z",
+        "digest": "sha256:170d84f95b4ed29716835ebef4f6a883a8f4facf6ac9c1e1a3929d3112ec3b24",
+        "expired": false,
+        "expires_at": "2026-10-16T15:13:53Z",
+        "id": 11234742196,
+        "name": "tip057rg03a-windows-bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+        "size_in_bytes": 2317,
+        "updated_at": "2026-10-02T15:13:53Z",
+        "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11234742196",
+        "workflow_run": {
+          "head_branch": "feat/tip057r-g03a-20261002",
+          "head_repository_id": 1368264986,
+          "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+          "id": 37025462023,
+          "repository_id": 1368264986
+        }
+      },
+      "case_names": [
+        "test_a04_actual_live_reused_identity_active_lock_is_not_deleted",
+        "test_a05_bind_publication_before_after_fault_stays_active",
+        "test_a05_worker_closure_publication_fault_retains_barrier",
+        "test_a06_actual_create_before_bind_interruption_stays_unknown",
+        "test_a06_descendant_unknown_boolean_unqualified_and_exception_stay_active",
+        "test_a06_durable_arm_attempt_actual_suspended_bind_before_resume",
+        "test_a07_live_orphan_fresh_observation_and_stale_cas",
+        "test_a08_fresh_already_dead_handle_never_uses_expected_journal_image"
+      ],
+      "elapsed_ms": 1390.0,
+      "errors": 0,
+      "exact_head_verified": true,
+      "failures": 0,
+      "files": {
+        "proof.log": {
+          "bytes": 1437,
+          "sha256": "fcb041a3e1c169d731be0d1e334b15904b29e8eb97ea5ac09d3226f0e47f87fb"
+        },
+        "summary.json": {
+          "bytes": 5532,
+          "sha256": "c31401807663d2c14c4985c47209a508db56f25339bceb5447fdf2423f5123a8"
+        }
+      },
+      "job_id": 110898837898,
+      "job_log_sha256": "2e9e5741f3824036ed70bebd93b908c33225aa24766042d2ae019343d3a15179",
+      "os": "Windows-2025Server-10.0.26100-SP0",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "records_count": 11,
+      "run_id": 37025462023,
+      "skips": 0,
+      "source_blob_verified": true,
+      "sources": {
+        ".github/workflows/verify-tip057rg03a.yml": "b4bfa874909010df37186c40a27fd0d8e443e777d5780b7cf4d7f748ed06fa25",
+        "app/vibemql5/core/concurrency.py": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+        "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+        "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039",
+        "tests/proofs/tip057rg03a/run_windows.py": "70c293168a5db2f88f617a62063801688710bf58aac333c7b80eaa399e4e0cd3",
+        "tests/proofs/tip057rq/windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84",
+        "tests/unit/ownership_fixture.py": "c051e73bcdb2fbd2b48efd25b603c221508745cc9a80ee7eef71536d17cb39d6",
+        "tests/unit/test_tip057rg03a_native_ownership.py": "386fd523df702f899dca1a4ed048f22ca743a62c40ae83a2e3a2c452f65a627f"
+      },
+      "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+      "tests_run": 8,
+      "zip_bytes": 2317,
+      "zip_sha256": "170d84f95b4ed29716835ebef4f6a883a8f4facf6ac9c1e1a3929d3112ec3b24"
+    },
+    {
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11234907133/zip",
+        "created_at": "2026-10-02T15:14:06Z",
+        "digest": "sha256:b6b5719cad63b25f3495a2d9398777e0021b9370d6faca987593a90d3d2720fd",
+        "expired": false,
+        "expires_at": "2026-10-16T15:14:06Z",
+        "id": 11234907133,
+        "name": "tip057rq-windows-bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+        "size_in_bytes": 8870,
+        "updated_at": "2026-10-02T15:14:06Z",
+        "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11234907133",
+        "workflow_run": {
+          "head_branch": "feat/tip057r-g03a-20261002",
+          "head_repository_id": 1368264986,
+          "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+          "id": 37025462247,
+          "repository_id": 1368264986
+        }
+      },
+      "case_names": [
+        "test_create_attempt_without_binding_cannot_release",
+        "test_live_exact_worker_and_identity_mismatch_reject_clear",
+        "test_lost_active_intent_cannot_admit_after_dead_parent",
+        "test_no_attempt_release",
+        "test_partial_intent_is_fail_closed",
+        "test_primary_cleanup_deadline_precedence_has_no_unqualified_values",
+        "test_stale_recovery_cannot_clear_successor",
+        "test_unresolved_descendant_rejects_clear",
+        "test_q01_restriction_active_before_work_and_setup_failure_no_attempt",
+        "test_q02_exit_between_discovery_and_launch",
+        "test_q02_q03_unrestricted_control_and_restricted_stopped_launch",
+        "test_q04_primary_and_real_fixture_cleanup_faults",
+        "test_q05_hang_does_not_release_before_exact_termination",
+        "test_q06_real_parent_crash_before_failure_marker",
+        "test_q07_real_creation_identity_stale_generation_and_descendants",
+        "test_q08_conflicting_callers_restart_and_recovery_race"
+      ],
+      "elapsed_ms": 15250.0,
+      "errors": 0,
+      "exact_head_verified": true,
+      "failures": 0,
+      "files": {
+        "compiler.log": {
+          "bytes": 18,
+          "sha256": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def"
+        },
+        "proof.log": {
+          "bytes": 2272,
+          "sha256": "784a696a9cd7cd2d0527504f18185d2aeabaa2c6b446e8489e57fa0e9a5385a2"
+        },
+        "summary.json": {
+          "bytes": 75321,
+          "sha256": "194486bb6f5abe57e9911a693fd8d13b18f3dcc722dd14cf6dfc3708ffedea0b"
+        }
+      },
+      "job_id": 110898838876,
+      "job_log_sha256": "a9e3e63115cbac7ff49f398a89eac241bb1fa8eb254ba6534d1af7ccaccbffac",
+      "os": "Windows-2025Server-10.0.26100-SP0",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "records_count": 56,
+      "run_id": 37025462247,
+      "skips": 0,
+      "source_blob_verified": true,
+      "sources": {
+        "authority.py": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff",
+        "fixture_worker.c": "8c56e060a9f3010f74e4acde73631975486d64ab0c4e74119623253489f0974a",
+        "run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+        "windows_boundary.py": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+      },
+      "status": "FIXTURE_PASS_Q03_OPEN",
+      "tests_run": 16,
+      "zip_bytes": 8870,
+      "zip_sha256": "b6b5719cad63b25f3495a2d9398777e0021b9370d6faca987593a90d3d2720fd"
+    }
+  ],
+  "repository": "FreemanX369/TunnelVibeMt5-Chatgpt-max",
+  "retained_files": {
+    "evidence/tip057rg03a/baseline-source-bc916796/37025461890-job.log": {
+      "bytes": 17358,
+      "sha256": "5d08fc83d6eaa0ec815cbb6a593e28ebf0b430a801d61293275f4eaf5d599255"
+    },
+    "evidence/tip057rg03a/baseline-source-bc916796/37025462009-job.log": {
+      "bytes": 19722,
+      "sha256": "bac39a8d2f0c100ad9a04e314b309c72d7f4577d3ce57fbb01fbfda201c1fe4e"
+    },
+    "evidence/tip057rg03a/baseline-source-bc916796/37025462208-job.log": {
+      "bytes": 39299,
+      "sha256": "a30dbc68c06e9f8c87161b8d9e1d120f0d37239424756a69fc254a343977e302"
+    },
+    "evidence/tip057rg03a/baseline-source-bc916796/37025462241-job.log": {
+      "bytes": 29200,
+      "sha256": "debb4f7064374ef1beba48ca9b7bf758c8e1877704ade44b557631f98c34257f"
+    },
+    "evidence/tip057rg03a/q1-source-bc916796/artifact.zip": {
+      "bytes": 8870,
+      "sha256": "b6b5719cad63b25f3495a2d9398777e0021b9370d6faca987593a90d3d2720fd"
+    },
+    "evidence/tip057rg03a/q1-source-bc916796/compiler.log": {
+      "bytes": 18,
+      "sha256": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def"
+    },
+    "evidence/tip057rg03a/q1-source-bc916796/job.log": {
+      "bytes": 55029,
+      "sha256": "a9e3e63115cbac7ff49f398a89eac241bb1fa8eb254ba6534d1af7ccaccbffac"
+    },
+    "evidence/tip057rg03a/q1-source-bc916796/proof.log": {
+      "bytes": 2272,
+      "sha256": "784a696a9cd7cd2d0527504f18185d2aeabaa2c6b446e8489e57fa0e9a5385a2"
+    },
+    "evidence/tip057rg03a/q1-source-bc916796/summary.json": {
+      "bytes": 75321,
+      "sha256": "194486bb6f5abe57e9911a693fd8d13b18f3dcc722dd14cf6dfc3708ffedea0b"
+    },
+    "evidence/tip057rg03a/windows-source-bc916796/artifact.zip": {
+      "bytes": 2317,
+      "sha256": "170d84f95b4ed29716835ebef4f6a883a8f4facf6ac9c1e1a3929d3112ec3b24"
+    },
+    "evidence/tip057rg03a/windows-source-bc916796/job.log": {
+      "bytes": 22353,
+      "sha256": "2e9e5741f3824036ed70bebd93b908c33225aa24766042d2ae019343d3a15179"
+    },
+    "evidence/tip057rg03a/windows-source-bc916796/proof.log": {
+      "bytes": 1437,
+      "sha256": "fcb041a3e1c169d731be0d1e334b15904b29e8eb97ea5ac09d3226f0e47f87fb"
+    },
+    "evidence/tip057rg03a/windows-source-bc916796/summary.json": {
+      "bytes": 5532,
+      "sha256": "c31401807663d2c14c4985c47209a508db56f25339bceb5447fdf2423f5123a8"
+    }
+  },
+  "schema": "tip057rg03a.contractor-ci/1",
+  "source_head": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+  "workflows": [
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462208",
+      "id": 37025462208,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462247",
+      "id": 37025462247,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462241",
+      "id": 37025462241,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462023",
+      "id": 37025462023,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025461890",
+      "id": 37025461890,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "bc9167969d67d288c37a4ce9aa5854a0bf2db14d",
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37025462009",
+      "id": 37025462009,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed"
+    }
+  ]
+}

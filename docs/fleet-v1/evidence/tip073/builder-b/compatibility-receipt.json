@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_fleet_source_runner.py",
+    "tests/unit/test_tip060c_restore.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073b-builder/compatibility.junit.xml",
+    "--durations=10"
+  ],
+  "timeout_seconds": 60,
+  "exit_code": 0,
+  "wall_seconds": 1.080319437000071,
+  "source_files": 217,
+  "source_unchanged": true
+}

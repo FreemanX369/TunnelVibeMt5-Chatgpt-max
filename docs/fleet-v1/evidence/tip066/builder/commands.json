@@ -1,0 +1,64 @@
+{
+  "schema": "tip066.builder.commands/1",
+  "working_directory": "/workspace/scratch/b4674f0ac496/tip066-builder",
+  "source_parent": "fe6ef1baa359ea2acbba7e3e0f78ae872ed1c55f",
+  "python": "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+  "environment": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip066-builder/app"
+  },
+  "install_initial": [
+    "python",
+    "-m",
+    "pip",
+    "install",
+    "mcp==2.1.1",
+    "pytest==9.1.1",
+    "cryptography==50.0.1"
+  ],
+  "install_constrained": [
+    "python",
+    "-m",
+    "pip",
+    "install",
+    "-c",
+    "requirements-bootstrap.lock",
+    "mcp==2.1.1",
+    "pytest==9.1.1",
+    "cryptography==50.0.1"
+  ],
+  "focused_v1": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip066_live_diagnostics.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/builder/focused-v1.junit.xml"
+  ],
+  "focused_v2": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip066_live_diagnostics.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/builder/focused-v2.junit.xml"
+  ],
+  "compatibility_v1": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip040_live_terminal.py",
+    "tests/unit/test_tip043_chart_delivery.py",
+    "tests/unit/test_tip047_049_backend_contracts.py",
+    "tests/unit/test_tip053_catalog.py",
+    "tests/unit/test_tip054_deep_audit_guards.py",
+    "tests/unit/test_tip057rc1.py",
+    "tests/unit/test_tip055a_runtime_forensics_identity.py",
+    "tests/unit/test_tip057rg03a_native_ownership.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/builder/compatibility-v1.junit.xml"
+  ],
+  "schema_baseline_environment": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/repo/app"
+  },
+  "baseline_empty_log_note": "Initial setup log is zero bytes; actual environment failures are retained as observed errors in environment-setup.json, not fabricated raw stdout."
+}

@@ -1,0 +1,20 @@
+{
+  "parent": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "source_entries": 217,
+  "allowed_changes": {
+    "tests/unit/test_tip064_integration.py": {
+      "bytes": 97723,
+      "sha256": "dc406d668c092d168094614cfe88e6a5849d36ac8f026ef124fa56792d93f6be"
+    },
+    "tests/unit/fleet_source_progress.py": {
+      "bytes": 6705,
+      "sha256": "58825d1d5a88eebb9b1347865235a98c55abc7eb1095378d3b52ee2b5b1fd92e"
+    },
+    "tests/unit/test_fleet_source_progress.py": {
+      "bytes": 17885,
+      "sha256": "1a32706313362705297afe6e16c60807399d00f72b8286f3f6743da24df70600"
+    }
+  },
+  "other_source_exact": 214,
+  "all_production_exact": true
+}

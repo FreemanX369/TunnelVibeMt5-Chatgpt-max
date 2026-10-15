@@ -1,0 +1,21 @@
+{
+  "positive-profile-builder/source-final.json": "6192855bc7adadd960c04c173c71db59d5d29d4f14a90b62b7a7b7a15e48745d",
+  "positive-profile-builder/focused.log": "89465ceae6b5fb2fe3ca6756e68f61385aadccdc8df8cf43398a5b4d3b806076",
+  "positive-profile-builder/source-before.json": "06f1559cdf3d55903e72ba92c01f8c4daeeb7ebfb9257208208a14ac3e00902a",
+  "positive-profile-builder/original-test_tip064_capacity_https.py": "a0d8587242a617007a034113075c7ed3d30ee0d142ebbb670e2f6b782b776a6c",
+  "positive-profile-builder/receipt.json": "0a50ef51fbbc8f5b78675894bd5815f14e790adda9e0c19db0290002588fcba0",
+  "positive-profile-builder/focused.junit.xml": "3c0c2bdcf8258115355f45daa74b2af8fa3190b3b64e4ad4448801f147101e10",
+  "positive-profile-builder/source-test-after.json": "6192855bc7adadd960c04c173c71db59d5d29d4f14a90b62b7a7b7a15e48745d",
+  "positive-profile-builder/original-test_tip064_integration.py": "9db3aac856ec9f97a54d8582f024fb7f21edf6d2a68f9a33285f814bc076cb1b",
+  "positive-profile-builder/completion-receipt.json": "990eb0729ae3018c54c909d99bf890b2e89b14263fe048c4a97f47c7f8a54781",
+  "positive-profile-builder/source-test-before.json": "6192855bc7adadd960c04c173c71db59d5d29d4f14a90b62b7a7b7a15e48745d",
+  "positive-profile-builder/builder-two-file.diff": "b0fbb0460ccdc5dbe27b0190e1e3a3b1de349f05d1044913d6347e290c26c5cc",
+  "positive-profile-builder/environment.json": "59ec2df88fad66b8e6e2ad09570f00d9bbd3b473147c45ff667bd5ee8ce6176b",
+  "positive-profile-builder/builder-completion-report.md": "a1517f5f767b125affc2b38f7b7859e1c97b3315654634cbf5917c41d2a0deef",
+  "positive-profile-contractor/focused.log": "aceb916d58e4f28f3b16dad72fe805908242b3078df6f5c93f87927ace54ac1e",
+  "positive-profile-contractor/source-before.json": "6192855bc7adadd960c04c173c71db59d5d29d4f14a90b62b7a7b7a15e48745d",
+  "positive-profile-contractor/receipt.json": "0228de674e7189ed16fe91d19b0d7175c858586b30b47eaeebb5a7775c992957",
+  "positive-profile-contractor/focused.junit.xml": "9aa8967598320d7baf474a7f559725464b6b5434b744c6c741e7bd8f9a967a89",
+  "positive-profile-contractor/source-after.json": "6192855bc7adadd960c04c173c71db59d5d29d4f14a90b62b7a7b7a15e48745d",
+  "positive-profile-contractor/scope-review.json": "ed8cb532ac2f82f7ca88a80b5e1dedf9ed68ff81761a9645ce275a76abc9b670"
+}

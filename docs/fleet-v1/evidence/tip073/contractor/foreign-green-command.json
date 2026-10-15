@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "foreign_activity_plugin",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/foreign-green.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/foreign-green-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073-candidate",
+  "timeout_s": 30,
+  "exit_code": 0,
+  "wall_s": 7.3495993849999195,
+  "source_count": 217,
+  "source_unchanged": true,
+  "cases": 1,
+  "failed": 0,
+  "skipped": 0,
+  "passed": 1
+}

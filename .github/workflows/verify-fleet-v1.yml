@@ -1,0 +1,97 @@
+name: Verify Fleet v1 integrated source
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-harmless-fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked source test dependencies
+        run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Prepare measured Windows source temp
+        if: runner.os == 'Windows'
+        shell: python
+        run: |
+          import json, os, tempfile
+          from pathlib import Path
+          receipt = {'schema': 'fleet.source-temp/1', 'status': 'RUNNING',
+              'expected_sha': os.environ['FLEET_V1_EXPECTED_SHA'],
+              'scope': 'CI_SOURCE_ENVIRONMENT_NOT_PHYSICAL_QUALIFICATION',
+              'acl_policy': 'ORIGINAL_INHERITED_ACL_GUARDS_REQUIRED'}
+          try:
+              original = Path(tempfile.gettempdir())
+              root = Path(os.environ['RUNNER_TEMP'])
+              if root.is_symlink() or root.is_junction():
+                  raise RuntimeError('SOURCE_RUNNER_TEMP_REPARSE')
+              if original.stat().st_dev == root.stat().st_dev:
+                  raise RuntimeError('SOURCE_DISTINCT_TEMP_VOLUME_NOT_OBSERVED')
+              owned = Path(tempfile.mkdtemp(prefix='fleet-source-', dir=root))
+              if owned.is_symlink() or owned.is_junction():
+                  raise RuntimeError('SOURCE_TASK_TEMP_REPARSE')
+              with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                  for key in ('TMPDIR', 'TMP', 'TEMP'):
+                      environment.write(key + '=' + str(owned) + '\n')
+              receipt.update(status='PASS', temp_drive=owned.drive, temp_st_dev=owned.stat().st_dev,
+                  previous_temp_drive=original.drive, previous_temp_st_dev=original.stat().st_dev)
+          except BaseException as error:
+              receipt.update(status='ERROR', error_type=type(error).__name__)
+              raise
+          finally:
+              Path('source-temp-setup.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, sort_keys=True))
+      - name: Verify Linux source and portable fixtures
+        if: runner.os == 'Linux'
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTEST_ADDOPTS: '-o junit_logging=system-out -o junit_log_passing_tests=True'
+          TIP077_AUTHORIZATION_SCOPE_PROBE: '1'
+        run: python tests/proofs/fleet_v1/run_source.py --output fleet-v1-source
+      - name: Verify Windows source and required harmless process fixtures
+        if: runner.os == 'Windows'
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTEST_ADDOPTS: '-o junit_logging=system-out -o junit_log_passing_tests=True'
+          TIP077_AUTHORIZATION_SCOPE_PROBE: '1'
+        run: python tests/proofs/fleet_v1/run_source.py --require-windows --output fleet-v1-source
+      - name: Retain Windows environment receipt
+        if: always() && runner.os == 'Windows'
+        shell: python
+        run: |
+          import shutil
+          from pathlib import Path
+          receipt = Path('source-temp-setup.json')
+          if receipt.is_file():
+              destination = Path('fleet-v1-source')
+              destination.mkdir(exist_ok=True)
+              shutil.copyfile(receipt, destination / 'temp-setup.json')
+      - name: Preserve exact-checkout source manifests, unit JUnit and proof logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-v1-source-${{ matrix.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: fleet-v1-source/
+          retention-days: 14
+          if-no-files-found: error

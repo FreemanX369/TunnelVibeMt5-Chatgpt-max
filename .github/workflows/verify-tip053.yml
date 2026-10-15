@@ -11,8 +11,17 @@ permissions:
 jobs:
   windows-unit:
     runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -22,10 +31,62 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-bootstrap.lock
           python -m pip install -e . --no-deps
+      - name: Prepare measured Windows source temp
+        shell: python
+        run: |
+          import json, os, tempfile
+          from pathlib import Path
+          receipt = {'schema': 'fleet.source-temp/1', 'status': 'RUNNING',
+              'expected_sha': os.environ['FLEET_V1_EXPECTED_SHA'],
+              'scope': 'CI_SOURCE_ENVIRONMENT_NOT_PHYSICAL_QUALIFICATION',
+              'acl_policy': 'ORIGINAL_INHERITED_ACL_GUARDS_REQUIRED'}
+          try:
+              original = Path(tempfile.gettempdir())
+              root = Path(os.environ['RUNNER_TEMP'])
+              if root.is_symlink() or root.is_junction():
+                  raise RuntimeError('SOURCE_RUNNER_TEMP_REPARSE')
+              if original.stat().st_dev == root.stat().st_dev:
+                  raise RuntimeError('SOURCE_DISTINCT_TEMP_VOLUME_NOT_OBSERVED')
+              owned = Path(tempfile.mkdtemp(prefix='fleet-source-', dir=root))
+              if owned.is_symlink() or owned.is_junction():
+                  raise RuntimeError('SOURCE_TASK_TEMP_REPARSE')
+              with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                  for key in ('TMPDIR', 'TMP', 'TEMP'):
+                      environment.write(key + '=' + str(owned) + '\n')
+              receipt.update(status='PASS', temp_drive=owned.drive, temp_st_dev=owned.stat().st_dev,
+                  previous_temp_drive=original.drive, previous_temp_st_dev=original.stat().st_dev)
+          except BaseException as error:
+              receipt.update(status='ERROR', error_type=type(error).__name__)
+              raise
+          finally:
+              Path('source-temp-setup.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, sort_keys=True))
       - name: Compile candidate Python surface
         shell: pwsh
         run: |
           python -m py_compile app/vibemql5/backend_admin/core.py app/vibemql5/backend_admin/test_run_worker.py app/vibemql5/backend_admin/tools.py app/vibemql5/core/artifacts.py app/vibemql5/core/live_terminal.py app/vibemql5/core/facade.py app/vibemql5/core/compiler.py app/vibemql5/parsers/report.py app/vibemql5/adapters/mcp.py
-      - name: Run unit suite
-        shell: pwsh
-        run: python -m pytest -q tests/unit
+      - name: Run bounded exact-head unit suite
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTEST_ADDOPTS: '-o junit_logging=system-out -o junit_log_passing_tests=True'
+          TIP077_AUTHORIZATION_SCOPE_PROBE: '1'
+        run: python tests/proofs/fleet_v1/run_source.py --require-windows --unit-only --output deep-source
+      - name: Retain Windows environment receipt
+        if: always()
+        shell: python
+        run: |
+          import shutil
+          from pathlib import Path
+          receipt = Path('source-temp-setup.json')
+          if receipt.is_file():
+              destination = Path('deep-source')
+              destination.mkdir(exist_ok=True)
+              shutil.copyfile(receipt, destination / 'temp-setup.json')
+      - name: Preserve bounded unit receipts, progress, JUnit and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-source-${{ github.event.pull_request.head.sha || github.sha }}
+          path: deep-source/
+          retention-days: 14
+          if-no-files-found: error

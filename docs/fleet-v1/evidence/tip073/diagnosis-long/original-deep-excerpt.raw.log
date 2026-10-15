@@ -1,0 +1,131 @@
+2026-10-07T10:11:46.5603690Z _ test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000] _
+2026-10-07T10:11:46.5604799Z   + Exception Group Traceback (most recent call last):
+2026-10-07T10:11:46.5605805Z   |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 1467, in test_long_fixture_valid_finite_schedule_requires_aggregate_observation
+2026-10-07T10:11:46.5606776Z   |     run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+2026-10-07T10:11:46.5607930Z   |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 1433, in run_long_fixture
+2026-10-07T10:11:46.5608881Z   |     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
+2026-10-07T10:11:46.5611910Z   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-07T10:11:46.5612638Z   | BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)
+2026-10-07T10:11:46.5613189Z   +-+---------------- 1 ----------------
+2026-10-07T10:11:46.5613514Z     | Traceback (most recent call last):
+2026-10-07T10:11:46.5614174Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 1398, in run_long_fixture
+2026-10-07T10:11:46.5615000Z     |     pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+2026-10-07T10:11:46.5615753Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 423, in pump
+2026-10-07T10:11:46.5616431Z     |     pytest.fail('bounded fixture did not reach expected state')
+2026-10-07T10:11:46.5617069Z     |   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\_pytest\outcomes.py", line 162, in __call__
+2026-10-07T10:11:46.5617695Z     |     raise Failed(msg=reason, pytrace=pytrace)
+2026-10-07T10:11:46.5618104Z     | Failed: bounded fixture did not reach expected state
+2026-10-07T10:11:46.5618471Z     +---------------- 2 ----------------
+2026-10-07T10:11:46.5618820Z     | Traceback (most recent call last):
+2026-10-07T10:11:46.5619473Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 1412, in run_long_fixture
+2026-10-07T10:11:46.5620192Z     |     close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+2026-10-07T10:11:46.5621052Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\fleet_gateway_fixture.py", line 44, in close_dispatcher_fixture
+2026-10-07T10:11:46.5621814Z     |     pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+2026-10-07T10:11:46.5622528Z     |   File "D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max\tests\unit\test_tip064_integration.py", line 423, in pump
+2026-10-07T10:11:46.5623256Z     |     pytest.fail('bounded fixture did not reach expected state')
+2026-10-07T10:11:46.5623897Z     |   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\_pytest\outcomes.py", line 162, in __call__
+2026-10-07T10:11:46.5624486Z     |     raise Failed(msg=reason, pytrace=pytrace)
+2026-10-07T10:11:46.5624879Z     | Failed: bounded fixture did not reach expected state
+2026-10-07T10:11:46.5625234Z     +------------------------------------
+2026-10-07T10:11:46.5625713Z ---------------------------- Captured stdout call -----------------------------
+2026-10-07T10:11:46.5636129Z LONG_OWNER_FIXTURE {"latest": {"elapsed_ms": 10452, "job_state": "STARTING", "pending_futures": 1, "pending_native_records": 1, "read_elapsed_ms": 0, "stage": "CONTROL_FINISH", "step_elapsed_ms": 140}, "milestones": {"CALLBACK_START": 3484, "CLEANUP_RELEASE": 7468, "CONTROL_FINISH": 10452, "CONTROL_START": 10312, "JOB_READ": 7468, "WORKER_START": 531}, "timeline": [{"elapsed_ms": 718, "job_state": "RESERVED", "read_elapsed_ms": 15, "stage": "JOB_READ"}, {"elapsed_ms": 718, "stage": "CONTROL_START"}, {"elapsed_ms": 827, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 843, "job_state": "RESERVED", "read_elapsed_ms": 15, "stage": "JOB_READ"}, {"elapsed_ms": 843, "stage": "CONTROL_START"}, {"elapsed_ms": 922, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 78}, {"elapsed_ms": 937, "job_state": "RESERVED", "read_elapsed_ms": 14, "stage": "JOB_READ"}, {"elapsed_ms": 937, "stage": "CONTROL_START"}, {"elapsed_ms": 1093, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 156}, {"elapsed_ms": 1093, "job_state": "RESERVED", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 1093, "stage": "CONTROL_START"}, {"elapsed_ms": 1702, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 609}, {"elapsed_ms": 1702, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 1718, "stage": "CONTROL_START"}, {"elapsed_ms": 3484, "stage": "CALLBACK_START"}, {"elapsed_ms": 7468, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 5750}, {"elapsed_ms": 7468, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 7468, "stage": "CLEANUP_RELEASE"}, {"elapsed_ms": 7468, "stage": "CONTROL_START"}, {"elapsed_ms": 9750, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 2281}, {"elapsed_ms": 9764, "stage": "CONTROL_START"}, {"elapsed_ms": 9875, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 110}, {"elapsed_ms": 9875, "stage": "CONTROL_START"}, {"elapsed_ms": 9984, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 9984, "stage": "CONTROL_START"}, {"elapsed_ms": 10093, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 10093, "stage": "CONTROL_START"}, {"elapsed_ms": 10202, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 10202, "stage": "CONTROL_START"}, {"elapsed_ms": 10297, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 94}, {"elapsed_ms": 10312, "stage": "CONTROL_START"}, {"elapsed_ms": 10452, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 140}], "timeline_dropped": 8, "timeline_limit": 32, "timeline_total": 40}
+2026-10-07T10:11:46.5646026Z _ test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000] _
+2026-10-07T10:11:46.5646551Z 
+2026-10-07T10:11:46.5647448Z project_node = {'root': WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_long_fixture_valid_f...ta/Local/Temp/pytest-of-runneradmin/pytest-0/test_long_fixture_valid_finite1/workspaces/demo/Experts/DemoEA.mq5'), ...}
+2026-10-07T10:11:46.5649353Z composed_service = (<test_tip058b_transport.FixtureHttpsClient object at 0x00000261FA0E1370>, <vibemql5.fleet.transport.OwnerClient objec...00000261FA0E2A20>, <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x00000261FA380990>)
+2026-10-07T10:11:46.5651001Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000261FA0E1010>
+2026-10-07T10:11:46.5651453Z seconds = 10
+2026-10-07T10:11:46.5651605Z 
+2026-10-07T10:11:46.5651893Z     @pytest.mark.parametrize('composed_service', [LONG_FIXTURE_PROFILE], indirect=True)
+2026-10-07T10:11:46.5652404Z     @pytest.mark.parametrize('seconds', [5, 10])
+2026-10-07T10:11:46.5653056Z     def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(project_node, composed_service, monkeypatch, seconds):
+2026-10-07T10:11:46.5653763Z         from vibemql5.fleet.job_journal import NodeJobJournal
+2026-10-07T10:11:46.5654201Z         from vibemql5.fleet.transport import NodeRpcProxy
+2026-10-07T10:11:46.5654706Z         begin, complete = NodeJobJournal.begin_effect, NodeJobJournal.complete_effect
+2026-10-07T10:11:46.5655256Z         outcome, request = NodeJobJournal._outcome, NodeRpcProxy._request
+2026-10-07T10:11:46.5655691Z         holds, outcomes, requests = [], [], []
+2026-10-07T10:11:46.5656088Z         def held_begin(self, job, phase, event, **kwargs):
+2026-10-07T10:11:46.5656537Z             # Delay before a fresh intent, never an in-flight grant or request.
+2026-10-07T10:11:46.5657721Z             time.sleep(.7); holds.append(('BEGIN', event))
+2026-10-07T10:11:46.5658114Z             return begin(self, job, phase, event, **kwargs)
+2026-10-07T10:11:46.5658557Z         def held_complete(self, job, phase, event, proof, **kwargs):
+2026-10-07T10:11:46.5659038Z             # Delay publication of already-observed harmless completion.
+2026-10-07T10:11:46.5659608Z             time.sleep(.7); holds.append(('COMPLETE', event))
+2026-10-07T10:11:46.5660554Z             return complete(self, job, phase, event, proof, **kwargs)
+2026-10-07T10:11:46.5661277Z         def observed_outcome(self, record, state, result):
+2026-10-07T10:11:46.5661665Z             row = outcome(self, record, state, result)
+2026-10-07T10:11:46.5662110Z             outcomes.append((row['state'], (row['result'] or {}).get('evidence')))
+2026-10-07T10:11:46.5662529Z             return row
+2026-10-07T10:11:46.5662815Z         def observed_request(self, kind, payload):
+2026-10-07T10:11:46.5663160Z             started = time.monotonic()
+2026-10-07T10:11:46.5663490Z             result = request(self, kind, payload)
+2026-10-07T10:11:46.9726729Z             requests.append((kind, time.monotonic() - started))
+2026-10-07T10:11:46.9727522Z             return result
+2026-10-07T10:11:46.9728210Z         monkeypatch.setattr(NodeJobJournal, 'begin_effect', held_begin)
+2026-10-07T10:11:46.9729146Z         monkeypatch.setattr(NodeJobJournal, 'complete_effect', held_complete)
+2026-10-07T10:11:46.9730052Z         monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+2026-10-07T10:11:46.9730918Z         monkeypatch.setattr(NodeRpcProxy, '_request', observed_request)
+2026-10-07T10:11:46.9731548Z         if seconds == 5:
+2026-10-07T10:11:46.9732323Z             with pytest.raises(pytest.fail.Exception, match='^bounded fixture did not reach expected state$'):
+2026-10-07T10:11:46.9733454Z                 run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+2026-10-07T10:11:46.9734192Z         else:
+2026-10-07T10:11:46.9734740Z             # Runs every original proof-expiry, fresh-phase, ACK-before-return and
+2026-10-07T10:11:46.9735608Z             # final empty-record assertion, through the same actual TLS helper.
+2026-10-07T10:11:46.9736486Z             run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+2026-10-07T10:11:46.9737222Z         assert len(holds) == 6
+2026-10-07T10:11:46.9737672Z         assert len(requests) == 5
+2026-10-07T10:11:46.9738479Z         assert all(kind == 'START_AUTHORIZE' and elapsed < composed_service[0].policy.http_timeout_ms / 1000
+2026-10-07T10:11:46.9739332Z             for kind, elapsed in requests)
+2026-10-07T10:11:46.9739932Z >       assert outcomes == [('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')]
+2026-10-07T10:11:46.9740761Z E       AssertionError: assert [('UNKNOWN', ...NATIVE_ONLY')] == [('SUCCEEDED'...NATIVE_ONLY')]
+2026-10-07T10:11:46.9741486Z E         
+2026-10-07T10:11:46.9742383Z E         At index 0 diff: ('UNKNOWN', None) != ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+2026-10-07T10:11:46.9743283Z E         Left contains one more item: ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+2026-10-07T10:11:46.9743906Z E         
+2026-10-07T10:11:46.9744227Z E         Full diff:
+2026-10-07T10:11:46.9744578Z E           [
+2026-10-07T10:11:46.9744902Z E         +     (
+2026-10-07T10:11:46.9745255Z E         +         'UNKNOWN',
+2026-10-07T10:11:46.9745679Z E         +         None,
+2026-10-07T10:11:46.9746066Z E         +     ),
+2026-10-07T10:11:46.9746397Z E               (
+2026-10-07T10:11:46.9746762Z E                   'SUCCEEDED',
+2026-10-07T10:11:46.9747201Z E                   'SYNTHETIC_NATIVE_ONLY',
+2026-10-07T10:11:46.9747690Z E               ),
+2026-10-07T10:11:46.9748031Z E           ]
+2026-10-07T10:11:46.9748206Z 
+2026-10-07T10:11:46.9748483Z tests\unit\test_tip064_integration.py:1476: AssertionError
+2026-10-07T10:11:46.9749231Z ---------------------------- Captured stdout call -----------------------------
+2026-10-07T10:11:46.9766611Z LONG_OWNER_FIXTURE {"latest": {"elapsed_ms": 8702, "job_state": "SUCCEEDED", "native_state": "SUCCEEDED", "pending_futures": 0, "pending_native_records": 0, "read_elapsed_ms": 0, "stage": "DRAIN_FINISH", "step_elapsed_ms": 125}, "milestones": {"ACK_RELEASE": 8577, "CALLBACK_COMPLETE": 8140, "CALLBACK_START": 2297, "CLEANUP_RELEASE": 8702, "CONTROL_FINISH": 8702, "CONTROL_START": 8577, "DRAIN_FINISH": 8702, "JOB_READ": 8702, "NATIVE_RESULT": 8360, "RETURN_FINISH": 8577, "RETURN_WAIT": 8360, "WORKER_START": 1235}, "timeline": [{"elapsed_ms": 7562, "job_state": "STARTING", "read_elapsed_ms": 15, "stage": "JOB_READ"}, {"elapsed_ms": 7562, "stage": "CONTROL_START"}, {"elapsed_ms": 7672, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 7672, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 7672, "stage": "CONTROL_START"}, {"elapsed_ms": 7781, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 7781, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 7781, "stage": "CONTROL_START"}, {"elapsed_ms": 7906, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 125}, {"elapsed_ms": 7906, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 7906, "stage": "CONTROL_START"}, {"elapsed_ms": 8015, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 8031, "job_state": "STARTING", "read_elapsed_ms": 15, "stage": "JOB_READ"}, {"elapsed_ms": 8031, "stage": "CONTROL_START"}, {"elapsed_ms": 8140, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 109}, {"elapsed_ms": 8140, "job_state": "STARTING", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 8140, "stage": "CALLBACK_COMPLETE"}, {"elapsed_ms": 8140, "stage": "CONTROL_START"}, {"elapsed_ms": 8360, "native_state": "SUCCEEDED", "stage": "NATIVE_RESULT"}, {"elapsed_ms": 8360, "stage": "RETURN_WAIT"}, {"elapsed_ms": 8390, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 250}, {"elapsed_ms": 8406, "job_state": "STARTING", "read_elapsed_ms": 15, "stage": "JOB_READ"}, {"elapsed_ms": 8406, "stage": "CONTROL_START"}, {"elapsed_ms": 8577, "pending_futures": 1, "pending_native_records": 1, "stage": "CONTROL_FINISH", "step_elapsed_ms": 171}, {"elapsed_ms": 8577, "job_state": "SUCCEEDED", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 8577, "stage": "ACK_RELEASE"}, {"elapsed_ms": 8577, "stage": "RETURN_FINISH"}, {"elapsed_ms": 8577, "stage": "CONTROL_START"}, {"elapsed_ms": 8702, "pending_futures": 0, "pending_native_records": 0, "stage": "CONTROL_FINISH", "step_elapsed_ms": 125}, {"elapsed_ms": 8702, "job_state": "SUCCEEDED", "read_elapsed_ms": 0, "stage": "JOB_READ"}, {"elapsed_ms": 8702, "stage": "CLEANUP_RELEASE"}, {"elapsed_ms": 8702, "pending_futures": 0, "pending_native_records": 0, "stage": "DRAIN_FINISH"}], "timeline_dropped": 174, "timeline_limit": 32, "timeline_total": 206}
+2026-10-07T10:11:46.9783166Z =========================== short test summary info ===========================
+2026-10-07T10:11:46.9784998Z FAILED tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000] - BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)
+2026-10-07T10:11:46.9787510Z FAILED tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000] - AssertionError: assert [('UNKNOWN', ...NATIVE_ONLY')] == [('SUCCEEDED'...NATIVE_ONLY')]
+2026-10-07T10:11:46.9788985Z   
+2026-10-07T10:11:46.9789464Z   At index 0 diff: ('UNKNOWN', None) != ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+2026-10-07T10:11:46.9790223Z   Left contains one more item: ('SUCCEEDED', 'SYNTHETIC_NATIVE_ONLY')
+2026-10-07T10:11:46.9790987Z   
+2026-10-07T10:11:46.9791301Z   Full diff:
+2026-10-07T10:11:46.9791675Z     [
+2026-10-07T10:11:46.9791982Z   +     (
+2026-10-07T10:11:46.9792292Z   +         'UNKNOWN',
+2026-10-07T10:11:46.9792649Z   +         None,
+2026-10-07T10:11:46.9792979Z   +     ),
+2026-10-07T10:11:46.9793276Z         (
+2026-10-07T10:11:46.9793595Z             'SUCCEEDED',
+2026-10-07T10:11:46.9794855Z             'SYNTHETIC_NATIVE_ONLY',
+2026-10-07T10:11:46.9795337Z         ),
+2026-10-07T10:11:46.9795654Z     ]
+2026-10-07T10:11:46.9796051Z 2 failed, 1418 passed, 12 skipped in 479.21s (0:07:59)
+2026-10-07T10:11:47.9232618Z ##[error]Process completed with exit code 1.
+2026-10-07T10:11:47.9547599Z Post job cleanup.
+2026-10-07T10:11:48.1751721Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-07T10:11:48.2055583Z git version 2.55.0.windows.5
+2026-10-07T10:11:48.2132056Z Temporarily overriding HOME='D:\a\_temp\f0b46437-a039-45dc-b3df-0f410a5efc80' before making global git config changes
+2026-10-07T10:11:48.2133495Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-07T10:11:48.2144876Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\TunnelVibeMt5-Chatgpt-max\TunnelVibeMt5-Chatgpt-max
+2026-10-07T10:11:48.2495374Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-07T10:11:48.2834627Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-07T10:11:48.8709382Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-07T10:11:48.8977483Z http.https://github.com/.extraheader
+2026-10-07T10:11:48.9023937Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-07T10:11:48.9339673Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""

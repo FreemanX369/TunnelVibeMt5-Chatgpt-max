@@ -1,0 +1,22 @@
+{
+  "schema": "tip057rq.ci-receipt/1",
+  "scope": "isolated fixture only",
+  "base": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "candidate": "d156c5ecfef5c1874b2babe9658810cae429db65",
+  "tree": "d76da1dc5303f8bf2d0a5e85f6678088d25a383b",
+  "pr": 61,
+  "workflows": [
+    {"id": 37003376168, "name": "Verify TIP-027 Continuity Core", "status": "completed", "conclusion": "success"},
+    {"id": 37003376291, "name": "Verify TIP-028 Idempotent Bindings", "status": "completed", "conclusion": "success"},
+    {"id": 37003376178, "name": "Verify TIP-034 Bootstrap Completeness", "status": "completed", "conclusion": "success"},
+    {"id": 37003376156, "name": "Verify TIP-053 Deep Update", "status": "completed", "conclusion": "success"},
+    {"id": 37003376225, "name": "Verify TIP-057R-Q1 isolated Windows proof", "status": "completed", "conclusion": "failure"}
+  ],
+  "dedicated_job": 110825934332,
+  "result": {"status": "BLOCKED", "error": "WINDOWS_STARTUP_CHECKPOINT_BLOCKED", "tests_run": 0, "full_suite_attempted": false, "skips": 0, "elapsed_ms": 10812},
+  "observed_facts": ["granted unrestricted child AppContainer0/userSID same500/elevated1/integrity4096", "root MLlow4096 mask1 flags3", "executable inherited MLlow4096 mask1 flags16", "plain writer High12288 PASS", "restricted console writer Low4096/App1 PASS", "all owned cleanup proven"],
+  "inference_only": "raw0xe5110005 protocol-shaped CREATE_FILE/error5 candidate; collision possible, provenance unauthenticated, qualification NONE",
+  "unqualified": ["AccessDenied complete cause", "full lifecycle and launch prevention", "SDK/broker", "late-dead recovery", "production integration"],
+  "artifact": {"id": 11225385055, "size_bytes": 5954, "zip_sha256": "e62e5781474e0fd6879343d15830758830e244013f686dd58c1222cd4d4ba0ee", "retained_files": ["fifth-d156c5e/summary.json", "fifth-d156c5e/proof.log", "fifth-d156c5e/compiler.log"]},
+  "next_authorized_action": "smallest label-applicability causal isolation preserving DACL/capabilities/privileged-handle boundary"
+}

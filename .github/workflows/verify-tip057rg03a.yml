@@ -1,0 +1,40 @@
+name: Verify TIP-057R-G03-A product ownership foundation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-authority:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    env:
+      TIP057RG03A_EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run required harmless Windows product identity cases with no skipped gate
+        shell: cmd
+        run: python tests/proofs/tip057rg03a/run_windows.py --require-windows --output tip057rg03a-evidence
+      - name: Retain exact-head product identity source and execution receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tip057rg03a-windows-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            tip057rg03a-evidence/summary.json
+            tip057rg03a-evidence/proof.log
+          retention-days: 14
+          if-no-files-found: error
