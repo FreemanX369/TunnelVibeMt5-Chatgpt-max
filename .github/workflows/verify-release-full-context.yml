@@ -89,6 +89,57 @@ jobs:
               path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
       - name: Install existing locked source test dependencies
         run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Verify cleanup preservation and entry observation before full context
+        shell: python
+        run: |
+          import importlib.util, json, os, sys, xml.etree.ElementTree as ET
+          from pathlib import Path
+          spec = importlib.util.spec_from_file_location('focused_source_runner', 'tests/proofs/fleet_v1/run_source.py')
+          runner = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(runner)
+          packet = Path('cleanup-focus')
+          packet.mkdir()
+          head, tree = runner.git_value('HEAD'), runner.git_value('HEAD^{tree}')
+          if head != os.environ['FLEET_V1_EXPECTED_SHA']:
+              raise SystemExit('FOCUSED_CHECKOUT_MISMATCH')
+          before = runner.source_manifest()
+          summary = {'schema': 'fleet.cleanup-focus/1', 'status': 'RUNNING',
+              'head_sha': head, 'tree_sha': tree, 'source_before': before,
+              'physical_qualification': 'NOT_RUN', 'retries': 0, 'timeout_seconds': 120}
+          runner.checkpoint(packet / 'summary.json', summary)
+          environment = dict(os.environ)
+          environment['PYTHONPATH'] = os.pathsep.join((str(Path('app').resolve()), str(Path('tests/unit').resolve())))
+          environment['FLEET_SOURCE_PROGRESS_PATH'] = str((packet / 'focused.progress.json').resolve())
+          selected = [
+              'tests/unit/test_tip064_integration.py::test_guarded_source_fixture_keeps_primary_identity_and_cleanup_union',
+              'tests/unit/test_tip077_authorization_scope_probe.py',
+              'tests/unit/test_fleet_gateway_fixture.py::test_cleanup_preserves_primary_notes_and_cleanup_failure',
+              'tests/unit/test_fleet_gateway_fixture.py::test_cleanup_only_error_is_not_suppressed',
+              'tests/unit/test_fleet_gateway_fixture.py::test_proven_idle_cleanup_closes_without_new_control_call',
+              'tests/unit/test_fleet_gateway_fixture.py::test_uncertain_drain_failure_does_not_close_or_claim_idle',
+              'tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack',
+              'tests/unit/test_tip077_capacity_entry_watchdog.py::test_positive_capacity_entry_observation_preserves_callback_union_under_finite_schedule',
+              'tests/unit/test_tip077_capacity_entry_watchdog.py::test_original_three_second_capacity_entry_observation_remains_bounded_negative',
+          ]
+          command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress', '-v', '--tb=short',
+              '-o', 'faulthandler_timeout=60', *selected, '--junitxml=' + str((packet / 'focused.junit.xml').resolve())]
+          try:
+              receipt = runner.run_case('focused', command, packet, environment, 120)
+              summary['case_receipt'] = receipt
+              cases = list(ET.parse(packet / 'focused.junit.xml').getroot().iter('testcase'))
+              after = runner.source_manifest()
+              passed = (receipt['exit_code'] == 0 and receipt['direct_child_closure'] == 'EXITED'
+                  and before == after and len(cases) == 14
+                  and all(case.find(tag) is None for case in cases for tag in ('failure', 'error', 'skipped')))
+              summary.update(status='PASS' if passed else 'FAIL', source_after=after,
+                  source_unchanged_during_run=before == after, case_count=len(cases), finished_utc=runner.utc_now())
+              runner.checkpoint(packet / 'summary.json', summary)
+          except BaseException as error:
+              summary.update(status='ERROR', error_type=type(error).__name__, finished_utc=runner.utc_now())
+              runner.checkpoint(packet / 'summary.json', summary)
+              raise
+          if not passed:
+              raise SystemExit('FOCUSED_QUALIFICATION_FAILED')
       - name: Observe Linux complete original unit context
         if: runner.os == 'Linux'
         run: python tests/proofs/fleet_v1/run_source.py --unit-only --output full-context-source
@@ -102,6 +153,7 @@ jobs:
           name: release-full-context-${{ matrix.os }}-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             full-context-setup/
+            cleanup-focus/
             full-context-source/
           retention-days: 14
           if-no-files-found: error

@@ -860,7 +860,48 @@ def test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_ph
         assert project_node['projects'].sessions.get('P')['revision_id'] == 'REV-000002'
         assert transport._db.execute("SELECT count(*) FROM requests WHERE state='PENDING'").fetchone()[0] == 0
     finally:
-        dispatcher.close(); dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+        with preserve_fixture_failure():
+            close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+            dispatcher.principals.close(); jobs.close(); domains.close(); transport.close()
+
+
+@pytest.mark.parametrize('primary_kind,cleanup_fails', [('wire', False), ('pytest', True)])
+def test_guarded_source_fixture_keeps_primary_identity_and_cleanup_union(
+        project_node, composed_service, pipeline_diagnostics, monkeypatch, primary_kind, cleanup_fails):
+    primary = WireError('HTTPS_UNAVAILABLE') if primary_kind == 'wire' else pytest.fail.Exception('CONTROLLED_PUMP_FAILURE')
+    cause, cleanup = RuntimeError('ORIGINAL_CAUSE'), WireError('CONTROLLED_CLEANUP_FAILURE')
+    primary.add_note('original primary note'); cleanup.add_note('original cleanup note')
+    make_runtime, close = runtime, close_dispatcher_fixture
+    created, drains = [], []
+    def owned_runtime(*args, **kwargs):
+        result = make_runtime(*args, **kwargs)
+        created.append(result)
+        return result
+    def failed_pump(*args, **kwargs):
+        raise primary from cause
+    def observed_cleanup(agent, dispatcher, pump, *, seconds):
+        drains.append(seconds)
+        close(agent, dispatcher, pump, seconds=seconds)
+        if cleanup_fails:
+            # The real dispatcher is closed before this deliberate failure.
+            dispatcher.principals.close()
+            for resource in created[0][4:]: resource.close()
+            raise cleanup
+    monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
+    monkeypatch.setattr(sys.modules[__name__], 'pump', failed_pump)
+    monkeypatch.setattr(sys.modules[__name__], 'close_dispatcher_fixture', observed_cleanup)
+    with pytest.raises(BaseException) as caught:
+        test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack(
+            project_node, composed_service, pipeline_diagnostics)
+    if cleanup_fails:
+        assert isinstance(caught.value, BaseExceptionGroup)
+        assert caught.value.exceptions == (primary, cleanup)
+    else:
+        assert caught.value is primary
+    assert primary.__cause__ is cause and primary.__notes__ == ['original primary note']
+    assert cleanup.__notes__ == ['original cleanup note']
+    assert drains == [3] and created[0][3]._closed
+    assert all(resource._db is None for resource in created[0][4:])
 
 
 def test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history(project_node, composed_service, tls_files, pipeline_diagnostics):

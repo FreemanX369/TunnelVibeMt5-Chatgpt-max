@@ -69,6 +69,25 @@ class AuthorizationScopeProbe:
             self.observation_errors = min(8, self.observation_errors + 1)
 
 
+def publish_entry_observation(state, printer=print):
+    """Report existing entry observations only; diagnostic failure stays fail-open."""
+    try:
+        printer('TIP077_ENTRY_OBSERVATION ' + json.dumps({
+            'schema': 'tip077.entry-observation/1',
+            'entry_seconds': state['entry_seconds'],
+            'entry_elapsed_ms': min(2147483647, max(0, round(state['entry_elapsed'] * 1000))),
+            'entry_failed': state['initial_error'] is not None,
+            'original_case_failed': state['outer_error'] is not None,
+            'predicate_count': min(2147483647, len(state['predicates'])),
+            'first_predicate': state['predicates'][0] if state['predicates'] else None,
+            'last_predicate': state['predicates'][-1] if state['predicates'] else None,
+            'scheduled_component_ms': [min(2147483647, max(0, round(value * 1000)))
+                                       for value in state['components'][:2]],
+        }, sort_keys=True), flush=True)
+    except (Exception, pytest.fail.Exception):
+        pass
+
+
 def controlled_entry(project_node, capacity_service, monkeypatch, *, original_three=False):
     http = capacity_service[0]
     assert http.policy.http_timeout_ms == http.policy.heartbeat_interval_ms == 5000
@@ -217,6 +236,8 @@ def controlled_entry(project_node, capacity_service, monkeypatch, *, original_th
     finally:
         gate.set()
 
+    if scope_probe is not None:
+        publish_entry_observation(state)
     for path, error in state['denials']:
         if not (path == '/fleet/v1/capacity/register' and isinstance(error, WireError)
                 and error.code == 'SCOPED_ROSTER_UNVERIFIED'):

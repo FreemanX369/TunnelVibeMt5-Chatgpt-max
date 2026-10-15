@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from test_tip077_capacity_entry_watchdog import AuthorizationScopeProbe
+from test_tip077_capacity_entry_watchdog import AuthorizationScopeProbe, publish_entry_observation
 
 
 @pytest.mark.parametrize('fails', [False, True])
@@ -66,3 +66,29 @@ def test_broken_probe_record_and_publish_preserve_original_result_and_error():
         finally: probe.publish(printer=broken_printer)
     assert raised.value is primary and primary.__cause__ is cause and primary.__notes__ == ['original note']
     assert probe.observation_errors == 2
+
+
+@pytest.mark.parametrize('printer_fails', [False, True])
+def test_entry_diagnostic_preserves_active_primary_and_performs_no_new_observations(printer_fails):
+    import json
+    primary, cause, output = pytest.fail.Exception('ORIGINAL_PUMP_FAILURE'), RuntimeError('CAUSE'), []
+    primary.add_note('original note')
+    state = {'entry_seconds': 10, 'entry_elapsed': 10.125, 'initial_error': primary,
+             'outer_error': AssertionError('original case'), 'predicates': [False, False],
+             'components': [1.6, 1.7]}
+    before = {key: value[:] if isinstance(value, list) else value for key, value in state.items()}
+    def printer(value, **kwargs):
+        if printer_fails: pytest.fail('CONTROLLED_DIAGNOSTIC_FAILURE')
+        output.append(value)
+    with pytest.raises(pytest.fail.Exception) as caught:
+        try: raise primary from cause
+        finally: publish_entry_observation(state, printer=printer)
+    assert caught.value is primary and primary.__cause__ is cause and primary.__notes__ == ['original note']
+    assert state == before
+    if not printer_fails:
+        assert len(output) == 1
+        value = json.loads(output[0].removeprefix('TIP077_ENTRY_OBSERVATION '))
+        assert value['entry_failed'] and value['original_case_failed']
+        assert value['predicate_count'] == 2 and value['last_predicate'] is False
+        assert value['entry_seconds'] == 10 and value['entry_elapsed_ms'] == 10125
+        assert value['scheduled_component_ms'] == [1600, 1700]
