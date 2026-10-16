@@ -30,6 +30,8 @@ def configurations(root, source, gateway_public_key):
                    owner_token_file=str(secret / "owner-token.txt"),
                    authority_key_file=str(secret / "gateway-authority.pem"))
     gateway["control_policy"]["max_devices"] = 1
+    for config in (gateway, node):
+        config["journal_policy"]["max_payload_bytes"] = 262144
     for field, name in (("control_path", "control.sqlite"), ("domain_path", "domain.sqlite"),
                         ("jobs_path", "jobs.sqlite"), ("principal_path", "principals.json")):
         gateway[field] = str(runtime / "gateway" / name)
