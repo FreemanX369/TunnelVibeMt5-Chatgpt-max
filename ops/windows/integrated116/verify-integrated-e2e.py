@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import time
+import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -57,6 +58,8 @@ async def verify(label):
         capabilities = await call('describe_capabilities', {})
         mark('LEGACY_CAPABILITIES_CALL')
         terminals = await call('list_terminals', {})
+        if isinstance(terminals,dict) and set(terminals)=={'result'}:
+            terminals=terminals['result']
         assert isinstance(terminals,list) and len(terminals)==5
         mark('LEGACY_TERMINALS5')
         quote = await call('get_symbol_snapshot', {'symbol':'XAUUSDm'})
@@ -129,6 +132,7 @@ if __name__=='__main__':
         result=asyncio.run(verify(label))
     except BaseException as error:
         result={'status':'FAIL','label':label,'error_type':type(error).__name__,'reason':str(error),
+            'traceback':traceback.format_exception(error),
             'at_utc':datetime.now(timezone.utc).isoformat()}
         output.write_text(json.dumps(result,indent=2),encoding='utf-8')
         print(json.dumps(result));raise
