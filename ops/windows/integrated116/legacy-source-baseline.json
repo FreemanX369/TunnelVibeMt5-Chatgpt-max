@@ -1,0 +1,451 @@
+{
+  "schema": "fleet.integration-legacy-baseline/1",
+  "scope": "ACTUAL_INSTALLED_LEGACY89",
+  "files": [
+    {
+      "path": "app/vibemql5/__init__.py",
+      "sha256": "144f343e646b3748267b3493edfa5630f17228ef4a1919c553715b0a21c90315",
+      "bytes": 23
+    },
+    {
+      "path": "app/vibemql5/adapters/cli.py",
+      "sha256": "38adc3d69ac1afa11a2c41885e922125525a64bd112bf06021bd1ebff9d901d9",
+      "bytes": 14126
+    },
+    {
+      "path": "app/vibemql5/adapters/ex5_widget.py",
+      "sha256": "e1dff0e4704c74a67b9427773821abd9c047a47c9c67829975bb1f1515000142",
+      "bytes": 8103
+    },
+    {
+      "path": "app/vibemql5/adapters/fleet_cli.py",
+      "sha256": "7e1d7e6aa2e3b1bf62ad30b90b9aa6c4f4b8074f0726c359cbbd8f3c4c2a65b8",
+      "bytes": 29041
+    },
+    {
+      "path": "app/vibemql5/adapters/fleet_client_tools.py",
+      "sha256": "48ab5c3422b3bb8603ff3dc9d8a4ee71d30e199a1af19c970ccc5062b06889f5",
+      "bytes": 9041
+    },
+    {
+      "path": "app/vibemql5/adapters/fleet_mcp.py",
+      "sha256": "5cba5803e7e28b8732309f0365ae8b4720ab806589d16c650ec1110ff3639168",
+      "bytes": 10416
+    },
+    {
+      "path": "app/vibemql5/adapters/live_chart_widget.py",
+      "sha256": "6dc1d54d1a0a1af1e1f01a91b10fd413f340d228d0cf5a8bf4e0f04e70ec0dba",
+      "bytes": 3689
+    },
+    {
+      "path": "app/vibemql5/adapters/mcp.py",
+      "sha256": "d596c8242d5a5a94d46fb9f3f8c8df5b8ec7a0bfc2968f5dda8db5c588555cf9",
+      "bytes": 42672
+    },
+    {
+      "path": "app/vibemql5/adapters/mcp_client_check.py",
+      "sha256": "f3c6a19e3330f7499e21f0c7c93bbba4e013d6dd1339df269e60c52bb559d34a",
+      "bytes": 2430
+    },
+    {
+      "path": "app/vibemql5/backend_admin/__init__.py",
+      "sha256": "43bd6f5b17c0c405106bde516ae1894c0d440e238c07c3f32915af647952a124",
+      "bytes": 98
+    },
+    {
+      "path": "app/vibemql5/backend_admin/core.py",
+      "sha256": "4f5b4b9b5002279d6daa1f8ad49e3d3701be719197e648fda87864bf50348573",
+      "bytes": 71407
+    },
+    {
+      "path": "app/vibemql5/backend_admin/models.py",
+      "sha256": "6d3fcbf060d5fc1c66484ee4e02167b7f8f2792bb03da9363e22a5658ccb3523",
+      "bytes": 1255
+    },
+    {
+      "path": "app/vibemql5/backend_admin/multitunnel.py",
+      "sha256": "efb49b676fa37bb05688ce23592ab5a7fd19bbb645285309aec0b784b14c8c7c",
+      "bytes": 6258
+    },
+    {
+      "path": "app/vibemql5/backend_admin/test_run_worker.py",
+      "sha256": "b93d61b9396d2477dca73a95223064fc2b8018ab884af7ac85d05916a7c3728a",
+      "bytes": 1710
+    },
+    {
+      "path": "app/vibemql5/backend_admin/tools.py",
+      "sha256": "b1eac2805743e24c93eaf9ecf81001220f694916fb57dc1f0c32a898338b818d",
+      "bytes": 4001
+    },
+    {
+      "path": "app/vibemql5/config.py",
+      "sha256": "98778f5693309ac853c8e4212ec41fcb7a62752349f387da69a18ff328d06860",
+      "bytes": 1450
+    },
+    {
+      "path": "app/vibemql5/contracts.py",
+      "sha256": "21ae1ce103c8abd925c2097ac237298ad3263e81233d55f75c8583b86800a6df",
+      "bytes": 2644
+    },
+    {
+      "path": "app/vibemql5/core/artifacts.py",
+      "sha256": "118cba3fa00adb1838fa01be09dfba2e6793ddc059b3fdc6e358136f01909832",
+      "bytes": 21762
+    },
+    {
+      "path": "app/vibemql5/core/baseline.py",
+      "sha256": "798ec339182f1eb540561610a1969d06000f7a1369c10e7834ba461c89d2f8dd",
+      "bytes": 7380
+    },
+    {
+      "path": "app/vibemql5/core/binary_ingress.py",
+      "sha256": "5192fac97e5b53ec2feb5d2dcb76bc3bd5a9f0dae4efc622e8c43396d4d1d0f1",
+      "bytes": 39526
+    },
+    {
+      "path": "app/vibemql5/core/compiler.py",
+      "sha256": "8349b083e1ffc7278715d753a7f2bd819650c9b5854cd08c21b3194118277cb4",
+      "bytes": 6777
+    },
+    {
+      "path": "app/vibemql5/core/concurrency.py",
+      "sha256": "94a8b2a82e2a55914d37a42516e893ef508536dd2c5106c378a4ee9b6342dbcc",
+      "bytes": 21029
+    },
+    {
+      "path": "app/vibemql5/core/continuity.py",
+      "sha256": "5931fa744fd83410f7b5a8c0915a5522f31496cf3bbe8d225bbfbbb5fb5b3d8a",
+      "bytes": 52902
+    },
+    {
+      "path": "app/vibemql5/core/deployment_preflight.py",
+      "sha256": "ee3a83a601dc5363a70444b8fe446d9624df0687edc41a96a24dfa3973b65b5d",
+      "bytes": 10111
+    },
+    {
+      "path": "app/vibemql5/core/facade.py",
+      "sha256": "96aeb1392bf91c61364ac7a5631cbbb201214293f28eafc59df19f9b4cb2caa2",
+      "bytes": 33114
+    },
+    {
+      "path": "app/vibemql5/core/fault_injection.py",
+      "sha256": "250088c6390a51a898cef928144a1f3927dcc82ad129333437c558800f9cb0ad",
+      "bytes": 8507
+    },
+    {
+      "path": "app/vibemql5/core/file_export.py",
+      "sha256": "8ed057e86dfa370f819d8d0a63f66efad82312c45969e729ca36a35e63afe24e",
+      "bytes": 30966
+    },
+    {
+      "path": "app/vibemql5/core/forward.py",
+      "sha256": "be308d7fd5a9891b113ecf908ba760d4856a9ed43e53064c8246110b81751b33",
+      "bytes": 36897
+    },
+    {
+      "path": "app/vibemql5/core/inventory.py",
+      "sha256": "3e4c168dfbe4f03a5e8268d85889e2d873e77c3d5993ee7d7a184a6e42966970",
+      "bytes": 9382
+    },
+    {
+      "path": "app/vibemql5/core/isolated_sdk.py",
+      "sha256": "471f4760161d019c8c83032a2207a1be06f08b2823b14d624e43bbf32b2ee46c",
+      "bytes": 25835
+    },
+    {
+      "path": "app/vibemql5/core/iterations.py",
+      "sha256": "ddf22487e25fab0b35e27355f5544f6db9b2728b5195e9b427d5579d0a3382d8",
+      "bytes": 47132
+    },
+    {
+      "path": "app/vibemql5/core/jobs.py",
+      "sha256": "e1bbc44058006803f2203af916a333575cd80efcf0cef778fba55024dc902759",
+      "bytes": 51100
+    },
+    {
+      "path": "app/vibemql5/core/live_chart_archive.py",
+      "sha256": "f5ccd0db22d751e23880aec3662458494991554794322b68fe4c3747900387cd",
+      "bytes": 2225
+    },
+    {
+      "path": "app/vibemql5/core/live_readiness.py",
+      "sha256": "d2b3da7660d22c25d2b5fcaad9168a7db03dc83ae92958663e45f124fad59e32",
+      "bytes": 37110
+    },
+    {
+      "path": "app/vibemql5/core/live_terminal.py",
+      "sha256": "e366d6912c6532a998cbffd7851095303c325599bb35d390844ddc4960d1a5a3",
+      "bytes": 23148
+    },
+    {
+      "path": "app/vibemql5/core/live_terminal_windows.py",
+      "sha256": "004487b8f82d2bfd2080ea58093fe9c51dc46e0cfc6353c492cab2d22f423c77",
+      "bytes": 29488
+    },
+    {
+      "path": "app/vibemql5/core/mt5_preflight.py",
+      "sha256": "4ea836e1fb631136478ac9586e439f11e8427723eafa81b2bb81074e9ea6e056",
+      "bytes": 4652
+    },
+    {
+      "path": "app/vibemql5/core/native_ownership.py",
+      "sha256": "73183b02324d9e29b72c60f2e7b8b1e1c5e1e07fd6f5742dc3c3690857273514",
+      "bytes": 20187
+    },
+    {
+      "path": "app/vibemql5/core/observability.py",
+      "sha256": "14a3072b8c097bbc57968f2b6f7fbfa12f2c2cf69564b200a2af292388be4f11",
+      "bytes": 10981
+    },
+    {
+      "path": "app/vibemql5/core/project_sessions.py",
+      "sha256": "bd18141e52c5db8b56dced47333870ea6fb966873594ee7104bc693df9041846",
+      "bytes": 23898
+    },
+    {
+      "path": "app/vibemql5/core/provenance.py",
+      "sha256": "57120cc7699acd2f8a4991b544670e6a11342a3c20d17184d83216f09e7bdfd3",
+      "bytes": 3951
+    },
+    {
+      "path": "app/vibemql5/core/release.py",
+      "sha256": "e8379b1ab80f7b5097dd57ae37c2ef8986b7650b6402397fd62aea8326073261",
+      "bytes": 23263
+    },
+    {
+      "path": "app/vibemql5/core/resources.py",
+      "sha256": "baa76352bf4753c167e498d915c4501291495c289256ef54f656b72078e17c39",
+      "bytes": 2364
+    },
+    {
+      "path": "app/vibemql5/core/revisions.py",
+      "sha256": "2da61e53486eba0c8705674ead6bd8389cac6665f1cd2c0491ff7f3a06dc06a5",
+      "bytes": 9016
+    },
+    {
+      "path": "app/vibemql5/core/terminal_handoff.py",
+      "sha256": "038d58cced027803575494b30b6bed5973e084e88a390e3aeded3cb0b878eadf",
+      "bytes": 12338
+    },
+    {
+      "path": "app/vibemql5/core/tester.py",
+      "sha256": "118bb17994cc8a8fdecf5b304f1f033bc27612c75275d501c4b1b0ba14f3f005",
+      "bytes": 41254
+    },
+    {
+      "path": "app/vibemql5/core/tester_config.py",
+      "sha256": "16e1ee565b7f9dbe9f1fa545ce2dead980798eeaf3b6b083452cdc58eb3f9e95",
+      "bytes": 7687
+    },
+    {
+      "path": "app/vibemql5/core/tip015a.py",
+      "sha256": "8003927091239618ce4bea550bfc81d879ed45d1db881d7d3f4f3b67702a5760",
+      "bytes": 4645
+    },
+    {
+      "path": "app/vibemql5/core/workspace.py",
+      "sha256": "d13f16dd44739605d584b2b3ed4fce1acb376318a83d64f9ab8d88c8ad35de22",
+      "bytes": 7773
+    },
+    {
+      "path": "app/vibemql5/errors.py",
+      "sha256": "8c727526dd5b2cf2d2295cafce475342d4c1ed9599a7ff1484715bc36b56fcbe",
+      "bytes": 307
+    },
+    {
+      "path": "app/vibemql5/fleet/__init__.py",
+      "sha256": "63494dd4840ca2d7b3af78de5adb5dd12abde28534aad8611e5b955a5c4ffa3f",
+      "bytes": 76
+    },
+    {
+      "path": "app/vibemql5/fleet/artifact_proxy.py",
+      "sha256": "87504cedd16e65032f8b1c72263022ef69df5024685a7e070138ca7c01816893",
+      "bytes": 8808
+    },
+    {
+      "path": "app/vibemql5/fleet/domain.py",
+      "sha256": "20aa7e67f8b7cbb3d18709de819ccc8bad95fb0f92290d8ab15b1002d7b35500",
+      "bytes": 65271
+    },
+    {
+      "path": "app/vibemql5/fleet/gateway_control.py",
+      "sha256": "fa6404d768536c152d77237c0e8d17cfc849b02cce243c60d23fc521351c7c81",
+      "bytes": 55398
+    },
+    {
+      "path": "app/vibemql5/fleet/identity.py",
+      "sha256": "1d234b30e532dd352256010db393ff39f5f39d46d324f6c47ab6539365f459cc",
+      "bytes": 18379
+    },
+    {
+      "path": "app/vibemql5/fleet/job_journal.py",
+      "sha256": "fa6fbe895655c2cd2bc5bf0898d189398da7102a28e8b1dd1a619b8302c1e54a",
+      "bytes": 102429
+    },
+    {
+      "path": "app/vibemql5/fleet/native.py",
+      "sha256": "1c096fc6e10aa0b4e16a2964fce973bedd2fad7405294e516ff1cb70da5cdb33",
+      "bytes": 52840
+    },
+    {
+      "path": "app/vibemql5/fleet/native_authorization.py",
+      "sha256": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5",
+      "bytes": 11029
+    },
+    {
+      "path": "app/vibemql5/fleet/native_process.py",
+      "sha256": "d61eb43c3fd9a143a53c9b8e813fcde20bb834f0a5c5da197d07a862662d8122",
+      "bytes": 12289
+    },
+    {
+      "path": "app/vibemql5/fleet/native_qualification.py",
+      "sha256": "5af42f7d7922e57f1c5781d4da0df45597f29ae10d1b9035aed9cf24b51b2f55",
+      "bytes": 17948
+    },
+    {
+      "path": "app/vibemql5/fleet/node_keys.py",
+      "sha256": "ae73b65f2e08dd87caa5269ccee06fecf011b064744d9b147f17047f1e8afba4",
+      "bytes": 12548
+    },
+    {
+      "path": "app/vibemql5/fleet/node_transport_journal.py",
+      "sha256": "4f570add909181e14df717438e484b614934fa011d23cb23f0fac4100135060a",
+      "bytes": 11307
+    },
+    {
+      "path": "app/vibemql5/fleet/principals.py",
+      "sha256": "5c58fa48871dd9b8d9b53686f41089c40596d0f74347d84336f05a3679a0e84b",
+      "bytes": 56836
+    },
+    {
+      "path": "app/vibemql5/fleet/project_targets.py",
+      "sha256": "58be1ae756056104538e314a39406533e1c8903ed75f81591b936e74882eb0e3",
+      "bytes": 24459
+    },
+    {
+      "path": "app/vibemql5/fleet/read_broker.py",
+      "sha256": "ff8bd5fd74955be4cdc6f94732bf8c65f255b81cb307ff5f9b1965a23ad5e8e4",
+      "bytes": 18729
+    },
+    {
+      "path": "app/vibemql5/fleet/reads.py",
+      "sha256": "857fb4c453cc2d17c97f8cde08a3fba9b960f60e00750704f91e6d4e1c943e92",
+      "bytes": 8270
+    },
+    {
+      "path": "app/vibemql5/fleet/resources.py",
+      "sha256": "e3b7cfff663518312648c07ecad605734b6d35129ff519c3b0b018917a0bb492",
+      "bytes": 9954
+    },
+    {
+      "path": "app/vibemql5/fleet/restore_coordination.py",
+      "sha256": "315032f85bf8abfd638ff3b689494f96b4e3a1aeef0fa5379fca6d5b97a60be2",
+      "bytes": 27559
+    },
+    {
+      "path": "app/vibemql5/fleet/scoped_resources.py",
+      "sha256": "ee7eb40be9d15135aab9b02232b6c20cb978a77b017a8fe1b68ef00938b1241c",
+      "bytes": 40320
+    },
+    {
+      "path": "app/vibemql5/fleet/sdk_controller.py",
+      "sha256": "debcb7a3bc057935a7f11f4a70b1da00e52195f5ad6d2adb0223921005d932ce",
+      "bytes": 27167
+    },
+    {
+      "path": "app/vibemql5/fleet/sdk_protocol.py",
+      "sha256": "e64d4f06aa031425b3a816062ad46746d4b551c0a0faf43dd6f06cb031588f52",
+      "bytes": 13039
+    },
+    {
+      "path": "app/vibemql5/fleet/sdk_qualification.py",
+      "sha256": "4181262dc8ebaaeea307f45f443306704dcf67e3dc2c50ccc8901530c2ebee91",
+      "bytes": 24615
+    },
+    {
+      "path": "app/vibemql5/fleet/sdk_worker.py",
+      "sha256": "08d226bc8e805654560d6ea0fd7df1f8750f9a21bbc372b75a0d7a14869bbc18",
+      "bytes": 11171
+    },
+    {
+      "path": "app/vibemql5/fleet/strict_baseline.py",
+      "sha256": "db196ab0be627fb743e0e8d6365e034ee8ed062348794d6d52c0551ca1228802",
+      "bytes": 3588
+    },
+    {
+      "path": "app/vibemql5/fleet/targets.py",
+      "sha256": "dcbe3bd416e12cffc55b931cf19897ab31ce2559c13c9e360fabf29de53243ea",
+      "bytes": 2439
+    },
+    {
+      "path": "app/vibemql5/fleet/transport.py",
+      "sha256": "1ffdc7b733214d44871621443c47e2ac4a42aac2268aabcef1bb3c1373883fbc",
+      "bytes": 49720
+    },
+    {
+      "path": "app/vibemql5/fleet/wire.py",
+      "sha256": "48b3d18123e93735107360e899af893abd0bc606a179793dc085b973ae1f398e",
+      "bytes": 9842
+    },
+    {
+      "path": "app/vibemql5/fleet/worktrees.py",
+      "sha256": "dbefac5d6be391e8b0acfb9368eed624b4edd3d58127dbf2cb7c9174d2fb3396",
+      "bytes": 48818
+    },
+    {
+      "path": "app/vibemql5/fleet/writers.py",
+      "sha256": "dc2f6620cb8f3d19d2fca6f250b7e9c93d57594f419cd0381328609177886987",
+      "bytes": 36088
+    },
+    {
+      "path": "app/vibemql5/models/types.py",
+      "sha256": "355e2124792fb94c82dd804148871ebf24d07504b36634c7a0393c031f474af9",
+      "bytes": 836
+    },
+    {
+      "path": "app/vibemql5/parsers/compiler_log.py",
+      "sha256": "64aa086ce413dcfccbf3d0b7503f61f876add2a8d3b73d7f127780254c666d8b",
+      "bytes": 2178
+    },
+    {
+      "path": "app/vibemql5/parsers/report.py",
+      "sha256": "022672e8cd2dd653e6359fc257985dff9769d31fe47c622d65223a4569100295",
+      "bytes": 5346
+    },
+    {
+      "path": "app/vibemql5/parsers/tester_log.py",
+      "sha256": "8b6ab47525f3dcedae9083a0b6aeab34261d87751fc4118d622dda7feed7c55e",
+      "bytes": 19518
+    },
+    {
+      "path": "app/vibemql5/runtime_forensics/authority.py",
+      "sha256": "34b5aa122ae39492b5996cffb2ac6fcffbd1fa5e03dd6856962c8a9c25e288c2",
+      "bytes": 4938
+    },
+    {
+      "path": "app/vibemql5/runtime_forensics/compare_snapshots.py",
+      "sha256": "396f6c349b3c5a4206640892105a09c4c93937fad58ecb0459af27b78e5a5435",
+      "bytes": 3229
+    },
+    {
+      "path": "app/vibemql5/runtime_forensics/runtime_capture_windows.py",
+      "sha256": "e5f7e8b6a0dc26c1bb0e75ac42e767f01cee5e066cc8259a2bd1656d72e5f00b",
+      "bytes": 23435
+    },
+    {
+      "path": "app/vibemql5/runtime_forensics/scan_known_values.py",
+      "sha256": "03ee42f70df9e4bc9f777ebf2aa6a48fa14bdd66f19bd0dab366794ffedfe453",
+      "bytes": 5000
+    },
+    {
+      "path": "app/vibemql5/runtime_forensics/service.py",
+      "sha256": "6ed3082e8a6115f5ae9c738f8e719824f24f9603fde9851470edda8e0f5f0240",
+      "bytes": 33434
+    },
+    {
+      "path": "app/vibemql5/worker.py",
+      "sha256": "6ff7fda25ea8e192f13bf878b6faf4ddee5ffabfa91c89b25a17cf3f92262864",
+      "bytes": 38455
+    }
+  ]
+}
