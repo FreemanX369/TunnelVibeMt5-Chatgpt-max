@@ -1,0 +1,475 @@
+{
+  "schema": "fleet.candidate-verification/1",
+  "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+  "tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+  "workflow_gate": "BLOCKED_5_OF_8",
+  "original_incident": "ORIGINAL_CAUSE_UNKNOWN",
+  "physical_qualification": "NOT_RUN",
+  "workflows": [
+    {
+      "id": 37264596452,
+      "name": "Verify Fleet v1 integrated source",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596452",
+      "created_at": "2026-10-05T04:41:12Z",
+      "updated_at": "2026-10-05T04:51:09Z"
+    },
+    {
+      "id": 37264596392,
+      "name": "Verify TIP-027 Continuity Core",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596392",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:41:26Z"
+    },
+    {
+      "id": 37264596427,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596427",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:41:33Z"
+    },
+    {
+      "id": 37264596442,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596442",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:41:22Z"
+    },
+    {
+      "id": 37264596415,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596415",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:41:45Z"
+    },
+    {
+      "id": 37264596416,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596416",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:41:56Z"
+    },
+    {
+      "id": 37264596433,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596433",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:49:31Z"
+    },
+    {
+      "id": 37264596406,
+      "name": "Verify TIP-053 Deep Update",
+      "event": "pull_request",
+      "head_sha": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37264596406",
+      "created_at": "2026-10-05T04:41:11Z",
+      "updated_at": "2026-10-05T04:51:25Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": 11325543248,
+      "archive": "artifact-11325543248.zip",
+      "bytes": 2315,
+      "sha256": "4c7c6d53d3ee00e84ab8f973a1c6622b5ac67e2acadf4a9827817d42d5f25938",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17"
+    },
+    {
+      "artifact_id": 11326261210,
+      "archive": "artifact-11326261210.zip",
+      "bytes": 8063,
+      "sha256": "bad90902f3e25af0c0ec715d26eb99b0c2163b0e3aaf2cc412edf074248343a8",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17"
+    },
+    {
+      "artifact_id": 11326525111,
+      "archive": "artifact-11326525111.zip",
+      "bytes": 60236,
+      "sha256": "77d702f9414fa5f005c521e2feb648c29c8dd098f7539148d66f10c7884bfb0f",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17"
+    },
+    {
+      "artifact_id": 11326590777,
+      "archive": "artifact-11326590777.zip",
+      "bytes": 260905,
+      "sha256": "f27fbaafe8dacb52def02a2861156b5a54bc5fea9b11fd18d179721db2186649",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17"
+    },
+    {
+      "artifact_id": 11326620055,
+      "archive": "artifact-11326620055.zip",
+      "bytes": 8903,
+      "sha256": "73051fa4e893f38046bff5e5d93caab7d315ea1702756dd3b323f41ef36c3a5a",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17"
+    }
+  ],
+  "integrated_linux": {
+    "artifact_id": 11326525111,
+    "archive": "artifact-11326525111.zip",
+    "bytes": 60236,
+    "sha256": "77d702f9414fa5f005c521e2feb648c29c8dd098f7539148d66f10c7884bfb0f",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+    "source_entries": 207,
+    "junit": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "14",
+      "tests": "1146",
+      "time": "72.346",
+      "timestamp": "2026-10-05T04:41:22.270419+00:00",
+      "hostname": "runnervm8df0l"
+    },
+    "passed": 1132,
+    "cases": [
+      {
+        "case": "full-unit",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 73.055
+      },
+      {
+        "case": "b1-portable",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.415
+      }
+    ],
+    "proof": {
+      "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+      "executed": 39,
+      "skipped": 0,
+      "source_entries": 15,
+      "log_digest_verified": true
+    }
+  },
+  "integrated_windows": {
+    "artifact_id": 11326590777,
+    "bytes": 260905,
+    "sha256": "f27fbaafe8dacb52def02a2861156b5a54bc5fea9b11fd18d179721db2186649",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+    "status": "FAIL",
+    "source_entries_verified": 207,
+    "junit": [
+      {
+        "name": "pytest",
+        "errors": "2",
+        "failures": "3",
+        "skipped": "10",
+        "tests": "1146",
+        "time": "522.907",
+        "timestamp": "2026-10-05T04:41:54.704129+00:00",
+        "hostname": "runnervmfi6oq"
+      }
+    ],
+    "cases": [
+      {
+        "case": "full-unit",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "-m",
+          "pytest",
+          "tests/unit",
+          "-v",
+          "--tb=short",
+          "--durations=20",
+          "-o",
+          "faulthandler_timeout=90",
+          "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+        ],
+        "exit_code": 1,
+        "timeout_seconds": 600,
+        "timed_out": false,
+        "elapsed_seconds": 525.062
+      },
+      {
+        "case": "b1-portable",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rb1/run_proof.py",
+          "--portable",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 2.391
+      },
+      {
+        "case": "q1-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rq/run_proof.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 14.656
+      },
+      {
+        "case": "g03a-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rg03a/run_windows.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 1.688
+      },
+      {
+        "case": "b1-harmless",
+        "command": [
+          "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "tests/proofs/tip057rb1/run_proof.py",
+          "--require-windows",
+          "--output",
+          "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+        ],
+        "exit_code": 0,
+        "timeout_seconds": 120,
+        "timed_out": false,
+        "elapsed_seconds": 7.5
+      }
+    ],
+    "failures": [
+      {
+        "test": {
+          "classname": "tests.unit.test_tip060c_https_restore",
+          "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[False]",
+          "time": "1.500"
+        },
+        "errors": [
+          {
+            "tag": "failure",
+            "type": null,
+            "message": "vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY",
+            "text": "tests\\unit\\test_tip060c_https_restore.py:105: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\napp\\vibemql5\\fleet\\gateway_control.py:991: in backup\n    self._bounded_backup(db)\napp\\vibemql5\\fleet\\gateway_control.py:1021: in _bounded_backup\n    self._db.backup(destination, pages=64, progress=progress,\napp\\vibemql5\\fleet\\gateway_control.py:1020: in progress\n    _fail(\"CONTROL_BUSY\")\napp\\vibemql5\\fleet\\gateway_control.py:45: in _fail\n    raise GatewayControlError(code)\nE   vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY"
+          }
+        ]
+      },
+      {
+        "test": {
+          "classname": "tests.unit.test_tip060c_https_restore",
+          "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[worktree]",
+          "time": "3.874"
+        },
+        "errors": [
+          {
+            "tag": "failure",
+            "type": null,
+            "message": "vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY",
+            "text": "tests\\unit\\test_tip060c_https_restore.py:105: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\napp\\vibemql5\\fleet\\gateway_control.py:991: in backup\n    self._bounded_backup(db)\napp\\vibemql5\\fleet\\gateway_control.py:1021: in _bounded_backup\n    self._db.backup(destination, pages=64, progress=progress,\napp\\vibemql5\\fleet\\gateway_control.py:1020: in progress\n    _fail(\"CONTROL_BUSY\")\napp\\vibemql5\\fleet\\gateway_control.py:45: in _fail\n    raise GatewayControlError(code)\nE   vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY"
+          }
+        ]
+      },
+      {
+        "test": {
+          "classname": "tests.unit.test_tip060c_https_restore",
+          "name": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[readonly]",
+          "time": "5.936"
+        },
+        "errors": [
+          {
+            "tag": "failure",
+            "type": null,
+            "message": "_queue.Empty",
+            "text": "tests\\unit\\test_tip060c_https_restore.py:121: in test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together\n    stop,thread,_=start(recovery_service,address)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_tip060c_https_restore.py:46: in start\n    thread=threading.Thread(target=run,daemon=True);thread.start();bound=ready.get(timeout=5)\n                                                                         ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+          }
+        ]
+      },
+      {
+        "test": {
+          "classname": "tests.unit.test_tip064_integration",
+          "name": "test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history",
+          "time": "7.578"
+        },
+        "errors": [
+          {
+            "tag": "error",
+            "type": null,
+            "message": "failed on setup with \"_queue.Empty\"",
+            "text": "tests\\unit\\test_tip064_integration.py:377: in composed_service\n    address = ready.get(timeout=5)\n              ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+          }
+        ]
+      },
+      {
+        "test": {
+          "classname": "tests.unit.test_tip064_integration",
+          "name": "test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[none]",
+          "time": "12.073"
+        },
+        "errors": [
+          {
+            "tag": "error",
+            "type": null,
+            "message": "failed on setup with \"_queue.Empty\"",
+            "text": "tests\\unit\\test_tip064_integration.py:377: in composed_service\n    address = ready.get(timeout=5)\n              ^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\queue.py:179: in get\n    raise Empty\nE   _queue.Empty"
+          }
+        ]
+      }
+    ],
+    "proofs": [
+      {
+        "name": "b1-harmless/summary.json",
+        "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+        "executed": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "b1-portable/summary.json",
+        "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+        "executed": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "g03a-harmless/summary.json",
+        "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+        "executed": null,
+        "failures": 0,
+        "errors": 0,
+        "skipped": null
+      },
+      {
+        "name": "q1-harmless/summary.json",
+        "status": "FIXTURE_PASS_Q03_OPEN",
+        "executed": null,
+        "failures": 0,
+        "errors": 0,
+        "skipped": null
+      }
+    ]
+  },
+  "standalone_proofs": [
+    {
+      "artifact_id": 11326261210,
+      "proof": "tip057rb1-portable/summary.json",
+      "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "verified_sources": 15,
+      "executed": 39,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "artifact_id": 11326261210,
+      "proof": "tip057rb1-windows/summary.json",
+      "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "verified_sources": 15,
+      "executed": 10,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "artifact_id": 11325543248,
+      "proof": "summary.json",
+      "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "verified_sources": 8,
+      "executed": 8,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "artifact_id": 11326620055,
+      "proof": "summary.json",
+      "status": "FIXTURE_PASS_Q03_OPEN",
+      "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+      "verified_sources": 4,
+      "executed": 16,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    }
+  ],
+  "logs": {
+    "job-111618615007.log": {
+      "bytes": 28228,
+      "sha256": "7035abd9f85ab5416ddf3d4ab6b034dab31afbbdc4182e572dac7851d082aed1"
+    },
+    "raw-job-111618614586.log": {
+      "bytes": 50637,
+      "sha256": "703ac8ad345fd421dd027578140a45f2e15f29a68d8a3fd93fcfc96a5d9f34b5"
+    },
+    "job-111618614586.log": {
+      "bytes": 50152,
+      "sha256": "6e2e3ed8160c2d313c731ff844dc774998e6794daf1bd7c0c0ec44b34072d335"
+    },
+    "raw-job-111618615007.log": {
+      "bytes": 28543,
+      "sha256": "e80c3d1ff029c67db4b0a85d4c44f2b94f757228d35d013cc3a3d32cb579fe9d"
+    },
+    "raw-job-111618614404.log": {
+      "bytes": 67485,
+      "sha256": "c2a1ea09d16743ec4209f8b9c4b1ba0b3dc44428cf1dce3a4ebb2531861d4c32"
+    },
+    "job-111618614404.log": {
+      "bytes": 66845,
+      "sha256": "c43eb0e4f12a8f25d366bd2b39ca72a4905be694aeebef58384a3ac0d18e10be"
+    }
+  },
+  "open_incident_notes": [
+    "Original first grant cause suppressed",
+    "375e6af actual shutdown stage unobserved",
+    "fe199eb restore startup cause/stage hidden by Queue.Empty",
+    "fe199eb capacity response deadline exhausted; original server stage not recorded"
+  ],
+  "backup_budget_source": {
+    "sqlite_busy_timeout_ms": 100,
+    "observed_stack": "GatewayControlStore._bounded_backup.progress"
+  }
+}

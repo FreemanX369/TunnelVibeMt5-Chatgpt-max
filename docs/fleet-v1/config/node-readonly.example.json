@@ -1,0 +1,60 @@
+{
+  "schema": "fleet.node-config/1",
+  "root": "/srv/vibemql5-node",
+  "origin": "https://fleet.example.test:8443",
+  "ca_file": "/srv/fleet/secrets/operator-ca.pem",
+  "fleet_policy": {
+    "max_body_bytes": 1048576,
+    "max_response_bytes": 1048576,
+    "http_timeout_ms": 5000,
+    "max_pending_reads": 128,
+    "max_retained_results": 4096,
+    "max_targets": 64,
+    "max_poll_commands": 4,
+    "read_deadline_ms": 10000,
+    "session_timeout_ms": 30000,
+    "heartbeat_interval_ms": 1000,
+    "poll_interval_ms": 100,
+    "freshness_ms": 5000,
+    "max_clock_future_ms": 0,
+    "max_rows": 4096,
+    "max_owner_token_bytes": 128,
+    "max_operation_id_bytes": 128
+  },
+  "node_key_file": "/srv/fleet/secrets/node-ed25519.pem",
+  "route_generation": 1,
+  "session_id": "REPLACE_WITH_EXPLICIT_NODE_SESSION",
+  "jobs_path": "/srv/vibemql5-node/state/fleet/node-jobs.sqlite",
+  "journal_policy": {
+    "max_records": 65536,
+    "max_payload_bytes": 1048576,
+    "wait_ms": 5000
+  },
+  "domain_path": "/srv/vibemql5-node/state/fleet/node-domain.sqlite",
+  "domain_policy": {
+    "max_records": 65536,
+    "max_payload_bytes": 1048576,
+    "wait_ms": 5000,
+    "max_commands": 4,
+    "start_authorization_ms": 10000
+  },
+  "transport_path": "/srv/vibemql5-node/state/fleet/node-transport.sqlite",
+  "transport_policy": {
+    "max_records": 65536,
+    "max_payload_bytes": 1048576,
+    "wait_ms": 5000
+  },
+  "gateway_public_key": "REPLACE_WITH_64_HEX_GATEWAY_ED25519_PUBLIC_KEY",
+  "writer_policy": null,
+  "worktree_policy": null,
+  "worktree_config": null,
+  "drain_timeout_ms": 30000,
+  "artifact_policy": {
+    "installation_id": "REPLACE_WITH_NODE_INSTALLATION_ID",
+    "max_artifact_bytes": 16777216,
+    "max_chunk_bytes": 262144
+  },
+  "max_inventory_rows": 4096,
+  "sdk_qualifications": [],
+  "capacity_trust": null
+}

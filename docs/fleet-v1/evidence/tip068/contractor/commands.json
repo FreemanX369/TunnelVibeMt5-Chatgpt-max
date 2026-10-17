@@ -1,0 +1,22 @@
+{
+  "cwd": "/workspace/scratch/b4674f0ac496/tip068-builder",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-p",
+    "fleet_source_progress",
+    "tests/unit/test_fleet_source_runner.py",
+    "tests/unit/test_fleet_source_progress.py",
+    "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope",
+    "-v",
+    "--tb=short",
+    "--basetemp=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-contractor/child-controls",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip068-contractor/focused.junit.xml"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip068-builder/app:/workspace/scratch/b4674f0ac496/tip068-builder/tests/unit"
+  },
+  "parent_head": "806ca44e238cc1384441234d9699cb2dbf3336e8",
+  "scope": "LOCAL_SOURCE_FIXTURES_ONLY"
+}

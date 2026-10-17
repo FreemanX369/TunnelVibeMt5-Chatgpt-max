@@ -1,0 +1,17 @@
+{
+  "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip074_gateway_lifecycle.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/focused.junit.xml",
+    "--durations=10"
+  ],
+  "timeout_seconds": 60,
+  "exit_code": 1,
+  "wall_seconds": 2.4354632189997574,
+  "source_count": 218,
+  "source_equal": true
+}

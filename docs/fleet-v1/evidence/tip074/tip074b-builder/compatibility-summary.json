@@ -1,0 +1,23 @@
+{
+  "passed": 308,
+  "skipped": [
+    {
+      "name": "test_windows_private_acl_roundtrip_reports_public_semantics",
+      "classname": "tests.unit.test_tip058b_transport",
+      "message": "Actual retained-handle numeric ACL fixture requires Windows"
+    },
+    {
+      "name": "test_windows_private_key_foreign_owner_denied_on_retained_handle",
+      "classname": "tests.unit.test_tip058b_transport",
+      "message": "Actual retained-handle Windows ownership fixture requires Windows"
+    },
+    {
+      "name": "test_windows_staging_directory_cannot_be_renamed_while_held",
+      "classname": "tests.unit.test_tip058b_transport",
+      "message": "Actual protected staging-directory handle fixture requires Windows"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "source_existing_tests_unchanged": true
+}

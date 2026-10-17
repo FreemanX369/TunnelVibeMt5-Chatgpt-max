@@ -1,0 +1,92 @@
+{
+  "schema": "owned-causal-gate/1",
+  "modeled_boundary": true,
+  "original_windows_cause": "UNKNOWN",
+  "pytest_exit": 1,
+  "rows": [
+    {
+      "elapsed_ms": 348,
+      "stage": "RUNTIME",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 473,
+      "stage": "MODELED_GATE_ENTER",
+      "test_index": 0,
+      "job_id": "fjob_31220d7d74574515a28f18701c640c09",
+      "event": "snapshot_prepare:0001"
+    },
+    {
+      "elapsed_ms": 8472,
+      "stage": "CASE_RETURN",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 8478,
+      "stage": "CASE_TEARDOWN",
+      "test_index": 0
+    },
+    {
+      "elapsed_ms": 8629,
+      "stage": "NEXT_OBSERVER_INSTALLED",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 8629,
+      "stage": "MODELED_GATE_EXIT",
+      "test_index": 0,
+      "job_id": "fjob_31220d7d74574515a28f18701c640c09"
+    },
+    {
+      "elapsed_ms": 8641,
+      "stage": "RUNTIME",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 14368,
+      "stage": "OUTCOME_ENTER",
+      "test_index": 1,
+      "runtime_owner": 0,
+      "job_id": "fjob_31220d7d74574515a28f18701c640c09",
+      "state": "UNKNOWN",
+      "reason_code": "EXECUTION_OUTCOME_UNKNOWN",
+      "evidence": null
+    },
+    {
+      "elapsed_ms": 14374,
+      "stage": "OUTCOME_ENTER",
+      "test_index": 1,
+      "runtime_owner": 1,
+      "job_id": "fjob_046b20e9c96f432fadd1260f61e62b24",
+      "state": "SUCCEEDED",
+      "reason_code": null,
+      "evidence": "SYNTHETIC_NATIVE_ONLY"
+    },
+    {
+      "elapsed_ms": 14602,
+      "stage": "CASE_RETURN",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 14653,
+      "stage": "CASE_TEARDOWN",
+      "test_index": 1
+    },
+    {
+      "elapsed_ms": 14654,
+      "stage": "FINAL_RETAINED",
+      "test_index": 0,
+      "futures": 1,
+      "pending_records": 1,
+      "futures_done": true
+    },
+    {
+      "elapsed_ms": 14654,
+      "stage": "FINAL_RETAINED",
+      "test_index": 1,
+      "futures": 0,
+      "pending_records": 0,
+      "futures_done": true
+    }
+  ]
+}

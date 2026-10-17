@@ -1,0 +1,74 @@
+{
+  "schema": "runtime-cost-scan-freeze/1",
+  "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "source_files": 217,
+  "source_unchanged": true,
+  "files": {
+    "SCAN-report.md": {
+      "bytes": 5164,
+      "sha256": "161ceea9105c81c2c4badaad19094c29b11acc350afe436955195cafb9612a03"
+    },
+    "actual-owned-cost.json": {
+      "bytes": 11600,
+      "sha256": "28dd79af09ed469f1f89a6f90eee6b56b0229c4caf8113b825002a0261ce3dfc"
+    },
+    "actual-owned-cost.junit.xml": {
+      "bytes": 407,
+      "sha256": "b8db59b9f35479e2012abe192cecd9c7f31d8e882738d69829c79767e6e992fd"
+    },
+    "actual-owned-cost.log": {
+      "bytes": 1299,
+      "sha256": "51bccd5b0e602a7ba2c87bcbe4d17842603153fec093ddb8c1232242263918f9"
+    },
+    "commands.json": {
+      "bytes": 1127,
+      "sha256": "44c5d59086d73999ae0b19af9ebf8436c23a6928edaf60a5477756fc5b16c89c"
+    },
+    "profile_plugin.py": {
+      "bytes": 4659,
+      "sha256": "11481785ba96c2662724a8e742f56527a8d6044354461adb21594298196adbef"
+    },
+    "source-after.json": {
+      "bytes": 24011,
+      "sha256": "82585d58bf22e01e1397f3b6f050032c4cecdef3c6a542a9dd2b9277b9165781"
+    },
+    "source-before.json": {
+      "bytes": 24011,
+      "sha256": "82585d58bf22e01e1397f3b6f050032c4cecdef3c6a542a9dd2b9277b9165781"
+    },
+    "unicode-tree-ascii-command.json": {
+      "bytes": 456,
+      "sha256": "36364fcc7118c7506a299f05cd85f6879e61624f1cfb7d49418c2a337e084450"
+    },
+    "unicode-tree-ascii-probe.log": {
+      "bytes": 110,
+      "sha256": "31d054e1e29bd6386c9b4fed7632d3b056c5ad3850905bc4e33d7b7cfbbeb441"
+    },
+    "unicode-tree-ascii-receipt.json": {
+      "bytes": 7602,
+      "sha256": "27ff179b927844d2d831470327a1b811bd578fe9bd651389fca1e83947184278"
+    },
+    "unicode-tree-command.json": {
+      "bytes": 452,
+      "sha256": "a7476bff430624e8bed6c3de62fe2500a64766804e7f8e4e8adf740cd9d44156"
+    },
+    "unicode-tree-probe.log": {
+      "bytes": 109,
+      "sha256": "d1f15ac479305d3b5faddf377e10704a756a072f314efd061b4b508366ed62cc"
+    },
+    "unicode-tree-receipt.json": {
+      "bytes": 7606,
+      "sha256": "26d84e45d5ea03ec9fcc71b931cd7aea7ec2eca04a15e3feb48c688419d37202"
+    },
+    "unicode_tree_probe.py": {
+      "bytes": 4300,
+      "sha256": "d2ac5943917f26740024c8e32d1f688d1ca1079aad49edb703366426484f05d0"
+    },
+    "unicode_tree_probe_v2.py": {
+      "bytes": 4295,
+      "sha256": "1b720937f231580a160d0bf571d012c787962233cdc17b93567cb83a67ad5621"
+    }
+  },
+  "total_bytes": 97208,
+  "excluded": "actual-owned-cost-tmp ephemeral TLS material and runtime journals"
+}

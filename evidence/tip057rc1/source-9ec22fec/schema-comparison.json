@@ -1,0 +1,50 @@
+{
+  "source_parent": "5583204f698dcbf664ad20ddae8106d96019c8d2",
+  "catalog_count": 85,
+  "changed_input_schemas": [
+    "get_terminal_live_state",
+    "get_account_snapshot"
+  ],
+  "unchanged_input_schemas": 83,
+  "unchanged_schema_sha256": "16ceef873678e7d7598874c6e612393e23de35c934f18ab6a31b09ad15bd7541",
+  "selected": {
+    "get_terminal_live_state": {
+      "properties": {
+        "target": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        }
+      },
+      "title": "get_terminal_live_stateArguments",
+      "type": "object"
+    },
+    "get_account_snapshot": {
+      "properties": {
+        "target": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        }
+      },
+      "title": "get_account_snapshotArguments",
+      "type": "object"
+    }
+  }
+}

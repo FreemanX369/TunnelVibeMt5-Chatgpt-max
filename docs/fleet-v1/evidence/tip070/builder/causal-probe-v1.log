@@ -1,0 +1,20 @@
+{"calls": [{"controlled_timeout": 3, "requested_module": "pytest", "requested_timeout": 300}], "case": "success", "elapsed_seconds": 0.021971, "is_error": false, "payload": {"returncode": 0, "status": "PASS", "stderr_tail": "", "stdout_tail": "CONTROL_SUCCESS\n", "suite": "unit"}, "receipt_files_after": [], "receipt_files_before": [], "returned": true}
+{"calls": [{"controlled_timeout": 3, "requested_module": "pytest", "requested_timeout": 300}], "case": "nonzero", "elapsed_seconds": 0.012583, "is_error": false, "payload": {"returncode": 7, "status": "FAIL", "stderr_tail": "", "stdout_tail": "CONTROL_FAILURE\n", "suite": "unit"}, "receipt_files_after": [], "receipt_files_before": [], "returned": true}
+{"calls": [{"controlled_timeout": 0.2, "requested_module": "pytest", "requested_timeout": 300}], "case": "timeout", "elapsed_seconds": 0.202152, "original_output": "CONTROL_START\n", "original_timeout": 0.2, "original_type": "TimeoutExpired", "receipt_files_after": [], "receipt_files_before": [], "returned": false, "sdk_message": "Error executing tool backend_run_tests", "sdk_type": "UnexpectedToolError"}
+Traceback (most recent call last):
+  File "/workspace/scratch/b4674f0ac496/deepfix-20261007/builder-scan/causal-probe.py", line 100, in <module>
+    row = asyncio.run(concurrent_control())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/workspace/scratch/b4674f0ac496/deepfix-20261007/builder-scan/causal-probe.py", line 96, in concurrent_control
+    assert observed_pending and health.structured_content == {'service': 'CONTROL_ONLY', 'native_effects': False}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

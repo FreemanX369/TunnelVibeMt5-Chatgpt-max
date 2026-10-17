@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "-o",
+    "faulthandler_timeout=30",
+    "tests/unit/test_tip064_integration.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/compatibility.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/compatibility-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip073a-builder",
+  "env_override": {
+    "PYTHONPATH": "app:tests/unit",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_s": 180,
+  "exit_code": 0,
+  "wall_s": 30.965357935000156,
+  "cases": 75,
+  "passed": 75,
+  "failed": 0,
+  "skipped": 0,
+  "source_entries": 217,
+  "source_unchanged": true
+}

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-s",
+    "tests/unit/test_tip056_resources.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip058b_transport.py",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-ci-refinement-20261005/focused-v1.xml"
+  ],
+  "cwd": "/workspace/scratch/1818a0d45fa0/repo",
+  "env": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "base_head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+  "source_before": {
+    "tests/unit/test_tip056_resources.py": "23be54918913aae8d17a31ba2cf69f6639e05fe7f76314bca7da523110f6feea",
+    "tests/unit/test_tip064_integration.py": "a38106e8a773547605f0512a49db551abfd660d8576c9656f0c0e4dd31ef73ab",
+    "tests/unit/test_tip024_multiclient_concurrency.py": "07f822793d3ad08d946e0dedade8f2b2ba3b0f6b07631cd7ec851d112cbfcc3c",
+    "tests/unit/test_fleet_gateway_fixture.py": "cf970b8db2ea03dd811e56a84c2d8626029a8a625d48a593b2fb3269721b932c",
+    "tests/unit/test_tip058b_transport.py": "89617263f67930dbbda0c18114380d851a9b6726f231fbd2429cf5754a433746"
+  },
+  "packages": {
+    "pytest": "9.1.1",
+    "mcp": "2.1.1",
+    "cryptography": "50.0.1"
+  },
+  "started_utc": "2026-10-05T08:10:01Z"
+}

@@ -1,0 +1,23 @@
+{
+  "scope": "RECOVERED_CHECKPOINT_BYTES_ONLY_NO_PRODUCT_RERUN",
+  "handover_manifest_entries": 12,
+  "source_manifest_entries": 48,
+  "deep_demo_manifest_entries": 35,
+  "crc_archives": {"handover_members": 13, "source_members": 50, "demo_members": 37, "status": "PASS"},
+  "manifest_size_sha256_status": "PASS_BUILDER_READ_ONLY_VERIFICATION",
+  "nested_original_archives": [
+    {"name":"TunnelVibemq5-Evidence-2026-10-06.zip", "bytes":509086, "sha256":"4b4cbcda5807508cecc44fa7d955ce97daaf7b5621323a6600999ed7e127df9b"},
+    {"name":"TunnelVibemq5-Deep-Demo-Evidence-2026-10-06.zip", "bytes":51536, "sha256":"f9e115fbc0e126edf9ef06173b30954fa195c31a19ec425ad5d862b862fe47f1"}
+  ],
+  "independent_contractor_candidate_artifacts": {
+    "head":"fe6ef1baa359ea2acbba7e3e0f78ae872ed1c55f",
+    "tree":"e0881d89cca4663805af8de22e8ca7649a0f95f5",
+    "original_zip_archives":5,
+    "integrated_git_source_entries_each":211,
+    "proof_receipts":9,
+    "linux":{"passed":1229,"skipped":18,"testcases":1247,"errors":0,"failures":0},
+    "windows":{"passed":1235,"skipped":12,"testcases":1247,"errors":0,"failures":0},
+    "status":"PASS"
+  },
+  "current_live_runtime":"UNKNOWN_CONNECTOR_UNAVAILABLE"
+}

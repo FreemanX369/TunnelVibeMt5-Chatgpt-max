@@ -1,0 +1,21 @@
+test_create_attempt_without_binding_cannot_release (__main__.PortableCases.test_create_attempt_without_binding_cannot_release) ... ok
+test_live_exact_worker_and_identity_mismatch_reject_clear (__main__.PortableCases.test_live_exact_worker_and_identity_mismatch_reject_clear) ... ok
+test_lost_active_intent_cannot_admit_after_dead_parent (__main__.PortableCases.test_lost_active_intent_cannot_admit_after_dead_parent) ... ok
+test_no_attempt_release (__main__.PortableCases.test_no_attempt_release) ... ok
+test_partial_intent_is_fail_closed (__main__.PortableCases.test_partial_intent_is_fail_closed) ... ok
+test_primary_cleanup_deadline_precedence_has_no_unqualified_values (__main__.PortableCases.test_primary_cleanup_deadline_precedence_has_no_unqualified_values) ... ok
+test_stale_recovery_cannot_clear_successor (__main__.PortableCases.test_stale_recovery_cannot_clear_successor) ... ok
+test_unresolved_descendant_rejects_clear (__main__.PortableCases.test_unresolved_descendant_rejects_clear) ... ok
+test_q01_restriction_active_before_work_and_setup_failure_no_attempt (__main__.WindowsCases.test_q01_restriction_active_before_work_and_setup_failure_no_attempt) ... ok
+test_q02_exit_between_discovery_and_launch (__main__.WindowsCases.test_q02_exit_between_discovery_and_launch) ... ok
+test_q02_q03_unrestricted_control_and_restricted_stopped_launch (__main__.WindowsCases.test_q02_q03_unrestricted_control_and_restricted_stopped_launch) ... ok
+test_q04_primary_and_real_fixture_cleanup_faults (__main__.WindowsCases.test_q04_primary_and_real_fixture_cleanup_faults) ... ok
+test_q05_hang_does_not_release_before_exact_termination (__main__.WindowsCases.test_q05_hang_does_not_release_before_exact_termination) ... ok
+test_q06_real_parent_crash_before_failure_marker (__main__.WindowsCases.test_q06_real_parent_crash_before_failure_marker) ... ok
+test_q07_real_creation_identity_stale_generation_and_descendants (__main__.WindowsCases.test_q07_real_creation_identity_stale_generation_and_descendants) ... ok
+test_q08_conflicting_callers_restart_and_recovery_race (__main__.WindowsCases.test_q08_conflicting_callers_restart_and_recovery_race) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 5.088s
+
+OK

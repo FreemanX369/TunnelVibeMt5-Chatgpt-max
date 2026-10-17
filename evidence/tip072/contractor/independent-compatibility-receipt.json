@@ -1,0 +1,38 @@
+{
+  "name": "independent-compatibility",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-compatibility.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-compatibility_tmp",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_tip057rg03a_native_ownership.py",
+    "tests/unit/test_tip057r_sdk.py",
+    "tests/unit/test_tip061a_057n.py",
+    "tests/unit/test_tip071_scoped_db_setup_cleanup.py",
+    "tests/unit/test_tip072_native_denied_publication.py"
+  ],
+  "limit": 180,
+  "exit": 0,
+  "wall_seconds": 9.100896551999995,
+  "source_entries": 217,
+  "source_unchanged": true,
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "1",
+      "tests": "261",
+      "time": "8.522",
+      "timestamp": "2026-10-07T18:54:01.611070+09:00",
+      "hostname": "bc2fcc3c9523"
+    }
+  ]
+}

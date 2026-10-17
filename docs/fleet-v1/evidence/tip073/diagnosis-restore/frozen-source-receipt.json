@@ -1,0 +1,34 @@
+{
+  "head": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "status": "",
+  "files": [
+    {
+      "path": "tests/unit/test_tip060c_restore.py",
+      "bytes": 11234,
+      "sha256": "2641da7ab35579ce1fdd2d4805fe9bfc3eda723c619c13e5626f6984dfd3edde",
+      "head_bytes_equal": true,
+      "official_windows_source_equal": true
+    },
+    {
+      "path": "app/vibemql5/fleet/restore_coordination.py",
+      "bytes": 27559,
+      "sha256": "315032f85bf8abfd638ff3b689494f96b4e3a1aeef0fa5379fca6d5b97a60be2",
+      "head_bytes_equal": true,
+      "official_windows_source_equal": true
+    },
+    {
+      "path": "app/vibemql5/fleet/job_journal.py",
+      "bytes": 102429,
+      "sha256": "fa6fbe895655c2cd2bc5bf0898d189398da7102a28e8b1dd1a619b8302c1e54a",
+      "head_bytes_equal": true,
+      "official_windows_source_equal": true
+    },
+    {
+      "path": "tests/unit/fleet_source_progress.py",
+      "bytes": 2547,
+      "sha256": "6eda2925359156a3c99f28143ca597d9ef02608323a25ece93f77d8f6311d38c",
+      "head_bytes_equal": true,
+      "official_windows_source_equal": true
+    }
+  ]
+}

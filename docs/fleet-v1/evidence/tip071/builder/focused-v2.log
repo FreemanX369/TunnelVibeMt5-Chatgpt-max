@@ -1,0 +1,106 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip071-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 16 items
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 95, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 100, "test_elapsed_ms": 4}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 100, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1105, "test_elapsed_ms": 1005}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 1105, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1107, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 1107, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1108, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 1109, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1110, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 1111, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1112, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 1112, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] PASSED [ 43%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 1113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1114, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 1115, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] PASSED [ 56%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1116, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 1116, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1118, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 1118, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1118, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 1119, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1119, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 1120, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] PASSED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 13, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1122, "test_elapsed_ms": 2}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 1122, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] PASSED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 14, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1126, "test_elapsed_ms": 3}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 1126, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 15, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1128, "test_elapsed_ms": 2}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 1128, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 16, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1131, "test_elapsed_ms": 2}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1439/tip071-builder/focused-v2.junit.xml -
+============================== 16 passed in 1.12s ==============================

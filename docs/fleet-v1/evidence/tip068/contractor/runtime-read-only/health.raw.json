@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-10-06T15:18:18.085Z",
+  "result": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.health`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+        }
+      ],
+      "isError": true
+    }
+  }
+}

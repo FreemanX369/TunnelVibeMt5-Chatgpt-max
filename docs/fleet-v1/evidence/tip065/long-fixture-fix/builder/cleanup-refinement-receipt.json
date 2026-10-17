@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_callback_error_identity_and_cleanup",
+    "-q",
+    "--tb=short",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-long-fixture-fix-20261005/cleanup-refinement.junit.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 2.2460432899999887,
+  "source_unchanged_during_test": true,
+  "scope": "Only changed expected-negative control rerun after deterministic resource disposal correction"
+}

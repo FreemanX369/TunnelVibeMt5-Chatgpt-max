@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import hashlib
 import inspect
 import json
@@ -50,6 +52,7 @@ def _root(tmp_path: Path) -> Path:
         "symbol": "XAUUSDm", "period": "M1", "model": 4, "deposit": 10000,
         "currency": "USD", "leverage": 1000, "visual": False,
     }), encoding="utf-8")
+    install_closed(root)
     return root
 
 

@@ -1,0 +1,41 @@
+{
+  "name": "parent-complete-bounded-compatibility",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-complete-bounded-compatibility.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-complete-bounded-compatibility_tmp",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_tip057rg03a_native_ownership.py",
+    "tests/unit/test_tip057r_sdk.py",
+    "tests/unit/test_tip061a_057n.py",
+    "tests/unit/test_tip071_scoped_db_setup_cleanup.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-source",
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-source/app:/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-source/tests/unit"
+  },
+  "limit_seconds": 180,
+  "exit_code": 1,
+  "wall_time_seconds": 8.944942000999959,
+  "case_count": 230,
+  "passed": 228,
+  "skipped": 1,
+  "failures": [
+    {
+      "classname": "tests.unit.test_tip024_multiclient_concurrency",
+      "name": "test_tip024_mcp_registers_catalog_and_context_is_invisible_contract",
+      "message": "RuntimeError: MCP SDK v2 is required. Run: pip install -e \".[mcp]\"",
+      "text": "root = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-complete-bounded-compatibility_tmp/test_tip024_mcp_registers_cata0/VibeMQL5')\ntransport = 'stdio'\n\n    def create_server(root: Path, transport: str = \"unknown\"):\n        try:\n            from mcp.server.mcpserver import MCPServer, Context\n>           from mcp.server.mcpserver.exceptions import ToolError\nE           ModuleNotFoundError: No module named 'mcp.server.mcpserver.exceptions'; 'mcp.server.mcpserver' is not a package\n\napp/vibemql5/adapters/mcp.py:57: ModuleNotFoundError\n\nThe above exception was the direct cause of the following exception:\n\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4578df74d0>\ntmp_path = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-complete-bounded-compatibility_tmp/test_tip024_mcp_registers_cata0')\n\n    def test_tip024_mcp_registers_catalog_and_context_is_invisible_contract(monkeypatch, tmp_path: Path):\n        class FakeContext:\n            pass\n    \n        class FakeMCPServer:\n            def __init__(self, name, **kwargs):\n                self.name = name\n                self.instructions = kwargs.get(\"instructions\", \"\")\n                self.tools = {}\n                self.resources = {}\n            def tool(self, **kwargs):\n                def deco(fn):\n                    self.tools[fn.__name__] = fn\n                    return fn\n                return deco\n            def resource(self, uri, **kwargs):\n                def deco(fn):\n                    self.resources[uri] = fn\n                    return fn\n                return deco\n    \n        fake_server_mod = types.ModuleType(\"mcp.server.mcpserver\")\n        fake_server_mod.MCPServer = FakeMCPServer\n        fake_server_mod.Context = FakeContext\n        monkeypatch.setitem(sys.modules, \"mcp\", types.ModuleType(\"mcp\"))\n        monkeypatch.setitem(sys.modules, \"mcp.server\", types.ModuleType(\"mcp.server\"))\n        monkeypatch.setitem(sys.modules, \"mcp.server.mcpserver\", fake_server_mod)\n        types_mod = types.ModuleType(\"mcp.types\")\n        class _Model:\n            def __init__(self, **kwargs):\n                self.__dict__.update(kwargs)\n        for model_name in (\"CallToolResult\", \"ResourceLink\", \"TextContent\", \"ToolAnnotations\"):\n            setattr(types_mod, model_name, _Model)\n        monkeypatch.setitem(sys.modules, \"mcp.types\", types_mod)\n    \n        from vibemql5.adapters.mcp import create_server\n        root = _root(tmp_path)\n>       server = create_server(root, transport=\"stdio\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/unit/test_tip024_multiclient_concurrency.py:294: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/scratch/b4674f0ac496/fix-20261007-1644/compatibility-review-builder/parent-complete-bounded-compatibility_tmp/test_tip024_mcp_registers_cata0/VibeMQL5')\ntransport = 'stdio'\n\n    def create_server(root: Path, transport: str = \"unknown\"):\n        try:\n            from mcp.server.mcpserver import MCPServer, Context\n            from mcp.server.mcpserver.exceptions import ToolError\n            from mcp.types import CallToolResult, ResourceLink, TextContent, ToolAnnotations\n        except ImportError as exc:\n>           raise RuntimeError('MCP SDK v2 is required. Run: pip install -e \".[mcp]\"') from exc\nE           RuntimeError: MCP SDK v2 is required. Run: pip install -e \".[mcp]\"\n\napp/vibemql5/adapters/mcp.py:60: RuntimeError"
+    }
+  ],
+  "source_unchanged": true,
+  "source_manifest_entries": 216
+}

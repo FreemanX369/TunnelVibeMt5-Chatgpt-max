@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="15.240" timestamp="2026-10-07T20:14:32.470438+09:00" hostname="9db2018672be"><testcase classname="tests.unit.test_tip064_integration" name="test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]" time="8.320"><failure message="BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)">+ Exception Group Traceback (most recent call last):
+  |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1474, in test_long_fixture_valid_finite_schedule_requires_aggregate_observation
+  |     run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)
+  |   File "/workspace/scratch/b4674f0ac496/fix-20261007-1748/tip073a-builder/causal_gate_plugin_v2.py", line 88, in gated_run
+  |     return run(*args, **kwargs)
+  |            ^^^^^^^^^^^^^^^^^^^^
+  |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1433, in run_long_fixture
+  |     if originals: raise BaseExceptionGroup('long fixture observation, worker or cleanup failed', originals) from None
+  |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | BaseExceptionGroup: long fixture observation, worker or cleanup failed (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1398, in run_long_fixture
+    |     pump(agent, lambda: succeeded_and_drained(row['global_job_id']), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 1412, in run_long_fixture
+    |     close_dispatcher_fixture(agent, dispatcher, pump, seconds=3)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/fleet_gateway_fixture.py", line 44, in close_dispatcher_fixture
+    |     pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+    |   File "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip064_integration.py", line 423, in pump
+    |     pytest.fail('bounded fixture did not reach expected state')
+    |   File "/workspace/scratch/b4674f0ac496/test-venv/lib/python3.12/site-packages/_pytest/outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: bounded fixture did not reach expected state
+    +------------------------------------</failure></testcase><testcase classname="tests.unit.test_tip064_integration" name="test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]" time="6.156" /></testsuite></testsuites>

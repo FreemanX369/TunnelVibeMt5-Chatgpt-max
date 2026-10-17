@@ -1,0 +1,19 @@
+{
+  "schema": "tip071.contractor-review/1",
+  "parent": "ce621625324a3872faee5302ec27c35b684d5217",
+  "status": "PASS_INDEPENDENT_FROZEN_SOURCE_REVIEW",
+  "source_entries_unchanged": 216,
+  "JUnit_cases": 46,
+  "PASS": 46,
+  "skips": 0,
+  "new_controls_PASS": 16,
+  "progress_rows_matched_JUnit": 92,
+  "AST_outside_db_and_original_setup": "IDENTICAL",
+  "real_builtin_SQLITE_BUSY_retained_connection_closed": "PASS",
+  "source_gate": "PENDING_NEW_HEAD_8_OF_8_AND_ARTIFACTS",
+  "original_windows_guard_and_MCP_cause": "UNKNOWN",
+  "VPS_effects": false,
+  "same_cases_may_overlap_Builder_runs": true,
+  "new_control_v1_failure_retained": "4 new assertions about exception __context__ were incorrect; V2 retains cause identity, traceback and notes, production unchanged",
+  "metadata_reader_faults": "No test execution; invalid paths/cwd in early status readers corrected"
+}

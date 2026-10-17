@@ -1,0 +1,38 @@
+{
+  "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+  "tree": "fd3edac1de610b821ca64044acd4fdfa1cc03192",
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py",
+    "-v",
+    "--tb=short",
+    "--durations=10",
+    "-o",
+    "faulthandler_timeout=90",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-lost-ack-identity-20261005/focused-v1.xml"
+  ],
+  "cwd": "/workspace/scratch/1818a0d45fa0/repo",
+  "environment_overrides": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "harness_timeout_seconds": 180,
+  "exit_code": 0,
+  "elapsed_seconds": 5.844,
+  "source_count": 210,
+  "source_unchanged_during_run": true,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "48",
+    "time": "5.319",
+    "timestamp": "2026-10-05T18:55:11.727136+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "log_sha256": "6ec6819630c9e033a90221b45d0afddbcf7fd909000aad54616a9e4e0f0f3830",
+  "junit_sha256": "900a1488c6a78611721bfc085e181e0ea107d1ba80c047d6e7454acfe9a55d10",
+  "physical_qualification": "NOT_RUN"
+}

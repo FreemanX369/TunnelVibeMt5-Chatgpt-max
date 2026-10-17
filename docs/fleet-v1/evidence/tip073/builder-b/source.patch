@@ -1,0 +1,285 @@
+diff --git a/tests/unit/fleet_source_progress.py b/tests/unit/fleet_source_progress.py
+index 703c975..256f2c8 100644
+--- a/tests/unit/fleet_source_progress.py
++++ b/tests/unit/fleet_source_progress.py
+@@ -2,16 +2,51 @@
+ import json
+ import re
+ import time
++from pathlib import Path
++
++import pytest
+ 
+ MAX_ROWS = 4096
++MAX_FAILURE_ROWS = 64
++MAX_FAILURE_FRAMES = 8
++MAX_FAILURE_BYTES = 2048
+ _progress = None
+ 
+ 
++def _source_frame(file, function, line):
++    if (type(file) is not str or len(file) > 192
++            or re.fullmatch(r'(?:tests/unit|app/vibemql5)(?:/[A-Za-z0-9_]{1,96}){0,6}/[A-Za-z0-9_]{1,96}\.py', file) is None
++            or type(function) is not str or re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,95}', function) is None
++            or type(line) is not int or not 1 <= line <= 1_000_000):
++        return None
++    return {'file': file, 'function': function, 'line': line}
++
++
++def _failure_metadata(item, call):
++    value = {'exception_type': 'UNKNOWN', 'frames': []}
++    if call.excinfo is None: return value
++    error = call.excinfo.value
++    kind = type(error)
++    if (kind.__module__ in ('builtins', '_pytest.outcomes') or re.fullmatch(r'vibemql5(?:\.[A-Za-z_][A-Za-z0-9_]*)+', kind.__module__)):
++        if re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,95}', kind.__name__): value['exception_type'] = kind.__name__
++    if isinstance(error, OSError) and type(error.errno) is int and -4095 <= error.errno <= 4095:
++        value['errno'] = error.errno
++    for index, entry in enumerate(reversed(call.excinfo.traceback)):
++        if index >= 64 or len(value['frames']) >= MAX_FAILURE_FRAMES: break
++        try: file = Path(entry.path).relative_to(item.config.rootpath).as_posix()
++        except ValueError: continue
++        frame = _source_frame(file, entry.frame.code.name, entry.lineno + 1)
++        if frame is not None: value['frames'].append(frame)
++    value['frames'].reverse()
++    return value
++
++
+ class SourceProgress:
+     def __init__(self, config):
+         self.config, self.origin = config, time.monotonic()
+         self.started, self.ordinal, self.rows, self.truncated = None, 0, 0, False
+         self.outcome = 'UNKNOWN'
++        self.failure_rows, self.failure_truncated = 0, False
+ 
+     @staticmethod
+     def literal(nodeid):
+@@ -49,6 +84,43 @@ class SourceProgress:
+         if report.failed: self.outcome = 'FAILED'
+         elif report.skipped and self.outcome != 'FAILED': self.outcome = 'SKIPPED'
+         elif report.when == 'call' and report.passed and self.outcome == 'UNKNOWN': self.outcome = 'PASSED'
++        if report.failed: self.failure(report)
++
++    def failure(self, report):
++        # Diagnostics cannot replace the original report or change its outcome.
++        try:
++            reporter = self.config.pluginmanager.get_plugin('terminalreporter')
++            if reporter is None: return
++            if self.failure_rows >= MAX_FAILURE_ROWS:
++                if not self.failure_truncated:
++                    self.failure_truncated = True
++                    reporter.write_line('SOURCE_TEST_FAILURE ' + json.dumps(
++                        {'stage': 'TRUNCATED', 'rows_emitted': self.failure_rows, 'row_limit': MAX_FAILURE_ROWS}, sort_keys=True))
++                    reporter.flush()
++                return
++            metadata = getattr(report, '_source_failure_metadata', {})
++            row = {'ordinal': self.ordinal, 'phase': report.when if report.when in ('setup', 'call', 'teardown') else 'UNKNOWN',
++                   'exception_type': 'UNKNOWN', 'frames': [], **self.literal(getattr(report, 'nodeid', None))}
++            if type(metadata) is dict:
++                kind = metadata.get('exception_type')
++                if type(kind) is str and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,95}', kind): row['exception_type'] = kind
++                number = metadata.get('errno')
++                if type(number) is int and -4095 <= number <= 4095: row['errno'] = number
++                frames = metadata.get('frames', [])
++                if type(frames) is list:
++                    for frame in frames[:MAX_FAILURE_FRAMES]:
++                        if type(frame) is dict:
++                            safe = _source_frame(frame.get('file'), frame.get('function'), frame.get('line'))
++                            if safe is not None: row['frames'].append(safe)
++            encoded = json.dumps(row, sort_keys=True)
++            if len(encoded.encode('utf-8')) > MAX_FAILURE_BYTES:
++                row['frames'] = []
++                encoded = json.dumps(row, sort_keys=True)
++            self.failure_rows += 1
++            reporter.write_line('SOURCE_TEST_FAILURE ' + encoded)
++            reporter.flush()
++        except BaseException:
++            pass
+ 
+     def finish(self, nodeid): self.emit('FINISH', nodeid)
+ 
+@@ -58,6 +130,15 @@ def pytest_configure(config):
+     _progress = SourceProgress(config)
+ 
+ 
++@pytest.hookimpl(hookwrapper=True)
++def pytest_runtest_makereport(item, call):
++    outcome = yield
++    report = outcome.get_result()
++    if report.failed:
++        try: report._source_failure_metadata = _failure_metadata(item, call)
++        except BaseException: report._source_failure_metadata = {'exception_type': 'UNKNOWN', 'frames': []}
++
++
+ def pytest_runtest_logstart(nodeid, location): _progress.start(nodeid)
+ def pytest_runtest_logreport(report): _progress.report(report)
+ def pytest_runtest_logfinish(nodeid, location): _progress.finish(nodeid)
+diff --git a/tests/unit/test_fleet_source_progress.py b/tests/unit/test_fleet_source_progress.py
+index 8ddde29..d567184 100644
+--- a/tests/unit/test_fleet_source_progress.py
++++ b/tests/unit/test_fleet_source_progress.py
+@@ -18,6 +18,11 @@ def progress_rows(text):
+             for line in text.splitlines() if 'SOURCE_TEST_PROGRESS ' in line]
+ 
+ 
++def failure_rows(text):
++    return [json.loads(line.split('SOURCE_TEST_FAILURE ', 1)[1])
++            for line in text.splitlines() if 'SOURCE_TEST_FAILURE ' in line]
++
++
+ def live_progress_rows(text):
+     # A concurrently written final row is not ready until its newline exists.
+     return progress_rows(text[:text.rfind('\n') + 1])
+@@ -149,3 +154,152 @@ def test_live_progress_requires_newline_but_rejects_malformed_complete_rows():
+     assert live_progress_rows(partial + '}\n') == [{'stage': 'START'}]
+     with pytest.raises(json.JSONDecodeError): live_progress_rows(partial + '\n')
+     with pytest.raises(json.JSONDecodeError): progress_rows(partial)
++
++
++@pytest.mark.parametrize('phase', ['setup', 'call', 'teardown'])
++def test_failed_phase_is_flushed_before_later_owned_child_timeout(tmp_path, phase):
++    directory = tmp_path / 'tests' / 'unit'; directory.mkdir(parents=True)
++    error = "    private_local = 'PRIVATE_LOCAL_BODY'\n    raise PermissionError(13, 'PRIVATE_MESSAGE_BODY', 'PRIVATE_PATH_BODY')\n"
++    fixture = error if phase == 'setup' else '    yield\n' + (error if phase == 'teardown' else '')
++    call = error if phase == 'call' else '    assert True\n'
++    (directory / 'test_control.py').write_text('import pytest, time\n@pytest.fixture\ndef fixture():\n' + fixture +
++        'def test_failed(fixture):\n' + call + 'def test_later():\n    time.sleep(30)\n')
++    junit = tmp_path / 'child.junit.xml'
++    command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress',
++               'tests/unit/test_control.py', '-q', '--junitxml=' + str(junit)]
++    log = tmp_path / 'child.log'
++    (tmp_path / 'child-command.json').write_text(json.dumps(command))
++    with log.open('w') as output:
++        process = subprocess.Popen(command, cwd=tmp_path, env=child_environment(), stdout=output, stderr=subprocess.STDOUT)
++        try:
++            deadline = time.monotonic() + 20
++            while process.poll() is None and time.monotonic() < deadline:
++                text = log.read_text(); complete = text[:text.rfind('\n') + 1]
++                if failure_rows(complete) and len(progress_rows(complete)) == 3: break
++                time.sleep(.01)
++            rows = progress_rows(complete); diagnostics = failure_rows(complete)
++            assert [row['stage'] for row in rows] == ['START', 'FINISH', 'START']
++            assert rows[1]['outcome'] == 'FAILED'
++            assert len(diagnostics) == 1
++            record = diagnostics[0]
++            assert record['phase'] == phase and record['ordinal'] == 1
++            assert record['exception_type'] == 'PermissionError' and record['errno'] == 13
++            assert record['file'] == 'tests/unit/test_control.py' and record['function'] == 'test_failed'
++            assert any(frame['file'] == 'tests/unit/test_control.py' and frame['function'] in ('fixture', 'test_failed')
++                       and frame['line'] > 0 for frame in record['frames'])
++            assert all(token not in json.dumps(diagnostics) for token in
++                       ('PRIVATE_LOCAL_BODY', 'PRIVATE_MESSAGE_BODY', 'PRIVATE_PATH_BODY', str(tmp_path)))
++            assert not junit.exists()
++            with pytest.raises(subprocess.TimeoutExpired): process.wait(timeout=.1)
++        finally:
++            if process.poll() is None: process.kill()
++            process.wait(timeout=5)
++    assert process.returncode != 0 and not junit.exists()
++
++
++@pytest.mark.parametrize('outcome', ['passed', 'skipped'])
++def test_nonfailed_reports_emit_no_failure_diagnostic(outcome):
++    lines = []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    report = SimpleNamespace(failed=False, skipped=outcome == 'skipped', when='call', passed=outcome == 'passed')
++    observer.report(report)
++    assert not failure_rows('\n'.join(lines))
++    assert observer.outcome == outcome.upper()
++
++
++def test_failure_diagnostic_bounds_rows_frames_and_bytes(monkeypatch):
++    import fleet_source_progress as module
++    lines, flushes = [], []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: flushes.append(True))
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    monkeypatch.setattr(module, 'MAX_FAILURE_ROWS', 2)
++    metadata = {'exception_type': 'RuntimeError', 'frames': [
++        {'file': 'tests/unit/test_control.py', 'function': 'fixture', 'line': 1} for _ in range(30)]}
++    report = SimpleNamespace(failed=True, when='setup', nodeid='tests/unit/test_control.py::test_control[PRIVATE_PARAMETER_TOKEN]',
++                             _source_failure_metadata=metadata)
++    for _ in range(5): observer.report(report)
++    records = failure_rows('\n'.join(lines))
++    assert len(records) == 3 and records[-1] == {'stage': 'TRUNCATED', 'rows_emitted': 2, 'row_limit': 2}
++    assert all(len(record['frames']) <= module.MAX_FAILURE_FRAMES for record in records[:-1])
++    assert all(len(line.encode('utf-8')) <= module.MAX_FAILURE_BYTES + len('SOURCE_TEST_FAILURE ') for line in lines)
++    assert len(flushes) == len(lines) == 3 and observer.outcome == 'FAILED'
++    assert 'PRIVATE_PARAMETER_TOKEN' not in json.dumps(records)
++
++
++def test_failure_diagnostic_byte_bound_drops_oversized_frame_metadata():
++    import fleet_source_progress as module
++    lines = []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    file = 'app/vibemql5/' + 'a' * 80 + '/' + 'b' * 80 + '.py'
++    frame = {'file': file, 'function': 'c' * 96, 'line': 999999}
++    assert module._source_frame(**frame) == frame
++    observer.report(SimpleNamespace(failed=True, when='call', nodeid='tests/unit/test_control.py::test_control',
++        _source_failure_metadata={'exception_type': 'RuntimeError', 'frames': [frame] * module.MAX_FAILURE_FRAMES}))
++    assert failure_rows('\n'.join(lines))[0]['frames'] == []
++    assert len(lines[0].encode('utf-8')) <= module.MAX_FAILURE_BYTES + len('SOURCE_TEST_FAILURE ')
++    assert observer.outcome == 'FAILED'
++
++
++def test_partial_write_then_flush_failure_cannot_bypass_diagnostic_row_quota(monkeypatch):
++    import fleet_source_progress as module
++    lines = []
++    def broken_flush(): raise RuntimeError('PRIVATE_FLUSH_BODY')
++    reporter = SimpleNamespace(write_line=lines.append, flush=broken_flush)
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    monkeypatch.setattr(module, 'MAX_FAILURE_ROWS', 2)
++    report = SimpleNamespace(failed=True, when='call', nodeid='tests/unit/test_control.py::test_control')
++    for _ in range(20): observer.report(report)
++    records = failure_rows('\n'.join(lines))
++    assert len(records) == 3 and records[-1] == {'stage': 'TRUNCATED', 'rows_emitted': 2, 'row_limit': 2}
++    assert observer.failure_rows == 2 and observer.outcome == 'FAILED' and report.failed is True
++    assert 'PRIVATE_FLUSH_BODY' not in json.dumps(records)
++
++
++@pytest.mark.parametrize('nodeid', [None, '/private/test_secret.py::test_secret',
++                                   'tests/unit/../private.py::test_secret', 'tests/unit/test_control.py::SECRET_FUNCTION'])
++def test_failure_diagnostic_omits_nonliteral_ids(nodeid):
++    lines = []
++    reporter = SimpleNamespace(write_line=lines.append, flush=lambda: None)
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name: reporter)))
++    observer.report(SimpleNamespace(failed=True, when='call', nodeid=nodeid))
++    record = failure_rows('\n'.join(lines))[0]
++    assert record['exception_type'] == 'UNKNOWN' and 'file' not in record and 'function' not in record
++    assert 'secret' not in json.dumps(record).lower()
++
++
++def test_diagnostic_formatter_and_reporter_failure_preserve_original_failed_outcome(monkeypatch):
++    import fleet_source_progress as module
++    def broken(*args, **kwargs): raise RuntimeError('PRIVATE_FORMATTER_BODY')
++    observer = SourceProgress(SimpleNamespace(pluginmanager=SimpleNamespace(get_plugin=lambda name:
++        SimpleNamespace(write_line=broken, flush=broken))))
++    monkeypatch.setattr(module.json, 'dumps', broken)
++    report = SimpleNamespace(failed=True, when='call', nodeid='tests/unit/test_control.py::test_control')
++    observer.report(report)
++    assert observer.outcome == 'FAILED' and report.failed is True
++
++
++def test_metadata_never_stringifies_exception_and_preserves_unknown_classification(tmp_path):
++    import fleet_source_progress as module
++    class PrivateError(Exception):
++        def __str__(self): raise AssertionError('PRIVATE_STR_CALLED')
++        def __repr__(self): raise AssertionError('PRIVATE_REPR_CALLED')
++    try: raise PrivateError('PRIVATE_MESSAGE_BODY')
++    except PrivateError:
++        excinfo = pytest.ExceptionInfo.from_current()
++    item = SimpleNamespace(config=SimpleNamespace(rootpath=tmp_path))
++    metadata = module._failure_metadata(item, SimpleNamespace(excinfo=excinfo))
++    assert metadata['exception_type'] == 'UNKNOWN' and metadata['frames'] == []
++    assert 'PRIVATE' not in json.dumps(metadata)
++
++
++def test_makereport_metadata_failure_returns_original_report(monkeypatch):
++    import fleet_source_progress as module
++    report = SimpleNamespace(failed=True)
++    def broken(*args): raise RuntimeError('PRIVATE_HOOK_BODY')
++    monkeypatch.setattr(module, '_failure_metadata', broken)
++    hook = module.pytest_runtest_makereport(SimpleNamespace(), SimpleNamespace())
++    assert next(hook) is None
++    with pytest.raises(StopIteration): hook.send(SimpleNamespace(get_result=lambda: report))
++    assert report.failed is True and report._source_failure_metadata == {'exception_type': 'UNKNOWN', 'frames': []}

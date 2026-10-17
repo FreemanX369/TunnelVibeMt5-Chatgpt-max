@@ -1,0 +1,199 @@
+{
+  "schema": "fleet.candidate-verification/1",
+  "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+  "tree": "d8072b5217de7855e9925811d9bf6487cb673dcc",
+  "workflow_gate": "BLOCKED_6_OF_8",
+  "original_incident": "ORIGINAL_CAUSE_UNKNOWN",
+  "physical_qualification": "NOT_RUN",
+  "workflows": [
+    {
+      "id": 37263050580,
+      "name": "Verify TIP-027 Continuity Core",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050580",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:20:18Z"
+    },
+    {
+      "id": 37263050644,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050644",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:20:21Z"
+    },
+    {
+      "id": 37263050569,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050569",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:20:12Z"
+    },
+    {
+      "id": 37263050558,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050558",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:20:40Z"
+    },
+    {
+      "id": 37263050594,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050594",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:20:36Z"
+    },
+    {
+      "id": 37263050590,
+      "name": "Verify TIP-053 Deep Update",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050590",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:26:33Z"
+    },
+    {
+      "id": 37263050629,
+      "name": "Verify Fleet v1 integrated source",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050629",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:26:36Z"
+    },
+    {
+      "id": 37263050670,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "event": "pull_request",
+      "head_sha": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37263050670",
+      "created_at": "2026-10-05T04:20:03Z",
+      "updated_at": "2026-10-05T04:27:45Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": 11325149096,
+      "archive": "artifact-11325149096.zip",
+      "bytes": 8861,
+      "sha256": "436f6c9191358ffab3ace58d812bc2b51e0eeaebef05e1ca5ef29c53868f50d4",
+      "head": "375e6af790e695aa4f1293268d80cd9a1f111487"
+    },
+    {
+      "artifact_id": 11325224082,
+      "archive": "artifact-11325224082.zip",
+      "bytes": 60023,
+      "sha256": "3e9cefce72492dfd220abca9f80ca7e330ce56af4b07c5ef6292f0a6dd7a346c",
+      "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "source_entries": 206,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "14",
+        "tests": "1141",
+        "time": "75.132",
+        "timestamp": "2026-10-05T04:20:13.762512+00:00",
+        "hostname": "runnervm8df0l"
+      },
+      "passed": 1127,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 0
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "artifact_id": 11325329385,
+      "archive": "artifact-11325329385.zip",
+      "bytes": 259102,
+      "sha256": "9b081a6045d0065e41c6d5caf927fc39b9d20dbedd47ba3ca77308b049a0f463",
+      "head": "375e6af790e695aa4f1293268d80cd9a1f111487",
+      "source_entries": 206,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "10",
+        "tests": "1141",
+        "time": "316.912",
+        "timestamp": "2026-10-05T04:20:36.570503+00:00",
+        "hostname": "runnervmfi6oq"
+      },
+      "passed": 1131,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 0
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0
+        },
+        {
+          "case": "q1-harmless",
+          "exit_code": 0
+        },
+        {
+          "case": "g03a-harmless",
+          "exit_code": 0
+        },
+        {
+          "case": "b1-harmless",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "artifact_id": 11325377129,
+      "archive": "artifact-11325377129.zip",
+      "bytes": 2317,
+      "sha256": "8f3149b996ab155d5485af4dd977ea4953a668910e40c4d6a2ab8b7ac01a38b5",
+      "head": "375e6af790e695aa4f1293268d80cd9a1f111487"
+    },
+    {
+      "artifact_id": 11325655047,
+      "archive": "artifact-11325655047.zip",
+      "bytes": 8067,
+      "sha256": "ab0ae6f7c6535193b549b6b4880c5ddfa9efbaa085f34fc41168fbfd743e9e86",
+      "head": "375e6af790e695aa4f1293268d80cd9a1f111487"
+    }
+  ]
+}

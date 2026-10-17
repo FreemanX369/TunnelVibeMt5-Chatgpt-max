@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import ast
 import base64
 import inspect
@@ -46,6 +48,7 @@ def _preset_root(tmp_path: Path) -> Path:
         }),
         encoding="utf-8",
     )
+    install_closed(root)
     return root
 
 
@@ -323,6 +326,7 @@ def test_tip021r_mock_e2e_preserves_owner_semantics_and_phase_chain(tmp_path):
         "compile_timeout": 120, "test_timeout": 0, "queue_wait_seconds": 3,
         "mock": True,
     }
+    install_closed(root)
     store = JobStore(root)
     job = store.create(req)
     run_job(root, job["job_id"])

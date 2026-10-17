@@ -1,0 +1,35 @@
+....................                                                     [100%]
+============================== slowest durations ===============================
+0.04s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_ready:before_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[job_finalized:after_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:after_commit]
+0.03s call     tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[control_commit:after_commit]
+0.03s setup    tests/unit/test_tip060c_restore.py::test_complete_signed_checkpoint_restores_both_and_remains_ready_after_new_admission
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:before_commit]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:before_commit]
+0.02s call     tests/unit/test_tip060c_restore.py::test_complete_signed_checkpoint_restores_both_and_remains_ready_after_new_admission
+0.02s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:after_commit]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:after_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[newer]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_reapproval_cannot_change_scope_or_trusted_key[challenge]
+0.02s call     tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_ready:after_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[challenge]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_unknown_nested_job_field_is_denied_before_durable_envelope
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[pending]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_ready:before_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:before_commit]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[missing]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[registry]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[route]
+0.02s setup    tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen
+0.02s setup    tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[job_finalized:after_commit]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_expired_pending_approval_requires_same_scope_signed_reapproval[control_commit:after_commit]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_commit:after_commit]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_reapproval_cannot_change_scope_or_trusted_key[checkpoint]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_reapproval_cannot_change_scope_or_trusted_key[key]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[control_ready:after_commit]
+0.01s setup    tests/unit/test_tip060c_restore.py::test_phase_crash_reopen_is_fenced_or_complete_and_resume_exact_scope[job_finalized:before_commit]
+0.01s call     tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen
+
+(30 durations < 0.005s hidden.  Use -vv to show these durations.)
+20 passed in 0.70s

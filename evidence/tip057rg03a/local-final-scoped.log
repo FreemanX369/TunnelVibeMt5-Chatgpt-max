@@ -1,0 +1,12 @@
+........................................................................ [ 58%]
+.................................................ss                      [100%]
+============================= slowest 5 durations ==============================
+1.20s call     tests/unit/test_tip057rg03a_native_ownership.py::test_actual_cancel_read_startup_chain_keeps_restore_pending[startup]
+1.04s call     tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_native_only_contention_preserves_fifo_capacity
+0.87s call     tests/unit/test_tip057rg03a_native_ownership.py::test_two_process_mutation_native_capacity_one_and_order
+0.44s call     tests/unit/test_tip057rg03a_native_ownership.py::test_multiprocess_recovery_acquire_race_rejects_stale_successor_cas
+0.24s call     tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_native_fifo_order_for_multiple_waiters
+=========================== short test summary info ============================
+SKIPPED [1] tests/unit/test_tip055b_runtime_forensics_release.py:339: Actual Windows deny-delete handle gate requires Windows; injected faults are separate evidence
+SKIPPED [1] tests/unit/test_tip055b_runtime_forensics_release.py:388: Actual Windows persistent deny-delete gate requires Windows
+121 passed, 2 skipped in 6.68s

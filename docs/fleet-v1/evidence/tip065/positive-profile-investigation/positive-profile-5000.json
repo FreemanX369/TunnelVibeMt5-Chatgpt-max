@@ -1,0 +1,9 @@
+{
+  "classification": "CONTROLLED_RESPONSE_DELAY_NOT_HISTORICAL_CAUSE",
+  "http_and_control_round_ms": 5000,
+  "response_delay_seconds": 1.2,
+  "actual_durable_install_calls": 1,
+  "durable_roster_count": 1,
+  "outcome": "ALL_ORIGINAL_CAPACITY_ASSERTIONS_PASS",
+  "registration_retries": 0
+}

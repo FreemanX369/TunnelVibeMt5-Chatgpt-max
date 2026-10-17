@@ -1,0 +1,10 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/scratch/b4674f0ac496/tip071-builder/app:/workspace/scratch/b4674f0ac496/tip071-builder/tests/unit timeout 30s /workspace/scratch/b4674f0ac496/test-venv/bin/python -u fix-20261007-1439/tip072-causal-builder/probe-v1.py > fix-20261007-1439/tip072-causal-builder/raw-v1.log 2>&1",
+  "cwd": "/workspace/scratch/b4674f0ac496",
+  "exit_code": 0,
+  "wall_time_seconds": 0.063541598,
+  "bounds": "owned scratch only; 30s outer limit; waiter waits unchanged 3s; 2s join checks",
+  "source_head": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "source_tree": "29426b4fa2fdf0aefbcc4e0273b1f465d5b554c3",
+  "git_status_after": "clean"
+}

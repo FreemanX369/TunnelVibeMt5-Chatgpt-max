@@ -1,0 +1,135 @@
+{
+  "schema": "tip072f.builder-evidence/1",
+  "files": [
+    {
+      "name": "Completion-Report.md",
+      "bytes": 3646,
+      "sha256": "7f6dcba385574f17812cf9c1d1a64da28bf05610f8683a6acd2e76f1a7505451"
+    },
+    {
+      "name": "isolated-corrected-tip024-receipt.json",
+      "bytes": 1049,
+      "sha256": "dc6f102289393a5ca77d941418d90122ce903d7bf90914a41c900bc3bb1c30c0"
+    },
+    {
+      "name": "isolated-corrected-tip024-source-after.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "isolated-corrected-tip024-source-before.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "isolated-corrected-tip024.junit.xml",
+      "bytes": 407,
+      "sha256": "5f9c83ac3aea29d01f4478da3d9356ccef67b645389954947f095ce5a3084f6b"
+    },
+    {
+      "name": "isolated-corrected-tip024.log",
+      "bytes": 1335,
+      "sha256": "1f7a540c53b0f19bf416963b5a2f6758631ae37d1f3aacf34813e8357c888b8e"
+    },
+    {
+      "name": "missing-required-exception-probe.py",
+      "bytes": 1031,
+      "sha256": "866696c084fbd71acc6c155e4d9327605cbd253eb955c5fd52cb3fa3eacf2c54"
+    },
+    {
+      "name": "missing-required-exception-receipt.json",
+      "bytes": 501,
+      "sha256": "1ee1ad75a16e0aa16c2ec5ce5d5cd6e8a02313c200786f0f6d4e49c2284de62a"
+    },
+    {
+      "name": "missing-required-exception-source-after.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "missing-required-exception-source-before.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "missing-required-exception.log",
+      "bytes": 291,
+      "sha256": "c07db8ce26aea3ce49293e1e8cc675b5b61fc2bbc7d5309f51a7894d83108301"
+    },
+    {
+      "name": "original-five-module-compatibility-receipt.json",
+      "bytes": 1198,
+      "sha256": "533c01067941cb1f605dc37a4ce849798bc8fe65263a4b65469a6a7ce024e8c3"
+    },
+    {
+      "name": "original-five-module-compatibility-source-after.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "original-five-module-compatibility-source-before.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "original-five-module-compatibility.junit.xml",
+      "bytes": 35677,
+      "sha256": "7ff4200958b2f5162e7fe93beb295a05bc41c01fb12af349e4462939b73e6622"
+    },
+    {
+      "name": "original-five-module-compatibility.log",
+      "bytes": 168211,
+      "sha256": "753cac818edf959126ce38eb12b53c158d631dbdb0c5bb2ac0e787af1bcc1dca"
+    },
+    {
+      "name": "scope.json",
+      "bytes": 631,
+      "sha256": "1762c802dcfe1e90a64f65574c20ef33a5cc17ff3a39147a9b70be65cf851254"
+    },
+    {
+      "name": "source-after-fixture-correction.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "source-before-fixture-correction.json",
+      "bytes": 24011,
+      "sha256": "412f185481e516153c93565aa39a2658581d9c0189b6e91cd4a6790130901045"
+    },
+    {
+      "name": "test-tip024-before.py",
+      "bytes": 13153,
+      "sha256": "07f822793d3ad08d946e0dedade8f2b2ba3b0f6b07631cd7ec851d112cbfcc3c"
+    },
+    {
+      "name": "tip072-focused-receipt.json",
+      "bytes": 949,
+      "sha256": "06d1e9cd05bdd0dac9075c397092aec3a09582a24feb436328ecd83bc3b6985a"
+    },
+    {
+      "name": "tip072-focused-source-after.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "tip072-focused-source-before.json",
+      "bytes": 24011,
+      "sha256": "ad3728631120e9c0af07ed0e2c8d7f4b22608c6db26e02ea98819d405df1bd3f"
+    },
+    {
+      "name": "tip072-focused.junit.xml",
+      "bytes": 5130,
+      "sha256": "e2d24aa04de995d55fa690650d7857a67803a877e156006a7cd2f3b38139ed60"
+    },
+    {
+      "name": "tip072-focused.log",
+      "bytes": 23584,
+      "sha256": "f341c2591e2d8eabe0eef1f93abdef0bdcb540f63be08ebae57d11cb0a1b92fa"
+    },
+    {
+      "name": "verify.py",
+      "bytes": 4780,
+      "sha256": "272241acdee0fe325346408880fc2473fa7eb67984a81b4e8242778d3112667f"
+    }
+  ]
+}

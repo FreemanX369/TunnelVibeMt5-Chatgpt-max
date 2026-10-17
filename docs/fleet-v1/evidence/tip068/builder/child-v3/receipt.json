@@ -1,0 +1,189 @@
+{
+  "scope": "DISPOSABLE_PYTEST_CHILDREN_NOT_PHYSICAL_QUALIFICATION",
+  "focused_run": "v3",
+  "children": [
+    {
+      "fixture_directory": "test_parent_timeout_keeps_flus0",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "-o",
+        "faulthandler_timeout=0.1"
+      ],
+      "files": [
+        "child-command.json",
+        "control.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o0",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o0/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o1",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o1/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o2",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o2/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o3",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o3/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o4",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o4/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_is_o5",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_is_o5/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_pres0",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_pres0/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    },
+    {
+      "fixture_directory": "test_real_pytest_progress_pres1",
+      "command": [
+        "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+        "-m",
+        "pytest",
+        "-p",
+        "fleet_source_progress",
+        "tests/unit/test_control.py",
+        "-q",
+        "--junitxml=/tmp/pytest-of-root/pytest-5/test_real_pytest_progress_pres1/child.junit.xml"
+      ],
+      "files": [
+        "child-command.json",
+        "child.junit.xml",
+        "child.log",
+        "tests/unit/test_control.py"
+      ]
+    }
+  ],
+  "environment_overrides": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip068-builder/tests/unit",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "removed_ambient_variables": [
+    "PYTEST_ADDOPTS",
+    "PYTEST_PLUGINS",
+    "PYTEST_CURRENT_TEST"
+  ],
+  "ordinary_child_timeout_seconds": 30,
+  "timeout_control": {
+    "fixture_sleep_seconds": 30,
+    "start_readiness_bound_seconds": 20,
+    "timeout_after_observed_start_seconds": 0.5,
+    "owned_child_kill_wait_seconds": 5,
+    "faulthandler_timeout_seconds": 0.1,
+    "capture_changed": false
+  }
+}

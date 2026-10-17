@@ -1,0 +1,20 @@
+{
+  "cwd": "/workspace/scratch/b4674f0ac496/tip067-builder",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip060_authorization.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "-v",
+    "--tb=short",
+    "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip067-contractor/focused.junit.xml"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip067-builder/app:/workspace/scratch/b4674f0ac496/tip067-builder/tests/unit"
+  },
+  "exit_code": 0,
+  "setup_failure_retained": "setup-path-error.txt"
+}

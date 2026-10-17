@@ -32,7 +32,15 @@ function Read-VibeJsonSafe {
     for ($attempt=0; $attempt -lt 3; $attempt++) {
         try {
             if (-not (Test-Path -LiteralPath $Path -ErrorAction Stop)) { return $null }
-            return Get-Content -LiteralPath $Path -Raw -Encoding UTF8 -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+            # PowerShell 7.5 can parse JSON timestamps as DateTime and lose the
+            # original offset when consumers cast them to string. Keep the
+            # exact timestamp text for our explicit-offset UTC validation;
+            # Windows PowerShell 5.1 already leaves these values as strings.
+            $jsonOptions = @{ErrorAction='Stop'}
+            if ((Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')) {
+                $jsonOptions.DateKind = 'String'
+            }
+            return Get-Content -LiteralPath $Path -Raw -Encoding UTF8 -ErrorAction Stop | ConvertFrom-Json @jsonOptions
         }
         catch {
             if ($attempt -eq 2 -or -not (Test-VibeTransientAtomicError -Exception $_.Exception -AllowedWin32Codes @(32,33))) {

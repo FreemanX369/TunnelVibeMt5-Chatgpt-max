@@ -1,0 +1,36 @@
+{
+  "scope": "TEST_FIXTURE_DIAGNOSTICS_ONLY",
+  "parent_head": "7ebff6b6d3dcfa47a0696b0f571826276bbbda88",
+  "source_entries": 212,
+  "source_before_after": "IDENTICAL",
+  "changed_source_entries": [
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "production_unchanged": true,
+  "independent_junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "106",
+    "time": "54.879",
+    "timestamp": "2026-10-06T23:47:39.545298+09:00",
+    "hostname": "e54ea59580aa"
+  },
+  "passed": 106,
+  "new_cases_passed": 15,
+  "physical_qualification": "NOT_RUN",
+  "runtime_guards": "UNKNOWN",
+  "candidate_gate": "PENDING_NEW_HEAD",
+  "files": {
+    "tests/unit/test_tip064_capacity_https.py": {
+      "sha256": "11315d03a5fe3992e2861a4fac808b53d650d5f88f1f66b91e3064945fa0cb65",
+      "bytes": 25365
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "sha256": "291cea3c4e3a6d9879bc0e178494381745a49d574e2b708a5be125fc7ee57434",
+      "bytes": 88908
+    }
+  }
+}

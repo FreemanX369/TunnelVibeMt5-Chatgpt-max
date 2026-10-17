@@ -1,0 +1,61 @@
+{
+  "artifacts": [
+    {
+      "id": 11336800608,
+      "name": "tip057rq-windows-d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "size_in_bytes": 8887,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336800608",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336800608/zip",
+      "expired": false,
+      "created_at": "2026-10-05T09:37:58Z",
+      "expires_at": "2026-10-19T09:37:57Z",
+      "updated_at": "2026-10-05T09:37:58Z",
+      "digest": "sha256:1d81c9ce8fb9ca77b9396ad408193caa575825a47e304e5aa1500c32bfe29b6d",
+      "workflow_run": {
+        "id": 37291279031,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/fleet-v1-continuous-source-20261003",
+        "head_sha": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf"
+      }
+    },
+    {
+      "id": 11336870975,
+      "name": "tip057rb1-harmless-d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "size_in_bytes": 8055,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336870975",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336870975/zip",
+      "expired": false,
+      "created_at": "2026-10-05T09:38:09Z",
+      "expires_at": "2026-10-19T09:38:09Z",
+      "updated_at": "2026-10-05T09:38:09Z",
+      "digest": "sha256:f5e91ba081dbe17809cb5d99b1b3137b186013af085919a24eac626252359511",
+      "workflow_run": {
+        "id": 37291278960,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/fleet-v1-continuous-source-20261003",
+        "head_sha": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf"
+      }
+    },
+    {
+      "id": 11336551118,
+      "name": "tip057rg03a-windows-d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "size_in_bytes": 2314,
+      "url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336551118",
+      "archive_download_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/artifacts/11336551118/zip",
+      "expired": false,
+      "created_at": "2026-10-05T09:37:49Z",
+      "expires_at": "2026-10-19T09:37:48Z",
+      "updated_at": "2026-10-05T09:37:49Z",
+      "digest": "sha256:aaf6f4310be9be3cde9ffd561bc7d464e793c0872591ac633b6e5de94daf5e3e",
+      "workflow_run": {
+        "id": 37291278987,
+        "repository_id": 1368264986,
+        "head_repository_id": 1368264986,
+        "head_branch": "feat/fleet-v1-continuous-source-20261003",
+        "head_sha": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf"
+      }
+    }
+  ]
+}

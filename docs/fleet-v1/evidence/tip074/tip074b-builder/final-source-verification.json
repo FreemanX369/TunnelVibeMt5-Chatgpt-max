@@ -1,0 +1,8 @@
+{
+  "parent217_exact": true,
+  "fixed218_exact": true,
+  "parent_clean": true,
+  "fixed_head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "fixed_status": " M app/vibemql5/fleet/wire.py\n?? tests/unit/test_tip074_wire_unicode.py\n",
+  "scope_and_all_commands_passed": true
+}

@@ -1,0 +1,228 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip071-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 16 items
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 91, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_success_returns_usable_wal_full_connection PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_success_returns_usable_wal_full_connection", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 96, "test_elapsed_ms": 4}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 96, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_real_busy_retained_traceback_holds_a_closed_connection", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1101, "test_elapsed_ms": 1004}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 1101, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[wal] PASSED [ 18%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1102, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 1103, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity[full] PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_each_real_sqlite_pragma_denial_closes_once_and_keeps_identity", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1104, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 1104, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-wal] PASSED [ 31%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1105, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 1105, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[unexpected-full] PASSED [ 37%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1107, "test_elapsed_ms": 1}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 1107, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-wal] PASSED [ 43%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1108, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 1108, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[interrupt-full] PASSED [ 50%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1109, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 1109, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-wal] PASSED [ 56%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1110, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 1110, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_setup_interruption_closes_once_and_keeps_original_chain[exit-full] PASSED [ 62%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_setup_interruption_closes_once_and_keeps_original_chain", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1111, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 1112, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[unexpected] PASSED [ 68%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1112, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 1113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_connect_failure_retains_original_without_inventing_cleanup[interrupt] PASSED [ 75%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_connect_failure_retains_original_without_inventing_cleanup", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 1113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 1113, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] FAILED [ 81%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 13, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 1129, "test_elapsed_ms": 15}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 1129, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] FAILED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 14, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 1134, "test_elapsed_ms": 5}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 1134, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] FAILED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 15, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 1138, "test_elapsed_ms": 4}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 1139, "test_elapsed_ms": 0}
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] FAILED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py", "function": "test_close_failure_retains_real_setup_error_as_primary", "ordinal": 16, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 1143, "test_elapsed_ms": 4}
+
+=================================== FAILURES ===================================
+____ test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] ____
+
+coordinator = <vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422623da0>
+connections = ({'deny_pragma': 'journal_mode', 'close_fault': RuntimeError('owned close fault')}, [<test_tip071_scoped_db_setup_clea...ip071-builder/focused-tmp/test_close_failure_retains_rea0/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'wal', error_type = <class 'RuntimeError'>
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+>       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+E        +  and   None = RuntimeError('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError
+___ test_close_failure_retains_real_setup_error_as_primary[unexpected-full] ____
+
+coordinator = <vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422623fe0>
+connections = ({'deny_pragma': 'synchronous', 'close_fault': RuntimeError('owned close fault')}, [<test_tip071_scoped_db_setup_clean...ip071-builder/focused-tmp/test_close_failure_retains_rea1/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'full', error_type = <class 'RuntimeError'>
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+>       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+E        +  and   None = RuntimeError('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError
+____ test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] _____
+
+coordinator = <vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422621af0>
+connections = ({'deny_pragma': 'journal_mode', 'close_fault': KeyboardInterrupt('owned close fault')}, [<test_tip071_scoped_db_setup...ip071-builder/focused-tmp/test_close_failure_retains_rea2/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'wal', error_type = <class 'KeyboardInterrupt'>
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+>       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+E        +  and   None = KeyboardInterrupt('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError
+____ test_close_failure_retains_real_setup_error_as_primary[interrupt-full] ____
+
+coordinator = <vibemql5.fleet.scoped_resources.ScopedResourceCoordinator object at 0x7f8422626360>
+connections = ({'deny_pragma': 'synchronous', 'close_fault': KeyboardInterrupt('owned close fault')}, [<test_tip071_scoped_db_setup_...ip071-builder/focused-tmp/test_close_failure_retains_rea3/owned.sqlite',), {'timeout': 1.0, 'isolation_level': None})])
+stage = 'full', error_type = <class 'KeyboardInterrupt'>
+
+    @pytest.mark.parametrize('stage', ['wal', 'full'])
+    @pytest.mark.parametrize('error_type', [RuntimeError, KeyboardInterrupt], ids=['unexpected', 'interrupt'])
+    def test_close_failure_retains_real_setup_error_as_primary(coordinator, connections, stage, error_type):
+        options, created, _ = connections
+        cleanup = error_type('owned close fault')
+        options.update(deny_pragma='journal_mode' if stage == 'wal' else 'synchronous', close_fault=cleanup)
+        with pytest.raises(sqlite3.DatabaseError) as caught:
+            coordinator._db()
+        db = created[0]
+        assert caught.value is db.setup_error
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_AUTH and caught.value.sqlite_errorname == 'SQLITE_AUTH'
+>       assert caught.value.__cause__ is cleanup and cleanup.__context__ is caught.value
+E       AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+E        +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+E        +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+E        +  and   None = KeyboardInterrupt('owned close fault').__context__
+E        +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+
+tests/unit/test_tip071_scoped_db_setup_cleanup.py:162: AssertionError
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1439/tip071-builder/focused.junit.xml -
+=========================== short test summary info ============================
+FAILED tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-wal] - AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+ +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+ +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+ +  and   None = RuntimeError('owned close fault').__context__
+ +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+FAILED tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[unexpected-full] - AssertionError: assert (RuntimeError('owned close fault') is RuntimeError('owned close fault') and None is DatabaseError('not authorized'))
+ +  where RuntimeError('owned close fault') = DatabaseError('not authorized').__cause__
+ +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+ +  and   None = RuntimeError('owned close fault').__context__
+ +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+FAILED tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-wal] - AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+ +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+ +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+ +  and   None = KeyboardInterrupt('owned close fault').__context__
+ +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+FAILED tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_close_failure_retains_real_setup_error_as_primary[interrupt-full] - AssertionError: assert (KeyboardInterrupt('owned close fault') is KeyboardInterrupt('owned close fault') and None is DatabaseError('not authorized'))
+ +  where KeyboardInterrupt('owned close fault') = DatabaseError('not authorized').__cause__
+ +    where DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+ +  and   None = KeyboardInterrupt('owned close fault').__context__
+ +  and   DatabaseError('not authorized') = <ExceptionInfo DatabaseError('not authorized') tblen=4>.value
+========================= 4 failed, 12 passed in 1.13s =========================

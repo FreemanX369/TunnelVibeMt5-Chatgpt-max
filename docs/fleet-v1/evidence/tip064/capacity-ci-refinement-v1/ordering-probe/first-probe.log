@@ -1,0 +1,12 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________ test_original_hold_expiry_before_release_is_retained _____________
+../capacity-hold-ordering-probe/test_capacity_hold_ordering.py:177: in test_original_hold_expiry_before_release_is_retained
+    assert snapshot['gateway_states'][:2]==['UNKNOWN','UNKNOWN']
+E   AssertionError: assert ['UNKNOWN', 'SUCCEEDED'] == ['UNKNOWN', 'UNKNOWN']
+E     
+E     At index 1 diff: 'SUCCEEDED' != 'UNKNOWN'
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED ../capacity-hold-ordering-probe/test_capacity_hold_ordering.py::test_original_hold_expiry_before_release_is_retained
+1 failed in 8.67s

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "causal_gate_plugin",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/owned-red.junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "timeout_s": 45,
+  "exit_code": 1,
+  "wall_s": 14.96140573799994,
+  "source_count": 190,
+  "source_unchanged": true
+}

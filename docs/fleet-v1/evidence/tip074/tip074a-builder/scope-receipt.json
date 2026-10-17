@@ -1,0 +1,37 @@
+{
+  "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "parent_source_count": 217,
+  "candidate_source_count": 218,
+  "delta": [
+    "app/vibemql5/fleet/transport.py",
+    "tests/unit/fleet_writer_fixture.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip074_gateway_lifecycle.py"
+  ],
+  "checks": {
+    "tests/unit/test_tip058b_transport.py": {
+      "all_existing_test_bodies_byte_equal": true,
+      "unchanged_AST_except_allowed_import_and_factory": true
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "all_existing_test_bodies_byte_equal": true,
+      "unchanged_AST_except_allowed_import_and_factory": true
+    },
+    "tests/unit/test_tip064_capacity_https.py": {
+      "all_existing_test_bodies_byte_equal": true,
+      "unchanged_AST_except_allowed_import_and_factory": true
+    },
+    "tests/unit/fleet_writer_fixture.py": {
+      "all_existing_test_bodies_byte_equal": true,
+      "unchanged_AST_except_allowed_import_and_factory": true
+    },
+    "app/vibemql5/fleet/transport.py": {
+      "AST_outside_serve_gateway_equal": true,
+      "original_docstring_equal": true
+    }
+  },
+  "git_diff_check_exit": 0,
+  "git_status": " M app/vibemql5/fleet/transport.py\n M tests/unit/fleet_writer_fixture.py\n M tests/unit/test_tip058b_transport.py\n M tests/unit/test_tip064_capacity_https.py\n M tests/unit/test_tip064_integration.py\n?? tests/unit/test_tip074_gateway_lifecycle.py\n"
+}

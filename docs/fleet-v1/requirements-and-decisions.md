@@ -1,5 +1,20 @@
 # Fleet v1 — Requirements, RRI synthesis and decision ledger
 
+## Continuous source decisions — 2026-10-03
+
+Owner authorization at 02:57, reconfirmed 07:25 Asia/Saigon, covers the complete approved source update without per-TIP approval stops. [Continuous execution](continuous-build-2026-10-03.md) retains architecture and postpones physical VM/SDK testing until handover. Historical gate descriptions below retain their original evidence context.
+
+| Prior open item | Concrete source contract now dispatched | Remaining external facts |
+|---|---|---|
+| O-03 / O-05 | [058B/059/062A](TIP-058B-059-062A-build.md): exact signed audience/body, atomic pairing/replay, required policy, bounded target observations | Actual HTTPS origin/certs/node keys and two-node qualification |
+| O-06 | [061A/057N](TIP-061A-057N-build.md): node-owned frozen placement, STRICT matrix, versioned native identity/effect gates | Actual dedicated tester/session/root/build/history qualification |
+| O-07 / O-08 / O-09 | [060/056](TIP-060-056-build.md): durable states/mappings/witnesses, scoped artifacts, atomic resource reservations | Physical restart/lost-ACK/restore/concurrency/load evidence |
+| O-10 | [061B/063](TIP-061B-063-build.md): verified principal, two commit fences, node Git worktree | Actual multiple-client ownership and deployment protections |
+| O-12 | [057R SDK source](TIP-057R-SDK-build.md): owned isolated real worker behind exact signed operator qualification | Real Q2/no-start/SDK restrictions/descendant and persistent handoff qualification |
+| O-11 | [064 integration](TIP-064-integration-build.md): full source checks/refinement/config/migration/rollback handover | Owner's physical scope-bound tests after build |
+
+Source completion requires implemented integrated code/tests/reports; a dispatched contract alone is not completion. Required policy values are operator configuration. Mechanism ceilings prevent unbounded allocations and are not a qualified deployment profile. No fixture or signed operator statement is mislabeled as independent physical attestation.
+
 Status: **APPROVED DIRECTION / M0 QUALIFIED / TIP-057R CONTRACT PREPARED**, per the [owner approval record](approval-2026-10-02.md), [Completion Report](TIP-055A-completion.md) and [actual enrollment receipts](TIP-055A-enrollment-qualification.md). TIP-055B has [actual Windows CI and guarded deployed qualification PASS](TIP-055B-runtime-qualification.md). [Selected read contract](TIP-057R-contract.md) specifies schema/ACs and local soft budget; shared recovery and strict attach-only remain unresolved. No answer below is attributed to an interview that did not occur.
 
 ## Five-persona RRI synthesis
@@ -39,6 +54,22 @@ This compressed RRI reuses the supplied requirements rather than repeating a lar
 
 ## Proposed decisions linked to the original D-01 → D-12
 
+### Continuous-build implementation decisions
+
+These Contractor decisions make the approved authority boundaries executable; they add no new product scope or physical qualification. They supersede historical build-timing statements in the original register.
+
+| Decision | Concrete behavior | Verification |
+|---|---|---|
+| C-01 | Distinct native effect steps receive finite signed proofs; completed consumed effects may finish after proof expiry, while lost/unconsumed steps remain blocked | Ordered durable step/predecessor and actual HTTPS tests |
+| C-02 | Guarded writer revoke/release enters DRAINING until exact node fence and pending phase acknowledgments reconcile | Revoke between source/session commits; owner-approved completion of the same old intent only |
+| C-03 | Supported restore includes configured transport/job/domain/principal heads; finite same-checkpoint reapproval may resume a fenced interrupted finalization | Real TLS independent operator/node witnesses and expiry after each publication step |
+| C-04 | Signed shared native runtime plus deterministic per-target qualification supports the approved finite capacity roster; source capture releases the global mutation resource before long execution | Same-source manifest, two scoped orchestration workers and concurrent source update; physical load test remains deferred |
+| C-05 | Historical terminal recovery after an admitted replacement session is read-only and quarantined; original job target/outcome and uncertain capacity remain immutable | Exact same-device challenge/witness, complete closed terminal evidence, no pending step/cancel and zero new execution |
+| C-06 | Principal-only clients hold their Ed25519 key and public credential without the owner's administrative token | Real TLS principal operation and owner-operation denial before HTTP |
+| C-07 | Trust-bearing startup configuration is protected independently of ordinary public request JSON; stopping admission retains the outbound owner loop while existing work drains | Writable/symlink configuration denial, finite STOP_PENDING lifecycle and no authority release during active work |
+
+Per-TIP Completion Reports and the [cumulative source verification](source-update-verification.md) record the resulting evidence; none of these decisions replaces the owner's later physical tests.
+
 D entries establish the approved direction and choices within the recorded approval scope; O entries list details still required at the affected milestone. The approval record binds the original package to its exact reviewed commit. Future milestone details remain gated rather than invented.
 
 | ID | Proposed choice | Reason and boundary | Affects |
@@ -62,7 +93,9 @@ D entries establish the approved direction and choices within the recorded appro
 | D-17 | M0 inventory-only identity enrichment; no job/hash/result rewrite | Isolate the first change and preserve idempotency/history | 055A |
 | D-18 | Prepare optional local target on only state/account; preserve legacy successful shape | Concrete [contract](TIP-057R-contract.md), not implemented or client-qualified | 057R |
 | D-19 | Local10s soft-success budget; do not claim hard response/cancellation | Exact overrun/cleanup ownership is recorded; TIP-059 total deadline stays separate | 057R contract |
-| D-20 | Strict no-start retained; restricted helper is pending proof/owner review | Existing initialize has no supported attach-only guarantee; [Q1 proposal](TIP-057R-boundary-proposal.md) is not approved architecture | 057R G03/G04 |
+| D-20 | Strict no-start retained; Q1 isolated boundary proof approved13:59, product boundary pending proof/review | Existing initialize has no supported attach-only guarantee; [Q1 TIP](TIP-057R-Q1.md) authorizes fixture research, not product integration/Q2 | 057R G03/G04 |
+| D-21 APPROVED / FOUNDATION PASS | G03-A common source/tests foundation; native admission requires verified installation epoch/authority; cancel restore included; helper/SDK disabled | [Amendment](TIP-057R-boundary-amendment.md) approved at 21:21:49 against PR #61 head `0ee42c9`; [Draft PR #62](https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/pull/62) source `bc916796` and [A01–A14 output verification](TIP-057R-G03A-verification.md): six workflows PASS, G03-A Windows 8/8; full producer/migration qualification remains OPEN | 057R G03 foundation only |
+| D-22 PROPOSED / DESIGN REVIEW | Owned isolated SDK-worker candidate; exact disposable Q2 compatibility evidence before broad G03-B integration; producer-specific lifetime/persistent/GUI/privileged scope | [G03-B decision contract](TIP-057R-G03B.md) and [source feasibility](TIP-057R-G03B-feasibility.md) prepared under 22:56 continuation. New architecture not yet approved; no unused framework, SDK/helper/transfer schema or physical effects selected for BUILD | 057R full G03/G04; original fleet order retained |
 
 ## Open gate register
 
@@ -81,7 +114,7 @@ No open item below blocks writing/reviewing this package. Only items for the TIP
 | O-09 | Conflict matrix, capacity reservation, lock ordering and measured resource/latency/fairness thresholds | 056 build |
 | O-10 | Remote source-guard transport, recovery fencing and verified caller principal model | 061B/063 build |
 | O-11 | Physical topology, test workload, soak/performance/recovery thresholds and release/deploy scope | 064 qualification |
-| O-12 | Shared uncertain-IPC ownership/recovery mechanism and preventive attach-only boundary; review concrete Q1 proposal | 057R product BUILD; Q1 itself awaits architecture decision |
+| O-12 | G03-A common authority FOUNDATION PASS; full producer/session/descendant/persistent-transfer and physical migration contracts unresolved; strict no-start SDK boundary remains unqualified. [G03-B proposal](TIP-057R-G03B.md) prepares the next decision | Broad 057R product BUILD; Q1/G03-A bounded approvals closed, production/Q2 still open |
 
 TIP-057R G02-schema preparation is complete; G02 actual client/pilot remains a later acceptance gate. Local soft-budget selection does not imply hard deadline qualification. G03-ownership/G04 remain OPEN, not paperwork gates or reasons to manufacture successful account reads. The original Blueprint architecture and product policy are unchanged.
 

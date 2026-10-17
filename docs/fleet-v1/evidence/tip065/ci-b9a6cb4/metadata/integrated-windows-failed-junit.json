@@ -1,0 +1,23 @@
+{
+  "archive": "artifact-11334693546.zip",
+  "head": "b9a6cb402cc969d3ac618f9eeb2de678c6837e17",
+  "tree": "653ab3c2d4460d9b76bfc94f683c7786c0fac30a",
+  "status": "FAIL",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "12",
+    "tests": "1203",
+    "time": "320.509",
+    "timestamp": "2026-10-05T08:57:43.046388+00:00",
+    "hostname": "runnervmfi6oq"
+  },
+  "failures": [
+    {
+      "test": "tests.unit.test_tip061a_057n::test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision",
+      "message": "threading.BrokenBarrierError",
+      "text": "tests\\unit\\test_tip061a_057n.py:632: in test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision\n    reached.wait(timeout=10)  # Both long producers hold distinct scoped leases simultaneously.\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\threading.py:725: in wait\n    self._wait(timeout)\nC:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\threading.py:763: in _wait\n    raise BrokenBarrierError\nE   threading.BrokenBarrierError"
+    }
+  ]
+}

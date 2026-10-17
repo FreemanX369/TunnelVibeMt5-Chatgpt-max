@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "fleet_source_progress",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "causal_gate_plugin_v2",
+    "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/owned-red-v2.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1748/contractor/owned-red-v2-tmp"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "timeout_s": 45,
+  "exit_code": 1,
+  "wall_s": 14.86693559199989,
+  "source_count": 217,
+  "source_unchanged": true,
+  "cases": 2,
+  "failed": 2,
+  "skipped": 0,
+  "passed": 0
+}

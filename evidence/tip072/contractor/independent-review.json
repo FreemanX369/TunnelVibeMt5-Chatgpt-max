@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/independent-focused.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/contractor/focused_tmp",
+    "tests/unit/test_tip072_native_denied_publication.py"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.47741472099994553,
+  "source_entries": 217,
+  "source_unchanged": true,
+  "AST_outside_qualified_denial_addition_unchanged": true
+}

@@ -1,0 +1,41 @@
+{
+  "artifact_id": 11326525111,
+  "archive": "artifact-11326525111.zip",
+  "bytes": 60236,
+  "sha256": "77d702f9414fa5f005c521e2feb648c29c8dd098f7539148d66f10c7884bfb0f",
+  "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+  "tree": "b6717bdfcb32ac31c91438b2934830fb708e5fd6",
+  "source_entries": 207,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "14",
+    "tests": "1146",
+    "time": "72.346",
+    "timestamp": "2026-10-05T04:41:22.270419+00:00",
+    "hostname": "runnervm8df0l"
+  },
+  "passed": 1132,
+  "cases": [
+    {
+      "case": "full-unit",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 73.055
+    },
+    {
+      "case": "b1-portable",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.415
+    }
+  ],
+  "proof": {
+    "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+    "executed": 39,
+    "skipped": 0,
+    "source_entries": 15,
+    "log_digest_verified": true
+  }
+}
