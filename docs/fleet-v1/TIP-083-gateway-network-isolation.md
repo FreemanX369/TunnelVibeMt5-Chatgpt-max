@@ -1,0 +1,5 @@
+# TIP-083 — Gateway network isolation
+
+A slow unauthenticated TLS handshake or partial HTTP header blocked the previous gateway event-owner thread. The real-TLS regression had two failures on source 7a31672; the same tests pass after bounded network isolation. TLS and HTTP reads now use at most eight I/O workers and a bounded request queue; authentication, all clocks, SQLite transactions, signing and response freezing remain on the original sole gateway event-owner thread. Wire schemas, signature/audience binding, CA/hostname verification and absolute request budgets are unchanged. Expired/cancelled queued requests cannot enter authority processing; shutdown rejects pending work and closes tracked sockets before ledger cleanup.
+
+The operator composition retains legacy85 + Fleet31 and the explicit Win32 process-observation fix. The control-only pilot keeps its configured heartbeat-based minimum cadence and normal task priority, rejecting native qualification/writer/worktree scope expansion. All pending transport witnesses remain durable. Source and runtime release gates are recorded in the completion report; no physical native qualification is implied.
