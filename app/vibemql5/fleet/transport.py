@@ -11,6 +11,7 @@ import io
 import re
 import secrets
 import ssl
+import socket
 import threading
 import time
 import uuid
@@ -388,6 +389,18 @@ class HttpsClient:
         self.context = ssl_context or ssl.create_default_context(cafile=cafile)
         self._tls()
         self._parsed = urlsplit(origin)
+        self._loopback_connect_host = None
+    def pin_loopback_address(self, address):
+        """Operator-only bind-family selection; preserve TLS/SNI and signed origin.
+
+        A localhost-only service may explicitly bind one address family. Do not
+        spend its signed request budget trying a non-listening family first.
+        This is never accepted from a wire request or inferred for remote hosts.
+        """
+        if self._parsed.hostname != 'localhost' or address not in ('127.0.0.1', '::1'):
+            raise WireError('HTTPS_CONNECT_TARGET_INVALID')
+        self._loopback_connect_host = address
+
     @property
     def origin(self):
         return self._origin
@@ -409,6 +422,12 @@ class HttpsClient:
             raise WireError("HTTP_DEADLINE_EXCEEDED")
         connection = http.client.HTTPSConnection(self._parsed.hostname, self._parsed.port or 443,
             timeout=deadline - begun, context=self.context)
+        if self._loopback_connect_host is not None:
+            selected = self._loopback_connect_host
+            def connect_loopback(address, timeout, source_address=None):
+                return socket.create_connection((selected, address[1]), timeout, source_address)
+            # HTTPSConnection still owns TLS wrapping with the original hostname.
+            connection._create_connection = connect_loopback
         class DeadlineResponseInput(io.RawIOBase):
             def __init__(self, original, protected):
                 self.original, self.protected = original, protected

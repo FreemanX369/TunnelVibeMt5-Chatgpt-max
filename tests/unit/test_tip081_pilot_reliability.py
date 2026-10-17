@@ -131,3 +131,30 @@ def test_cached_journal_detects_path_replacement(tmp_path):
   except PermissionError:pytest.skip('OS denies replacement while SQLite owns the file')
   with pytest.raises(WireError,match='TRANSPORT_JOURNAL_INVALID'):j.witness('replaced')
  finally:j.close()
+
+
+def test_operator_loopback_pin_keeps_real_tls_hostname_and_authority(service,tls_files,monkeypatch):
+ from vibemql5.fleet.transport import HttpsClient,OwnerClient
+ from test_tip058b_transport import TOKEN
+ import socket
+ ca,_,_=tls_files;_,_,address,*_=service
+ http=HttpsClient('https://localhost:'+str(address[1]),fleet_policy(),cafile=str(ca))
+ calls=[];original=socket.create_connection
+ def connect(destination,*args,**kwargs):
+  calls.append(destination[0]);return original(destination,*args,**kwargs)
+ monkeypatch.setattr(socket,'create_connection',connect)
+ names=[];wrap=http.context.wrap_socket
+ def checked(*args,**kwargs):
+  names.append(kwargs.get('server_hostname'));return wrap(*args,**kwargs)
+ monkeypatch.setattr(http.context,'wrap_socket',checked)
+ http.pin_loopback_address('127.0.0.1')
+ with pytest.raises(WireError,match='READ_INTERRUPTED'):OwnerClient(http,TOKEN).read_status('pin-absent')
+ assert calls==['127.0.0.1'] and names==['localhost'] and http.origin=='https://localhost:'+str(address[1])
+ import ssl
+ assert http.context.verify_mode==ssl.CERT_REQUIRED and http.context.check_hostname
+
+@pytest.mark.parametrize('origin,address',[('https://example.com','127.0.0.1'),('https://localhost','192.0.2.1'),('https://localhost','localhost')])
+def test_operator_loopback_pin_rejects_remote_or_ambiguous_target(origin,address):
+ from vibemql5.fleet.transport import HttpsClient
+ http=HttpsClient(origin,fleet_policy())
+ with pytest.raises(WireError,match='HTTPS_CONNECT_TARGET_INVALID'):http.pin_loopback_address(address)
