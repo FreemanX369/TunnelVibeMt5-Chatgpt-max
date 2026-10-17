@@ -298,8 +298,12 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
         try:
             return future.result(timeout=remaining)
         except TimeoutError:
-            future.cancel()
-            raise WireError("HTTP_DEADLINE_EXCEEDED") from None
+            if future.cancel():
+                raise WireError("HTTP_DEADLINE_EXCEEDED") from None
+            # An admitted transaction cannot be cancelled or replayed by a
+            # network timeout. Let it finish once; the original write deadline
+            # still suppresses a late response, preserving lost-ACK evidence.
+            return future.result()
     class DeadlineInput(io.RawIOBase):
         def __init__(self, connection, started, limit):
             self.connection, self.started, self.limit = connection, started, limit
