@@ -278,6 +278,28 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
             raise WireError("TLS_SERVER_CONTEXT_INVALID")
         context = ssl_context
     holder = {}
+    requests = Queue(maxsize=8)
+    listener_failures = Queue(maxsize=1)
+
+    def invoke_owner(method, path, headers, body, deadline):
+        future = Future()
+        server = holder["server"]
+        with server.network_lock:
+            if server.network_stopping:
+                raise WireError("HTTPS_UNAVAILABLE")
+            try:
+                requests.put_nowait((future, method, path, list(headers), body, deadline))
+            except Full:
+                raise WireError("HTTPS_UNAVAILABLE") from None
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            future.cancel()
+            raise WireError("HTTP_DEADLINE_EXCEEDED")
+        try:
+            return future.result(timeout=remaining)
+        except TimeoutError:
+            future.cancel()
+            raise WireError("HTTP_DEADLINE_EXCEEDED") from None
     class DeadlineInput(io.RawIOBase):
         def __init__(self, connection, started, limit):
             self.connection, self.started, self.limit = connection, started, limit
@@ -318,8 +340,8 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
                     if not chunk:
                         raise WireError("WIRE_INVALID")
                     content.extend(chunk)
-                result = controller.handle("POST", self.path, self.headers.raw_items(), bytes(content))
-                response = encode_body(result, controller.policy.max_response_bytes)
+                response = invoke_owner("POST", self.path, self.headers.raw_items(), bytes(content),
+                    begun + controller.policy.http_timeout_ms / 1000)
                 status = 200
             except (WireError, GatewayControlError) as exc:
                 status, response = 409, encode_body({"schema": "fleet.error/1", "code": exc.code}, controller.policy.max_response_bytes)
@@ -338,32 +360,147 @@ def serve_gateway(address, *, certificate=None, key_file=None, ssl_context=None,
             except OSError:
                 pass
     class Server(HTTPServer):
+        # Network parsing is bounded and isolated from the sole authority owner.
+        request_queue_size = 16
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.network_lock = threading.Lock()
+            self.network_stopping = False
+            self.network_slots = threading.BoundedSemaphore(8)
+            self.network_workers = set()
+            self.network_connections = {}
+            self.listener = None
         def get_request(self):
             connection, address = super().get_request()
+            return connection, address
+        def process_request(self, connection, address):
             begun = time.monotonic()
-            connection.settimeout(holder["controller"].policy.http_timeout_ms / 1000)
+            if not self.network_slots.acquire(blocking=False):
+                self.shutdown_request(connection)
+                return
+            worker = threading.Thread(target=self.network_request, args=(connection, address, begun),
+                                      name="fleet-https-io", daemon=True)
+            with self.network_lock:
+                if self.network_stopping:
+                    self.network_slots.release()
+                    self.shutdown_request(connection)
+                    return
+                self.network_workers.add(worker)
+                self.network_connections[worker] = connection
             try:
-                protected = context.wrap_socket(connection, server_side=True)
-                protected._fleet_started = begun
-                return protected, address
-            except Exception:
-                connection.close()
+                worker.start()
+            except BaseException:
+                with self.network_lock:
+                    self.network_workers.discard(worker)
+                    self.network_connections.pop(worker, None)
+                self.network_slots.release()
+                self.shutdown_request(connection)
                 raise
+        def network_request(self, connection, address, begun):
+            protected = None
+            worker = threading.current_thread()
+            try:
+                protected = context.wrap_socket(connection, server_side=True, do_handshake_on_connect=False)
+                protected._fleet_started = begun
+                with self.network_lock:
+                    if self.network_stopping:
+                        return
+                    self.network_connections[worker] = protected
+                remaining = holder["controller"].policy.http_timeout_ms / 1000 - (time.monotonic() - begun)
+                if remaining <= 0:
+                    return
+                protected.settimeout(remaining)
+                protected.do_handshake()
+                self.finish_request(protected, address)
+            except OSError:
+                pass  # A slow, closed or invalid TLS peer cannot close the gateway.
+            except Exception:
+                self.handle_error(protected or connection, address)
+            finally:
+                self.shutdown_request(protected if protected is not None else connection)
+                with self.network_lock:
+                    self.network_workers.discard(worker)
+                    self.network_connections.pop(worker, None)
+                self.network_slots.release()
+        def start_network(self):
+            def listen():
+                try:
+                    while not self.network_stopping:
+                        self.handle_request()
+                except BaseException as error:
+                    if not self.network_stopping:
+                        listener_failures.put_nowait(error)
+            self.listener = threading.Thread(target=listen, name="fleet-https-accept", daemon=True)
+            self.listener.start()
+        def stop_network(self):
+            with self.network_lock:
+                self.network_stopping = True
+                connections = list(self.network_connections.values())
+                workers = list(self.network_workers)
+                while True:
+                    try:
+                        pending = requests.get_nowait()[0]
+                    except Empty:
+                        break
+                    if not pending.done():
+                        pending.set_exception(WireError("HTTPS_UNAVAILABLE"))
+            self.server_close()
+            for connection in connections:
+                try:
+                    connection.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+                connection.close()
+            if self.listener is not None:
+                self.listener.join(timeout=.5)
+            deadline = time.monotonic() + 1
+            for worker in workers:
+                worker.join(timeout=max(0, deadline - time.monotonic()))
+            if any(worker.is_alive() for worker in workers):
+                raise WireError("GATEWAY_NETWORK_STOP_PENDING")
+
     with Server(address, Handler) as server:
         controller = controller_factory(server.server_address)
         primary = None
         try:
-            holder["controller"] = controller
+            holder["controller"], holder["server"] = controller, server
             server.timeout = min(0.2, controller.policy.poll_interval_ms / 1000)
+            server.start_network()
             if started:
                 started(server.server_address)
             while stop_event is None or not stop_event.is_set():
-                server.handle_request()
+                if not listener_failures.empty():
+                    raise listener_failures.get_nowait()
+                try:
+                    future, method, path, headers, body, deadline = requests.get(timeout=.05)
+                except Empty:
+                    continue
+                if not future.set_running_or_notify_cancel():
+                    continue
+                if time.monotonic() >= deadline:
+                    future.set_exception(WireError("HTTP_DEADLINE_EXCEEDED"))
+                    continue
+                try:
+                    # All authentication, clocks, SQLite access and signing stay
+                    # on this original gateway event-owner thread. Freeze the
+                    # response before another authority event can mutate state.
+                    result = controller.handle(method, path, headers, body)
+                    response = encode_body(result, controller.policy.max_response_bytes)
+                except BaseException as error:
+                    future.set_exception(error)
+                    if not isinstance(error, Exception):
+                        raise
+                else:
+                    future.set_result(response)
         except BaseException as error:
             primary = error
             raise
         finally:
             cleanup = []
+            try:
+                server.stop_network()
+            except BaseException as error:
+                cleanup.append(error)
             try:
                 if controller.domain is not None and hasattr(controller.domain, "close"):
                     controller.domain.close()
