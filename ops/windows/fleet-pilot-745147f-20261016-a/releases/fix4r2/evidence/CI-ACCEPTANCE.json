@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "linux": {
+    "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+    "platform": "linux",
+    "tests": 1663,
+    "passed": 1644,
+    "skipped": 19,
+    "failures": 0,
+    "errors": 0,
+    "source_unchanged": true,
+    "scope": "SOURCE_AND_HARMLESS_FIXTURES"
+  },
+  "windows": {
+    "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+    "platform": "windows",
+    "tests": 1663,
+    "passed": 1650,
+    "skipped": 13,
+    "failures": 0,
+    "errors": 0,
+    "source_unchanged": true,
+    "scope": "SOURCE_AND_HARMLESS_FIXTURES"
+  },
+  "workflows": [
+    {
+      "id": 38997804901,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804901"
+    },
+    {
+      "id": 38997804893,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804893"
+    },
+    {
+      "id": 38997804898,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804898"
+    },
+    {
+      "id": 38997804920,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804920"
+    },
+    {
+      "id": 38997804896,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804896"
+    },
+    {
+      "id": 38997804908,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804908"
+    },
+    {
+      "id": 38997804894,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804894"
+    },
+    {
+      "id": 38997804892,
+      "name": "Verify Fleet v1 integrated source",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/38997804892"
+    }
+  ],
+  "physical_qualification": "NOT_RUN"
+}

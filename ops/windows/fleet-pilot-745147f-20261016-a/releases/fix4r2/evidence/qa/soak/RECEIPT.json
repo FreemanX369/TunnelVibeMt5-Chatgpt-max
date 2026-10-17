@@ -1,0 +1,791 @@
+{
+  "status": "FAIL",
+  "start": "2026-10-17T03:20:35.300985+00:00",
+  "end": "2026-10-17T03:30:35.638841+00:00",
+  "elapsed_seconds": 600.3439999998081,
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "pilot_pid": null,
+  "samples": [
+    {
+      "at": "2026-10-17T03:20:35.316638+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 20.148821,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:20:45.320470+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 30.152653,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:20:55.325315+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 40.157498,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:05.328765+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 50.160948,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:15.339495+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 60.171678,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:25.345523+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 70.177706,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:35.350408+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 80.182591,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:45.355241+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 90.187424,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:21:55.358009+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 100.190192,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:05.361028+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 110.193211,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:15.363890+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 120.196073,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:25.367136+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 130.199319,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:35.371270+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 140.203453,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:45.375349+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 150.207532,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:22:55.382039+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 160.214222,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:05.385645+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 170.217828,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:15.389330+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 180.221513,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:25.392870+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 190.225053,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:35.396476+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 200.229359,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:45.399704+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 210.232279,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:23:55.403071+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 220.235767,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:05.406348+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 230.238865,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:15.410012+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 240.242195,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:25.413361+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 250.245544,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:35.416383+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 260.248566,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:45.420505+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 270.252688,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:24:55.424492+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 280.256675,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:05.427997+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 290.26018,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:15.442181+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 300.274364,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:25.446841+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 310.279024,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:35.453865+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 320.286048,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:45.458068+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 330.290251,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:25:55.461718+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 340.293901,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:05.466841+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 350.299024,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:15.470764+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 360.302947,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:25.474538+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 370.306721,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:35.477840+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 380.310023,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:45.483032+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 390.315215,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:26:55.487772+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 400.319955,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:05.494581+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 410.326764,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:15.498269+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 420.330452,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:25.502023+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 430.334579,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:35.505943+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 440.338867,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:45.511361+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 450.343544,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:27:55.514871+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 460.347054,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:05.519900+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 470.352083,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:15.524052+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 480.356235,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:25.513057+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 490.385512,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:35.519518+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 500.381205,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:45.518342+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 510.382335,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:28:55.540359+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 520.413455,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:05.545359+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 530.382101,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:15.561625+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 540.472816,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:25.577355+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 550.414379,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:35.595540+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 560.484189,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:45.601941+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 570.434124,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:29:55.610872+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 580.443055,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:30:05.618167+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 590.45035,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:30:15.624084+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 600.456267,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    },
+    {
+      "at": "2026-10-17T03:30:25.629044+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 610.461227,
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "code": "LIVE_STALE"
+    }
+  ],
+  "scope": "ONE_VPS_CONTROL_PLANE_NO_PHYSICAL_NATIVE_QUALIFICATION"
+}

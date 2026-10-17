@@ -1,0 +1,241 @@
+{
+  "entry_sha256": "f82eb555e8444e78facb68cc58ac2916e6dae8eb07a60630e45acd150fc20d2e",
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "phase": "predeploy-network",
+  "start": "2026-10-17T03:20:37.582020+00:00",
+  "end": "2026-10-17T03:21:51.139845+00:00",
+  "status": "FAIL",
+  "counts": {
+    "PASS": 47,
+    "FAIL": 4
+  },
+  "results": [
+    {
+      "case": "DEPLOYED_PROFILE_A_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 11.249038700014353,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "DEPLOYED_PROFILE_B_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 4.180333500029519,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "DEPLOYED_PROFILE_C_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 4.177936899941415,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "LEGACY85_FULL_PROTOCOL_EXACT",
+      "status": "PASS"
+    },
+    {
+      "case": "FLEET31_FULL_PROTOCOL_EXACT",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_inventory",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_state",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_account",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_status",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_snapshot",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_command_status",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_create",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_enroll",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_get",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_default_target",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_freeze",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_resume",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_compare_baseline",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_launch_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_get_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_recover_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_cancel_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_artifact_manifest",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_artifact_chunk",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_issue",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_revoke",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_assign",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_release",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_reconcile",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_writer_acquire",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_writer_release",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_write_source",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_prepare",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_commit",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_retire",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_ZERO_RATES",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_BAD_TIMEFRAME",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_UNKNOWN_SYMBOL",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_NAIVE_TICK_TIME",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_UNKNOWN_TOOL",
+      "status": "PASS"
+    },
+    {
+      "case": "THREE_CLIENT_NATIVE_READ_SERIALIZATION",
+      "status": "PASS",
+      "clients": 3,
+      "expected_busy_rejections": 0
+    },
+    {
+      "case": "RATES_VALID_1",
+      "status": "PASS"
+    },
+    {
+      "case": "RATES_VALID_20",
+      "status": "PASS"
+    },
+    {
+      "case": "RATES_VALID_200",
+      "status": "PASS"
+    },
+    {
+      "case": "TICKS_LOWER_BOUND",
+      "status": "PASS"
+    },
+    {
+      "case": "THREE_CLIENT_MIXED_LOAD60",
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "reason": "[{'client': 1, 'tool': 'fleet_inventory', 'error': 'MCP_ERROR:fleet_inventory:{\\'text\\': \\'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}\\'}'}, {'client': 2, 'tool': 'fleet_inventory', 'error': 'MCP_ERROR:fleet_inventory:{\\'text\\': \\'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}\\'}'}, {'client': 0, 'tool': 'fleet_inve",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 30, in test\n    data=await fn();mark(case,**(data or {}))\n         ^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 118, in load\n    assert not errors,str(errors)[:400]\n           ^^^^^^^^^^\nAssertionError: [{'client': 1, 'tool': 'fleet_inventory', 'error': 'MCP_ERROR:fleet_inventory:{\\'text\\': \\'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}\\'}'}, {'client': 2, 'tool': 'fleet_inventory', 'error': 'MCP_ERROR:fleet_inventory:{\\'text\\': \\'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}\\'}'}, {'client': 0, 'tool': 'fleet_inve\n"
+    },
+    {
+      "case": "ACTIONABLE_SAFE_FLEET_ERROR",
+      "status": "FAIL",
+      "error_type": "AssertionError",
+      "reason": "",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 30, in test\n    data=await fn();mark(case,**(data or {}))\n         ^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 125, in safe_error\n    assert 'READ_INTERRUPTED' in payload and 'retryable' in payload and 'Traceback' not in payload and 'Bearer' not in payload\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "THREE_CLIENT_SAME_OPERATION_EXACTLY_ONE_COMMAND",
+      "status": "FAIL",
+      "error_type": "RuntimeError",
+      "reason": "MCP_ERROR:fleet_inventory:{'text': 'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}'}",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 30, in test\n    data=await fn();mark(case,**(data or {}))\n         ^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 131, in inventory\n    submissions=await asyncio.gather(*(call(cli,'fleet_inventory',args) for cli in clients));ids={x['command_id'] for x in submissions};assert len(ids)==1\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 26, in call\n    if getattr(r,'is_error',False):raise RuntimeError('MCP_ERROR:'+name+':'+str(_tool_payload(r))[:256])\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: MCP_ERROR:fleet_inventory:{'text': 'Error executing tool fleet_inventory: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}'}\n"
+    },
+    {
+      "case": "UNQUALIFIED_NATIVE_FAILS_CLOSED",
+      "status": "FAIL",
+      "error_type": "RuntimeError",
+      "reason": "MCP_ERROR:fleet_read_state:{'text': 'Error executing tool fleet_read_state: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}'}",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 30, in test\n    data=await fn();mark(case,**(data or {}))\n         ^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 143, in deny\n    queued=await call(c,'fleet_read_state',{'target':target,'operation_id':'fix4-'+PHASE+'-denial-r1'});deadline=time.monotonic()+30\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\qa\\run-live-fixed.py\", line 26, in call\n    if getattr(r,'is_error',False):raise RuntimeError('MCP_ERROR:'+name+':'+str(_tool_payload(r))[:256])\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: MCP_ERROR:fleet_read_state:{'text': 'Error executing tool fleet_read_state: {\"code\": \"HTTPS_UNAVAILABLE\", \"retryable\": true}'}\n"
+    },
+    {
+      "case": "FINAL_HEALTH_GUARDS_CLEAN",
+      "status": "PASS",
+      "free_memory_mb": 1243.0,
+      "disk_free_gb": 12.03
+    },
+    {
+      "case": "ALL_MCP_CONTEXTS_CLOSED",
+      "status": "PASS"
+    }
+  ],
+  "scope": "DEPLOYED_WINDOWS_STDIO_THREE_CLIENTS_NOT_AUTHENTICATED_ACCOUNT_B_C_OR_PHYSICAL_NATIVE"
+}

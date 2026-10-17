@@ -1,0 +1,16 @@
+{
+    "at_utc":  "2026-10-17T12:40:41.3309087Z",
+    "pilot_task_state":  4,
+    "pilot_priority":  6,
+    "pilot_action":  "-u \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\operator-run-pilot-stable-entry.py\" --resume",
+    "gateway_pid":  5300,
+    "gateway_start_utc":  "2026-10-17T12:32:41.9589594Z",
+    "live_age_seconds":  4.1238909,
+    "live_status":  "RUNNING",
+    "node_status":  "RUNNING",
+    "source_head":  "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+    "terminal_pid":  6012,
+    "terminal_path":  "C:\\Users\\Administrator\\Desktop\\MT5-2\\terminal64.exe",
+    "terminal_start_utc":  "2026-10-15T01:51:07.4924508Z",
+    "stop_request_present":  false
+}

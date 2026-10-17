@@ -1,0 +1,128 @@
+{
+  "status": "PASS",
+  "schema_version": "1.0",
+  "mode": "ALLOWLISTED_MULTI_TUNNEL_ADMIN",
+  "instances": [
+    {
+      "instance": "A",
+      "profile": "vibemql5-vps",
+      "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.json",
+      "config_exists": true,
+      "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps.yaml",
+      "profile_exists": true,
+      "secret_present": true,
+      "health_port": 8080,
+      "healthz_status": 200,
+      "readyz_status": 200,
+      "pids": [
+        2892
+      ],
+      "process_count": 1,
+      "tasks": {
+        "interactive": {
+          "name": "VibeMQL5-OpenAI-Tunnel",
+          "state": "Running"
+        },
+        "watchdog": {
+          "name": "VibeMQL5-Watchdog",
+          "state": "Ready"
+        },
+        "background": {
+          "name": "VibeMQL5-OpenAI-Tunnel-Background",
+          "state": "Ready"
+        }
+      },
+      "poll_diagnostics": {
+        "status": "PASS",
+        "schema_version": "1.0",
+        "events_retained": 194,
+        "oldest_event_at": "2026-10-17T19:34:28.2731588+07:00",
+        "newest_event_at": "2026-10-17T19:39:48.3421973+07:00",
+        "poll_failures_retained": 0,
+        "episodes_retained": 0,
+        "episodes": []
+      }
+    },
+    {
+      "instance": "B",
+      "profile": "vibemql5-vps-b",
+      "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.b.json",
+      "config_exists": true,
+      "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps-b.yaml",
+      "profile_exists": true,
+      "secret_present": true,
+      "health_port": 8081,
+      "healthz_status": 200,
+      "readyz_status": 200,
+      "pids": [
+        5268
+      ],
+      "process_count": 1,
+      "tasks": {
+        "interactive": {
+          "name": "VibeMQL5-OpenAI-Tunnel-B",
+          "state": "Running"
+        },
+        "watchdog": {
+          "name": "VibeMQL5-Watchdog-B",
+          "state": "Ready"
+        },
+        "background": {
+          "name": "VibeMQL5-OpenAI-Tunnel-Background-B",
+          "state": "Ready"
+        }
+      },
+      "poll_diagnostics": {
+        "status": "PASS",
+        "schema_version": "1.0",
+        "events_retained": 172,
+        "oldest_event_at": "2026-10-17T19:37:21.4944101+07:00",
+        "newest_event_at": "2026-10-17T19:37:23.0895265+07:00",
+        "poll_failures_retained": 0,
+        "episodes_retained": 0,
+        "episodes": []
+      }
+    },
+    {
+      "instance": "C",
+      "profile": "vibemql5-vps-c",
+      "config_path": "C:\\VibeMQL5\\ops\\windows\\vibemql5.windows.c.json",
+      "config_exists": true,
+      "profile_path": "C:\\Users\\Administrator\\AppData\\Roaming\\tunnel-client\\vibemql5-vps-c.yaml",
+      "profile_exists": true,
+      "secret_present": true,
+      "health_port": 8082,
+      "healthz_status": 200,
+      "readyz_status": 200,
+      "pids": [
+        4820
+      ],
+      "process_count": 1,
+      "tasks": {
+        "interactive": {
+          "name": "VibeMQL5-OpenAI-Tunnel-C",
+          "state": "Running"
+        },
+        "watchdog": {
+          "name": "VibeMQL5-Watchdog-C",
+          "state": "Ready"
+        },
+        "background": {
+          "name": "VibeMQL5-OpenAI-Tunnel-Background-C",
+          "state": "Ready"
+        }
+      },
+      "poll_diagnostics": {
+        "status": "PASS",
+        "schema_version": "1.0",
+        "events_retained": 172,
+        "oldest_event_at": "2026-10-17T19:37:48.5166666+07:00",
+        "newest_event_at": "2026-10-17T19:37:49.9527646+07:00",
+        "poll_failures_retained": 0,
+        "episodes_retained": 0,
+        "episodes": []
+      }
+    }
+  ],
+  "generic_shell_exposed": true
+}

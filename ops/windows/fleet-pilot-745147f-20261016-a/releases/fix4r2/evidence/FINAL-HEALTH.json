@@ -1,0 +1,30 @@
+{
+  "service": "READY",
+  "state": "READY",
+  "disk_free_gb": 12.06,
+  "memory_total_mb": 2047.5,
+  "memory_free_mb": 1134.8,
+  "disk_warning_gb": 4,
+  "disk_block_gb": 2,
+  "min_free_memory_mb": 256,
+  "queue_length": 0,
+  "active_job": null,
+  "terminals_valid": 5,
+  "terminals_registered": 5,
+  "concurrency": {
+    "schema_version": "1.0",
+    "mode": "MULTI_CLIENT_SERIALIZED",
+    "tool_surface_preserved": true,
+    "source_mutation_parallelism": 1,
+    "native_mt5_parallelism": 1,
+    "mutation_lock": null,
+    "mutation_waiters": 0,
+    "native_lock": null,
+    "native_waiters": 0,
+    "attribution": {
+      "model": "MCP_REQUEST_PLUS_PROJECT_ITERATION_WORKSTREAM",
+      "authenticated_account_identity": false,
+      "note": "stdio tunnel does not expose a security-grade ChatGPT account id"
+    }
+  }
+}

@@ -1,0 +1,612 @@
+[
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.013355799950659275,
+    "error": true
+  },
+  {
+    "tool": "fleet_read_state",
+    "seconds": 0.0035093999467790127,
+    "error": true
+  },
+  {
+    "tool": "fleet_read_account",
+    "seconds": 0.002900599967688322,
+    "error": true
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.003489899914711714,
+    "error": true
+  },
+  {
+    "tool": "fleet_snapshot",
+    "seconds": 0.004076099954545498,
+    "error": true
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.004737799987196922,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_create",
+    "seconds": 0.004192000022158027,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_enroll",
+    "seconds": 0.003961500013247132,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_get",
+    "seconds": 0.003437699982896447,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_default_target",
+    "seconds": 0.004398500081151724,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_freeze",
+    "seconds": 0.004606899805366993,
+    "error": true
+  },
+  {
+    "tool": "fleet_project_resume",
+    "seconds": 0.005018100142478943,
+    "error": true
+  },
+  {
+    "tool": "fleet_compare_baseline",
+    "seconds": 0.004288600059226155,
+    "error": true
+  },
+  {
+    "tool": "fleet_launch_job",
+    "seconds": 0.003653499996289611,
+    "error": true
+  },
+  {
+    "tool": "fleet_get_job",
+    "seconds": 0.00437820004299283,
+    "error": true
+  },
+  {
+    "tool": "fleet_recover_job",
+    "seconds": 0.004088300047442317,
+    "error": true
+  },
+  {
+    "tool": "fleet_cancel_job",
+    "seconds": 0.00511760008521378,
+    "error": true
+  },
+  {
+    "tool": "fleet_artifact_manifest",
+    "seconds": 0.004604399902746081,
+    "error": true
+  },
+  {
+    "tool": "fleet_artifact_chunk",
+    "seconds": 0.006261999951675534,
+    "error": true
+  },
+  {
+    "tool": "fleet_principal_issue",
+    "seconds": 0.00485090003348887,
+    "error": true
+  },
+  {
+    "tool": "fleet_principal_revoke",
+    "seconds": 0.0043443001341074705,
+    "error": true
+  },
+  {
+    "tool": "fleet_principal_assign",
+    "seconds": 0.005254900082945824,
+    "error": true
+  },
+  {
+    "tool": "fleet_principal_release",
+    "seconds": 0.003973199985921383,
+    "error": true
+  },
+  {
+    "tool": "fleet_principal_reconcile",
+    "seconds": 0.00408459990285337,
+    "error": true
+  },
+  {
+    "tool": "fleet_writer_acquire",
+    "seconds": 0.003876300062984228,
+    "error": true
+  },
+  {
+    "tool": "fleet_writer_release",
+    "seconds": 0.003846200183033943,
+    "error": true
+  },
+  {
+    "tool": "fleet_write_source",
+    "seconds": 0.004061700077727437,
+    "error": true
+  },
+  {
+    "tool": "fleet_worktree_prepare",
+    "seconds": 0.004251100122928619,
+    "error": true
+  },
+  {
+    "tool": "fleet_worktree_commit",
+    "seconds": 0.004306599963456392,
+    "error": true
+  },
+  {
+    "tool": "fleet_worktree_retire",
+    "seconds": 0.003936299821361899,
+    "error": true
+  },
+  {
+    "tool": "copy_rates",
+    "seconds": 0.1896546999923885,
+    "error": true
+  },
+  {
+    "tool": "copy_rates",
+    "seconds": 1.8055954999290407,
+    "error": true
+  },
+  {
+    "tool": "get_symbol_snapshot",
+    "seconds": 0.08193040010519326,
+    "error": true
+  },
+  {
+    "tool": "copy_ticks",
+    "seconds": 0.05086840013973415,
+    "error": true
+  },
+  {
+    "tool": "deep_test_tool_absent_20261017",
+    "seconds": 0.007300199940800667,
+    "error": true
+  },
+  {
+    "tool": "get_symbol_snapshot",
+    "seconds": 0.7143288999795914,
+    "error": false
+  },
+  {
+    "tool": "get_symbol_snapshot",
+    "seconds": 0.7329619000665843,
+    "error": false
+  },
+  {
+    "tool": "get_symbol_snapshot",
+    "seconds": 1.0077362000010908,
+    "error": false
+  },
+  {
+    "tool": "copy_rates",
+    "seconds": 0.13536929991096258,
+    "error": false
+  },
+  {
+    "tool": "copy_rates",
+    "seconds": 0.0664516999386251,
+    "error": false
+  },
+  {
+    "tool": "copy_rates",
+    "seconds": 0.07463970012031496,
+    "error": false
+  },
+  {
+    "tool": "copy_ticks",
+    "seconds": 0.1825589002110064,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.06451129983179271,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.07085909997113049,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.08018729998730123,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.41454740008339286,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.004745700163766742,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.4057497000321746,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.007008299930021167,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.4736788000445813,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.005556200165301561,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.410933000035584,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.031023000134155154,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07993160001933575,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.00326110003516078,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.5899720001034439,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.033270400017499924,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.0731652001850307,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0046802000142633915,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.7263265999499708,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03230520011857152,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.08291959995403886,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0038562000263482332,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.796034999890253,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03241910017095506,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.08301890012808144,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.004274899838492274,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.8030268000438809,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03277480020187795,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07822319981642067,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0048646999057382345,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.8015878000296652,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.0386892999522388,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07307039992883801,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0037777998950332403,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.4697422001045197,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03027100022882223,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07259649992920458,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.00343300006352365,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.4639356001280248,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03222050005570054,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07257309998385608,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0038788001984357834,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.45873469999060035,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.0310591000597924,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.0707282000221312,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.003668899880722165,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.45590369985438883,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03514389996416867,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07418230012990534,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0034006000496447086,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.4711388999130577,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03272149991244078,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.07772499998100102,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.004140300210565329,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.8078863001428545,
+    "error": false
+  },
+  {
+    "tool": "server_info",
+    "seconds": 0.03229449992068112,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.077923399861902,
+    "error": false
+  },
+  {
+    "tool": "fleet_server_info",
+    "seconds": 0.0040062000043690205,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.8168399999849498,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.8047815000172704,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.816287700086832,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.1749686999246478,
+    "error": true
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.03887599986046553,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.049854999873787165,
+    "error": false
+  },
+  {
+    "tool": "fleet_inventory",
+    "seconds": 0.0604141999501735,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.011466100113466382,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.011562899919226766,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.011469000019133091,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.010531599866226315,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.02293660002760589,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.030862299958243966,
+    "error": false
+  },
+  {
+    "tool": "fleet_command_status",
+    "seconds": 0.1102472001221031,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_state",
+    "seconds": 0.01691570016555488,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.013122300151735544,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.012486500199884176,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.011891799978911877,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.012256900081411004,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.039983300026506186,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.05524330004118383,
+    "error": false
+  },
+  {
+    "tool": "fleet_read_status",
+    "seconds": 0.027545399963855743,
+    "error": false
+  },
+  {
+    "tool": "health",
+    "seconds": 0.0838476000353694,
+    "error": false
+  }
+]

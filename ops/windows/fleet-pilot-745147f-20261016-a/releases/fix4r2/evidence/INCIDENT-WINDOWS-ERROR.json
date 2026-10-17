@@ -1,0 +1,21 @@
+{
+    "at_utc":  "2026-10-17T03:20:18.7855407Z",
+    "event_id":  1000,
+    "values":  [
+                   "python.exe",
+                   "3.12.10150.1013",
+                   "67f515a7",
+                   "python312.dll",
+                   "3.12.10150.1013",
+                   "67f5153a",
+                   "c0000005",
+                   "000000000027e990",
+                   "dd4",
+                   "01dd5de66214a7c8",
+                   "C:\\Program Files\\Python312\\python.exe",
+                   "C:\\Program Files\\Python312\\python312.dll",
+                   "50ba4a12-099f-492d-9be9-3aac13855b86",
+                   "",
+                   ""
+               ]
+}

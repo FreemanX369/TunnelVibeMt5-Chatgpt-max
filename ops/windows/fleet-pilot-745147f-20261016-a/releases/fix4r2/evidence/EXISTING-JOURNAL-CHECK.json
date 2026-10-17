@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "read_only": true,
+  "transport_cold_seconds": 18.50410530017689,
+  "transport_warm_p95_seconds": 0.00035060010850429535,
+  "witness": {
+    "schema": "fleet.transport-witness/1",
+    "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+    "public_key": "f6c24fb1dc6e7c81147eac850bba502d495d96291f90fd69db4377986b0b465d",
+    "audience": "https://localhost:8443",
+    "challenge": "readonly-fix1",
+    "pending_count": 25,
+    "request_count": 15839,
+    "latest_control_head": {
+      "revision": 15828,
+      "schema": "fleet.control-head/1",
+      "sha256": "45c52c492b58a7a1ac984693fcb25c65c3902cbc7c72f242b79e1f1b804af3e9"
+    },
+    "journal_sha256": "791fe39a7790b9cae498913d502b341ae992e249330e61c7a117189cfa9ff029"
+  },
+  "control_head": {
+    "schema": "fleet.control-head/1",
+    "revision": 15828,
+    "sha256": "45c52c492b58a7a1ac984693fcb25c65c3902cbc7c72f242b79e1f1b804af3e9"
+  },
+  "sdk_qualifications": [],
+  "native_capacity": "NOT_QUALIFIED"
+}
