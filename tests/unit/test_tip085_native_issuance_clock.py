@@ -52,7 +52,9 @@ def composed_service(tmp_path,tls_files,request,monkeypatch,stats):
         try:
             if config.get('hold_before') and kwargs['phase']=='reserve' and not stats['holds']:
                 assert not stats['signs']
-                before=time.monotonic();time.sleep(1.2)
+                before=time.monotonic()
+                while time.monotonic()-before < 1.2:
+                    time.sleep(max(0,1.2-(time.monotonic()-before)))
                 stats['holds'].append({'kind':'BEFORE_SIGN','seconds':time.monotonic()-before,'signed_before_hold':0})
             return authorize(self,*args,**kwargs)
         finally:stats['authorization_active']=False
@@ -63,7 +65,9 @@ def composed_service(tmp_path,tls_files,request,monkeypatch,stats):
         stats['signs'].append({'issued_ms':signed['body']['issued_ms'],'expires_ms':signed['body']['expires_ms'],
             'phase':signed['body']['phase'],'event':signed['body']['event'],'sign_start_monotonic':before,'sign_return_monotonic':time.monotonic()})
         if config.get('hold_after') and len(stats['signs'])==1:
-            began=time.monotonic();time.sleep(1.05)
+            began=time.monotonic()
+            while time.monotonic()-began < 1.05:
+                time.sleep(max(0,1.05-(time.monotonic()-began)))
             stats['holds'].append({'kind':'AFTER_ORIGINAL_SIGN','seconds':time.monotonic()-began})
         return signed
     monkeypatch.setattr(GatewayNativeSigner,'issue',observed_issue)
