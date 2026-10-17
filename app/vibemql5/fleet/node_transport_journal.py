@@ -33,6 +33,7 @@ class NodeTransportJournal:
         self.identity = {"device_id": device_id, "public_key": public_key, "audience": audience}
         self._lock = _exclusive_file_lock(self.path.with_name(self.path.name + ".owner.lock"), timeout_seconds=policy.wait_ms/1000)
         self._db = None
+        self._validated_stamp = None
         try:
             self._lock.__enter__()
             if initialize and self.path.exists():
@@ -74,9 +75,33 @@ class NodeTransportJournal:
             if db is not None:db.close()
         finally:
             if lock is not None:lock.__exit__(None,None,None)
+    def _file_stamp(self):
+        rows = []
+        for path in (self.path, Path(str(self.path) + "-wal")):
+            try:
+                value = path.stat()
+                rows.append((value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns))
+            except FileNotFoundError:
+                rows.append(None)
+        identity = None if rows[0] is None else rows[0][:2]
+        prior = getattr(self, "_file_identity", None)
+        if prior is not None and identity != prior:
+            raise WireError("TRANSPORT_JOURNAL_INVALID")
+        if identity is not None:
+            self._file_identity = identity
+        return tuple(rows)
+
+    def _stamp(self):
+        return (self._db.execute("PRAGMA data_version").fetchone()[0], self._db.total_changes,
+                self._db.execute("PRAGMA schema_version").fetchone()[0],
+                json.dumps([self.identity, asdict(self.policy)], sort_keys=True), self._file_stamp())
+
     def _validate(self):
         if self._db is None:raise WireError("TRANSPORT_JOURNAL_CLOSED")
         try:
+            stamp = self._stamp()
+            if self._validated_stamp == stamp:
+                return
             if (self._db.execute("PRAGMA quick_check").fetchone()[0]!="ok" or
                     self._db.execute("PRAGMA user_version").fetchone()[0]!=1 or
                     self._db.execute("PRAGMA journal_mode").fetchone()[0].lower()!="wal" or
@@ -89,7 +114,13 @@ class NodeTransportJournal:
                 if logical_digest(intent)!=row["request_sha256"] or intent["nonce_sha256"]!=row["nonce_sha256"] or any(intent[k]!=self.identity[k] for k in self.identity):raise ValueError()
                 if row["state"] not in {"PENDING","ACKED"} or (row["ack"] is None)!=(row["state"]=="PENDING"):raise ValueError()
                 if row["ack"] is not None:self._head(json.loads(row["ack"])["control_head"])
+            # Reuse a full validation only for this exact SQLite revision. An
+            # external commit, a direct same-connection edit or schema/policy
+            # change invalidates it. The exclusive owner lease remains held.
+            if self._stamp() != stamp:raise ValueError()
+            self._validated_stamp = stamp
         except (sqlite3.Error,ValueError,KeyError,TypeError):
+            self._validated_stamp = None
             raise WireError("TRANSPORT_JOURNAL_INVALID") from None
     @staticmethod
     def _head(head):
@@ -99,27 +130,43 @@ class NodeTransportJournal:
         integer(head["revision"],minimum=1)
         try:bytes.fromhex(head["sha256"])
         except ValueError:raise WireError("TRANSPORT_ACK_INVALID") from None
-    def begin(self,proof):
+    def begin(self, proof):
+        return self.begin_generated(lambda: proof)[0]
+
+    def begin_generated(self, make_proof):
+        """Validate and acquire the write transaction before minting freshness.
+
+        The factory returns the exact verified proof whose intent is persisted.
+        Never re-sign an already persisted or uncertain request.
+        """
         self._validate()
-        if (not verified(proof) or proof.device_id!=self.identity["device_id"] or proof.public_key!=self.identity["public_key"]
-                or proof.audience!=self.identity["audience"]):
-            raise WireError("TRANSPORT_JOURNAL_INVALID")
-        intent={**self.identity,"schema":"fleet.transport-intent/1","path":proof.path,"route_generation":proof.route_generation,
-            "timestamp_ms":proof.timestamp_ms,"nonce":proof.nonce,"nonce_sha256":hashlib.sha256(proof.nonce.encode("ascii")).hexdigest(),
-            "wire_request_sha256":proof.request_sha256,"body_sha256":hashlib.sha256(proof._body_bytes).hexdigest()}
-        digest=logical_digest(intent)
-        encode_body(intent,self.policy.max_payload_bytes)
         try:
             with self._db:
                 self._db.execute("BEGIN IMMEDIATE")
+                self._validate()
+                stamp = self._stamp()
+                proof = make_proof()
+                if (not verified(proof) or proof.device_id!=self.identity["device_id"] or proof.public_key!=self.identity["public_key"]
+                        or proof.audience!=self.identity["audience"]):
+                    raise WireError("TRANSPORT_JOURNAL_INVALID")
+                intent={**self.identity,"schema":"fleet.transport-intent/1","path":proof.path,"route_generation":proof.route_generation,
+                    "timestamp_ms":proof.timestamp_ms,"nonce":proof.nonce,"nonce_sha256":hashlib.sha256(proof.nonce.encode("ascii")).hexdigest(),
+                    "wire_request_sha256":proof.request_sha256,"body_sha256":hashlib.sha256(proof._body_bytes).hexdigest()}
+                digest=logical_digest(intent)
+                encode_body(intent,self.policy.max_payload_bytes)
                 prior=self._db.execute("SELECT * FROM requests WHERE nonce_sha256=?",(intent["nonce_sha256"],)).fetchone()
                 if prior is not None:
                     if prior["request_sha256"]!=digest:raise WireError("TRANSPORT_INTENT_CONFLICT")
-                    return digest
-                if self._db.execute("SELECT count(*) FROM requests").fetchone()[0]>=self.policy.max_records:raise WireError("TRANSPORT_CAPACITY")
-                self._db.execute("INSERT INTO requests VALUES (?,?,?,'PENDING',NULL)",(intent["nonce_sha256"],digest,json.dumps(intent,sort_keys=True)))
-        except sqlite3.Error:raise WireError("TRANSPORT_JOURNAL_INVALID") from None
-        return digest
+                else:
+                    if self._db.execute("SELECT count(*) FROM requests").fetchone()[0]>=self.policy.max_records:raise WireError("TRANSPORT_CAPACITY")
+                    self._db.execute("INSERT INTO requests VALUES (?,?,?,'PENDING',NULL)",(intent["nonce_sha256"],digest,json.dumps(intent,sort_keys=True)))
+            # Retain the pre-commit data_version; never bless an external commit
+            # that raced immediately after our own commit.
+            self._validated_stamp = (stamp[0], self._db.total_changes, stamp[2], stamp[3], self._file_stamp())
+        except sqlite3.Error:
+            self._validated_stamp = None
+            raise WireError("TRANSPORT_JOURNAL_INVALID") from None
+        return digest, proof
     def acknowledge(self,intent_digest,proof,response):
         self._validate()
         if (not verified(proof) or proof.device_id!=self.identity["device_id"] or proof.public_key!=self.identity["public_key"]
@@ -131,12 +178,15 @@ class NodeTransportJournal:
         try:
             with self._db:
                 self._db.execute("BEGIN IMMEDIATE")
+                self._validate()
+                stamp = self._stamp()
                 row=self._db.execute("SELECT * FROM requests WHERE request_sha256=?",(intent_digest,)).fetchone()
                 if row is None or json.loads(row["intent"])["wire_request_sha256"]!=proof.request_sha256:raise WireError("TRANSPORT_ACK_INVALID")
                 serialized=json.dumps(ack,sort_keys=True)
                 if row["state"]=="ACKED" and row["ack"]!=serialized:raise WireError("TRANSPORT_ACK_CONFLICT")
                 self._db.execute("UPDATE requests SET state='ACKED',ack=? WHERE request_sha256=?",(serialized,intent_digest))
         except sqlite3.Error:raise WireError("TRANSPORT_JOURNAL_INVALID") from None
+        self._validated_stamp = (stamp[0], self._db.total_changes, stamp[2], stamp[3], self._file_stamp())
         return {"schema":"fleet.transport-ack-receipt/1","intent_sha256":intent_digest,"control_head":head}
     def assert_pair_replay(self,body,*,signed_route_generation):
         """Permit only an exact interrupted bootstrap; retain every old intent."""
@@ -161,6 +211,17 @@ class NodeTransportJournal:
             raise WireError("TRANSPORT_PAIR_REPLAY_INVALID") from None
         except (sqlite3.Error,ValueError,KeyError,TypeError):
             raise WireError("TRANSPORT_JOURNAL_INVALID") from None
+    def _history_digest(self, rows):
+        # The transport policy permits >10k retained rows. Keep the same
+        # canonical JSON list digest without relaxing the wire tree limit.
+        digest = hashlib.sha256()
+        digest.update(b"[")
+        for index, row in enumerate(rows):
+            if index: digest.update(b",")
+            digest.update(encode_body(row, 2 * self.policy.max_payload_bytes + 1024))
+        digest.update(b"]")
+        return digest.hexdigest()
+
     def witness(self,challenge):
         self._validate();text(challenge,128)
         rows=[dict(row) for row in self._db.execute("SELECT * FROM requests ORDER BY nonce_sha256")]
@@ -172,4 +233,4 @@ class NodeTransportJournal:
         if len({head["sha256"] for head in newest})>1:raise WireError("TRANSPORT_ACK_CONFLICT")
         return {"schema":"fleet.transport-witness/1",**self.identity,"challenge":challenge,
             "pending_count":sum(row["state"]=="PENDING" for row in rows),"request_count":len(rows),
-            "latest_control_head":newest[0] if newest else None,"journal_sha256":logical_digest(rows)}
+            "latest_control_head":newest[0] if newest else None,"journal_sha256":self._history_digest(rows)}

@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import functools
+import json
 from typing import Any
 
 from .fleet_client_tools import FleetClientFacade, FLEET_TOOL_NAMES
@@ -10,7 +12,32 @@ from .fleet_client_tools import FleetClientFacade, FLEET_TOOL_NAMES
 def create_server(config=None, *, client_facade=None):
     from mcp.server.mcpserver import MCPServer
     from mcp.types import ToolAnnotations
+    from mcp.server.mcpserver.exceptions import ToolError
     client = client_facade or FleetClientFacade.from_config(config)
+    # Only fixed public codes cross the MCP error boundary. Never stringify an
+    # arbitrary exception, operator path, credential or response payload.
+    safe_codes = frozenset({"HTTPS_UNAVAILABLE", "HTTP_DEADLINE_EXCEEDED", "CONTROL_TIME_INVALID",
+        "CONTROL_CLOCK_ROLLBACK", "CONTROL_REPLAY", "CONTROL_REVOKED", "CONTROL_ROUTE_MISMATCH",
+        "CONTROL_CORRUPT", "CONTROL_CAPACITY", "WIRE_INVALID", "TARGET_MISMATCH", "READ_INTERRUPTED",
+        "READ_RESULT_LATE", "READ_RESULT_CONFLICT", "READ_CAPACITY", "OWNER_UNAUTHORIZED",
+        "OWNER_CREDENTIAL_REQUIRED", "PRINCIPAL_UNVERIFIED", "NODE_SESSION_REQUIRED",
+        "NODE_SESSION_CONFLICT", "DOMAIN_ROUTE_STALE", "DOMAIN_NOT_CONFIGURED",
+        "TRANSPORT_CAPACITY", "TRANSPORT_JOURNAL_INVALID", "LIVE_ATTACH_ONLY_UNPROVEN"})
+    retryable = frozenset({"HTTPS_UNAVAILABLE", "HTTP_DEADLINE_EXCEEDED", "NODE_SESSION_REQUIRED"})
+    original_client = client
+    class SafeClient:
+        def __getattr__(self, name):
+            fn = getattr(original_client, name)
+            @functools.wraps(fn)
+            def invoke(*args, **kwargs):
+                from ..fleet.wire import WireError
+                try:
+                    return fn(*args, **kwargs)
+                except WireError as error:
+                    code = error.code if error.code in safe_codes else "FLEET_REQUEST_FAILED"
+                    raise ToolError(json.dumps({"code":code, "retryable":code in retryable}, sort_keys=True)) from None
+            return invoke
+    client = SafeClient()
     server = MCPServer("VibeMQL5 Fleet Client", instructions=(
         "This optional catalog connects to one separately operated HTTPS gateway. "
         "Select exact device/route/terminal/generation references. Project and source history remain node-owned. "

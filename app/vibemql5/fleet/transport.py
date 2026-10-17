@@ -513,13 +513,19 @@ class NodeClient:
         if deadline_monotonic is not None and time.monotonic() >= deadline_monotonic:
             raise WireError("HTTP_DEADLINE_EXCEEDED")
         body = encode_body(value, self.http.policy.max_body_bytes)
-        headers = sign_request(self.key, device_id=self.device_id, route_generation=self.route_generation if signed_route_generation is None else signed_route_generation,
-            timestamp_ms=int(time.time() * 1000), nonce=secrets.token_hex(24), path=path, body=body, audience=self.http.origin)
-        proof = verify_request("POST", path, headers.items(), body, audience=self.http.origin,
-                               max_body_bytes=self.http.policy.max_body_bytes)
-        if deadline_monotonic is not None and time.monotonic() >= deadline_monotonic:
-            raise WireError("HTTP_DEADLINE_EXCEEDED")
-        intent = self.transport_journal.begin(proof) if self.transport_journal is not None else None
+        headers = None
+        def make_proof():
+            nonlocal headers
+            if deadline_monotonic is not None and time.monotonic() >= deadline_monotonic:
+                raise WireError("HTTP_DEADLINE_EXCEEDED")
+            headers = sign_request(self.key, device_id=self.device_id, route_generation=self.route_generation if signed_route_generation is None else signed_route_generation,
+                timestamp_ms=int(time.time() * 1000), nonce=secrets.token_hex(24), path=path, body=body, audience=self.http.origin)
+            return verify_request("POST", path, headers.items(), body, audience=self.http.origin,
+                                  max_body_bytes=self.http.policy.max_body_bytes)
+        if self.transport_journal is None:
+            proof, intent = make_proof(), None
+        else:
+            intent, proof = self.transport_journal.begin_generated(make_proof)
         result = self.http.post(path, value, headers, deadline_monotonic=deadline_monotonic)
         if self.transport_journal is not None:
             self.transport_journal.acknowledge(intent, proof, result)
@@ -870,7 +876,16 @@ class OutboundNode:
                             raise WireError("SYNTHETIC_ADAPTER_REQUIRED")
                     prior = {"command": copy.deepcopy(command), "result": result}
                     self._results[command["command_id"]] = prior
-                committed.append(self.client.result(self.session_id, command, prior["result"]))
+                try:
+                    committed.append(self.client.result(self.session_id, command, prior["result"]))
+                except WireError as error:
+                    if error.code not in {"READ_RESULT_LATE", "READ_INTERRUPTED"}:
+                        raise
+                    # Gateway expiry/interruption remains authoritative. Keep
+                    # the original result and durable pending intent; a rejected
+                    # read is never promoted to a successful effect or ACK.
+                    committed.append({"schema":"fleet.read-commit-rejected/1",
+                        "command_id":command["command_id"], "reason_code":error.code})
             if poll_commands:
                 self._service_rpc(_budget=rpc_budget)
             else:

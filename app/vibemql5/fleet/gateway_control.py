@@ -146,6 +146,7 @@ class GatewayControlStore:
         self.path, self.policy = path, policy
         self._lock, self._db, self._fault = lock, db, fault
         self._owner_thread = threading.get_ident()
+        self._validated_stamp = None
 
     @staticmethod
     def _path(path):
@@ -317,11 +318,21 @@ class GatewayControlStore:
         committed = False
         try:
             self._db.execute("BEGIN IMMEDIATE")
+            # Only these two hot transactions preserve already validated ledger
+            # invariants locally. Other mutations must undergo full validation.
+            trusted = operation in {"observe_wall", "reserve_nonce"} and self._fault is None
+            if trusted:
+                self._validate()
+                stamp = self._stamp()
             yield
             if faults:
                 self._inject(operation + ":before_commit")
             self._db.commit()
             committed = True
+            if trusted:
+                self._validated_stamp = (stamp[0], self._db.total_changes, stamp[2], stamp[3], self._file_stamp())
+            else:
+                self._validated_stamp = None
             if faults:
                 self._inject(operation + ":after_commit")
         except GatewayControlError:
@@ -367,8 +378,31 @@ class GatewayControlStore:
         if self._control()["status"] != "READY_CONTROL_ONLY":
             _fail("CONTROL_RECONCILIATION_REQUIRED")
 
+    def _file_stamp(self):
+        rows = []
+        for path in (self.path, Path(str(self.path) + "-wal")):
+            try:
+                value = path.stat()
+                rows.append((value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns))
+            except FileNotFoundError:
+                rows.append(None)
+        identity = None if rows[0] is None else rows[0][:2]
+        prior = getattr(self, "_file_identity", None)
+        if prior is not None and identity != prior:
+            _fail("CONTROL_CORRUPT")
+        if identity is not None:
+            self._file_identity = identity
+        return tuple(rows)
+
+    def _stamp(self):
+        return (self._db.execute("PRAGMA data_version").fetchone()[0], self._db.total_changes,
+                self._db.execute("PRAGMA schema_version").fetchone()[0], _json(asdict(self.policy)), self._file_stamp())
+
     def _validate(self):
         try:
+            stamp = self._stamp()
+            if self._validated_stamp == stamp:
+                return
             if self._db.execute("PRAGMA quick_check").fetchone()[0] != "ok":
                 _fail("CONTROL_CORRUPT")
             version = self._db.execute("PRAGMA user_version").fetchone()[0]
@@ -487,6 +521,9 @@ class GatewayControlStore:
             for row in self._db.execute("SELECT device_id,route_generation FROM nonces WHERE purpose='PAIR'"):
                 if (row["device_id"], row["route_generation"]) not in pair_routes:
                     _fail("CONTROL_CORRUPT")
+            if self._stamp() != stamp:
+                _fail("CONTROL_CORRUPT")
+            self._validated_stamp = stamp
         except GatewayControlError as exc:
             if exc.code == "CONTROL_POLICY_MISMATCH":
                 raise
