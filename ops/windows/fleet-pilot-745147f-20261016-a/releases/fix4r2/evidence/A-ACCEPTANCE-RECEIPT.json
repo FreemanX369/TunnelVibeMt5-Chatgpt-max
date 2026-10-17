@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "instance": "A",
+  "scope": "ACTUAL_CURRENT_CHAT_CONNECTOR_A_NOT_SEPARATE_ACCOUNT_B_C",
+  "entry_sha256": "f82eb555e8444e78facb68cc58ac2916e6dae8eb07a60630e45acd150fc20d2e",
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "mcp_pid": 3756,
+  "tool_count": 116,
+  "variant": "LEGACY85_FLEET31_20261017_FIX4R2",
+  "native_read": {
+    "symbol": "XAUUSDm",
+    "alias": "MT5-2",
+    "build": 6230,
+    "observed_at_utc": "2026-10-17T12:36:50.443321+00:00",
+    "quote_time_utc": "2026-10-16T20:57:58+00:00"
+  },
+  "health": {
+    "service": "READY",
+    "state": "READY",
+    "disk_free_gb": 12.06,
+    "memory_total_mb": 2047.5,
+    "memory_free_mb": 1086.6,
+    "disk_warning_gb": 4,
+    "disk_block_gb": 2,
+    "min_free_memory_mb": 256,
+    "queue_length": 0,
+    "active_job": null,
+    "terminals_valid": 5,
+    "terminals_registered": 5,
+    "concurrency": {
+      "schema_version": "1.0",
+      "mode": "MULTI_CLIENT_SERIALIZED",
+      "tool_surface_preserved": true,
+      "source_mutation_parallelism": 1,
+      "native_mt5_parallelism": 1,
+      "mutation_lock": null,
+      "mutation_waiters": 0,
+      "native_lock": null,
+      "native_waiters": 0,
+      "attribution": {
+        "model": "MCP_REQUEST_PLUS_PROJECT_ITERATION_WORKSTREAM",
+        "authenticated_account_identity": false,
+        "note": "stdio tunnel does not expose a security-grade ChatGPT account id"
+      }
+    }
+  }
+}

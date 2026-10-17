@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "start": "2026-10-17T12:33:17.990981+00:00",
+  "end": "2026-10-17T12:43:18.563281+00:00",
+  "samples": 60,
+  "failures": 0,
+  "elapsed_seconds": 600.5779999999795,
+  "pilot_pid": 5300,
+  "p95_seconds": 0.5,
+  "max_live_age_seconds": 6.93259,
+  "pid_unchanged": true
+}

@@ -1,0 +1,20 @@
+{
+  "devices": [
+    {
+      "device_id": "dev_e488e5a0105847febf7ed46c9e15e9d0",
+      "public_key": "f6c24fb1dc6e7c81147eac850bba502d495d96291f90fd69db4377986b0b465d",
+      "route_generation": 1,
+      "state": "ACTIVE"
+    }
+  ],
+  "legacy_catalog": "UNCHANGED_85",
+  "observation_age_ms": null,
+  "projects": "NODE_OWNED",
+  "queried_at_utc": "2026-10-17T12:43:36.065000+00:00",
+  "revision": 16596,
+  "schema": "fleet.domain-inventory/1",
+  "sdk_qualification": "UNQUALIFIED",
+  "source": "GATEWAY_CONTROL_CACHE",
+  "status": "READY_CONTROL_ONLY",
+  "transport_status": "NOT_OBSERVED_BY_INVENTORY"
+}

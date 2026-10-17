@@ -1,0 +1,11 @@
+{
+    "status":  "RESUME_SCHEDULED",
+    "source_head":  "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+    "previous_pid":  1804,
+    "action_before":  "-u \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix3\\operator-run-pilot-paced-entry.py\" --resume",
+    "action_after":  "-u \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\operator-run-pilot-paced-entry.py\" --resume",
+    "priority":  6,
+    "instance":  "{B7C7D896-F2E5-4521-9003-B3885793020F}",
+    "terminal_touched":  false,
+    "at_utc":  "2026-10-17T03:19:55.9923038Z"
+}

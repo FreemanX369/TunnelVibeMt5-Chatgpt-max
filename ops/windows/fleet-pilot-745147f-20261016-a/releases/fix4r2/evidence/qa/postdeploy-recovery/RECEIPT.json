@@ -1,0 +1,241 @@
+{
+  "entry_sha256": "f82eb555e8444e78facb68cc58ac2916e6dae8eb07a60630e45acd150fc20d2e",
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "phase": "postdeploy-recovery",
+  "start": "2026-10-17T12:38:42.960017+00:00",
+  "end": "2026-10-17T12:39:17.846037+00:00",
+  "status": "PASS",
+  "counts": {
+    "PASS": 51,
+    "FAIL": 0
+  },
+  "results": [
+    {
+      "case": "DEPLOYED_PROFILE_A_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 3.4566777001600713,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "DEPLOYED_PROFILE_B_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 4.455129599897191,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "DEPLOYED_PROFILE_C_EXACT_116",
+      "status": "PASS",
+      "startup_seconds": 4.679224400082603,
+      "scope": "PROFILE_HASH_AND_REAL_STDIO_NOT_SEPARATE_CHAT_ACCOUNT"
+    },
+    {
+      "case": "LEGACY85_FULL_PROTOCOL_EXACT",
+      "status": "PASS"
+    },
+    {
+      "case": "FLEET31_FULL_PROTOCOL_EXACT",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_inventory",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_state",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_account",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_read_status",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_snapshot",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_command_status",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_create",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_enroll",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_get",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_default_target",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_freeze",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_project_resume",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_compare_baseline",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_launch_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_get_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_recover_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_cancel_job",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_artifact_manifest",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_artifact_chunk",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_issue",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_revoke",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_assign",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_release",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_principal_reconcile",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_writer_acquire",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_writer_release",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_write_source",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_prepare",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_commit",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_SCHEMA_fleet_worktree_retire",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_ZERO_RATES",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_BAD_TIMEFRAME",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_UNKNOWN_SYMBOL",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_NAIVE_TICK_TIME",
+      "status": "PASS"
+    },
+    {
+      "case": "NEGATIVE_UNKNOWN_TOOL",
+      "status": "PASS"
+    },
+    {
+      "case": "THREE_CLIENT_NATIVE_READ_SERIALIZATION",
+      "status": "PASS",
+      "clients": 3,
+      "expected_busy_rejections": 0
+    },
+    {
+      "case": "RATES_VALID_1",
+      "status": "PASS"
+    },
+    {
+      "case": "RATES_VALID_20",
+      "status": "PASS"
+    },
+    {
+      "case": "RATES_VALID_200",
+      "status": "PASS"
+    },
+    {
+      "case": "TICKS_LOWER_BOUND",
+      "status": "PASS"
+    },
+    {
+      "case": "THREE_CLIENT_MIXED_LOAD60",
+      "status": "PASS",
+      "requests": 60,
+      "clients": 3,
+      "p50_seconds": 0.06850080005824566,
+      "p95_seconds": 0.7631161001045257,
+      "max_seconds": 0.9779573001433164
+    },
+    {
+      "case": "ACTIONABLE_SAFE_FLEET_ERROR",
+      "status": "PASS",
+      "code": "READ_INTERRUPTED",
+      "safe_error_visible": true
+    },
+    {
+      "case": "THREE_CLIENT_SAME_OPERATION_EXACTLY_ONE_COMMAND",
+      "status": "PASS",
+      "command_id": "dcmd_e3760f75a68049d0886e57164711f0e3",
+      "clients": 3,
+      "rows": 5
+    },
+    {
+      "case": "UNQUALIFIED_NATIVE_FAILS_CLOSED",
+      "status": "PASS",
+      "reason": "LIVE_ATTACH_ONLY_UNPROVEN",
+      "command_id": "read_17c9f78a411c4dba8b4086205f17bda7"
+    },
+    {
+      "case": "FINAL_HEALTH_GUARDS_CLEAN",
+      "status": "PASS",
+      "free_memory_mb": 699.9,
+      "disk_free_gb": 12.06
+    },
+    {
+      "case": "ALL_MCP_CONTEXTS_CLOSED",
+      "status": "PASS"
+    }
+  ],
+  "scope": "DEPLOYED_WINDOWS_STDIO_THREE_CLIENTS_NOT_AUTHENTICATED_ACCOUNT_B_C_OR_PHYSICAL_NATIVE"
+}

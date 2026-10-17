@@ -1,0 +1,13 @@
+{
+  "status": "PROFILE_SWITCHED_RESTART_PENDING",
+  "mode": "apply",
+  "instance": "B",
+  "profile": "vibemql5-vps-b",
+  "tunnel_id": "tunnel_6aa8162c6aa48191bf05786861b3eef9",
+  "before_sha256": "114278a98ab0a62269694f2305fc36c6085069779381d1694ce5a9f070ad4911",
+  "after_sha256": "d953357d18fb7f6acd4b3eabd9a493fab38eafd02478ef1b03eff0f010e42412",
+  "entry_sha256": "f82eb555e8444e78facb68cc58ac2916e6dae8eb07a60630e45acd150fc20d2e",
+  "at_utc": "2026-10-17T12:37:10.269383+00:00",
+  "application_files": "UNCHANGED",
+  "keys_journals_native_qualification": "UNCHANGED"
+}

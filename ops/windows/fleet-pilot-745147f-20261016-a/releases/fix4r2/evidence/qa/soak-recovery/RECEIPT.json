@@ -1,0 +1,851 @@
+{
+  "status": "PASS",
+  "start": "2026-10-17T12:33:17.990981+00:00",
+  "end": "2026-10-17T12:43:18.563281+00:00",
+  "elapsed_seconds": 600.5779999999795,
+  "source_head": "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+  "pilot_pid": 5300,
+  "samples": [
+    {
+      "at": "2026-10-17T12:33:18.006631+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.105648,
+      "status": "PASS",
+      "seconds": 0.2339999999385327,
+      "pilot_pid": 5300,
+      "revision": 15884
+    },
+    {
+      "at": "2026-10-17T12:33:28.063091+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.77171,
+      "status": "PASS",
+      "seconds": 0.3130000000819564,
+      "pilot_pid": 5300,
+      "revision": 15895
+    },
+    {
+      "at": "2026-10-17T12:33:38.074746+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.344782,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 15906
+    },
+    {
+      "at": "2026-10-17T12:33:48.072587+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.102994,
+      "status": "PASS",
+      "seconds": 0.2190000000409782,
+      "pilot_pid": 5300,
+      "revision": 15918
+    },
+    {
+      "at": "2026-10-17T12:33:58.073776+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.613859,
+      "status": "PASS",
+      "seconds": 0.2190000000409782,
+      "pilot_pid": 5300,
+      "revision": 15928
+    },
+    {
+      "at": "2026-10-17T12:34:08.077295+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.493824,
+      "status": "PASS",
+      "seconds": 0.1869999999180436,
+      "pilot_pid": 5300,
+      "revision": 15940
+    },
+    {
+      "at": "2026-10-17T12:34:18.091732+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.058085,
+      "status": "PASS",
+      "seconds": 0.18799999984912574,
+      "pilot_pid": 5300,
+      "revision": 15952
+    },
+    {
+      "at": "2026-10-17T12:34:28.110840+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.769439,
+      "status": "PASS",
+      "seconds": 0.4059999999590218,
+      "pilot_pid": 5300,
+      "revision": 15964
+    },
+    {
+      "at": "2026-10-17T12:34:38.132687+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.14733,
+      "status": "PASS",
+      "seconds": 0.21800000010989606,
+      "pilot_pid": 5300,
+      "revision": 15974
+    },
+    {
+      "at": "2026-10-17T12:34:48.136004+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.700875,
+      "status": "PASS",
+      "seconds": 0.1869999999180436,
+      "pilot_pid": 5300,
+      "revision": 15986
+    },
+    {
+      "at": "2026-10-17T12:34:58.143398+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.96765,
+      "status": "PASS",
+      "seconds": 0.20300000021234155,
+      "pilot_pid": 5300,
+      "revision": 15998
+    },
+    {
+      "at": "2026-10-17T12:35:08.153811+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.916519,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16010
+    },
+    {
+      "at": "2026-10-17T12:35:18.166892+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.070005,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16022
+    },
+    {
+      "at": "2026-10-17T12:35:28.162024+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.844691,
+      "status": "PASS",
+      "seconds": 0.1720000000204891,
+      "pilot_pid": 5300,
+      "revision": 16034
+    },
+    {
+      "at": "2026-10-17T12:35:38.176324+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.96895,
+      "status": "PASS",
+      "seconds": 0.43799999984912574,
+      "pilot_pid": 5300,
+      "revision": 16046
+    },
+    {
+      "at": "2026-10-17T12:35:48.186006+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 6.400033,
+      "status": "PASS",
+      "seconds": 0.3279999999795109,
+      "pilot_pid": 5300,
+      "revision": 16058
+    },
+    {
+      "at": "2026-10-17T12:35:58.208926+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.626553,
+      "status": "PASS",
+      "seconds": 0.5,
+      "pilot_pid": 5300,
+      "revision": 16069
+    },
+    {
+      "at": "2026-10-17T12:36:08.215086+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.497766,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16080
+    },
+    {
+      "at": "2026-10-17T12:36:18.222612+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.655023,
+      "status": "PASS",
+      "seconds": 0.18799999984912574,
+      "pilot_pid": 5300,
+      "revision": 16092
+    },
+    {
+      "at": "2026-10-17T12:36:28.231238+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.28877,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16104
+    },
+    {
+      "at": "2026-10-17T12:36:38.246576+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.122888,
+      "status": "PASS",
+      "seconds": 0.31200000015087426,
+      "pilot_pid": 5300,
+      "revision": 16116
+    },
+    {
+      "at": "2026-10-17T12:36:48.252125+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.676713,
+      "status": "PASS",
+      "seconds": 0.5149999998975545,
+      "pilot_pid": 5300,
+      "revision": 16128
+    },
+    {
+      "at": "2026-10-17T12:36:58.266107+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.723794,
+      "status": "PASS",
+      "seconds": 0.375,
+      "pilot_pid": 5300,
+      "revision": 16139
+    },
+    {
+      "at": "2026-10-17T12:37:08.269375+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.686435,
+      "status": "PASS",
+      "seconds": 0.23500000010244548,
+      "pilot_pid": 5300,
+      "revision": 16150
+    },
+    {
+      "at": "2026-10-17T12:37:18.279463+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.304316,
+      "status": "PASS",
+      "seconds": 0.18700000015087426,
+      "pilot_pid": 5300,
+      "revision": 16162
+    },
+    {
+      "at": "2026-10-17T12:37:28.302850+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.808731,
+      "status": "PASS",
+      "seconds": 0.1720000000204891,
+      "pilot_pid": 5300,
+      "revision": 16174
+    },
+    {
+      "at": "2026-10-17T12:37:38.313916+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.136058,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16186
+    },
+    {
+      "at": "2026-10-17T12:37:48.315298+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.604315,
+      "status": "PASS",
+      "seconds": 0.23400000017136335,
+      "pilot_pid": 5300,
+      "revision": 16198
+    },
+    {
+      "at": "2026-10-17T12:37:58.316408+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.907843,
+      "status": "PASS",
+      "seconds": 0.2190000000409782,
+      "pilot_pid": 5300,
+      "revision": 16210
+    },
+    {
+      "at": "2026-10-17T12:38:08.323386+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.381215,
+      "status": "PASS",
+      "seconds": 0.4380000000819564,
+      "pilot_pid": 5300,
+      "revision": 16222
+    },
+    {
+      "at": "2026-10-17T12:38:18.322196+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 6.180605,
+      "status": "PASS",
+      "seconds": 0.25,
+      "pilot_pid": 5300,
+      "revision": 16233
+    },
+    {
+      "at": "2026-10-17T12:38:28.319986+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.602493,
+      "status": "PASS",
+      "seconds": 0.23400000017136335,
+      "pilot_pid": 5300,
+      "revision": 16244
+    },
+    {
+      "at": "2026-10-17T12:38:38.318451+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.632586,
+      "status": "PASS",
+      "seconds": 0.2190000000409782,
+      "pilot_pid": 5300,
+      "revision": 16256
+    },
+    {
+      "at": "2026-10-17T12:38:48.326426+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.434793,
+      "status": "PASS",
+      "seconds": 0.21800000010989606,
+      "pilot_pid": 5300,
+      "revision": 16268
+    },
+    {
+      "at": "2026-10-17T12:38:58.342285+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 6.93259,
+      "status": "PASS",
+      "seconds": 3.0,
+      "pilot_pid": 5300,
+      "revision": 16274
+    },
+    {
+      "at": "2026-10-17T12:39:08.373583+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.174446,
+      "status": "PASS",
+      "seconds": 0.8589999999385327,
+      "pilot_pid": 5300,
+      "revision": 16281
+    },
+    {
+      "at": "2026-10-17T12:39:18.390280+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.794791,
+      "status": "PASS",
+      "seconds": 0.28100000019185245,
+      "pilot_pid": 5300,
+      "revision": 16292
+    },
+    {
+      "at": "2026-10-17T12:39:28.402222+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.337958,
+      "status": "PASS",
+      "seconds": 0.1880000000819564,
+      "pilot_pid": 5300,
+      "revision": 16304
+    },
+    {
+      "at": "2026-10-17T12:39:38.402228+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 6.668687,
+      "status": "PASS",
+      "seconds": 0.3130000000819564,
+      "pilot_pid": 5300,
+      "revision": 16316
+    },
+    {
+      "at": "2026-10-17T12:39:48.404361+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.277513,
+      "status": "PASS",
+      "seconds": 0.1720000000204891,
+      "pilot_pid": 5300,
+      "revision": 16328
+    },
+    {
+      "at": "2026-10-17T12:39:58.420323+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 0.064252,
+      "status": "PASS",
+      "seconds": 0.18799999984912574,
+      "pilot_pid": 5300,
+      "revision": 16340
+    },
+    {
+      "at": "2026-10-17T12:40:08.428262+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 3.354904,
+      "status": "PASS",
+      "seconds": 0.18799999984912574,
+      "pilot_pid": 5300,
+      "revision": 16352
+    },
+    {
+      "at": "2026-10-17T12:40:18.441528+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.467175,
+      "status": "PASS",
+      "seconds": 0.35900000017136335,
+      "pilot_pid": 5300,
+      "revision": 16364
+    },
+    {
+      "at": "2026-10-17T12:40:28.444179+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.691211,
+      "status": "PASS",
+      "seconds": 0.40600000019185245,
+      "pilot_pid": 5300,
+      "revision": 16376
+    },
+    {
+      "at": "2026-10-17T12:40:38.445855+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.176344,
+      "status": "PASS",
+      "seconds": 0.3279999999795109,
+      "pilot_pid": 5300,
+      "revision": 16387
+    },
+    {
+      "at": "2026-10-17T12:40:48.453728+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.827357,
+      "status": "PASS",
+      "seconds": 0.1869999999180436,
+      "pilot_pid": 5300,
+      "revision": 16398
+    },
+    {
+      "at": "2026-10-17T12:40:58.455741+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.270571,
+      "status": "PASS",
+      "seconds": 0.21800000010989606,
+      "pilot_pid": 5300,
+      "revision": 16410
+    },
+    {
+      "at": "2026-10-17T12:41:08.467182+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.484418,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16422
+    },
+    {
+      "at": "2026-10-17T12:41:18.473945+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.038617,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16434
+    },
+    {
+      "at": "2026-10-17T12:41:28.467230+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.373584,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16446
+    },
+    {
+      "at": "2026-10-17T12:41:38.469455+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.849575,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16458
+    },
+    {
+      "at": "2026-10-17T12:41:48.470821+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.409047,
+      "status": "PASS",
+      "seconds": 0.39099999982863665,
+      "pilot_pid": 5300,
+      "revision": 16470
+    },
+    {
+      "at": "2026-10-17T12:41:58.493371+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.748685,
+      "status": "PASS",
+      "seconds": 0.3910000000614673,
+      "pilot_pid": 5300,
+      "revision": 16482
+    },
+    {
+      "at": "2026-10-17T12:42:08.502545+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.316366,
+      "status": "PASS",
+      "seconds": 0.2339999999385327,
+      "pilot_pid": 5300,
+      "revision": 16493
+    },
+    {
+      "at": "2026-10-17T12:42:18.513840+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.982056,
+      "status": "PASS",
+      "seconds": 0.1880000000819564,
+      "pilot_pid": 5300,
+      "revision": 16504
+    },
+    {
+      "at": "2026-10-17T12:42:28.529066+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 2.197737,
+      "status": "PASS",
+      "seconds": 0.2029999999795109,
+      "pilot_pid": 5300,
+      "revision": 16516
+    },
+    {
+      "at": "2026-10-17T12:42:38.537737+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.426357,
+      "status": "PASS",
+      "seconds": 0.18700000015087426,
+      "pilot_pid": 5300,
+      "revision": 16528
+    },
+    {
+      "at": "2026-10-17T12:42:48.531541+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 1.951673,
+      "status": "PASS",
+      "seconds": 0.18700000015087426,
+      "pilot_pid": 5300,
+      "revision": 16540
+    },
+    {
+      "at": "2026-10-17T12:42:58.541269+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 5.224738,
+      "status": "PASS",
+      "seconds": 0.25,
+      "pilot_pid": 5300,
+      "revision": 16552
+    },
+    {
+      "at": "2026-10-17T12:43:08.546565+00:00",
+      "live_status": "RUNNING",
+      "node_status": {
+        "status": "RUNNING",
+        "reason_code": null,
+        "retry_after_seconds": 0
+      },
+      "live_age_seconds": 4.794088,
+      "status": "PASS",
+      "seconds": 0.32899999991059303,
+      "pilot_pid": 5300,
+      "revision": 16564
+    }
+  ],
+  "scope": "ONE_VPS_CONTROL_PLANE_NO_PHYSICAL_NATIVE_QUALIFICATION"
+}

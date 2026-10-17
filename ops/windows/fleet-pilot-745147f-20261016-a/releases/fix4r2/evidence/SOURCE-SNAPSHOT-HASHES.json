@@ -1,0 +1,97 @@
+{
+  "scope": "VPS backend-read original SHA256; text snapshots may normalize line endings",
+  "files": [
+    {
+      "path": "CI-ACCEPTANCE.json",
+      "vps_sha256": "356e1781b258585fd5f35af994483065e7f2e32dba8ccc007cf39e27df395b6f"
+    },
+    {
+      "path": "EXISTING-JOURNAL-CHECK.json",
+      "vps_sha256": "d5e5e173cf2bcee4140cd4c0dad368dd533efce6e46b3938b28285b39acb3143"
+    },
+    {
+      "path": "GATEWAY-APPLY-RECEIPT.json",
+      "vps_sha256": "5f573a55be7eac47430b5db68c35372fe31da8e9f05c518b9a3af348293ac739"
+    },
+    {
+      "path": "RECOVERY-APPLY-RECEIPT.json",
+      "vps_sha256": "bb3c0d62c60447502937152994e5d707c647e47e1728aab2da73e99640c311f8"
+    },
+    {
+      "path": "qa/focused/RECEIPT.json",
+      "vps_sha256": "f6f2d0b20fa8a258b78b32e63efa5d65a85b9005dd8545c5230c961a82ce85e5"
+    },
+    {
+      "path": "qa/focused/benchmark-windows.json",
+      "vps_sha256": "f5083a0607e4cf3891e517140505b715b1f5a277d9048490a0594280a9662815"
+    },
+    {
+      "path": "PROFILE-A-APPLY-RECEIPT.json",
+      "vps_sha256": "24c4e1de339a80653bdfb37fdb29adafe662eb65fbeae4f2e375ab2d8b27eddf"
+    },
+    {
+      "path": "PROFILE-B-APPLY-RECEIPT.json",
+      "vps_sha256": "20982458b03b107645e0ccdc924cb950070327a700bb7b807c7a8b3ba7c96f25"
+    },
+    {
+      "path": "PROFILE-C-APPLY-RECEIPT.json",
+      "vps_sha256": "3d3ae5fba24bef5179880fc9097e48e037dec2aa9c2cfe21f2b9fa9f70bd653f"
+    },
+    {
+      "path": "A-ACCEPTANCE-RECEIPT.json",
+      "vps_sha256": "3679881a0653f11439ca82f79a61c354116e80bd603828b7410ffa9b906f86ef"
+    },
+    {
+      "path": "INCIDENT-WINDOWS-ERROR.json",
+      "vps_sha256": "c60279309d0977c1907c45812868e616a829c6585dbcafdbbdba07e18948202f"
+    },
+    {
+      "path": "qa/predeploy-recovery/TIMINGS.json",
+      "vps_sha256": "a0bf37c1827ca75220905fd62e10fa858497cb9b7de02ae0abc364b98103e0e5"
+    },
+    {
+      "path": "qa/focused/regressions.xml",
+      "vps_sha256": "c77b1db33cadd240858931e5e86a34906c37f7b576a5f13a3c7ee1877e1ac088"
+    },
+    {
+      "path": "qa/predeploy/RECEIPT.json",
+      "vps_sha256": "e518a262e94e0d238859435409fe203eb7c98f08425c2fd7fda621df5337ee20"
+    },
+    {
+      "path": "qa/predeploy-network/RECEIPT.json",
+      "vps_sha256": "12e6903ee5876b0da1708cc6862f035cad39653925690e13e31515c8ec978b44"
+    },
+    {
+      "path": "qa/soak/RECEIPT.json",
+      "vps_sha256": "cca4d271c123a6ab61c69cfeacc2b8f3c83562ccefb001a3638c1457e56ffc70"
+    },
+    {
+      "path": "PRE-STOP-LIVE.json",
+      "vps_sha256": "9e899865a7bece6f20c03184a69867e606222f4efbac1f76f0334fa4ea16474f"
+    },
+    {
+      "path": "INCIDENT-LAST-LIVE.json",
+      "vps_sha256": "5a116145e7cb06d04d70629063aa58fd9d193780c3c687bc2a54b227d91a07c2"
+    },
+    {
+      "path": "FINAL-RUNTIME-OBSERVATION.json",
+      "vps_sha256": "7e6e74d2ba1daee45dc4b8e9ab139ce06900dc58f4923c052b763e8bfa600ff5"
+    },
+    {
+      "path": "qa/postdeploy-recovery/TIMINGS.json",
+      "vps_sha256": "53be07d49604072992e55929a1670c4d881e2239acf6932dbdc407e09bfd467c"
+    },
+    {
+      "path": "qa/predeploy-recovery/RECEIPT.json",
+      "vps_sha256": "a330afdaa5fa4b2449169a4f9df92669e42b51de611579d96b39911f92f7e11f"
+    },
+    {
+      "path": "qa/postdeploy-recovery/RECEIPT.json",
+      "vps_sha256": "9a07a8a1b919e27dad058a0c0edfd744482db1e8e275d55ce3ba46a598a6955e"
+    },
+    {
+      "path": "qa/soak-recovery/RECEIPT.json",
+      "vps_sha256": "e09391a5459e7855d9d5ee6a5becfd57b4573286078c54ebb4b083dbf3d8222a"
+    }
+  ]
+}

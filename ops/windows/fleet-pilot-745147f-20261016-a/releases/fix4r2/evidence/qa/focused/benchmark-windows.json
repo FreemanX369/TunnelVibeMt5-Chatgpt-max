@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "SYNTHETIC_MATURE_JOURNAL_NO_PHYSICAL_QUALIFICATION",
+  "rows": [
+    {
+      "rows": 1000,
+      "cold_full_validation_seconds": 0.05485330009832978,
+      "warm_validation_p95_seconds": 0.00029200012795627117,
+      "begin_seconds": 0.02576469979248941,
+      "ack_seconds": 0.016457400051876903,
+      "pending_retained": 1000
+    },
+    {
+      "rows": 10000,
+      "cold_full_validation_seconds": 0.46980750001966953,
+      "warm_validation_p95_seconds": 0.00031960010528564453,
+      "begin_seconds": 0.028335500042885542,
+      "ack_seconds": 0.017675000010058284,
+      "pending_retained": 10000
+    },
+    {
+      "rows": 50000,
+      "cold_full_validation_seconds": 2.396269500022754,
+      "warm_validation_p95_seconds": 0.0003262001555413008,
+      "begin_seconds": 0.04163529979996383,
+      "ack_seconds": 0.016050999984145164,
+      "pending_retained": 50000
+    }
+  ]
+}

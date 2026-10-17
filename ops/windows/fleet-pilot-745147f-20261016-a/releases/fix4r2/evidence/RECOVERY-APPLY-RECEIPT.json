@@ -1,0 +1,12 @@
+{
+    "status":  "RECOVERY_RESUME_SCHEDULED",
+    "source_head":  "b34d28fd9f6c71eb8c6870039aec77a75284e469",
+    "old_pid":  3540,
+    "old_exit_hex":  "C0000005",
+    "diagnostic_timer":  "REMOVED_FROM_BOOTSTRAP",
+    "action_before":  "-u \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\operator-run-pilot-paced-entry.py\" --resume",
+    "action_after":  "-u \"C:\\VibeMQL5\\ops\\windows\\fleet-pilot-745147f-20261016-a\\releases\\fix4r2\\operator-run-pilot-stable-entry.py\" --resume",
+    "instance":  "{C6E13615-34BA-4BD9-B593-B1C411CC328E}",
+    "at_utc":  "2026-10-17T12:32:41.8008485Z",
+    "terminal_touched":  false
+}
