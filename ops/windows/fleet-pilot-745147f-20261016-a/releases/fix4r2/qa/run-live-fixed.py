@@ -6,7 +6,7 @@ from datetime import datetime,timezone,timedelta
 BASE=Path(r'C:\VibeMQL5');PILOT=BASE/'ops/windows/fleet-pilot-745147f-20261016-a'
 RELEASE=PILOT/'releases/fix4r2'
 PHASE=sys.argv[1] if len(sys.argv)>1 else ''
-if PHASE not in {'predeploy','postdeploy','postdeploy-paced'}:raise SystemExit('EXPLICIT_PHASE_REQUIRED')
+if PHASE not in {'predeploy','predeploy-network','postdeploy','postdeploy-paced'}:raise SystemExit('EXPLICIT_PHASE_REQUIRED')
 OUT=RELEASE/'qa'/PHASE;ENTRY=RELEASE/'operator-integrated-mcp.py'
 sys.path.insert(0,str(BASE/'app'))
 from vibemql5.adapters.mcp_client_check import _tool_payload
