@@ -37,7 +37,7 @@ def main():
     before=profile.read_bytes()
     if tunnel.encode() not in before:raise RuntimeError('TUNNEL_ID_MISMATCH')
     if args.mode=='apply':
-        gate=json.loads((HERE/'qa/predeploy-network/RECEIPT.json').read_bytes())
+        gate=json.loads((HERE/'qa/predeploy-recovery/RECEIPT.json').read_bytes())
         if gate.get('status')!='PASS' or gate.get('entry_sha256')!=EXPECTED_ENTRY:
             raise RuntimeError('PREDEPLOY_E2E_NOT_ACCEPTED')
         qa=json.loads((HERE/'qa/focused/RECEIPT.json').read_bytes())
