@@ -1,11 +1,6 @@
 name: Verify TIP-088 real SDK load compatibility
 
 on:
-  push:
-    branches: [fix/fleet-native-qualification-20261018]
-    paths:
-      - tests/proofs/tip088_sdk_load/**
-      - .github/workflows/verify-tip088-sdk-load.yml
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -25,7 +20,8 @@ jobs:
         with:
           python-version: '3.12.10'
       - name: Install exact observed VPS SDK versions
-        run: python -m pip install --only-binary=:all: MetaTrader5==5.0.6147 numpy==2.5.2 pytest==9.1.1
+        run: |
+          python -m pip install --only-binary=:all: MetaTrader5==5.0.6147 numpy==2.5.2 pytest==9.1.1
       - name: Verify filesystem and load-only scope
         run: python -m pytest -q tests/proofs/tip088_sdk_load/test_probe.py
       - name: Matched unrestricted and AppContainer SDK import
