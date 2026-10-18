@@ -180,6 +180,8 @@ def main(argv=None):
                 row['exit_code'] = process.wait(15000)
                 if answer.is_file():
                     row['worker'] = json.loads(answer.read_text(encoding='utf-8'))
+                row['stages'] = [json.loads(p.read_text(encoding='utf-8'))
+                                 for p in sorted(ipc.glob(label + '-*.json'))]
                 if row['exit_code'] == 0 and row.get('worker', {}).get('stage') == 'SDK_IMPORT_LOADED':
                     if row['worker']['appcontainer'] != int(restricted):
                         raise RuntimeError('WORKER_TOKEN_MISMATCH')

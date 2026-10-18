@@ -14,9 +14,14 @@ def main():
     def save(stage, **data):
         value = dict(scope="SDK_IMPORT_ONLY_NO_INITIALIZE_NO_TERMINAL", stage=stage,
                      pid=os.getpid(), monotonic=time.monotonic(), **data)
-        temporary = output.with_suffix('.tmp')
-        temporary.write_text(json.dumps(value, indent=2), encoding='utf-8')
-        os.replace(temporary, output)
+        # The product IPC ACL intentionally grants no DELETE/rename authority.
+        # Publish each progress stage once and create the final result once,
+        # matching the product's exclusive write_bounded protocol.
+        path = output if stage == 'SDK_IMPORT_LOADED' else output.with_name(output.stem + '-' + stage + '.json')
+        with path.open('x', encoding='utf-8') as stream:
+            stream.write(json.dumps(value, indent=2))
+            stream.flush()
+            os.fsync(stream.fileno())
     save('PYTHON_STARTED')
     # Observe our actual token/mitigation before importing any SDK code.
     kernel = C.WinDLL('kernel32', use_last_error=True)
