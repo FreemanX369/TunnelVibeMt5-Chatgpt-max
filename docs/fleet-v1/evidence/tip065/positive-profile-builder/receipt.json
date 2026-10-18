@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip060_authorization.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "-q",
+    "--tb=short",
+    "--durations=20",
+    "-o",
+    "faulthandler_timeout=45",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-positive-fixture-fix-20261006/focused.junit.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 48.55729335800004,
+  "source_unchanged": true,
+  "source_entries": 211,
+  "head": "99ac11991b8858990bf8f5d7ed8f9bcd785b7858",
+  "scope": "TWO_FILE_TEST_ONLY_CANDIDATE_NOT_PUBLISHED",
+  "physical_qualification": "NOT_RUN"
+}

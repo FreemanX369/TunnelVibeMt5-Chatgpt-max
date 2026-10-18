@@ -1,0 +1,4 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 36, "test_elapsed_ms": 0}
+.SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_control", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 41, "test_elapsed_ms": 5}
+                                                                         [100%]
+1 passed in 0.01s

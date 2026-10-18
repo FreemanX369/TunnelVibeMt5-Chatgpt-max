@@ -1,0 +1,30 @@
+{
+  "command.json": {
+    "bytes": 703,
+    "sha256": "d9b43f4251cf394d35e2b91271eb766b1a7fc4660c7ec380f36518b01b510ec2"
+  },
+  "environment.lock.txt": {
+    "bytes": 596,
+    "sha256": "ebaf3e5c5f41a7fa2ea9fa227bb87b9b5891a4b65a85b3c3c3b83adc3a6c08db"
+  },
+  "focused.log": {
+    "bytes": 13958,
+    "sha256": "7fd09ac90d460fcd05fa2c7332360ded1c457be24874ac0d2fc18c7795164ed8"
+  },
+  "focused.junit.xml": {
+    "bytes": 16412,
+    "sha256": "a8f1c38696ce58939513a6bfc24f0f04364d98f10ade2a651f5a621ee030acc3"
+  },
+  "verification-receipt.json": {
+    "bytes": 1059,
+    "sha256": "1ae507604fe0e4aae4b78480662646576f87fb31a360156bc7c15ab633e5d927"
+  },
+  "source-manifest-final.json": {
+    "bytes": 23422,
+    "sha256": "ba73f6c8ba8ed8b28435bab6a29feda126525603c939ccc6b24fdee3ed480379"
+  },
+  "setup-path-error.txt": {
+    "bytes": 619,
+    "sha256": "6753470763c0173e085ea69b441ca1ccf6d682b6babf08535561f9388ff05ed4"
+  }
+}

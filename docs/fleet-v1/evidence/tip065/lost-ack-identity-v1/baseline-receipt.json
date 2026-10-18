@@ -1,0 +1,9 @@
+{
+  "base_head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+  "base_tree": "fd3edac1de610b821ca64044acd4fdfa1cc03192",
+  "source_count": 210,
+  "allowlist": [
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "baseline_sha256": "9f80d8f325bbb67001f7ce0b595257ae8510ce97421d462afc3b167b02382358"
+}

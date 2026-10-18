@@ -1,0 +1,13 @@
+{
+  "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/sqlite-lifecycle-builder/started-callback-cleanup-probe.py"
+  ],
+  "timeout_seconds": 20,
+  "exit_code": 0,
+  "wall_seconds": 0.7299968639999861,
+  "source_count": 217,
+  "source_equal": true,
+  "git_status": ""
+}

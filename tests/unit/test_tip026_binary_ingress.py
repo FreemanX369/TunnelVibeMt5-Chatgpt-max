@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ownership_fixture import install_closed
+
 import hashlib
 import json
 import threading
@@ -48,6 +50,7 @@ def _root(tmp_path: Path) -> Path:
     }), encoding="utf-8")
     (root / "workspaces" / "BD" / "Sets" / "default.set").write_text("A=1\n", encoding="utf-8")
     (root / "pyproject.toml").write_text("[project]\nname='test'\n", encoding="utf-8")
+    install_closed(root)
     return root
 
 

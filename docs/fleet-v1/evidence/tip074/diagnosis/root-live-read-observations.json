@@ -1,0 +1,122 @@
+{
+  "schema": "tunnel.deepfix.live-read-observations/1",
+  "captured_at_utc": "2026-10-07T12:13:06.941Z",
+  "candidate_head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "receipts": [
+    {
+      "probe": "server",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "name": "server",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.server_info`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+              }
+            ],
+            "isError": true
+          }
+        }
+      }
+    },
+    {
+      "probe": "health",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "name": "health",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.health`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+              }
+            ],
+            "isError": true
+          }
+        }
+      }
+    },
+    {
+      "probe": "backend_hash",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "name": "backend_hash",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.backend_get_file_hash`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+              }
+            ],
+            "isError": true
+          }
+        }
+      }
+    },
+    {
+      "probe": "backend_index",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "name": "backend_index",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.backend_read_evidence`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+              }
+            ],
+            "isError": true
+          }
+        }
+      }
+    },
+    {
+      "probe": "runtime_status",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.runtime_status`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+            }
+          ],
+          "isError": true
+        }
+      }
+    },
+    {
+      "probe": "tunnel_admin_status",
+      "receipt": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.tunnel_admin_status`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+            }
+          ],
+          "isError": true
+        }
+      }
+    }
+  ],
+  "corrected_backend_evidence": {
+    "relative_path": "backend-admin/test-runs/sync-invocations.json",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `codex_apps/tunnelvibemq5.backend_read_evidence`\n\nCaused by:\n    Mcp error: -32603: Internal error"
+        }
+      ],
+      "isError": true
+    }
+  },
+  "interpretation": "All read probes returned raw MCP -32603. Wrong runtime/ prefix on first backend evidence read corrected; neither result proves installed file presence or absence. No live mutation."
+}

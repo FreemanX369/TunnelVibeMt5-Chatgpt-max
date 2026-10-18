@@ -1,0 +1,18 @@
+{
+  "mode": "read_only_source_owned_evidence_only",
+  "commands": [
+    "git status --short; git rev-parse HEAD",
+    "read original tests/unit/test_tip060c_restore.py and fleet restore/job paths",
+    "bounded original restore module under default runtime (pytest absent; preserved failure)",
+    "bounded original restore module under existing test-venv (20 PASS)",
+    "parse original current Windows/Linux and prior TIP071 Windows/Linux progress logs by exact node identity",
+    "actual owned original recovery fixture with signed changed-challenge packet, timeout15 s"
+  ],
+  "no_production_or_existing_test_mutation": true,
+  "timing_inputs": [
+    "fix-20261007-1748/windows/full-unit.log",
+    "fix-20261007-1748/linux/full-unit.log",
+    "fix-20261007-1439/candidate-evidence/artifacts/fleet-v1-source-windows-latest-e9f668a049288eb899c580a6b8147e5caedae585.zip",
+    "fix-20261007-1439/candidate-evidence/artifacts/fleet-v1-source-ubuntu-latest-e9f668a049288eb899c580a6b8147e5caedae585.zip"
+  ]
+}

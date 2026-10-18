@@ -1,0 +1,14 @@
+....                                                                     [100%]
+============================= slowest 10 durations =============================
+6.03s call     tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[5-1000]
+5.98s call     tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[10-1000]
+5.08s call     tip065-long-fixture-investigation-20261005/test_investigation.py::test_h1_callback_exception_becomes_unknown_and_generic_pump_failure[1000]
+1.10s call     tip065-long-fixture-investigation-20261005/test_investigation.py::test_h2_rpc_absolute_deadline_includes_two_prior_subdeadline_calls
+0.15s setup    tip065-long-fixture-investigation-20261005/test_investigation.py::test_h1_callback_exception_becomes_unknown_and_generic_pump_failure[1000]
+0.10s setup    tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[10-1000]
+0.09s setup    tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[5-1000]
+0.01s teardown tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[5-1000]
+0.01s teardown tip065-long-fixture-investigation-20261005/test_investigation.py::test_h3_finite_valid_phase_schedule_exceeds_aggregate_only[10-1000]
+
+(1 durations < 0.005s hidden.  Use -vv to show these durations.)
+4 passed in 18.70s

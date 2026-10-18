@@ -1,0 +1,35 @@
+{
+  "artifact_id": 11269907426,
+  "zip_sha256": "1a049aa0b5960c69a494d025474a19a32f10dacc5978acc4d3495c00cfb120a7",
+  "zip_bytes": 59954,
+  "head_sha": "3e402db86b9e6f9cc53489a6b0b88f97cdb516e5",
+  "tree_sha": "baadc33d2cbfe40428c5f564f011f763200c929d",
+  "status": "PASS",
+  "unit": {
+    "tests": 1132,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 14,
+    "passed": 1118,
+    "seconds": 129.387
+  },
+  "manifest_files": 205,
+  "manifest_verified": true,
+  "source_unchanged": true,
+  "cases": [
+    {
+      "case": "full-unit",
+      "exit_code": 0,
+      "timeout_seconds": 600,
+      "timed_out": false,
+      "elapsed_seconds": 131.641
+    },
+    {
+      "case": "b1-portable",
+      "exit_code": 0,
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "elapsed_seconds": 1.567
+    }
+  ]
+}

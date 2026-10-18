@@ -1,0 +1,17 @@
+{
+  "classification": "CONTROLLED_MECHANISM_NOT_ORIGINAL_CAUSE",
+  "error_code": "NODE_RPC_DEADLINE_EXCEEDED",
+  "http_timeout_ms": 1000,
+  "rows": [
+    {
+      "elapsed": 0.5501343230025668,
+      "route": "HEARTBEAT"
+    },
+    {
+      "elapsed": 0.550119048999477,
+      "route": "POLL"
+    }
+  ],
+  "step_elapsed": 1.100398230002611,
+  "step_returned": "fleet.node-step/1"
+}

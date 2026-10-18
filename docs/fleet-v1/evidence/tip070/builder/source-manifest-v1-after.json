@@ -1,0 +1,882 @@
+[
+  {
+    "path": "app/vibemql5/__init__.py",
+    "bytes": 23,
+    "sha256": "144f343e646b3748267b3493edfa5630f17228ef4a1919c553715b0a21c90315"
+  },
+  {
+    "path": "app/vibemql5/adapters/cli.py",
+    "bytes": 14126,
+    "sha256": "38adc3d69ac1afa11a2c41885e922125525a64bd112bf06021bd1ebff9d901d9"
+  },
+  {
+    "path": "app/vibemql5/adapters/ex5_widget.py",
+    "bytes": 8103,
+    "sha256": "e1dff0e4704c74a67b9427773821abd9c047a47c9c67829975bb1f1515000142"
+  },
+  {
+    "path": "app/vibemql5/adapters/fleet_cli.py",
+    "bytes": 29041,
+    "sha256": "7e1d7e6aa2e3b1bf62ad30b90b9aa6c4f4b8074f0726c359cbbd8f3c4c2a65b8"
+  },
+  {
+    "path": "app/vibemql5/adapters/fleet_client_tools.py",
+    "bytes": 9041,
+    "sha256": "48ab5c3422b3bb8603ff3dc9d8a4ee71d30e199a1af19c970ccc5062b06889f5"
+  },
+  {
+    "path": "app/vibemql5/adapters/fleet_mcp.py",
+    "bytes": 10416,
+    "sha256": "5cba5803e7e28b8732309f0365ae8b4720ab806589d16c650ec1110ff3639168"
+  },
+  {
+    "path": "app/vibemql5/adapters/live_chart_widget.py",
+    "bytes": 3689,
+    "sha256": "6dc1d54d1a0a1af1e1f01a91b10fd413f340d228d0cf5a8bf4e0f04e70ec0dba"
+  },
+  {
+    "path": "app/vibemql5/adapters/mcp.py",
+    "bytes": 42895,
+    "sha256": "eb00f70d74b60d955e6eecc565b601652886366ac06009cc60ae4d659c1f4c9d"
+  },
+  {
+    "path": "app/vibemql5/adapters/mcp_client_check.py",
+    "bytes": 2430,
+    "sha256": "f3c6a19e3330f7499e21f0c7c93bbba4e013d6dd1339df269e60c52bb559d34a"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/__init__.py",
+    "bytes": 98,
+    "sha256": "43bd6f5b17c0c405106bde516ae1894c0d440e238c07c3f32915af647952a124"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/core.py",
+    "bytes": 78852,
+    "sha256": "1700bb519292cdfed4dc64452ad62c3e7a362b5407c29271bae456332bb32e18"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/models.py",
+    "bytes": 1255,
+    "sha256": "6d3fcbf060d5fc1c66484ee4e02167b7f8f2792bb03da9363e22a5658ccb3523"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/multitunnel.py",
+    "bytes": 6258,
+    "sha256": "efb49b676fa37bb05688ce23592ab5a7fd19bbb645285309aec0b784b14c8c7c"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/test_run_worker.py",
+    "bytes": 1710,
+    "sha256": "b93d61b9396d2477dca73a95223064fc2b8018ab884af7ac85d05916a7c3728a"
+  },
+  {
+    "path": "app/vibemql5/backend_admin/tools.py",
+    "bytes": 4001,
+    "sha256": "b1eac2805743e24c93eaf9ecf81001220f694916fb57dc1f0c32a898338b818d"
+  },
+  {
+    "path": "app/vibemql5/config.py",
+    "bytes": 1450,
+    "sha256": "98778f5693309ac853c8e4212ec41fcb7a62752349f387da69a18ff328d06860"
+  },
+  {
+    "path": "app/vibemql5/contracts.py",
+    "bytes": 2644,
+    "sha256": "21ae1ce103c8abd925c2097ac237298ad3263e81233d55f75c8583b86800a6df"
+  },
+  {
+    "path": "app/vibemql5/core/artifacts.py",
+    "bytes": 21762,
+    "sha256": "118cba3fa00adb1838fa01be09dfba2e6793ddc059b3fdc6e358136f01909832"
+  },
+  {
+    "path": "app/vibemql5/core/baseline.py",
+    "bytes": 7286,
+    "sha256": "538822b8f4c1b5505ff0d7c11441a53ea37b13cfe0511f32b0175becb7321fab"
+  },
+  {
+    "path": "app/vibemql5/core/binary_ingress.py",
+    "bytes": 34063,
+    "sha256": "2ba1909898fd94696034381c0b9dee92f79a6741d1fd77a303369d0d7fed98d5"
+  },
+  {
+    "path": "app/vibemql5/core/compiler.py",
+    "bytes": 9531,
+    "sha256": "df3a3019dbd79a6081cf3df2bf2e1f3d7211a12bc53c5557033bb59e642d4589"
+  },
+  {
+    "path": "app/vibemql5/core/concurrency.py",
+    "bytes": 23633,
+    "sha256": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da"
+  },
+  {
+    "path": "app/vibemql5/core/continuity.py",
+    "bytes": 52902,
+    "sha256": "5931fa744fd83410f7b5a8c0915a5522f31496cf3bbe8d225bbfbbb5fb5b3d8a"
+  },
+  {
+    "path": "app/vibemql5/core/deployment_preflight.py",
+    "bytes": 10111,
+    "sha256": "ee3a83a601dc5363a70444b8fe446d9624df0687edc41a96a24dfa3973b65b5d"
+  },
+  {
+    "path": "app/vibemql5/core/facade.py",
+    "bytes": 33907,
+    "sha256": "c09553cc0561bb07118dde6b9a3fe8ba2780f109b59d36c3fb6ecca79a3b9d70"
+  },
+  {
+    "path": "app/vibemql5/core/fault_injection.py",
+    "bytes": 8340,
+    "sha256": "99ee7a4b19c3cccc48654b67a85e0291f2971b374a1fd1b78e75a2d925022b55"
+  },
+  {
+    "path": "app/vibemql5/core/file_export.py",
+    "bytes": 30966,
+    "sha256": "8ed057e86dfa370f819d8d0a63f66efad82312c45969e729ca36a35e63afe24e"
+  },
+  {
+    "path": "app/vibemql5/core/forward.py",
+    "bytes": 36897,
+    "sha256": "be308d7fd5a9891b113ecf908ba760d4856a9ed43e53064c8246110b81751b33"
+  },
+  {
+    "path": "app/vibemql5/core/inventory.py",
+    "bytes": 9382,
+    "sha256": "3e4c168dfbe4f03a5e8268d85889e2d873e77c3d5993ee7d7a184a6e42966970"
+  },
+  {
+    "path": "app/vibemql5/core/isolated_sdk.py",
+    "bytes": 25835,
+    "sha256": "471f4760161d019c8c83032a2207a1be06f08b2823b14d624e43bbf32b2ee46c"
+  },
+  {
+    "path": "app/vibemql5/core/iterations.py",
+    "bytes": 43800,
+    "sha256": "bd0593e7bda5dd4b959c12bd94ce5e6d6929b5ca5a9cc0933623c7375d3143fa"
+  },
+  {
+    "path": "app/vibemql5/core/jobs.py",
+    "bytes": 44254,
+    "sha256": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4"
+  },
+  {
+    "path": "app/vibemql5/core/live_chart_archive.py",
+    "bytes": 2225,
+    "sha256": "f5ccd0db22d751e23880aec3662458494991554794322b68fe4c3747900387cd"
+  },
+  {
+    "path": "app/vibemql5/core/live_readiness.py",
+    "bytes": 36925,
+    "sha256": "f69630acb6292bfd712316b9923269e5c11cd7cd7e3c3d0f689cb1157a0a9daa"
+  },
+  {
+    "path": "app/vibemql5/core/live_terminal.py",
+    "bytes": 22736,
+    "sha256": "786c854307b2f4f7922db80baf32a26d9c314eb364a370a8cf945fc9c13a0417"
+  },
+  {
+    "path": "app/vibemql5/core/live_terminal_windows.py",
+    "bytes": 29488,
+    "sha256": "004487b8f82d2bfd2080ea58093fe9c51dc46e0cfc6353c492cab2d22f423c77"
+  },
+  {
+    "path": "app/vibemql5/core/mt5_preflight.py",
+    "bytes": 3420,
+    "sha256": "177ecec4ac27a58c9008d0de018ec72693e8b40a8526b1702a2109fb9508e17d"
+  },
+  {
+    "path": "app/vibemql5/core/native_ownership.py",
+    "bytes": 20187,
+    "sha256": "73183b02324d9e29b72c60f2e7b8b1e1c5e1e07fd6f5742dc3c3690857273514"
+  },
+  {
+    "path": "app/vibemql5/core/observability.py",
+    "bytes": 9475,
+    "sha256": "f56cb755726101eba26949c5582715d7bd10e5f7074838120c0483cfb667cad0"
+  },
+  {
+    "path": "app/vibemql5/core/project_sessions.py",
+    "bytes": 23898,
+    "sha256": "bd18141e52c5db8b56dced47333870ea6fb966873594ee7104bc693df9041846"
+  },
+  {
+    "path": "app/vibemql5/core/provenance.py",
+    "bytes": 3951,
+    "sha256": "57120cc7699acd2f8a4991b544670e6a11342a3c20d17184d83216f09e7bdfd3"
+  },
+  {
+    "path": "app/vibemql5/core/release.py",
+    "bytes": 23263,
+    "sha256": "e8379b1ab80f7b5097dd57ae37c2ef8986b7650b6402397fd62aea8326073261"
+  },
+  {
+    "path": "app/vibemql5/core/resources.py",
+    "bytes": 2364,
+    "sha256": "baa76352bf4753c167e498d915c4501291495c289256ef54f656b72078e17c39"
+  },
+  {
+    "path": "app/vibemql5/core/revisions.py",
+    "bytes": 8932,
+    "sha256": "ed7f60b94c8b2706f944ca3ecf9f721c5e5e6d29ae7b803a220db634d98b9202"
+  },
+  {
+    "path": "app/vibemql5/core/terminal_handoff.py",
+    "bytes": 11828,
+    "sha256": "c901fcf6c37408df0267ef8fffff2f4cbae2f4418174e249a155bebdeef82e5d"
+  },
+  {
+    "path": "app/vibemql5/core/tester.py",
+    "bytes": 30911,
+    "sha256": "e8548bdd4aafd51589708676823164a78fcc1e265e2a1f73432990a757f7fa5a"
+  },
+  {
+    "path": "app/vibemql5/core/tester_config.py",
+    "bytes": 7687,
+    "sha256": "16e1ee565b7f9dbe9f1fa545ce2dead980798eeaf3b6b083452cdc58eb3f9e95"
+  },
+  {
+    "path": "app/vibemql5/core/tip015a.py",
+    "bytes": 4645,
+    "sha256": "8003927091239618ce4bea550bfc81d879ed45d1db881d7d3f4f3b67702a5760"
+  },
+  {
+    "path": "app/vibemql5/core/workspace.py",
+    "bytes": 7773,
+    "sha256": "d13f16dd44739605d584b2b3ed4fce1acb376318a83d64f9ab8d88c8ad35de22"
+  },
+  {
+    "path": "app/vibemql5/errors.py",
+    "bytes": 307,
+    "sha256": "8c727526dd5b2cf2d2295cafce475342d4c1ed9599a7ff1484715bc36b56fcbe"
+  },
+  {
+    "path": "app/vibemql5/fleet/__init__.py",
+    "bytes": 76,
+    "sha256": "63494dd4840ca2d7b3af78de5adb5dd12abde28534aad8611e5b955a5c4ffa3f"
+  },
+  {
+    "path": "app/vibemql5/fleet/artifact_proxy.py",
+    "bytes": 8808,
+    "sha256": "87504cedd16e65032f8b1c72263022ef69df5024685a7e070138ca7c01816893"
+  },
+  {
+    "path": "app/vibemql5/fleet/domain.py",
+    "bytes": 65271,
+    "sha256": "20aa7e67f8b7cbb3d18709de819ccc8bad95fb0f92290d8ab15b1002d7b35500"
+  },
+  {
+    "path": "app/vibemql5/fleet/gateway_control.py",
+    "bytes": 55398,
+    "sha256": "fa6404d768536c152d77237c0e8d17cfc849b02cce243c60d23fc521351c7c81"
+  },
+  {
+    "path": "app/vibemql5/fleet/identity.py",
+    "bytes": 18379,
+    "sha256": "1d234b30e532dd352256010db393ff39f5f39d46d324f6c47ab6539365f459cc"
+  },
+  {
+    "path": "app/vibemql5/fleet/job_journal.py",
+    "bytes": 102429,
+    "sha256": "fa6fbe895655c2cd2bc5bf0898d189398da7102a28e8b1dd1a619b8302c1e54a"
+  },
+  {
+    "path": "app/vibemql5/fleet/native.py",
+    "bytes": 52840,
+    "sha256": "1c096fc6e10aa0b4e16a2964fce973bedd2fad7405294e516ff1cb70da5cdb33"
+  },
+  {
+    "path": "app/vibemql5/fleet/native_authorization.py",
+    "bytes": 11029,
+    "sha256": "e593757d29b347cb02f3610d0f1f81081b11704e6d23781d33d98c7fdde27ef5"
+  },
+  {
+    "path": "app/vibemql5/fleet/native_process.py",
+    "bytes": 12289,
+    "sha256": "d61eb43c3fd9a143a53c9b8e813fcde20bb834f0a5c5da197d07a862662d8122"
+  },
+  {
+    "path": "app/vibemql5/fleet/native_qualification.py",
+    "bytes": 17948,
+    "sha256": "5af42f7d7922e57f1c5781d4da0df45597f29ae10d1b9035aed9cf24b51b2f55"
+  },
+  {
+    "path": "app/vibemql5/fleet/node_keys.py",
+    "bytes": 12548,
+    "sha256": "ae73b65f2e08dd87caa5269ccee06fecf011b064744d9b147f17047f1e8afba4"
+  },
+  {
+    "path": "app/vibemql5/fleet/node_transport_journal.py",
+    "bytes": 11307,
+    "sha256": "4f570add909181e14df717438e484b614934fa011d23cb23f0fac4100135060a"
+  },
+  {
+    "path": "app/vibemql5/fleet/principals.py",
+    "bytes": 56836,
+    "sha256": "5c58fa48871dd9b8d9b53686f41089c40596d0f74347d84336f05a3679a0e84b"
+  },
+  {
+    "path": "app/vibemql5/fleet/project_targets.py",
+    "bytes": 24459,
+    "sha256": "58be1ae756056104538e314a39406533e1c8903ed75f81591b936e74882eb0e3"
+  },
+  {
+    "path": "app/vibemql5/fleet/read_broker.py",
+    "bytes": 18729,
+    "sha256": "ff8bd5fd74955be4cdc6f94732bf8c65f255b81cb307ff5f9b1965a23ad5e8e4"
+  },
+  {
+    "path": "app/vibemql5/fleet/reads.py",
+    "bytes": 8270,
+    "sha256": "857fb4c453cc2d17c97f8cde08a3fba9b960f60e00750704f91e6d4e1c943e92"
+  },
+  {
+    "path": "app/vibemql5/fleet/resources.py",
+    "bytes": 9954,
+    "sha256": "e3b7cfff663518312648c07ecad605734b6d35129ff519c3b0b018917a0bb492"
+  },
+  {
+    "path": "app/vibemql5/fleet/restore_coordination.py",
+    "bytes": 27559,
+    "sha256": "315032f85bf8abfd638ff3b689494f96b4e3a1aeef0fa5379fca6d5b97a60be2"
+  },
+  {
+    "path": "app/vibemql5/fleet/scoped_resources.py",
+    "bytes": 40595,
+    "sha256": "66b37c4ed06ec896e2c4792cf9d2e72db3a9867eeadcd09cba1e921d04d19f9e"
+  },
+  {
+    "path": "app/vibemql5/fleet/sdk_controller.py",
+    "bytes": 27167,
+    "sha256": "debcb7a3bc057935a7f11f4a70b1da00e52195f5ad6d2adb0223921005d932ce"
+  },
+  {
+    "path": "app/vibemql5/fleet/sdk_protocol.py",
+    "bytes": 13039,
+    "sha256": "e64d4f06aa031425b3a816062ad46746d4b551c0a0faf43dd6f06cb031588f52"
+  },
+  {
+    "path": "app/vibemql5/fleet/sdk_qualification.py",
+    "bytes": 24615,
+    "sha256": "4181262dc8ebaaeea307f45f443306704dcf67e3dc2c50ccc8901530c2ebee91"
+  },
+  {
+    "path": "app/vibemql5/fleet/sdk_worker.py",
+    "bytes": 11171,
+    "sha256": "08d226bc8e805654560d6ea0fd7df1f8750f9a21bbc372b75a0d7a14869bbc18"
+  },
+  {
+    "path": "app/vibemql5/fleet/strict_baseline.py",
+    "bytes": 3588,
+    "sha256": "db196ab0be627fb743e0e8d6365e034ee8ed062348794d6d52c0551ca1228802"
+  },
+  {
+    "path": "app/vibemql5/fleet/targets.py",
+    "bytes": 2439,
+    "sha256": "dcbe3bd416e12cffc55b931cf19897ab31ce2559c13c9e360fabf29de53243ea"
+  },
+  {
+    "path": "app/vibemql5/fleet/transport.py",
+    "bytes": 49720,
+    "sha256": "1ffdc7b733214d44871621443c47e2ac4a42aac2268aabcef1bb3c1373883fbc"
+  },
+  {
+    "path": "app/vibemql5/fleet/wire.py",
+    "bytes": 9842,
+    "sha256": "48b3d18123e93735107360e899af893abd0bc606a179793dc085b973ae1f398e"
+  },
+  {
+    "path": "app/vibemql5/fleet/worktrees.py",
+    "bytes": 48818,
+    "sha256": "dbefac5d6be391e8b0acfb9368eed624b4edd3d58127dbf2cb7c9174d2fb3396"
+  },
+  {
+    "path": "app/vibemql5/fleet/writers.py",
+    "bytes": 36088,
+    "sha256": "dc2f6620cb8f3d19d2fca6f250b7e9c93d57594f419cd0381328609177886987"
+  },
+  {
+    "path": "app/vibemql5/models/types.py",
+    "bytes": 836,
+    "sha256": "355e2124792fb94c82dd804148871ebf24d07504b36634c7a0393c031f474af9"
+  },
+  {
+    "path": "app/vibemql5/parsers/compiler_log.py",
+    "bytes": 2178,
+    "sha256": "64aa086ce413dcfccbf3d0b7503f61f876add2a8d3b73d7f127780254c666d8b"
+  },
+  {
+    "path": "app/vibemql5/parsers/report.py",
+    "bytes": 5346,
+    "sha256": "022672e8cd2dd653e6359fc257985dff9769d31fe47c622d65223a4569100295"
+  },
+  {
+    "path": "app/vibemql5/parsers/tester_log.py",
+    "bytes": 15107,
+    "sha256": "8dcfc9c6233e484178b51c84dbe2f3f3bc10e0203b726f9c09af7995018d7f31"
+  },
+  {
+    "path": "app/vibemql5/runtime_forensics/authority.py",
+    "bytes": 4792,
+    "sha256": "4386f555bf477912d6afe079089407f32629bdc7ea61e2a1a50445991928e93c"
+  },
+  {
+    "path": "app/vibemql5/runtime_forensics/compare_snapshots.py",
+    "bytes": 2838,
+    "sha256": "4193af1621bde3bd71453a442fa1e66b57e6db3d9277e1caa7ee04a0339794a1"
+  },
+  {
+    "path": "app/vibemql5/runtime_forensics/runtime_capture_windows.py",
+    "bytes": 19758,
+    "sha256": "866db88115a28b5691f2c40795e1d8fc0d3262436dcbcbacc256e02e318cfb29"
+  },
+  {
+    "path": "app/vibemql5/runtime_forensics/scan_known_values.py",
+    "bytes": 4238,
+    "sha256": "fbe27b3a33ad2f55cd67a1763ad4c77a3e05d1dc2f8b0895b902ae5790755a99"
+  },
+  {
+    "path": "app/vibemql5/runtime_forensics/service.py",
+    "bytes": 33434,
+    "sha256": "6ed3082e8a6115f5ae9c738f8e719824f24f9603fde9851470edda8e0f5f0240"
+  },
+  {
+    "path": "app/vibemql5/worker.py",
+    "bytes": 37859,
+    "sha256": "cef35d9cb711ec992cafd6556f8df9695f1d58ad8573f1c2be22d434ed2033eb"
+  },
+  {
+    "path": "tests/proofs/fleet_v1/run_source.py",
+    "bytes": 5090,
+    "sha256": "632094121e7b97f39c8216e94a4ed0c8ca80f3cbbb1825f3dffb888e65415e5c"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/controller.py",
+    "bytes": 7491,
+    "sha256": "99ee2af3c1603eef25d6d5c13ef28283519fc347eac46b733de74fd28b137baa"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/read_protocol.py",
+    "bytes": 9773,
+    "sha256": "bc8539ec68e35b287b7a953f5d076db6fd49632f08178bd0afc9ca56be311b40"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/run_proof.py",
+    "bytes": 21052,
+    "sha256": "5e1fd345d9e348b227c3060cb4041cb3d13a8ee64ec8c7dd9629b81c3601b787"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/sdk_worker.py",
+    "bytes": 8368,
+    "sha256": "9e233ae9b22f58ff217d5aa2ab4018198a7d81e71eba218e3f969932c327a7ae"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/test_controller.py",
+    "bytes": 8448,
+    "sha256": "d2ab16e5f7ff61a45b5f764e4394300a5291aff46fd8998d29fac7e5af556489"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/test_portable.py",
+    "bytes": 24817,
+    "sha256": "f30985bd5939a2d81656314b48e0c882d774041d0b44cb46e29dcb9b4a19d66b"
+  },
+  {
+    "path": "tests/proofs/tip057rb1/windows_adapter.py",
+    "bytes": 8727,
+    "sha256": "7a09a40702cebf85a24ed1fd6c09d40e307aed3a011ea386e4c2dfa5cecead9f"
+  },
+  {
+    "path": "tests/proofs/tip057rg03a/run_windows.py",
+    "bytes": 19020,
+    "sha256": "70c293168a5db2f88f617a62063801688710bf58aac333c7b80eaa399e4e0cd3"
+  },
+  {
+    "path": "tests/proofs/tip057rq/authority.py",
+    "bytes": 8423,
+    "sha256": "604aeae2fb3da5e9985c3ea28f2f92e1c69d765a5ddda7df15ee43ac251299ff"
+  },
+  {
+    "path": "tests/proofs/tip057rq/run_proof.py",
+    "bytes": 54136,
+    "sha256": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db"
+  },
+  {
+    "path": "tests/proofs/tip057rq/windows_boundary.py",
+    "bytes": 20910,
+    "sha256": "36cc06ea8a80e2f7c6f24cb973c9aede62df4183d8d2c4b56d4d31cb0f542c84"
+  },
+  {
+    "path": "tests/unit/fleet_gateway_fixture.py",
+    "bytes": 2542,
+    "sha256": "7063ff1843d8bd5f1e864d85def4d0692f50028ce68d9688921fcf3045522270"
+  },
+  {
+    "path": "tests/unit/fleet_source_progress.py",
+    "bytes": 2547,
+    "sha256": "6eda2925359156a3c99f28143ca597d9ef02608323a25ece93f77d8f6311d38c"
+  },
+  {
+    "path": "tests/unit/fleet_writer_fixture.py",
+    "bytes": 7445,
+    "sha256": "b92647d64b17cacd54fec921e8ecb0a089c7a3878c1775da5a9824ac983eec56"
+  },
+  {
+    "path": "tests/unit/ownership_fixture.py",
+    "bytes": 1276,
+    "sha256": "c051e73bcdb2fbd2b48efd25b603c221508745cc9a80ee7eef71536d17cb39d6"
+  },
+  {
+    "path": "tests/unit/test_backend_restore_cas.py",
+    "bytes": 2406,
+    "sha256": "806a848179ef338f019c94024992aa617125d0d1441cf8b6eafd943f89fcfa4b"
+  },
+  {
+    "path": "tests/unit/test_fleet_gateway_fixture.py",
+    "bytes": 10437,
+    "sha256": "cf970b8db2ea03dd811e56a84c2d8626029a8a625d48a593b2fb3269721b932c"
+  },
+  {
+    "path": "tests/unit/test_fleet_source_progress.py",
+    "bytes": 8536,
+    "sha256": "a10e2e7d50f5c7d37432fcfc64f9e6b483564271053eca6450191195b235bf39"
+  },
+  {
+    "path": "tests/unit/test_fleet_source_runner.py",
+    "bytes": 3273,
+    "sha256": "8fd7fd8a312a528fc54ea7c5fa85754d648df018164128521bf8f3893c520b64"
+  },
+  {
+    "path": "tests/unit/test_tip011b_runtime_refresh.py",
+    "bytes": 2246,
+    "sha256": "54339e2189842e29672d933add9141f97f9761225ddb85f597bb2296582a2f0d"
+  },
+  {
+    "path": "tests/unit/test_tip012_recovery.py",
+    "bytes": 4616,
+    "sha256": "19176d661d22f1724b13c06e01f3f3b1d591b9dad661e2b1c1f256c8506fcf10"
+  },
+  {
+    "path": "tests/unit/test_tip013_resilience.py",
+    "bytes": 8544,
+    "sha256": "37e8059b9f4173e522cfefa8f93985d2c0a17c7debcc522a949fe6d7cd32e157"
+  },
+  {
+    "path": "tests/unit/test_tip014_project_sessions.py",
+    "bytes": 7340,
+    "sha256": "3bb21c36e601dd38aeb5a1119b9c07c5cb17d7a771199b99165ac2c437e287aa"
+  },
+  {
+    "path": "tests/unit/test_tip015_provenance.py",
+    "bytes": 2309,
+    "sha256": "8529da683f92a0e9921bd62581de4e8c9db8ea4323bfe2caf68ca1266cad050f"
+  },
+  {
+    "path": "tests/unit/test_tip015c_deploy_contract.py",
+    "bytes": 2093,
+    "sha256": "7847793fe748fcfb26600c1d6d53c8b6b4d9e0185294c5a640abaea56c95c230"
+  },
+  {
+    "path": "tests/unit/test_tip016_deploy_contract.py",
+    "bytes": 4330,
+    "sha256": "1509a97d8076e23e1d5675178ac85cc081d47c47bffb588b01b44f27c0b75c21"
+  },
+  {
+    "path": "tests/unit/test_tip017_deploy_contract.py",
+    "bytes": 2807,
+    "sha256": "4dec5c672c7477a1e2a49917dfdbc839888f2c1d2b2cbf92fecff08794a82236"
+  },
+  {
+    "path": "tests/unit/test_tip018_deploy_contract.py",
+    "bytes": 3817,
+    "sha256": "23800fdfb6253cc7c66fc7d2ff307facb517ffd83a326082995c56da3aee10c7"
+  },
+  {
+    "path": "tests/unit/test_tip019_deploy_contract.py",
+    "bytes": 2672,
+    "sha256": "0b4ea5716ac54fb2d8e209c63b1bddf27c1e3e3fdb21d0d048965b116aa4200e"
+  },
+  {
+    "path": "tests/unit/test_tip021r_remediation.py",
+    "bytes": 15771,
+    "sha256": "93de06be0e8a6ae9243c2ced440c7c36085ee4822497bfc69d4f96affe712100"
+  },
+  {
+    "path": "tests/unit/test_tip022f_file_export.py",
+    "bytes": 6106,
+    "sha256": "b9c9312cdfce2697aebbac10b60f453b5496ac732c38ae0070069b63af6eb9b1"
+  },
+  {
+    "path": "tests/unit/test_tip023_cancel_recovery.py",
+    "bytes": 13760,
+    "sha256": "f883b94419d51db071ef4a30ce1d0bc0a6575bad73b31607e5e49ff655fb61f4"
+  },
+  {
+    "path": "tests/unit/test_tip024_multiclient_concurrency.py",
+    "bytes": 13153,
+    "sha256": "07f822793d3ad08d946e0dedade8f2b2ba3b0f6b07631cd7ec851d112cbfcc3c"
+  },
+  {
+    "path": "tests/unit/test_tip025_export_provenance.py",
+    "bytes": 13002,
+    "sha256": "04d5e8a69734b501b8d75b3d527b6b78e2d9d99868479a74e74655cb31dde6d7"
+  },
+  {
+    "path": "tests/unit/test_tip026_binary_ingress.py",
+    "bytes": 17772,
+    "sha256": "cfbcc908f7c5cf016def81fd82c3c08b2351d0307db07a2da216ba12572d1958"
+  },
+  {
+    "path": "tests/unit/test_tip026r1_widget_ingress.py",
+    "bytes": 16736,
+    "sha256": "dca5771f4806098b302edc52f4b53e44f0ece689500a41f1f668743b9a3ab51f"
+  },
+  {
+    "path": "tests/unit/test_tip027_continuity.py",
+    "bytes": 23196,
+    "sha256": "9280240c99cc4f9a2a0f9a357beb150af72b5651ffa4191e2ab10adbe8b6404f"
+  },
+  {
+    "path": "tests/unit/test_tip028_idempotent_bindings.py",
+    "bytes": 11419,
+    "sha256": "0257570418fd1bc19172af7764c6acb8cf37f624a56b8d2c4502b28e96ebc781"
+  },
+  {
+    "path": "tests/unit/test_tip033_actual_defects.py",
+    "bytes": 2859,
+    "sha256": "7be982f95298c8ec0fccab2731fa899b56146dfe54ab5ee647db078c985e5307"
+  },
+  {
+    "path": "tests/unit/test_tip036_workspace_c.py",
+    "bytes": 6611,
+    "sha256": "5212364f3b11fcda1d1a73fceb3fa69acf8606ac87079f6bb97e53cb81251675"
+  },
+  {
+    "path": "tests/unit/test_tip038_tunnel_poll_diagnostics.py",
+    "bytes": 3961,
+    "sha256": "6f9b5c6a6db80684a006030aa0d77b5adac60eb5db8fc909a12c3adc7a40d8b0"
+  },
+  {
+    "path": "tests/unit/test_tip039_generic_powershell.py",
+    "bytes": 6745,
+    "sha256": "116d38bd494ed6b8cd7b8aeb89f35c07ba619c912c18a41a9db0a6e4a99bd5cc"
+  },
+  {
+    "path": "tests/unit/test_tip040_live_terminal.py",
+    "bytes": 15546,
+    "sha256": "d541e1acb624a00dcb73db6b42f14de44e2265f55ec790018a49cb446ed78c70"
+  },
+  {
+    "path": "tests/unit/test_tip040_live_vps.py",
+    "bytes": 22489,
+    "sha256": "553faea5b5ab183402b0bd803734766ff267a498b1d75f598afd8b9aafd81441"
+  },
+  {
+    "path": "tests/unit/test_tip043_chart_delivery.py",
+    "bytes": 3057,
+    "sha256": "d241bf3a6c6d05178c2cf340c374d17531e976a1e773f39eaa89d0208a7f49cf"
+  },
+  {
+    "path": "tests/unit/test_tip044_chart_export.py",
+    "bytes": 4829,
+    "sha256": "88ff67d40d93ce4744875908edd0a930fdc18bee152305cdc0e8ea0f9ccfced8"
+  },
+  {
+    "path": "tests/unit/test_tip047_049_backend_contracts.py",
+    "bytes": 2915,
+    "sha256": "4f8ebf6d24acc6ab4f00428c2855228708c583ba384ed3e867174aff51eb17d3"
+  },
+  {
+    "path": "tests/unit/test_tip048_retention.py",
+    "bytes": 2712,
+    "sha256": "4f37e73b4f228cd0b9f4dacc645f4cd0292573377aafa0956de7799645c25cd3"
+  },
+  {
+    "path": "tests/unit/test_tip050_market_data.py",
+    "bytes": 5832,
+    "sha256": "909d6161fd4aec6558f47d7ed902ee1655cf38e7dbb1916c0ac1ff69d4ba5e79"
+  },
+  {
+    "path": "tests/unit/test_tip052_metrics.py",
+    "bytes": 801,
+    "sha256": "410515d06ee7d0a71c9a5f90b4f0eb2e96b9dead8783e5e1587d09bc17c86c8a"
+  },
+  {
+    "path": "tests/unit/test_tip053_catalog.py",
+    "bytes": 987,
+    "sha256": "916eaa23c5e759bf010a37416e35f8057203accfa30c2beb7e13660fefea78d6"
+  },
+  {
+    "path": "tests/unit/test_tip054_deep_audit_guards.py",
+    "bytes": 5597,
+    "sha256": "998cec0577aa6221c3d190ec838081eefe4c1b8e0f8e943dafe41e70bfae0e26"
+  },
+  {
+    "path": "tests/unit/test_tip054_windows_health_guards.py",
+    "bytes": 6433,
+    "sha256": "01e153af3bf4d25fe596b70f1f679ae8ecd6f6d33eee2a88550c4bdc5abb6e4f"
+  },
+  {
+    "path": "tests/unit/test_tip055a_runtime_forensics_identity.py",
+    "bytes": 29653,
+    "sha256": "29092098a8867e4bbdd04df5e0ae90cb1a1dcea2d3e92c6f3ea2ee3cb8f82dc2"
+  },
+  {
+    "path": "tests/unit/test_tip055b_runtime_forensics_release.py",
+    "bytes": 15442,
+    "sha256": "c229c370b327a3e8317f302d5d56bfd1c4a3dc262ab2b8aa63bdf39242a18a90"
+  },
+  {
+    "path": "tests/unit/test_tip056_gateway_capacity.py",
+    "bytes": 4740,
+    "sha256": "021cfb1707a6be814d6374b9bd5928b29ec4e4c883f985c9ed49b4bbe8bc747e"
+  },
+  {
+    "path": "tests/unit/test_tip056_resources.py",
+    "bytes": 10974,
+    "sha256": "23be54918913aae8d17a31ba2cf69f6639e05fe7f76314bca7da523110f6feea"
+  },
+  {
+    "path": "tests/unit/test_tip056_scoped.py",
+    "bytes": 14228,
+    "sha256": "8695e7958e93db56e76fa949050f9c1362bc1f1237961eb890edd4c666687f91"
+  },
+  {
+    "path": "tests/unit/test_tip056_signed_roster.py",
+    "bytes": 7296,
+    "sha256": "0a619627e4e78b002a76ff336ebfc5f0fc27bfd017ae802bfa186719ac0548c3"
+  },
+  {
+    "path": "tests/unit/test_tip057n_qualification.py",
+    "bytes": 13745,
+    "sha256": "0cede7fa987edd8ab29caa41e396b0b9e0601f27b925d4033b00d33f857c360e"
+  },
+  {
+    "path": "tests/unit/test_tip057n_windows_owned_process.py",
+    "bytes": 7682,
+    "sha256": "4d34604cc59ffb0b113490c6f2a8247abb9aa94f6ea3fa42b21599b2b0be2b74"
+  },
+  {
+    "path": "tests/unit/test_tip057r_sdk.py",
+    "bytes": 41067,
+    "sha256": "449558c0f8441003f03c4b605bf7dbc9af7366609064ebf9e35c5626c415d06a"
+  },
+  {
+    "path": "tests/unit/test_tip057rc1.py",
+    "bytes": 25124,
+    "sha256": "63205fae09f1cd862e28102fdf4cffd54c8523e2ca5f976ccefebf96b52f8257"
+  },
+  {
+    "path": "tests/unit/test_tip057rg03a_native_ownership.py",
+    "bytes": 33866,
+    "sha256": "386fd523df702f899dca1a4ed048f22ca743a62c40ae83a2e3a2c452f65a627f"
+  },
+  {
+    "path": "tests/unit/test_tip058a_gateway_control.py",
+    "bytes": 45516,
+    "sha256": "246856c69d5f7be42ad2ac2d800bfdced03fa323f957b01fee0d92a35bb67fb9"
+  },
+  {
+    "path": "tests/unit/test_tip058b_transport.py",
+    "bytes": 53254,
+    "sha256": "a78695dab5c7361d83ca00a545ade66f7097423a700b1f74d7d875d401d8665a"
+  },
+  {
+    "path": "tests/unit/test_tip059_read_broker.py",
+    "bytes": 5910,
+    "sha256": "b34e2522cae1d4e18611a461c78bda8765952048b22b06eb7f9d53c91a77d470"
+  },
+  {
+    "path": "tests/unit/test_tip060_artifacts.py",
+    "bytes": 3168,
+    "sha256": "548ed2721b50d827e7923ee961e318cd802c819cae3238e852092c465e8016d0"
+  },
+  {
+    "path": "tests/unit/test_tip060_authorization.py",
+    "bytes": 3833,
+    "sha256": "91fe1952c22dea917ad931730562d0eb20bf652ed4eaff80646c6489626c147e"
+  },
+  {
+    "path": "tests/unit/test_tip060_historical.py",
+    "bytes": 10429,
+    "sha256": "ac3f5c16483d4a1ff64215d4a6aa177263d958340fab793a73f50794b8e016fb"
+  },
+  {
+    "path": "tests/unit/test_tip060_journal.py",
+    "bytes": 25752,
+    "sha256": "358e8fd09c062a6c2c698ab0a186ed434cc2b63cb86a68f01c442d242317d727"
+  },
+  {
+    "path": "tests/unit/test_tip060c_https_restore.py",
+    "bytes": 22536,
+    "sha256": "1e444c1f5f8f0f9f7920a73dcd08c2efa7b871529de9f5e9ebf27045e087b26c"
+  },
+  {
+    "path": "tests/unit/test_tip060c_node_transport.py",
+    "bytes": 11104,
+    "sha256": "47b95f7c3bc66f8592517a5221f015adbb33f7d5cf3d12b6dff3824ebb64114b"
+  },
+  {
+    "path": "tests/unit/test_tip060c_restore.py",
+    "bytes": 11234,
+    "sha256": "2641da7ab35579ce1fdd2d4805fe9bfc3eda723c619c13e5626f6984dfd3edde"
+  },
+  {
+    "path": "tests/unit/test_tip061a_057n.py",
+    "bytes": 55718,
+    "sha256": "bdfe5fcdf81213f4998547ac6f47dad906c12681b4b2b2e9d4564f0d39de9f2e"
+  },
+  {
+    "path": "tests/unit/test_tip061b_absence.py",
+    "bytes": 5465,
+    "sha256": "cde5c0f5eda1f5dad1631662f151daa0669ac557c8a18f018453ed5a0493a0d5"
+  },
+  {
+    "path": "tests/unit/test_tip061b_principals.py",
+    "bytes": 4768,
+    "sha256": "a3f42ecbe024d6929b040e3608f3e1263ebbe18401d0efc327793940e6965a5f"
+  },
+  {
+    "path": "tests/unit/test_tip061b_writers.py",
+    "bytes": 11843,
+    "sha256": "680e93d8804c63943106bee255106e330c5364025301d10ee4012c42bb545c93"
+  },
+  {
+    "path": "tests/unit/test_tip063_worktrees.py",
+    "bytes": 22917,
+    "sha256": "6156b0e99d4dbb50a69b4db1bdfba998a6d7759406f34fbbe517c2dd9be9eaa6"
+  },
+  {
+    "path": "tests/unit/test_tip064_capacity_https.py",
+    "bytes": 37387,
+    "sha256": "8ee8b65f3756e2cd7c39c84d1c4419b02ee06d1f54224abae9f1c2104d749e6d"
+  },
+  {
+    "path": "tests/unit/test_tip064_integration.py",
+    "bytes": 97385,
+    "sha256": "c258487bb6ffda0856c1cbcac07d5b3be43d264dc0cc623066fcc096cb5cda4c"
+  },
+  {
+    "path": "tests/unit/test_tip064_writer_resolution_https.py",
+    "bytes": 6715,
+    "sha256": "c71b4552f1fce6e8b73fd6832aa3e826e2d97645cef59085827626b1fb2c3ecd"
+  },
+  {
+    "path": "tests/unit/test_tip065_deployment_preflight.py",
+    "bytes": 16774,
+    "sha256": "602d51437a5eafe470d6468c6eb8398d112ed9f23dd3532462d40a663cdc2b8c"
+  },
+  {
+    "path": "tests/unit/test_tip065_windows_metadata_bindings.py",
+    "bytes": 9218,
+    "sha256": "0f6a465abac076a0543ed657b25fb7e7f11929c98fd50ebe226196b52c361fe6"
+  },
+  {
+    "path": "tests/unit/test_tip066_live_diagnostics.py",
+    "bytes": 8356,
+    "sha256": "a149428d7a3c0099165fca0bb09eac3c944b94eb6a3824910d1dbb64fbd93dec"
+  },
+  {
+    "path": "tests/unit/test_tip070_sync_test_receipts.py",
+    "bytes": 18252,
+    "sha256": "f191fc73aa2f8f54781533a0356d4e7cac5c70fcf325bda9ccf9b52179cd6dbb"
+  }
+]

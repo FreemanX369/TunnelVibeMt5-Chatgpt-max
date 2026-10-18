@@ -1,0 +1,19 @@
+{
+  "schema": "tip071.contractor-independent-baseline/1",
+  "parent": "ce621625324a3872faee5302ec27c35b684d5217",
+  "scope": "OWNED_SCRATCH_REAL_SQLITE_BUSY_SETUP",
+  "method": "Another real SQLite connection retained BEGIN and SELECT; exact-parent ScopedResourceCoordinator._db failed at WAL setup; original traceback was retained and its db executed SELECT42.",
+  "result": {
+    "chunk_id": "01d28b",
+    "wall_time_seconds": 1.00676323,
+    "exit_code": 0,
+    "original_token_count": 84,
+    "output": "{\"scope\": \"OWNED_SCRATCH_SQLITE_REAL_BUSY_SETUP_ONLY\", \"exception_type\": \"OperationalError\", \"sqlite_errorcode\": 5, \"sqlite_errorname\": \"SQLITE_BUSY\", \"retained_traceback_connection_query_succeeded\": true, \"connection_closed_on_error\": false, \"in_transaction\": false, \"VPS_effects\": false, \"current_lock_timeout_cause\": \"NOT_PROVEN\"}\n"
+  },
+  "assertion": "Connection remains open after setup failure; explicit helper cleanup is missing.",
+  "current_windows_guard_timeout_cause": "UNKNOWN",
+  "live_mcp_outage_cause": "UNKNOWN",
+  "source_mutation": false,
+  "CI_rerun": false,
+  "VPS_effects": false
+}

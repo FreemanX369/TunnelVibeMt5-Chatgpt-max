@@ -1,0 +1,639 @@
+{
+  "schema": "tip065.failed-candidate-receipt/1",
+  "status": "SOURCE_GATE_REJECTED_6_OF_8",
+  "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+  "tree": "e1ed18128f047baab88f0c5efa2bc0159289de83",
+  "main": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "run_attempt": 1,
+  "workflows": [
+    {
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "id": 37293992211,
+      "workflow_id": 357167822,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992211",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-027 Continuity Core",
+      "id": 37293992206,
+      "workflow_id": 357139482,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992206",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "id": 37293992313,
+      "workflow_id": 373216678,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992313",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "id": 37293992324,
+      "workflow_id": 372895546,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992324",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "id": 37293992307,
+      "workflow_id": 373332157,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992307",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "id": 37293992208,
+      "workflow_id": 358366702,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992208",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify TIP-053 Deep Update",
+      "id": 37293992261,
+      "workflow_id": 369987372,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992261",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    },
+    {
+      "name": "Verify Fleet v1 integrated source",
+      "id": 37293992217,
+      "workflow_id": 373695570,
+      "html_url": "https://github.com/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37293992217",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+      "run_attempt": 1
+    }
+  ],
+  "deep": {
+    "run": 37293992261,
+    "job": 111710798184,
+    "passed": 1205,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 12,
+    "failed_case": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+    "primary": "poll response-status TimeoutError at1000ms; sampled fresh source metadata ctypes binding",
+    "cleanup": "results response-status TimeoutError at734ms; sampled GatewayJobJournal COMMIT"
+  },
+  "windows_errors": [
+    {
+      "class": "tests.unit.test_tip060c_restore",
+      "name": "test_uncertain_or_changed_witness_cannot_clear_recovery[route]",
+      "message": "failed on setup with \"vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY\"",
+      "trace": "tests\\unit\\test_tip060c_restore.py:36: in recovery\n    store.backup(original / \"backup-control.db\")\napp\\vibemql5\\fleet\\gateway_control.py:991: in backup\n    self._bounded_backup(db)\napp\\vibemql5\\fleet\\gateway_control.py:1021: in _bounded_backup\n    self._db.backup(destination, pages=64, progress=progress,\napp\\vibemql5\\fleet\\gateway_control.py:1020: in progress\n    _fail(\"CONTROL_BUSY\")\napp\\vibemql5\\fleet\\gateway_control.py:45: in _fail\n    raise GatewayControlError(code)\nE   vibemql5.fleet.gateway_control.GatewayControlError: CONTROL_BUSY"
+    }
+  ],
+  "artifacts": {
+    "status": "SOURCE_GATE_REJECTED_6_OF_8",
+    "schema": "fleet.failed-artifacts-independent-verification/1",
+    "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+    "tree": "e1ed18128f047baab88f0c5efa2bc0159289de83",
+    "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+    "physical_qualification": "NOT_RUN",
+    "artifacts": [
+      {
+        "artifact_id": 11337249652,
+        "archive": "artifact-11337249652.zip",
+        "bytes": 8049,
+        "sha256": "cfa81712ef12f116cc5f8cf867bf781f2d593a7570b904e8383bbff4be397b5f",
+        "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+        "run_id": 37293992307,
+        "proofs": [
+          {
+            "proof": "tip057rb1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 15
+          },
+          {
+            "proof": "tip057rb1-windows/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 15
+          }
+        ]
+      },
+      {
+        "artifact_id": 11337622743,
+        "archive": "artifact-11337622743.zip",
+        "bytes": 8888,
+        "sha256": "87a1ff7027a1f3269f958fcab3e1854e3eb065cbaf27409057e6948a1e2836a6",
+        "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+        "run_id": 37293992324,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 4
+          }
+        ]
+      },
+      {
+        "artifact_id": 11337677071,
+        "archive": "artifact-11337677071.zip",
+        "bytes": 263089,
+        "sha256": "54a9e3ec095d6afa5227b287defe230eec4ec625252e88e77032b24e1c8e8dd2",
+        "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+        "run_id": 37293992217,
+        "proofs": [
+          {
+            "proof": "b1-harmless/summary.json",
+            "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+            "executed": 10,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 15
+          },
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 15
+          },
+          {
+            "proof": "g03a-harmless/summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 8
+          },
+          {
+            "proof": "q1-harmless/summary.json",
+            "status": "FIXTURE_PASS_Q03_OPEN",
+            "executed": 16,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 4
+          }
+        ],
+        "source_status": "FAIL",
+        "tree": "e1ed18128f047baab88f0c5efa2bc0159289de83",
+        "source_entries": 210,
+        "junit": {
+          "name": "pytest",
+          "errors": "1",
+          "failures": "0",
+          "skipped": "12",
+          "tests": "1218",
+          "time": "370.071",
+          "timestamp": "2026-10-05T10:03:13.246634+00:00",
+          "hostname": "runnervmfi6oq"
+        },
+        "passed": 1205,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+            ],
+            "exit_code": 1,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 371.547
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 2.234
+          },
+          {
+            "case": "q1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rq/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 24.5
+          },
+          {
+            "case": "g03a-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rg03a/run_windows.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 3.047
+          },
+          {
+            "case": "b1-harmless",
+            "command": [
+              "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--require-windows",
+              "--output",
+              "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 9.969
+          }
+        ]
+      },
+      {
+        "artifact_id": 11337791273,
+        "archive": "artifact-11337791273.zip",
+        "bytes": 63480,
+        "sha256": "bd5a250effcbbef8e46e3a6dbcec2289da3f139df4cf596f5fd1ebb763cb8074",
+        "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+        "run_id": 37293992217,
+        "proofs": [
+          {
+            "proof": "b1-portable/summary.json",
+            "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+            "executed": 39,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 15
+          }
+        ],
+        "source_status": "PASS",
+        "tree": "e1ed18128f047baab88f0c5efa2bc0159289de83",
+        "source_entries": 210,
+        "junit": {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "16",
+          "tests": "1218",
+          "time": "103.386",
+          "timestamp": "2026-10-05T10:02:53.886484+00:00",
+          "hostname": "runnervm8df0l"
+        },
+        "passed": 1202,
+        "cases": [
+          {
+            "case": "full-unit",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "-m",
+              "pytest",
+              "tests/unit",
+              "-v",
+              "--tb=short",
+              "--durations=20",
+              "-o",
+              "faulthandler_timeout=90",
+              "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 600,
+            "timed_out": false,
+            "elapsed_seconds": 104.396
+          },
+          {
+            "case": "b1-portable",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+              "tests/proofs/tip057rb1/run_proof.py",
+              "--portable",
+              "--output",
+              "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+            ],
+            "exit_code": 0,
+            "timeout_seconds": 120,
+            "timed_out": false,
+            "elapsed_seconds": 0.615
+          }
+        ]
+      },
+      {
+        "artifact_id": 11338000288,
+        "archive": "artifact-11338000288.zip",
+        "bytes": 2315,
+        "sha256": "74bb34db8f75629566c1ceb2acd4312c460b160e400030534009d3af77e43c25",
+        "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+        "run_id": 37293992313,
+        "proofs": [
+          {
+            "proof": "summary.json",
+            "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+            "executed": 8,
+            "errors": 0,
+            "failures": 0,
+            "skips": 0,
+            "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+            "verified_sources": 8
+          }
+        ]
+      }
+    ]
+  },
+  "decoded_logs": {
+    "job-111710798184.log": {
+      "bytes": 41500,
+      "sha256": "032fc01ea901eec8418857af7b54e8e0865f65552ce1092aebfed36f1a10c956",
+      "truncated": false,
+      "bom": true,
+      "crlf_lines": 381
+    },
+    "job-111710798546.log": {
+      "bytes": 28530,
+      "sha256": "ee16daaa08c9b8827c3541574e4193d9764b46cbde50f99897d2ea3db064e5a5",
+      "truncated": false,
+      "bom": true,
+      "crlf_lines": 316
+    },
+    "windows-full-unit.log": {
+      "bytes": 159159,
+      "sha256": "eb2cee563ba8cc619e1deca17df046c9aa4af3b0761674e53f5fc7512125b1f0",
+      "truncated": false,
+      "bom": false,
+      "crlf_lines": 1268
+    }
+  },
+  "required_windows_controls": [
+    {
+      "class": "tests.unit.test_tip056_resources",
+      "name": "test_real_process_fifo_and_atomic_resource_writers_share_legacy_lease",
+      "status": "PASS",
+      "time": "0.848",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip056_resources",
+      "name": "test_real_queued_resource_writer_observing_active_is_denied_without_reservation",
+      "status": "PASS",
+      "time": "0.719",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[False-True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_preserves_original_call_error_and_restoration[True-True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_caps_rows_without_replaying_calls",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_control_post_observation_invalid_unhashable_route_cannot_mask_original_error",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip058b_transport",
+      "name": "test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect",
+      "status": "PASS",
+      "time": "1.134",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_cleanup_preserves_all_failures_and_closes_actual_resources[True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_handoff_retains_owners_only_after_success[False]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip060c_https_restore",
+      "name": "test_restore_handoff_retains_owners_only_after_success[True]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure",
+      "status": "PASS",
+      "time": "0.022",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[FAILED]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[NOT_RUN]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip061a_057n",
+      "name": "test_scoped_future_collection_observes_both_errors_and_returned_failed_receipt[CANCELLED]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_capacity_https",
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]",
+      "status": "PASS",
+      "time": "5.638",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_capacity_https",
+      "name": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+      "status": "PASS",
+      "time": "14.054",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_observation_retains_only_original_reads_and_safe_last_state",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_original_predicate_failure_and_cleanup_identity_are_preserved",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_native_denial_timeout_retains_last_predicate_state_without_additional_read",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[RETURNED]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[HTTPS_UNAVAILABLE]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[FIXTURE_LOST_ACK]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_composed_lost_ack_once_preserves_original_call_return_and_failure[CLOSE_WRONG_STATUS]",
+      "status": "PASS",
+      "time": "0.001",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip064_integration",
+      "name": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+      "status": "PASS",
+      "time": "2.576",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_identity_positive_and_fresh_path_match",
+      "status": "PASS",
+      "time": "0.040",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    },
+    {
+      "class": "tests.unit.test_tip065_deployment_preflight",
+      "name": "test_windows_retained_handle_rejects_fresh_path_replacement",
+      "status": "PASS",
+      "time": "0.045",
+      "scope": "SOURCE_FIXTURE_ONLY"
+    }
+  ],
+  "runtime_read_only": {
+    "version": "0.2.42",
+    "tool_count": 85,
+    "deployment_preflight_loaded": false,
+    "health": "READY_IDLE",
+    "tunnels": "A_B_C_READYZ200_ONE_PROCESS_EACH"
+  },
+  "overlay_deployment": "NOT_RUN",
+  "restart": "NOT_RUN",
+  "physical_qualification": "NOT_RUN",
+  "incidents": "OPEN_UNKNOWN_NO_ROOT_CAUSE_OR_FUNCTIONAL_FIX_CLAIM",
+  "workflow_reruns": 0
+}

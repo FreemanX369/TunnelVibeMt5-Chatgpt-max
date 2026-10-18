@@ -1,0 +1,26 @@
+diff --git a/tests/unit/test_tip064_integration.py b/tests/unit/test_tip064_integration.py
+index 5ecac32..31d284c 100644
+--- a/tests/unit/test_tip064_integration.py
++++ b/tests/unit/test_tip064_integration.py
+@@ -1458,10 +1458,17 @@ def test_long_fixture_valid_finite_schedule_requires_aggregate_observation(proje
+         result = request(self, kind, payload)
+         requests.append((kind, time.monotonic() - started))
+         return result
+-    monkeypatch.setattr(NodeJobJournal, 'begin_effect', held_begin)
+-    monkeypatch.setattr(NodeJobJournal, 'complete_effect', held_complete)
+-    monkeypatch.setattr(NodeJobJournal, '_outcome', observed_outcome)
+-    monkeypatch.setattr(NodeRpcProxy, '_request', observed_request)
++    make_runtime = runtime
++    def owned_runtime(*args, **kwargs):
++        created = make_runtime(*args, **kwargs)
++        journal, proxy = created[4], created[2].rpc_proxy
++        monkeypatch.setattr(journal, 'begin_effect', held_begin.__get__(journal))
++        monkeypatch.setattr(journal, 'complete_effect', held_complete.__get__(journal))
++        monkeypatch.setattr(journal, '_outcome', observed_outcome.__get__(journal))
++        monkeypatch.setattr(proxy, '_request', observed_request.__get__(proxy))
++        return created
++    import sys
++    monkeypatch.setattr(sys.modules[__name__], 'runtime', owned_runtime)
+     if seconds == 5:
+         with pytest.raises(pytest.fail.Exception, match='^bounded fixture did not reach expected state$'):
+             run_long_fixture(project_node, composed_service, monkeypatch, seconds=seconds)

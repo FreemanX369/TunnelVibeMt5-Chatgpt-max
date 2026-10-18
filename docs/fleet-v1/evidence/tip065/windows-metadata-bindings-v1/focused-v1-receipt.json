@@ -1,0 +1,44 @@
+{
+  "head": "81d458ffce7a856a94aae3fb2166d0a9943fba7e",
+  "tree": "e1ed18128f047baab88f0c5efa2bc0159289de83",
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit/test_tip065_windows_metadata_bindings.py",
+    "tests/unit/test_tip056_scoped.py",
+    "tests/unit/test_tip056_gateway_capacity.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip065_deployment_preflight.py",
+    "tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+    "tests/unit/test_tip060c_restore.py",
+    "-v",
+    "--tb=short",
+    "--durations=12",
+    "-o",
+    "faulthandler_timeout=90",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-windows-metadata-bindings-20261005/focused-v1.xml"
+  ],
+  "cwd": "/workspace/scratch/1818a0d45fa0/repo",
+  "environment_overrides": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "harness_timeout_seconds": 240,
+  "exit_code": 0,
+  "elapsed_seconds": 13.572,
+  "source_count": 211,
+  "source_unchanged_during_run": true,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "4",
+    "tests": "97",
+    "time": "13.046",
+    "timestamp": "2026-10-05T19:30:06.388611+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "log_sha256": "42bce6c846e62eddc26cacc17fefe3e7f8447f8dab56899e8178ce51020d5db7",
+  "junit_sha256": "db2085014c86ffbc38600c7e8d73cd3b9e2993c9c846b26ec036a4a907fff95c",
+  "physical_qualification": "NOT_RUN"
+}

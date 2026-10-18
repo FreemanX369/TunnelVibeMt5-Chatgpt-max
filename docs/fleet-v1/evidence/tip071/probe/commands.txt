@@ -1,0 +1,5 @@
+Source: /workspace/scratch/b4674f0ac496/tip070-v2-builder at ce621625324a3872faee5302ec27c35b684d5217
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/scratch/b4674f0ac496/tip070-v2-builder/app timeout 30 /workspace/scratch/b4674f0ac496/test-venv/bin/python /workspace/scratch/b4674f0ac496/continuation-20261007/builder-sqlite-probe-v1/probe.py
+stdout/stderr: raw.log
+Process exit: 0
+Owned temporary database and guard only; original source hashes unchanged and git status clean.

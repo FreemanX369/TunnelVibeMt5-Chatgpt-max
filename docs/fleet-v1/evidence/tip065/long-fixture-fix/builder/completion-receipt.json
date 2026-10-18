@@ -1,0 +1,30 @@
+{
+  "parent_head": "30bcc584953b29a8564bff717b3b4d5819a02798",
+  "parent_tree": "b84c1f196461f49e852bb4cc9230a4b4da663bb3",
+  "source_entries": 211,
+  "unchanged_source_entries": 210,
+  "production_files_unchanged": 89,
+  "changed_source_paths": [
+    "tests/unit/test_tip064_integration.py"
+  ],
+  "file_sha256": "9db3aac856ec9f97a54d8582f024fb7f21edf6d2a68f9a33285f814bc076cb1b",
+  "file_bytes": 70547,
+  "original_phase_callback_ast_unchanged": true,
+  "tests": {
+    "focused": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "cleanup-refinement": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "historical_bootstrap_cause": "UNKNOWN",
+  "physical_qualification": "NOT_RUN",
+  "published": false
+}

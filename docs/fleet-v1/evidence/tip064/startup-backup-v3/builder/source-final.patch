@@ -1,0 +1,397 @@
+diff --git a/tests/unit/fleet_gateway_fixture.py b/tests/unit/fleet_gateway_fixture.py
+index ffac57a..e35d61b 100644
+--- a/tests/unit/fleet_gateway_fixture.py
++++ b/tests/unit/fleet_gateway_fixture.py
+@@ -1,7 +1,9 @@
+ """Bounded fixture closure observations; no authority or deadline changes."""
+ from contextlib import contextmanager
+ from pathlib import Path
++from queue import Queue
+ import sys
++import threading
+ 
+ 
+ @contextmanager
+@@ -19,21 +21,47 @@ def stop_gateway_fixture(stopped, thread, failures, *, timeout=3):
+     stopped.set()
+     thread.join(timeout=timeout)
+     if thread.is_alive():
+-        frame, stack = sys._current_frames().get(thread.ident), []
+-        while frame is not None and len(stack) < 12:
+-            stack.append({"file": Path(frame.f_code.co_filename).name,
+-                          "function": frame.f_code.co_name, "line": frame.f_lineno})
+-            frame = frame.f_back
+         error = TimeoutError("GATEWAY_STOP_FIXTURE_TIMEOUT")
+         error.add_note(str({"timeout_seconds": timeout, "server_thread_alive": True,
+-                            "server_failure_count": failures.qsize(), "stack": stack}))
++                            "server_failure_count": failures.qsize(), "stack": gateway_thread_stack(thread)}))
+         raise error
+     if not failures.empty():
+         raise failures.get()
+ 
+ 
++def gateway_thread_stack(thread):
++    frame, stack = sys._current_frames().get(thread.ident), []
++    while frame is not None and len(stack) < 12:
++        stack.append({"file": Path(frame.f_code.co_filename).name,
++                      "function": frame.f_code.co_name, "line": frame.f_lineno})
++        frame = frame.f_back
++    return stack
++
++
+ def close_dispatcher_fixture(agent, dispatcher, pump, *, seconds=10):
+     # A proven empty retained-work set needs no new authenticated request.
+     if dispatcher.has_pending_work():
+         pump(agent, lambda: not dispatcher.has_pending_work(), seconds=seconds)
+     dispatcher.close()
++
++
++def start_gateway_fixture(address, *, certificate, key_file, controller_factory, failures,
++                          startup_timeout=5, stop_timeout=5):
++    from fleet_writer_fixture import wait_gateway_started
++    from vibemql5.fleet.transport import serve_gateway
++    stopped, ready = threading.Event(), Queue()
++    def run():
++        try:
++            serve_gateway(address, certificate=certificate, key_file=key_file,
++                controller_factory=controller_factory, stop_event=stopped, started=ready.put)
++        except BaseException as error:
++            failures.put(error)
++    thread = threading.Thread(target=run, daemon=True)
++    thread.start()
++    try:
++        bound = wait_gateway_started(ready, failures, thread, timeout=startup_timeout)
++    except BaseException:
++        with preserve_fixture_failure():
++            stop_gateway_fixture(stopped, thread, failures, timeout=stop_timeout)
++        raise
++    return stopped, thread, bound
+diff --git a/tests/unit/test_fleet_gateway_fixture.py b/tests/unit/test_fleet_gateway_fixture.py
+index 6d87a12..43c8afd 100644
+--- a/tests/unit/test_fleet_gateway_fixture.py
++++ b/tests/unit/test_fleet_gateway_fixture.py
+@@ -10,7 +10,7 @@ from types import SimpleNamespace
+ import pytest
+ 
+ from fleet_writer_fixture import wait_gateway_started
+-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
++from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
+ from test_tip058b_transport import TOKEN, control_policy, fleet_policy, tls_files
+ from vibemql5.fleet.gateway_control import GatewayControlStore
+ from vibemql5.fleet.transport import GatewayController, HttpsClient, OwnerClient, serve_gateway
+@@ -155,3 +155,59 @@ def test_stop_observer_records_real_gateway_close_stage_and_retains_uncertainty(
+     finally:
+         release.set(); http.server_thread.join(timeout=3)
+         assert not http.server_thread.is_alive() and http.failures.empty()
++
++
++def test_start_observer_preserves_actual_factory_failure_and_closes_thread(tls_files):
++    _, certificate, private = tls_files
++    failures, calls, threads = Queue(), [], []
++    error = ValueError('CONTROLLED_STARTUP_FACTORY_ERROR')
++    def failed_factory(address):
++        calls.append(address)
++        threads.append(threading.current_thread())
++        raise error
++    with pytest.raises(ValueError, match='CONTROLLED_STARTUP_FACTORY_ERROR') as caught:
++        start_gateway_fixture(('127.0.0.1', 0), certificate=certificate, key_file=private,
++            controller_factory=failed_factory, failures=failures)
++    assert caught.value is error and len(calls) == 1
++    assert not threads[0].is_alive() and failures.empty()
++    print('CONTROLLED_FACTORY_EXCEPTION_PRESERVED_THREAD_CLOSED_NO_RETRY')
++
++
++def test_start_timeout_preserves_live_factory_stage_and_cleanup_uncertainty(tmp_path, tls_files, monkeypatch):
++    import fleet_writer_fixture
++    _, certificate, private = tls_files
++    entered, release, failures, threads = threading.Event(), threading.Event(), Queue(), []
++    observer = fleet_writer_fixture.wait_gateway_started
++    def held_factory(address):
++        threads.append(threading.current_thread())
++        entered.set()
++        assert release.wait(timeout=10)
++        store = GatewayControlStore.initialize(tmp_path / 'controlled-start.sqlite', policy=control_policy())
++        return GatewayController(store, fleet_policy(), audience='https://127.0.0.1:' + str(address[1]),
++            owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest())
++    def established_observer(ready, failures, thread, *, timeout):
++        assert entered.wait(timeout=5)
++        return observer(ready, failures, thread, timeout=timeout)
++    monkeypatch.setattr(fleet_writer_fixture, 'wait_gateway_started', established_observer)
++    try:
++        with pytest.raises(BaseExceptionGroup) as caught:
++            start_gateway_fixture(('127.0.0.1', 0), certificate=certificate, key_file=private,
++                controller_factory=held_factory, failures=failures, startup_timeout=.05, stop_timeout=.05)
++        primary, cleanup = caught.value.exceptions
++        assert isinstance(primary, TimeoutError) and str(primary) == 'GATEWAY_STARTUP_FIXTURE_TIMEOUT'
++        assert isinstance(cleanup, TimeoutError) and str(cleanup) == 'GATEWAY_STOP_FIXTURE_TIMEOUT'
++        assert threads[0].is_alive() and failures.empty()
++        for error in (primary, cleanup):
++            note = error.__notes__[0]
++            diagnostic = ast.literal_eval(note)
++            assert diagnostic['server_thread_alive'] is True
++            assert 1 <= len(diagnostic['stack']) <= 12
++            assert any(frame['function'] == 'held_factory' for frame in diagnostic['stack'])
++            assert all('/' not in frame['file'] and '\\' not in frame['file'] for frame in diagnostic['stack'])
++            assert TOKEN not in note and str(tmp_path) not in note
++            print('CONTROLLED_START_AND_STOP_UNCERTAINTY ' + note)
++    finally:
++        release.set()
++        if threads:
++            threads[0].join(timeout=5)
++            assert not threads[0].is_alive() and failures.empty()
+diff --git a/tests/unit/test_tip058b_transport.py b/tests/unit/test_tip058b_transport.py
+index 7062445..1b50244 100644
+--- a/tests/unit/test_tip058b_transport.py
++++ b/tests/unit/test_tip058b_transport.py
+@@ -13,6 +13,7 @@ import time
+ from dataclasses import replace
+ from datetime import datetime, timedelta, timezone
+ from queue import Queue
++from fleet_gateway_fixture import gateway_thread_stack
+ 
+ import pytest
+ from cryptography import x509
+@@ -66,7 +67,8 @@ class FixtureHttpsClient(HttpsClient):
+                 "elapsed_ms": round((time.monotonic() - begun) * 1000),
+                 "http_timeout_ms": self.policy.http_timeout_ms,
+                 "server_thread_alive": self.server_thread.is_alive(),
+-                "server_failure_count": self.failures.qsize(), "cause_stack": stack}))
++                "server_failure_count": self.failures.qsize(), "cause_stack": stack,
++                "server_stack": gateway_thread_stack(self.server_thread)}))
+             raise
+ 
+ def signed(key, body, *, nonce="1"*48, route=1, path="/fleet/v1/heartbeat", origin="https://localhost", timestamp=100):
+@@ -315,6 +317,9 @@ def test_transport_fixture_timeout_can_follow_committed_grant_without_replay(ser
+             assert 1 <= len(diagnostic["cause_stack"]) <= 8
+             assert any(frame["function"] == "getresponse" for frame in diagnostic["cause_stack"])
+             assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["cause_stack"])
++            assert 1 <= len(diagnostic["server_stack"]) <= 12
++            assert any(frame["function"] == "hold_response" for frame in diagnostic["server_stack"])
++            assert all("/" not in frame["file"] and "\\" not in frame["file"] for frame in diagnostic["server_stack"])
+             assert TOKEN not in note and request["public_key"] not in note
+             print(note)
+         finally:
+diff --git a/tests/unit/test_tip060c_https_restore.py b/tests/unit/test_tip060c_https_restore.py
+index ffd4bdc..a8349a4 100644
+--- a/tests/unit/test_tip060c_https_restore.py
++++ b/tests/unit/test_tip060c_https_restore.py
+@@ -3,14 +3,16 @@ import hashlib
+ import base64
+ import copy
+ import shutil
++from dataclasses import replace
++from contextlib import closing
+ from pathlib import Path
+ import pytest
+-import threading
+ import time
+ from queue import Queue
+ 
+ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+ from fleet_writer_fixture import project_node,tls_files,principal_policy,writer_policy
++from fleet_gateway_fixture import start_gateway_fixture
+ from test_tip058b_transport import TOKEN,control_policy,fleet_policy
+ from vibemql5.fleet.domain import DomainJournal,DomainPolicy,GatewayDomain,NodeDomainDispatcher
+ from vibemql5.fleet.gateway_control import GatewayControlStore
+@@ -19,7 +21,7 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal,Transport
+ from vibemql5.fleet.principals import GatewayPrincipalAuthority,PATHS,sign_principal_request
+ from vibemql5.fleet.wire import encode_body, sign_request, WireError
+ from vibemql5.fleet.restore_coordination import RestoreCoordinator,RestorePolicy,DOMAIN
+-from vibemql5.fleet.transport import GatewayController,HttpsClient,OwnerClient,NodeClient,serve_gateway
++from vibemql5.fleet.transport import GatewayController,HttpsClient,OwnerClient,NodeClient
+ from vibemql5.fleet.writers import NodePrincipalRuntime, WriterError, empty_writer_witness
+ from vibemql5.fleet.worktrees import NodeWorktrees
+ from test_tip063_worktrees import git, policy as worktree_policy
+@@ -27,6 +29,12 @@ from vibemql5.adapters.fleet_cli import NodeRuntime
+ from vibemql5.fleet.transport import OutboundNode
+ 
+ 
++def restore_control_policy():
++    # Ordinary consistent backup/restore, like the existing TIP-058A/060C
++    # healthy-backup fixtures; deliberate transport/contention budgets stay.
++    return replace(control_policy(), sqlite_busy_timeout_ms=1000)
++
++
+ @pytest.mark.parametrize("nonempty",[False,True,"worktree","readonly","readonly-inactive"])
+ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(project_node,tls_files,tmp_path,nonempty):
+     ca,certificate,private=tls_files
+@@ -37,19 +45,16 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
+     retained=tmp_path/'retained';retained.mkdir()
+     dp=DomainPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50,max_commands=4,start_authorization_ms=2000)
+     jp=dict(max_records=20,max_payload_bytes=32768,wait_ms=50)
++    cp=restore_control_policy()
+     failures=Queue()
+     def start(factory,address=('127.0.0.1',0)):
+-        stop,ready=threading.Event(),Queue()
+-        def run():
+-            try:serve_gateway(address,certificate=certificate,key_file=private,controller_factory=factory,stop_event=stop,started=ready.put)
+-            except BaseException as error:failures.put(error)
+-        thread=threading.Thread(target=run,daemon=True);thread.start();bound=ready.get(timeout=5)
+-        return stop,thread,bound
++        return start_gateway_fixture(address,certificate=certificate,key_file=private,
++            controller_factory=factory,failures=failures,startup_timeout=5,stop_timeout=5)
+     def controller(control,domains,jobs,principals,origin,recovery=None):
+         return GatewayController(control,fleet_policy(),audience=origin,owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),domain=GatewayDomain(control,domains,jobs,principal_authority=principals,recovery=recovery,start_authorization_ms=2000))
+     def initial(address):
+         origin='https://127.0.0.1:'+str(address[1])
+-        return controller(GatewayControlStore.initialize(original/'control.db',policy=control_policy()),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
++        return controller(GatewayControlStore.initialize(original/'control.db',policy=cp),DomainJournal(original/'domains.db',policy=dp,role='GATEWAY',initialize=True),GatewayJobJournal(original/'jobs.db',initialize=True,**jp),GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy(),initialize=True),origin)
+     stop,thread,address=start(initial);origin='https://127.0.0.1:'+str(address[1]);http=HttpsClient(origin,fleet_policy(),cafile=str(ca));owner=OwnerClient(http,TOKEN)
+     transport=NodeTransportJournal.initialize(tmp_path/'node-transport.db',TransportPolicy(max_records=20,max_payload_bytes=32768,wait_ms=50),device_id=device,public_key=nodekey.public_key().public_bytes_raw().hex(),audience=origin)
+     node=NodeClient(http,nodekey,device,0,transport)
+@@ -101,15 +106,19 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
+         nodedomains.close();stop.set();thread.join(timeout=5)
+     assert not thread.is_alive()
+     if not failures.empty():raise failures.get()
+-    control=GatewayControlStore.open_existing(original/'control.db',policy=control_policy())
+-    snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db');control.close()
+-    jobs=GatewayJobJournal(original/'jobs.db',**jp);mapping=jobs.mapping_sha256();jobs.backup(retained/'jobs-backup.db');jobs.close()
+-    domains=DomainJournal(original/'domains.db',policy=dp,role='GATEWAY');domainhead=domains.control_head();domains.close()
+-    principals=GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy());principalhead=principals.control_head();principals.close()
++
++    with GatewayControlStore.open_existing(original/'control.db',policy=cp) as control:
++        snapshot=control.snapshot();head=control.control_head();control.backup(retained/'control-backup.db')
++    with GatewayJobJournal(original/'jobs.db',**jp) as jobs:
++        mapping=jobs.mapping_sha256();jobs.backup(retained/'jobs-backup.db')
++    with closing(DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')) as domains:
++        domainhead=domains.control_head()
++    with closing(GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())) as principals:
++        principalhead=principals.control_head()
+     facts={'schema':'fleet.quiescent-checkpoint/1','audience':origin,'control_head':head,'control_wall_ms':snapshot['last_wall_ms'],'devices':[{'device_id':device,'public_key':nodekey.public_key().public_bytes_raw().hex(),'route_generation':1,'state':'ACTIVE','registry_sha256':registrysha,'session_id':session,'worktree_head':worktree_head}],'job_export_generation':1,'job_mapping_sha256':mapping,'domain_head':domainhead,'principal_head':principalhead}
+     checkpoint=retained/'checkpoint.json';checkpoint.write_bytes(canonical(facts));scopequeue=Queue()
+     def recovery_service(address):
+-        control=GatewayControlStore.restore(retained/'control-backup.db',restored/'control.db',policy=control_policy())
++        control=GatewayControlStore.restore(retained/'control-backup.db',restored/'control.db',policy=cp)
+         jobs=GatewayJobJournal.restore_backup(retained/'jobs-backup.db',restored/'jobs.db',devices=[device],export_generation=1,**jp)
+         domains=DomainJournal(original/'domains.db',policy=dp,role='GATEWAY')
+         principals=GatewayPrincipalAuthority(original/'principals.json',signing_key=gatewaykey,audience=origin,policy=principal_policy())
+@@ -182,3 +191,44 @@ def test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together(
+         nodejobs.close();nodedomains.close();transport.close();stop.set();thread.join(timeout=5)
+     assert not thread.is_alive()
+     if not failures.empty():raise failures.get()
++
++
++@pytest.mark.parametrize('sqlite_budget_ms', [100, 1000])
++def test_healthy_backup_progress_deadline_is_explicit_and_has_no_sqlite_contention(tmp_path, monkeypatch, sqlite_budget_ms):
++    import sqlite3
++    from types import SimpleNamespace
++    import vibemql5.fleet.gateway_control as control_module
++    events, clock = [], [0.0]
++    policy = control_policy() if sqlite_budget_ms == 100 else restore_control_policy()
++    assert policy.sqlite_busy_timeout_ms == sqlite_budget_ms
++    with GatewayControlStore.initialize(tmp_path / 'control.db', policy=policy) as store:
++        source = store._db
++        class ObservedBackup:
++            def __getattr__(self, name):
++                return getattr(source, name)
++            def backup(self, destination, *, pages, progress, sleep):
++                def observed(status, remaining, total):
++                    events.append({'status': status, 'remaining': remaining})
++                    progress(status, remaining, total)
++                source.backup(destination, pages=pages, progress=observed, sleep=sleep)
++        def delayed_clock():
++            clock[0] += .15
++            return clock[0]
++        destination = tmp_path / 'backup.db'
++        with monkeypatch.context() as fault:
++            fault.setattr(store, '_db', ObservedBackup())
++            fault.setattr(control_module, 'time', SimpleNamespace(monotonic=delayed_clock))
++            if sqlite_budget_ms == 100:
++                with pytest.raises(control_module.GatewayControlError, match='CONTROL_BUSY'):
++                    store.backup(destination)
++                assert not destination.exists()
++            else:
++                assert store.backup(destination)['evidence'] == 'CONSISTENT_SQLITE_SNAPSHOT'
++                assert destination.exists()
++        assert events and all(row == {'status': sqlite3.SQLITE_DONE, 'remaining': 0} for row in events)
++        assert store.snapshot()['revision'] == 1
++        print('CONTROLLED_HEALTHY_BACKUP_PROGRESS ' + str({'sqlite_budget_ms': sqlite_budget_ms,
++            'elapsed_between_clock_reads_ms': 150, 'sqlite_progress': events}))
++    # Independent ownership observation after closure; do not replay backup.
++    with GatewayControlStore.open_existing(tmp_path / 'control.db', policy=policy) as reopened:
++        assert reopened.snapshot()['revision'] == 1
+diff --git a/tests/unit/test_tip064_capacity_https.py b/tests/unit/test_tip064_capacity_https.py
+index 130fb9d..291fe7f 100644
+--- a/tests/unit/test_tip064_capacity_https.py
++++ b/tests/unit/test_tip064_capacity_https.py
+@@ -15,7 +15,7 @@ import pytest
+ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+ 
+ from test_tip058b_transport import TOKEN, control_policy, fleet_policy, positive, tls_files, FixtureHttpsClient
+-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
++from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
+ from test_tip061a_057n import node as project_node, freeze, logical_fixture
+ from test_tip055a_runtime_forensics_identity import ref
+ from test_tip064_integration import domain_policy, pump
+@@ -30,7 +30,7 @@ from vibemql5.fleet.node_transport_journal import NodeTransportJournal, Transpor
+ from vibemql5.fleet.read_broker import ReadBroker
+ from vibemql5.fleet.resources import physical_resources
+ from vibemql5.fleet.scoped_resources import CONFLICT_MATRIX, DOMAIN, ScopedResourceCoordinator, capacity_source_manifest, verify_capacity_roster
+-from vibemql5.fleet.transport import GatewayController, NodeClient, OutboundNode, OwnerClient, serve_gateway
++from vibemql5.fleet.transport import GatewayController, NodeClient, OutboundNode, OwnerClient
+ from vibemql5.fleet.wire import WireError
+ 
+ 
+@@ -70,7 +70,7 @@ def signed_roster(node, owner_key):
+ @pytest.fixture
+ def capacity_service(tmp_path, tls_files):
+     ca, certificate, private = tls_files
+-    stopped, ready, failures = threading.Event(), Queue(), Queue()
++    failures = Queue()
+     signer_key, owner_key = Ed25519PrivateKey.generate(), Ed25519PrivateKey.generate()
+     owner_public = owner_key.public_key().public_bytes_raw().hex()
+     policy = replace(fleet_policy(), max_body_bytes=262144, max_response_bytes=262144)
+@@ -85,13 +85,8 @@ def capacity_service(tmp_path, tls_files):
+             max_authorization_ms=2000), capacity_owner_public_key=owner_public, start_authorization_ms=2000)
+         return GatewayController(control, policy, audience=origin,
+             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(), broker=ReadBroker.for_synthetic_tests(policy), domain=domain)
+-    def run():
+-        try:
+-            serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+-                controller_factory=factory, stop_event=stopped, started=ready.put)
+-        except BaseException as error: failures.put(error)
+-    thread = threading.Thread(target=run, daemon=True); thread.start()
+-    address = ready.get(timeout=5)
++    stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
++        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), policy, cafile=str(ca),
+         server_thread=thread, failures=failures)
+     try:
+diff --git a/tests/unit/test_tip064_integration.py b/tests/unit/test_tip064_integration.py
+index c0e390f..bb03458 100644
+--- a/tests/unit/test_tip064_integration.py
++++ b/tests/unit/test_tip064_integration.py
+@@ -13,7 +13,7 @@ import pytest
+ 
+ from test_tip057rc1 import fixture as local_identity
+ from test_tip058b_transport import control_policy, fleet_policy, tls_files, positive, TOKEN, FixtureHttpsClient
+-from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture
++from fleet_gateway_fixture import preserve_fixture_failure, stop_gateway_fixture, close_dispatcher_fixture, start_gateway_fixture
+ from vibemql5.adapters.fleet_client_tools import FleetClientFacade, FLEET_TOOL_NAMES
+ from vibemql5.adapters.fleet_mcp import create_server
+ from vibemql5.core.facade import ToolFacade
+@@ -348,7 +348,7 @@ from queue import Queue
+ @pytest.fixture
+ def composed_service(tmp_path, tls_files, request):
+     ca, certificate, private = tls_files
+-    stopped, ready, failures = threading.Event(), Queue(), Queue()
++    failures = Queue()
+     signing_key = Ed25519PrivateKey.generate()
+     authorization_ms = getattr(request, "param", 2000)
+     def factory(address):
+@@ -368,13 +368,8 @@ def composed_service(tmp_path, tls_files, request):
+         return GatewayController(store, fleet_policy(), audience=origin,
+             owner_token_sha256=hashlib.sha256(TOKEN.encode()).hexdigest(),
+             broker=ReadBroker.for_synthetic_tests(fleet_policy()), domain=domain)
+-    def run():
+-        try:
+-            serve_gateway(('127.0.0.1', 0), certificate=certificate, key_file=private,
+-                controller_factory=factory, stop_event=stopped, started=ready.put)
+-        except BaseException as error: failures.put(error)
+-    thread = threading.Thread(target=run, daemon=True); thread.start()
+-    address = ready.get(timeout=5)
++    stopped, thread, address = start_gateway_fixture(('127.0.0.1', 0), certificate=certificate,
++        key_file=private, controller_factory=factory, failures=failures, startup_timeout=5, stop_timeout=3)
+     http = FixtureHttpsClient('https://127.0.0.1:' + str(address[1]), fleet_policy(), cafile=str(ca),
+         server_thread=thread, failures=failures)
+     try:

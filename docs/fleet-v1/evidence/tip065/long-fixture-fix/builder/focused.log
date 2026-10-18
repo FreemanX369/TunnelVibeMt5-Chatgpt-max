@@ -1,0 +1,18 @@
+.................................................................        [100%]
+============================= slowest 15 durations =============================
+6.75s call     tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]
+6.42s call     tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]
+2.67s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]
+2.13s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]
+2.11s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]
+1.86s call     tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]
+1.10s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_callback_error_identity_and_cleanup[True-1000]
+1.05s call     tests/unit/test_tip064_integration.py::test_optional_catalog_is_separate_and_does_not_start_service
+0.93s call     tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable
+0.66s setup    tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]
+0.64s call     tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial
+0.64s call     tests/unit/test_tip064_integration.py::test_long_fixture_preserves_callback_error_identity_and_cleanup[False-1000]
+0.51s setup    tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]
+0.41s call     tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack
+0.40s call     tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history
+65 passed in 34.07s

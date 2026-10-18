@@ -1,0 +1,180 @@
+{
+  "schema": "fleet.ci-checkpoint/1",
+  "status": "FAILED_SUPERSEDED_CHECKPOINT",
+  "head_sha": "ebbb56c67d8948b8b8c633b5fdd9739e235073c7",
+  "tree_sha": "e7b2c2d068bae5e08f6fa6948120f85bb3cdce86",
+  "checkout_merge_sha": "7f1cab5ad57674c7080946dd475b43304c646dd8",
+  "merge_vs_source_diff": [],
+  "workflow_runs": [
+    {
+      "id": 37109536416,
+      "name": "Verify TIP-057R-G03-A product ownership foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 13,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536416/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536416/logs",
+      "workflow_id": 373216678
+    },
+    {
+      "id": 37109536260,
+      "name": "Verify TIP-027 Continuity Core",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 185,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536260/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536260/logs",
+      "workflow_id": 357139482
+    },
+    {
+      "id": 37109536338,
+      "name": "Verify TIP-028 Idempotent Bindings",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 184,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536338/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536338/logs",
+      "workflow_id": 357167822
+    },
+    {
+      "id": 37109536298,
+      "name": "Verify TIP-057R-B1 isolated read-worker research build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 9,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536298/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536298/logs",
+      "workflow_id": 373332157
+    },
+    {
+      "id": 37109536251,
+      "name": "Verify TIP-057R-Q1 isolated Windows proof",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 22,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536251/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536251/logs",
+      "workflow_id": 372895546
+    },
+    {
+      "id": 37109536301,
+      "name": "Verify TIP-034 Bootstrap Completeness",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 172,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536301/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536301/logs",
+      "workflow_id": 358366702
+    },
+    {
+      "id": 37109536282,
+      "name": "Verify Fleet v1 integrated source",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536282/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536282/logs",
+      "workflow_id": 373695570
+    },
+    {
+      "id": 37109536274,
+      "name": "Verify TIP-053 Deep Update",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 69,
+      "jobs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536274/jobs",
+      "logs_url": "https://api.github.com/repos/FreemanX369/TunnelVibeMt5-Chatgpt-max/actions/runs/37109536274/logs",
+      "workflow_id": 369987372
+    }
+  ],
+  "workflow_success": 5,
+  "workflow_failed": 3,
+  "platforms": {
+    "linux": {
+      "status": "PASS",
+      "manifest_files": 204,
+      "manifest_matches_frozen_source": true,
+      "source_unchanged": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 0
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0
+        }
+      ],
+      "unit": {
+        "tests": 1126,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 14,
+        "passed": 1112
+      }
+    },
+    "windows": {
+      "status": "FAIL",
+      "manifest_files": 204,
+      "manifest_matches_frozen_source": true,
+      "source_unchanged": true,
+      "cases": [
+        {
+          "case": "full-unit",
+          "exit_code": 124
+        },
+        {
+          "case": "b1-portable",
+          "exit_code": 0
+        },
+        {
+          "case": "q1-harmless",
+          "exit_code": 0
+        },
+        {
+          "case": "g03a-harmless",
+          "exit_code": 0
+        },
+        {
+          "case": "b1-harmless",
+          "exit_code": 0
+        }
+      ]
+    }
+  },
+  "artifact_zip_digest_verified": {
+    "11268224387": {
+      "filename": "github-actions-artifact-11268224387.zip",
+      "sha256": "ef7ffacf0554ac3a7cc6ac16dedc1c07f499071ed8bd7f508ceec94e6dad0c12",
+      "bytes": 39364
+    },
+    "11269087307": {
+      "filename": "github-actions-artifact-11269087307.zip",
+      "sha256": "24f4a480d14a9afd62eb3823ea0d9639a6baf6f1a6ec7d61fd5c012ba4c2c188",
+      "bytes": 212120
+    }
+  },
+  "other_full_windows": {
+    "deep": {
+      "passed": 1110,
+      "failures": 5,
+      "errors": 2,
+      "skipped": 10,
+      "seconds": 455.5
+    },
+    "bootstrap": {
+      "passed": 1110,
+      "failures": 4,
+      "errors": 3,
+      "skipped": 10,
+      "seconds": 420.99
+    }
+  },
+  "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "notes": [
+    "Integrated Windows full-unit exceeded its original300s harness limit and produced no complete JUnit; required portable/Q1/G03A/B1 cases passed.",
+    "Linux actual PowerShell suite passed; Windows remaining failures preserve their original lossless raw logs.",
+    "Follow-up fixture changes and bounded harness budget must be qualified on a new exact source head."
+  ]
+}

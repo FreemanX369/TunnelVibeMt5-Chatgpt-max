@@ -1,0 +1,26 @@
+{
+  "cmd": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip070_sync_test_receipts.py::test_actual_sdk_can_discover_held_invocation_and_read_concurrently",
+    "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip070_sync_test_receipts.py::test_unexpected_error_identity_and_secret_mask_at_actual_sdk",
+    "/workspace/scratch/b4674f0ac496/tip073-candidate/tests/unit/test_tip066_live_diagnostics.py::test_protocol_handler_returns_safe_error_result",
+    "--basetemp=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/mcp-outage-builder/owned-sdk-tmp",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/mcp-outage-builder/owned-sdk-control.junit.xml"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/mcp-outage-builder",
+  "env_overrides": {
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip073-candidate/app",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "timeout_seconds": 45,
+  "exit_code": 0,
+  "wall_seconds": 1.8197088090000761,
+  "owned_local_only": true,
+  "VPS_calls": false,
+  "source_writes": false
+}

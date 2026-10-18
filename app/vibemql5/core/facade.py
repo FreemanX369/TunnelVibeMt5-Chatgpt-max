@@ -25,10 +25,16 @@ from .binary_ingress import BinaryIngressManager
 from .live_terminal import LiveTerminal
 from .live_chart_archive import archive_chart_png
 from .concurrency import ConcurrencyManager, current_actor
+from ..fleet.reads import targeted_read
 from ..runtime_forensics.service import RuntimeForensicsManager
 
 class ToolFacade:
-    def __init__(self, root: Path | None = None):
+    def __init__(self, root: Path | None = None, *, sdk_installation=None):
+        if sdk_installation is not None:
+            from ..fleet.sdk_qualification import QualifiedSdkInstallation, QualificationError
+            if type(sdk_installation) is not QualifiedSdkInstallation:
+                raise QualificationError()
+        self._sdk_installation = sdk_installation
         self.root=Path(root or default_root())
         self.ws=WorkspaceManager(self.root); self.inv=TerminalInventory(self.root); self.jobs=JobManager(self.root)
         self.revisions=RevisionManager(self.root)
@@ -226,10 +232,16 @@ class ToolFacade:
                                                kind=operation, wait_seconds=2):
             return fn(LiveTerminal(self.inv, self._fixed_terminal()))
 
-    def get_terminal_live_state(self):
+    def get_terminal_live_state(self, target=None):
+        if target is not None:
+            return targeted_read(self.root, self.concurrency, "get_terminal_live_state", target,
+                                 sdk_installation=self._sdk_installation)
         return self._observe_live("live_terminal_state", lambda live: live.state())
 
-    def get_account_snapshot(self):
+    def get_account_snapshot(self, target=None):
+        if target is not None:
+            return targeted_read(self.root, self.concurrency, "get_account_snapshot", target,
+                                 sdk_installation=self._sdk_installation)
         return self._observe_live("live_account_snapshot", lambda live: live.state())
 
     def list_live_charts(self):

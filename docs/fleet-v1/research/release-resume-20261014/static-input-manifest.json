@@ -1,0 +1,111 @@
+{
+  "status": "STATIC_ONLY_NO_TESTS",
+  "canonical_head": "bdeec841b819af3752cb4df24a6019a0cdca61f2",
+  "files": [
+    {
+      "file": "observer.py",
+      "sha256": "23c2a87ddc44aab12e9bd22553c93593efa80a778e22750f4330392b8d97655b",
+      "bytes": 12638
+    },
+    {
+      "file": "controls.py",
+      "sha256": "3b08077308b224303b82dafdd25708bcd057a95758fa33ab426750a814c83b3b",
+      "bytes": 5829
+    },
+    {
+      "file": "run_diagnostic.py",
+      "sha256": "8af2a457a3ac828a4637aaa0ee80cf53448a6ce44566b687531f862476f2dac5",
+      "bytes": 7046
+    },
+    {
+      "file": "README.md",
+      "sha256": "9884f5aaa7a997da82276edec52fa6c463ef059ed4559998575abb67986c0437",
+      "bytes": 6653
+    },
+    {
+      "file": "verify-release-resume-diagnostic.yml",
+      "sha256": "6923e7341a52bffce2c2f64e2067a83fb6263fbba60c8616202f2e361084f1d8",
+      "bytes": 1365
+    }
+  ],
+  "binding_static_checks": [
+    {
+      "file": "domain.py",
+      "class": "NodeDomainDispatcher",
+      "methods": [
+        "__init__",
+        "dispatch_async",
+        "_native_work",
+        "close"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "job_journal.py",
+      "class": "NodeJobJournal",
+      "methods": [
+        "execute",
+        "observe_result",
+        "_outcome",
+        "begin_effect"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "native_authorization.py",
+      "class": "NativeAuthorizationVerifier",
+      "methods": [
+        "verify"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "principals.py",
+      "class": "GatewayPrincipalAuthority",
+      "methods": [
+        "authorize_node"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "transport.py",
+      "class": "NodeRpcProxy",
+      "methods": [
+        "start_authorize",
+        "writers_authorize"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "transport.py",
+      "class": "NodeClient",
+      "methods": [
+        "start_authorize",
+        "writers_authorize"
+      ],
+      "ast_found": true
+    },
+    {
+      "file": "writers.py",
+      "class": "NodePrincipalRuntime",
+      "methods": [
+        "recheck_phase"
+      ],
+      "ast_found": true
+    }
+  ],
+  "expected_control_count": null,
+  "static_control_estimate": 10,
+  "collection_status": "NOT_RUN",
+  "control_function_names": [
+    "test_default_plugin_has_no_application_import_or_mutation",
+    "test_observer_preserves_original_return_and_single_predicate_read",
+    "test_observer_preserves_exception_identity_cause_context_notes",
+    "test_privacy_caps_and_original_grant_fields_only",
+    "test_diagnostic_record_failure_does_not_replace_original_outcome",
+    "test_unknown_code_and_error_strings_are_not_rendered",
+    "test_broken_exception_attributes_do_not_mask_original",
+    "test_selected_hook_output_write_failure_restores_binding_and_original_calls",
+    "test_binding_failure_blocks_original_and_restores_partial_patch"
+  ]
+}

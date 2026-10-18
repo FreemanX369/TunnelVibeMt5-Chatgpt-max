@@ -1,0 +1,46 @@
+[
+  {
+    "artifact_id": 11326261210,
+    "proof": "tip057rb1-portable/summary.json",
+    "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "verified_sources": 15,
+    "executed": 39,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0
+  },
+  {
+    "artifact_id": 11326261210,
+    "proof": "tip057rb1-windows/summary.json",
+    "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "verified_sources": 15,
+    "executed": 10,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0
+  },
+  {
+    "artifact_id": 11325543248,
+    "proof": "summary.json",
+    "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "verified_sources": 8,
+    "executed": 8,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0
+  },
+  {
+    "artifact_id": 11326620055,
+    "proof": "summary.json",
+    "status": "FIXTURE_PASS_Q03_OPEN",
+    "head": "fe199eb110cbba83a26491d90ddc14830cdc9e17",
+    "verified_sources": 4,
+    "executed": 16,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0
+  }
+]

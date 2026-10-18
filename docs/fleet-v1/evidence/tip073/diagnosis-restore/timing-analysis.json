@@ -1,0 +1,1604 @@
+{
+  "TIP072-windows": {
+    "started": 1205,
+    "finished": 1204,
+    "outcomes": {
+      "PASSED": 1193,
+      "SKIPPED": 10,
+      "FAILED": 1
+    },
+    "elapsed_finished_ms": 597250,
+    "sum_test_ms": 591396,
+    "median_test_ms": 77.0,
+    "p95_test_ms": 2531,
+    "slowest": [
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 480624,
+        "test_elapsed_ms": 19952,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_symlink_worktree_destination_and_source_denied",
+        "ordinal": 1123,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 379171,
+        "test_elapsed_ms": 15390,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_symlink_worktree_destination_and_source_denied"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_control_returns_while_workers_held_past_old_aggregate",
+        "ordinal": 1151,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 511124,
+        "test_elapsed_ms": 12859,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1150,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 498249,
+        "test_elapsed_ms": 12655,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1147,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 460671,
+        "test_elapsed_ms": 12093,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_read_only_recovery_head_binds_closed_steps_and_clean_git",
+        "ordinal": 1138,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 440874,
+        "test_elapsed_ms": 10109,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_read_only_recovery_head_binds_closed_steps_and_clean_git"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+        "ordinal": 1199,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 578015,
+        "test_elapsed_ms": 9500,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable"
+      },
+      {
+        "file": "tests/unit/test_tip060c_restore.py",
+        "function": "test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen",
+        "ordinal": 961,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 180531,
+        "test_elapsed_ms": 9125,
+        "nodeid": "tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen"
+      },
+      {
+        "file": "tests/unit/test_tip060c_restore.py",
+        "function": "test_reapproval_cannot_change_scope_or_trusted_key",
+        "ordinal": 970,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 201858,
+        "test_elapsed_ms": 8922,
+        "nodeid": "tests/unit/test_tip060c_restore.py::test_reapproval_cannot_change_scope_or_trusted_key[challenge]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1152,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 519500,
+        "test_elapsed_ms": 8375,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed",
+        "ordinal": 1158,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 551797,
+        "test_elapsed_ms": 8312,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed",
+        "ordinal": 1157,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 543484,
+        "test_elapsed_ms": 8172,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[record]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_real_git_prepare_commit_retire_preserves_main_and_session",
+        "ordinal": 1098,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 297234,
+        "test_elapsed_ms": 7187,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_real_git_prepare_commit_retire_preserves_main_and_session"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1153,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 526500,
+        "test_elapsed_ms": 7000,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[True]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_matching_git_head_without_durable_closure_remains_unknown",
+        "ordinal": 1136,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 428844,
+        "test_elapsed_ms": 6985,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_matching_git_head_without_durable_closure_remains_unknown"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_primary_late_callback_and_cleanup_keep_original_union",
+        "ordinal": 1154,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 533390,
+        "test_elapsed_ms": 6890,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_primary_late_callback_and_cleanup_keep_original_union"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_repository_hooks_overridden_by_empty_directory",
+        "ordinal": 1122,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 363781,
+        "test_elapsed_ms": 6656,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_repository_hooks_overridden_by_empty_directory"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_actual_tls_inventory_discovery_read_project_and_production_native_denial",
+        "ordinal": 1191,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 568500,
+        "test_elapsed_ms": 6655,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack",
+        "ordinal": 1200,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 584265,
+        "test_elapsed_ms": 6250,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_ignored_untracked_bytes_block_retirement",
+        "ordinal": 1134,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 419999,
+        "test_elapsed_ms": 5671,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_ignored_untracked_bytes_block_retirement"
+      }
+    ],
+    "file_aggregate_ms": {
+      "tests/unit/test_tip063_worktrees.py": 158499,
+      "tests/unit/test_tip064_capacity_https.py": 103198,
+      "tests/unit/test_tip061a_057n.py": 46678,
+      "tests/unit/test_tip064_integration.py": 45439,
+      "tests/unit/test_tip060c_restore.py": 43133,
+      "tests/unit/test_tip061b_writers.py": 28727,
+      "tests/unit/test_tip060_journal.py": 21547,
+      "tests/unit/test_tip058a_gateway_control.py": 12664,
+      "tests/unit/test_tip060c_https_restore.py": 10918,
+      "tests/unit/test_tip054_windows_health_guards.py": 10817,
+      "tests/unit/test_tip057n_qualification.py": 10412,
+      "tests/unit/test_tip058b_transport.py": 9536,
+      "tests/unit/test_tip057r_sdk.py": 9074,
+      "tests/unit/test_tip057rg03a_native_ownership.py": 8988,
+      "tests/unit/test_tip060_historical.py": 6495,
+      "tests/unit/test_tip024_multiclient_concurrency.py": 6450,
+      "tests/unit/test_tip027_continuity.py": 5460,
+      "tests/unit/test_tip057rc1.py": 5421,
+      "tests/unit/test_tip061b_absence.py": 4822,
+      "tests/unit/test_tip040_live_vps.py": 3885,
+      "tests/unit/test_tip061b_principals.py": 3651,
+      "tests/unit/test_fleet_source_progress.py": 3543,
+      "tests/unit/test_tip056_signed_roster.py": 3374,
+      "tests/unit/test_tip055b_runtime_forensics_release.py": 3347,
+      "tests/unit/test_tip056_scoped.py": 2899,
+      "tests/unit/test_tip026_binary_ingress.py": 2870,
+      "tests/unit/test_tip056_resources.py": 2591,
+      "tests/unit/test_tip055a_runtime_forensics_identity.py": 2296,
+      "tests/unit/test_fleet_gateway_fixture.py": 1699,
+      "tests/unit/test_tip060c_node_transport.py": 1526,
+      "tests/unit/test_tip026r1_widget_ingress.py": 1246,
+      "tests/unit/test_tip054_deep_audit_guards.py": 1179,
+      "tests/unit/test_tip021r_remediation.py": 1167,
+      "tests/unit/test_tip039_generic_powershell.py": 1154,
+      "tests/unit/test_tip023_cancel_recovery.py": 1133,
+      "tests/unit/test_tip057n_windows_owned_process.py": 968,
+      "tests/unit/test_tip028_idempotent_bindings.py": 950,
+      "tests/unit/test_tip056_gateway_capacity.py": 843,
+      "tests/unit/test_tip025_export_provenance.py": 496,
+      "tests/unit/test_tip014_project_sessions.py": 373,
+      "tests/unit/test_tip043_chart_delivery.py": 280,
+      "tests/unit/test_tip044_chart_export.py": 279,
+      "tests/unit/test_tip040_live_terminal.py": 261,
+      "tests/unit/test_tip060_artifacts.py": 179,
+      "tests/unit/test_tip036_workspace_c.py": 153,
+      "tests/unit/test_tip016_deploy_contract.py": 125,
+      "tests/unit/test_fleet_source_runner.py": 122,
+      "tests/unit/test_tip022f_file_export.py": 122,
+      "tests/unit/test_tip012_recovery.py": 76,
+      "tests/unit/test_backend_restore_cas.py": 62,
+      "tests/unit/test_tip013_resilience.py": 61,
+      "tests/unit/test_tip047_049_backend_contracts.py": 60,
+      "tests/unit/test_tip033_actual_defects.py": 30,
+      "tests/unit/test_tip060_authorization.py": 29,
+      "tests/unit/test_tip011b_runtime_refresh.py": 15,
+      "tests/unit/test_tip038_tunnel_poll_diagnostics.py": 15,
+      "tests/unit/test_tip050_market_data.py": 15,
+      "tests/unit/test_tip052_metrics.py": 15,
+      "tests/unit/test_tip059_read_broker.py": 15,
+      "tests/unit/test_tip048_retention.py": 14,
+      "UNLITERAL": 0,
+      "tests/unit/test_tip015_provenance.py": 0,
+      "tests/unit/test_tip015c_deploy_contract.py": 0,
+      "tests/unit/test_tip017_deploy_contract.py": 0,
+      "tests/unit/test_tip018_deploy_contract.py": 0,
+      "tests/unit/test_tip019_deploy_contract.py": 0,
+      "tests/unit/test_tip053_catalog.py": 0
+    },
+    "segments": [
+      {
+        "ordinals": [
+          1,
+          300
+        ],
+        "finished": 300,
+        "sum_ms": 32131
+      },
+      {
+        "ordinals": [
+          301,
+          600
+        ],
+        "finished": 300,
+        "sum_ms": 52348
+      },
+      {
+        "ordinals": [
+          601,
+          900
+        ],
+        "finished": 300,
+        "sum_ms": 38779
+      },
+      {
+        "ordinals": [
+          901,
+          1000
+        ],
+        "finished": 100,
+        "sum_ms": 78105
+      },
+      {
+        "ordinals": [
+          1001,
+          1100
+        ],
+        "finished": 100,
+        "sum_ms": 95521
+      },
+      {
+        "ordinals": [
+          1101,
+          1204
+        ],
+        "finished": 104,
+        "sum_ms": 294512
+      },
+      {
+        "ordinals": [
+          1205,
+          1432
+        ],
+        "finished": 0,
+        "sum_ms": 0
+      }
+    ]
+  },
+  "TIP072-linux": {
+    "started": 1432,
+    "finished": 1432,
+    "outcomes": {
+      "PASSED": 1414,
+      "SKIPPED": 18
+    },
+    "elapsed_finished_ms": 161544,
+    "sum_test_ms": 156181,
+    "median_test_ms": 9.0,
+    "p95_test_ms": 497,
+    "slowest": [
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 100363,
+        "test_elapsed_ms": 10180,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1223,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 133469,
+        "test_elapsed_ms": 6240,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1222,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 127228,
+        "test_elapsed_ms": 6184,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip070_sync_test_receipts.py",
+        "function": "test_actual_subprocess_result_and_timeout_are_receipted",
+        "ordinal": 1343,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 159636,
+        "test_elapsed_ms": 5013,
+        "nodeid": "tests/unit/test_tip070_sync_test_receipts.py::test_actual_subprocess_result_and_timeout_are_receipted[timeout]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_control_returns_while_workers_held_past_old_aggregate",
+        "ordinal": 1151,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 107493,
+        "test_elapsed_ms": 3055,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1150,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 104437,
+        "test_elapsed_ms": 2555,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1227,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 138523,
+        "test_elapsed_ms": 2046,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_worker_failure_released_by_cleanup",
+        "ordinal": 1230,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 144265,
+        "test_elapsed_ms": 2005,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[True-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant",
+        "ordinal": 1206,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 118007,
+        "test_elapsed_ms": 1993,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1226,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 136476,
+        "test_elapsed_ms": 1988,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1228,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 140437,
+        "test_elapsed_ms": 1913,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_worker_failure_released_by_cleanup",
+        "ordinal": 1229,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 142259,
+        "test_elapsed_ms": 1821,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[False-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_callback_signed_expiry_keeps_exact_finite_observation",
+        "ordinal": 1217,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 119554,
+        "test_elapsed_ms": 1530,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_callback_signed_expiry_keeps_exact_finite_observation[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1149,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 101881,
+        "test_elapsed_ms": 1517,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip054_windows_health_guards.py",
+        "function": "test_json_reader_retries_only_bounded_sharing_errors",
+        "ordinal": 319,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 17305,
+        "test_elapsed_ms": 1445,
+        "nodeid": "tests/unit/test_tip054_windows_health_guards.py::test_json_reader_retries_only_bounded_sharing_errors[32-1-False-False-2-7]"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_slow_fragmented_headers_cannot_renew_total_budget",
+        "ordinal": 816,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 55325,
+        "test_elapsed_ms": 1237,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_slow_fragmented_headers_cannot_renew_total_budget"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1147,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 90182,
+        "test_elapsed_ms": 1230,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect",
+        "ordinal": 812,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 53562,
+        "test_elapsed_ms": 1167,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_transport_fixture_timeout_can_follow_committed_grant_without_replay",
+        "ordinal": 811,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 52394,
+        "test_elapsed_ms": 1135,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_transport_fixture_timeout_can_follow_committed_grant_without_replay"
+      },
+      {
+        "file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py",
+        "function": "test_real_busy_retained_traceback_holds_a_closed_connection",
+        "ordinal": 1387,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 161050,
+        "test_elapsed_ms": 1009,
+        "nodeid": "tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection"
+      }
+    ],
+    "file_aggregate_ms": {
+      "tests/unit/test_tip064_integration.py": 32626,
+      "tests/unit/test_tip064_capacity_https.py": 22749,
+      "tests/unit/test_tip054_windows_health_guards.py": 21361,
+      "tests/unit/test_tip063_worktrees.py": 16438,
+      "tests/unit/test_tip066_live_diagnostics.py": 9007,
+      "tests/unit/test_tip058b_transport.py": 5996,
+      "tests/unit/test_tip070_sync_test_receipts.py": 5427,
+      "tests/unit/test_tip061a_057n.py": 4602,
+      "tests/unit/test_tip040_live_vps.py": 3871,
+      "tests/unit/test_tip057rg03a_native_ownership.py": 3500,
+      "tests/unit/test_tip061b_writers.py": 3238,
+      "tests/unit/test_tip060_journal.py": 2696,
+      "tests/unit/test_fleet_source_progress.py": 2613,
+      "tests/unit/test_tip058a_gateway_control.py": 2590,
+      "tests/unit/test_tip060c_https_restore.py": 2114,
+      "tests/unit/test_fleet_gateway_fixture.py": 1686,
+      "tests/unit/test_tip057n_qualification.py": 1633,
+      "tests/unit/test_tip060c_restore.py": 1354,
+      "tests/unit/test_tip056_resources.py": 1082,
+      "tests/unit/test_tip071_scoped_db_setup_cleanup.py": 1062,
+      "tests/unit/test_tip055a_runtime_forensics_identity.py": 1058,
+      "tests/unit/test_tip057rc1.py": 931,
+      "tests/unit/test_tip024_multiclient_concurrency.py": 659,
+      "tests/unit/test_tip056_scoped.py": 603,
+      "tests/unit/test_tip056_signed_roster.py": 599,
+      "tests/unit/test_tip064_writer_resolution_https.py": 576,
+      "tests/unit/test_tip060_historical.py": 560,
+      "tests/unit/test_tip055b_runtime_forensics_release.py": 533,
+      "tests/unit/test_tip061b_principals.py": 432,
+      "tests/unit/test_tip065_deployment_preflight.py": 415,
+      "tests/unit/test_tip072_native_denied_publication.py": 414,
+      "tests/unit/test_tip021r_remediation.py": 371,
+      "tests/unit/test_tip060c_node_transport.py": 360,
+      "tests/unit/test_tip026_binary_ingress.py": 300,
+      "tests/unit/test_tip057r_sdk.py": 293,
+      "tests/unit/test_tip027_continuity.py": 285,
+      "tests/unit/test_tip061b_absence.py": 243,
+      "tests/unit/test_tip044_chart_export.py": 240,
+      "tests/unit/test_tip028_idempotent_bindings.py": 207,
+      "tests/unit/test_tip040_live_terminal.py": 195,
+      "tests/unit/test_tip043_chart_delivery.py": 164,
+      "tests/unit/test_tip054_deep_audit_guards.py": 154,
+      "tests/unit/test_tip026r1_widget_ingress.py": 135,
+      "tests/unit/test_tip025_export_provenance.py": 124,
+      "tests/unit/test_tip023_cancel_recovery.py": 108,
+      "tests/unit/test_tip056_gateway_capacity.py": 106,
+      "tests/unit/test_tip065_windows_metadata_bindings.py": 88,
+      "tests/unit/test_tip016_deploy_contract.py": 60,
+      "tests/unit/test_tip014_project_sessions.py": 50,
+      "tests/unit/test_tip039_generic_powershell.py": 48,
+      "tests/unit/test_tip060_artifacts.py": 38,
+      "tests/unit/test_backend_restore_cas.py": 23,
+      "tests/unit/test_tip036_workspace_c.py": 21,
+      "tests/unit/test_tip013_resilience.py": 20,
+      "tests/unit/test_fleet_source_runner.py": 18,
+      "tests/unit/test_tip060_authorization.py": 17,
+      "tests/unit/test_tip012_recovery.py": 15,
+      "tests/unit/test_tip022f_file_export.py": 15,
+      "tests/unit/test_tip059_read_broker.py": 14,
+      "tests/unit/test_tip047_049_backend_contracts.py": 12,
+      "tests/unit/test_tip011b_runtime_refresh.py": 7,
+      "tests/unit/test_tip033_actual_defects.py": 6,
+      "tests/unit/test_tip048_retention.py": 6,
+      "tests/unit/test_tip050_market_data.py": 6,
+      "tests/unit/test_tip038_tunnel_poll_diagnostics.py": 4,
+      "tests/unit/test_tip052_metrics.py": 2,
+      "tests/unit/test_tip015_provenance.py": 1,
+      "UNLITERAL": 0,
+      "tests/unit/test_tip015c_deploy_contract.py": 0,
+      "tests/unit/test_tip017_deploy_contract.py": 0,
+      "tests/unit/test_tip018_deploy_contract.py": 0,
+      "tests/unit/test_tip019_deploy_contract.py": 0,
+      "tests/unit/test_tip053_catalog.py": 0,
+      "tests/unit/test_tip057n_windows_owned_process.py": 0
+    },
+    "segments": [
+      {
+        "ordinals": [
+          1,
+          300
+        ],
+        "finished": 300,
+        "sum_ms": 11272
+      },
+      {
+        "ordinals": [
+          301,
+          600
+        ],
+        "finished": 300,
+        "sum_ms": 28006
+      },
+      {
+        "ordinals": [
+          601,
+          900
+        ],
+        "finished": 300,
+        "sum_ms": 13062
+      },
+      {
+        "ordinals": [
+          901,
+          1000
+        ],
+        "finished": 100,
+        "sum_ms": 6654
+      },
+      {
+        "ordinals": [
+          1001,
+          1100
+        ],
+        "finished": 100,
+        "sum_ms": 9613
+      },
+      {
+        "ordinals": [
+          1101,
+          1204
+        ],
+        "finished": 104,
+        "sum_ms": 42022
+      },
+      {
+        "ordinals": [
+          1205,
+          1432
+        ],
+        "finished": 228,
+        "sum_ms": 45552
+      }
+    ]
+  },
+  "TIP071-windows": {
+    "started": 1401,
+    "finished": 1401,
+    "outcomes": {
+      "PASSED": 1388,
+      "FAILED": 1,
+      "SKIPPED": 12
+    },
+    "elapsed_finished_ms": 465405,
+    "sum_test_ms": 460031,
+    "median_test_ms": 77,
+    "p95_test_ms": 1484,
+    "slowest": [
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 314297,
+        "test_elapsed_ms": 13594,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1223,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 401359,
+        "test_elapsed_ms": 10812,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1222,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 390547,
+        "test_elapsed_ms": 9891,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_callback_original_survives_unknown_and_armed_scope",
+        "ordinal": 1153,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 342750,
+        "test_elapsed_ms": 9640,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[True]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_control_state_cannot_be_selected_as_worktree_root",
+        "ordinal": 1137,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 283078,
+        "test_elapsed_ms": 9155,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_control_state_cannot_be_selected_as_worktree_root"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_read_only_recovery_head_binds_closed_steps_and_clean_git",
+        "ordinal": 1138,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 291109,
+        "test_elapsed_ms": 8031,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_read_only_recovery_head_binds_closed_steps_and_clean_git"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_control_returns_while_workers_held_past_old_aggregate",
+        "ordinal": 1151,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 329688,
+        "test_elapsed_ms": 6703,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1150,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 322968,
+        "test_elapsed_ms": 6234,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]"
+      },
+      {
+        "file": "tests/unit/test_tip070_sync_test_receipts.py",
+        "function": "test_actual_subprocess_result_and_timeout_are_receipted",
+        "ordinal": 1343,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 454922,
+        "test_elapsed_ms": 5031,
+        "nodeid": "tests/unit/test_tip070_sync_test_receipts.py::test_actual_subprocess_result_and_timeout_are_receipted[timeout]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1147,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 300703,
+        "test_elapsed_ms": 5000,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_matching_git_head_without_durable_closure_remains_unknown",
+        "ordinal": 1136,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 273922,
+        "test_elapsed_ms": 4969,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_matching_git_head_without_durable_closure_remains_unknown"
+      },
+      {
+        "file": "tests/unit/test_tip060c_https_restore.py",
+        "function": "test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together",
+        "ordinal": 938,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 134515,
+        "test_elapsed_ms": 4875,
+        "nodeid": "tests/unit/test_tip060c_https_restore.py::test_actual_https_full_journal_checkpoint_and_signed_witness_clear_together[worktree]"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_real_git_prepare_commit_retire_preserves_main_and_session",
+        "ordinal": 1098,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 197938,
+        "test_elapsed_ms": 4843,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_real_git_prepare_commit_retire_preserves_main_and_session"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_primary_late_callback_and_cleanup_keep_original_union",
+        "ordinal": 1154,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 347030,
+        "test_elapsed_ms": 4280,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_primary_late_callback_and_cleanup_keep_original_union"
+      },
+      {
+        "file": "tests/unit/test_tip063_worktrees.py",
+        "function": "test_exact_crash_reopen_recovers_without_duplicate_git_effect",
+        "ordinal": 1113,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 229015,
+        "test_elapsed_ms": 4077,
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_exact_crash_reopen_recovers_without_duplicate_git_effect[commit:after_effect]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1226,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 410563,
+        "test_elapsed_ms": 3844,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1228,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 417859,
+        "test_elapsed_ms": 3671,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip024_multiclient_concurrency.py",
+        "function": "test_tip024_health_and_diagnose_publish_concurrency_contract",
+        "ordinal": 150,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 23515,
+        "test_elapsed_ms": 3656,
+        "nodeid": "tests/unit/test_tip024_multiclient_concurrency.py::test_tip024_health_and_diagnose_publish_concurrency_contract"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1227,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 414188,
+        "test_elapsed_ms": 3625,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip061a_057n.py",
+        "function": "test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision",
+        "ordinal": 1049,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 171500,
+        "test_elapsed_ms": 3609,
+        "nodeid": "tests/unit/test_tip061a_057n.py::test_two_prepared_scoped_producers_overlap_and_pinned_old_candidate_survives_new_revision"
+      }
+    ],
+    "file_aggregate_ms": {
+      "tests/unit/test_tip063_worktrees.py": 102531,
+      "tests/unit/test_tip064_integration.py": 70603,
+      "tests/unit/test_tip064_capacity_https.py": 59184,
+      "tests/unit/test_tip061a_057n.py": 31694,
+      "tests/unit/test_tip060_journal.py": 18675,
+      "tests/unit/test_tip066_live_diagnostics.py": 15212,
+      "tests/unit/test_tip070_sync_test_receipts.py": 12755,
+      "tests/unit/test_tip061b_writers.py": 12135,
+      "tests/unit/test_tip058a_gateway_control.py": 10153,
+      "tests/unit/test_tip060c_https_restore.py": 10092,
+      "tests/unit/test_tip054_windows_health_guards.py": 8742,
+      "tests/unit/test_tip057n_qualification.py": 8302,
+      "tests/unit/test_tip060c_restore.py": 8301,
+      "tests/unit/test_tip057rg03a_native_ownership.py": 8243,
+      "tests/unit/test_tip058b_transport.py": 7987,
+      "tests/unit/test_tip065_deployment_preflight.py": 6804,
+      "tests/unit/test_fleet_source_progress.py": 6525,
+      "tests/unit/test_tip057rc1.py": 5799,
+      "tests/unit/test_tip024_multiclient_concurrency.py": 5276,
+      "tests/unit/test_tip060_historical.py": 4167,
+      "tests/unit/test_tip040_live_vps.py": 3883,
+      "tests/unit/test_tip056_signed_roster.py": 3103,
+      "tests/unit/test_tip055b_runtime_forensics_release.py": 3032,
+      "tests/unit/test_tip071_scoped_db_setup_cleanup.py": 3023,
+      "tests/unit/test_tip056_resources.py": 2450,
+      "tests/unit/test_tip056_scoped.py": 2416,
+      "tests/unit/test_tip026_binary_ingress.py": 2322,
+      "tests/unit/test_tip055a_runtime_forensics_identity.py": 2266,
+      "tests/unit/test_tip064_writer_resolution_https.py": 1780,
+      "tests/unit/test_tip027_continuity.py": 1741,
+      "tests/unit/test_tip061b_absence.py": 1665,
+      "tests/unit/test_tip057r_sdk.py": 1655,
+      "tests/unit/test_tip054_deep_audit_guards.py": 1620,
+      "tests/unit/test_fleet_gateway_fixture.py": 1467,
+      "tests/unit/test_tip061b_principals.py": 1310,
+      "tests/unit/test_tip014_project_sessions.py": 1262,
+      "tests/unit/test_tip060c_node_transport.py": 1183,
+      "tests/unit/test_fleet_source_runner.py": 1121,
+      "tests/unit/test_tip026r1_widget_ingress.py": 1014,
+      "tests/unit/test_tip021r_remediation.py": 1011,
+      "tests/unit/test_tip023_cancel_recovery.py": 929,
+      "tests/unit/test_tip057n_windows_owned_process.py": 873,
+      "tests/unit/test_tip039_generic_powershell.py": 858,
+      "tests/unit/test_tip056_gateway_capacity.py": 687,
+      "tests/unit/test_tip013_resilience.py": 545,
+      "tests/unit/test_tip012_recovery.py": 513,
+      "tests/unit/test_tip025_export_provenance.py": 511,
+      "tests/unit/test_tip028_idempotent_bindings.py": 465,
+      "tests/unit/test_tip011b_runtime_refresh.py": 375,
+      "tests/unit/test_tip043_chart_delivery.py": 281,
+      "tests/unit/test_tip044_chart_export.py": 279,
+      "tests/unit/test_tip040_live_terminal.py": 263,
+      "tests/unit/test_tip060_artifacts.py": 197,
+      "tests/unit/test_tip022f_file_export.py": 138,
+      "tests/unit/test_tip016_deploy_contract.py": 125,
+      "tests/unit/test_tip065_windows_metadata_bindings.py": 108,
+      "tests/unit/test_tip036_workspace_c.py": 75,
+      "tests/unit/test_backend_restore_cas.py": 63,
+      "tests/unit/test_tip047_049_backend_contracts.py": 61,
+      "tests/unit/test_tip060_authorization.py": 31,
+      "tests/unit/test_tip048_retention.py": 30,
+      "UNLITERAL": 16,
+      "tests/unit/test_tip038_tunnel_poll_diagnostics.py": 16,
+      "tests/unit/test_tip050_market_data.py": 16,
+      "tests/unit/test_tip015c_deploy_contract.py": 15,
+      "tests/unit/test_tip033_actual_defects.py": 15,
+      "tests/unit/test_tip017_deploy_contract.py": 14,
+      "tests/unit/test_tip052_metrics.py": 14,
+      "tests/unit/test_tip059_read_broker.py": 14,
+      "tests/unit/test_tip015_provenance.py": 0,
+      "tests/unit/test_tip018_deploy_contract.py": 0,
+      "tests/unit/test_tip019_deploy_contract.py": 0,
+      "tests/unit/test_tip053_catalog.py": 0
+    },
+    "segments": [
+      {
+        "ordinals": [
+          1,
+          300
+        ],
+        "finished": 300,
+        "sum_ms": 31239
+      },
+      {
+        "ordinals": [
+          301,
+          600
+        ],
+        "finished": 300,
+        "sum_ms": 40102
+      },
+      {
+        "ordinals": [
+          601,
+          900
+        ],
+        "finished": 300,
+        "sum_ms": 31635
+      },
+      {
+        "ordinals": [
+          901,
+          1000
+        ],
+        "finished": 100,
+        "sum_ms": 38873
+      },
+      {
+        "ordinals": [
+          1001,
+          1100
+        ],
+        "finished": 100,
+        "sum_ms": 53524
+      },
+      {
+        "ordinals": [
+          1101,
+          1204
+        ],
+        "finished": 104,
+        "sum_ms": 167653
+      },
+      {
+        "ordinals": [
+          1205,
+          1432
+        ],
+        "finished": 197,
+        "sum_ms": 97005
+      }
+    ]
+  },
+  "TIP071-linux": {
+    "started": 1401,
+    "finished": 1401,
+    "outcomes": {
+      "PASSED": 1383,
+      "SKIPPED": 18
+    },
+    "elapsed_finished_ms": 122079,
+    "sum_test_ms": 118770,
+    "median_test_ms": 6,
+    "p95_test_ms": 350,
+    "slowest": [
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1148,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 73810,
+        "test_elapsed_ms": 9442,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1223,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 100890,
+        "test_elapsed_ms": 5992,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation",
+        "ordinal": 1222,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 94898,
+        "test_elapsed_ms": 5949,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[5-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip070_sync_test_receipts.py",
+        "function": "test_actual_subprocess_result_and_timeout_are_receipted",
+        "ordinal": 1343,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 120767,
+        "test_elapsed_ms": 5010,
+        "nodeid": "tests/unit/test_tip070_sync_test_receipts.py::test_actual_subprocess_result_and_timeout_are_receipted[timeout]"
+      },
+      {
+        "file": "tests/unit/test_tip054_windows_health_guards.py",
+        "function": "test_json_reader_retries_only_bounded_sharing_errors",
+        "ordinal": 319,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 16120,
+        "test_elapsed_ms": 4487,
+        "nodeid": "tests/unit/test_tip054_windows_health_guards.py::test_json_reader_retries_only_bounded_sharing_errors[32-1-False-False-2-7]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_control_returns_while_workers_held_past_old_aggregate",
+        "ordinal": 1151,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 79729,
+        "test_elapsed_ms": 2620,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1150,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 77108,
+        "test_elapsed_ms": 1953,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_worker_failure_released_by_cleanup",
+        "ordinal": 1229,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 108262,
+        "test_elapsed_ms": 1707,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[False-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1227,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 104886,
+        "test_elapsed_ms": 1679,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[pytest_failure-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1228,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 106554,
+        "test_elapsed_ms": 1667,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[timeout-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant",
+        "ordinal": 1206,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 86713,
+        "test_elapsed_ms": 1629,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_long_fixture_step_completes_then_receives_fresh_next_phase_grant[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_wrapper_failure_after_terminal_ack",
+        "ordinal": 1226,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 103206,
+        "test_elapsed_ms": 1621,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_wrapper_failure_after_terminal_ack[error-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_fixture_preserves_worker_failure_released_by_cleanup",
+        "ordinal": 1230,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 109827,
+        "test_elapsed_ms": 1564,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_fixture_preserves_worker_failure_released_by_cleanup[True-1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_integration.py",
+        "function": "test_long_callback_signed_expiry_keeps_exact_finite_observation",
+        "ordinal": 1217,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 88072,
+        "test_elapsed_ms": 1350,
+        "nodeid": "tests/unit/test_tip064_integration.py::test_long_callback_signed_expiry_keeps_exact_finite_observation[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_capacity_positive_profile_delayed_durable_registration_has_no_retry",
+        "ordinal": 1149,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 75154,
+        "test_elapsed_ms": 1343,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[1000]"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_slow_fragmented_headers_cannot_renew_total_budget",
+        "ordinal": 816,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 41697,
+        "test_elapsed_ms": 1198,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_slow_fragmented_headers_cannot_renew_total_budget"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_transport_fixture_timeout_can_follow_committed_grant_without_replay",
+        "ordinal": 811,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 39188,
+        "test_elapsed_ms": 1073,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_transport_fixture_timeout_can_follow_committed_grant_without_replay"
+      },
+      {
+        "file": "tests/unit/test_tip058b_transport.py",
+        "function": "test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect",
+        "ordinal": 812,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 40247,
+        "test_elapsed_ms": 1058,
+        "nodeid": "tests/unit/test_tip058b_transport.py::test_transport_timeout_during_pending_grant_commit_retains_one_durable_effect"
+      },
+      {
+        "file": "tests/unit/test_tip071_scoped_db_setup_cleanup.py",
+        "function": "test_real_busy_retained_traceback_holds_a_closed_connection",
+        "ordinal": 1387,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 122043,
+        "test_elapsed_ms": 1007,
+        "nodeid": "tests/unit/test_tip071_scoped_db_setup_cleanup.py::test_real_busy_retained_traceback_holds_a_closed_connection"
+      },
+      {
+        "file": "tests/unit/test_tip064_capacity_https.py",
+        "function": "test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued",
+        "ordinal": 1147,
+        "outcome": "PASSED",
+        "stage": "FINISH",
+        "suite_elapsed_ms": 64367,
+        "test_elapsed_ms": 752,
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]"
+      }
+    ],
+    "file_aggregate_ms": {
+      "tests/unit/test_tip064_integration.py": 27673,
+      "tests/unit/test_tip064_capacity_https.py": 18699,
+      "tests/unit/test_tip054_windows_health_guards.py": 17155,
+      "tests/unit/test_tip063_worktrees.py": 10390,
+      "tests/unit/test_tip070_sync_test_receipts.py": 5238,
+      "tests/unit/test_tip066_live_diagnostics.py": 4891,
+      "tests/unit/test_tip058b_transport.py": 4834,
+      "tests/unit/test_tip040_live_vps.py": 3872,
+      "tests/unit/test_tip061a_057n.py": 2937,
+      "tests/unit/test_tip057rg03a_native_ownership.py": 2381,
+      "tests/unit/test_tip061b_writers.py": 2252,
+      "tests/unit/test_tip060_journal.py": 1949,
+      "tests/unit/test_fleet_source_progress.py": 1925,
+      "tests/unit/test_tip058a_gateway_control.py": 1720,
+      "tests/unit/test_tip060c_https_restore.py": 1424,
+      "tests/unit/test_tip071_scoped_db_setup_cleanup.py": 1067,
+      "tests/unit/test_tip057rc1.py": 929,
+      "tests/unit/test_tip057n_qualification.py": 881,
+      "tests/unit/test_tip060c_restore.py": 880,
+      "tests/unit/test_fleet_gateway_fixture.py": 812,
+      "tests/unit/test_tip055a_runtime_forensics_identity.py": 653,
+      "tests/unit/test_tip024_multiclient_concurrency.py": 631,
+      "tests/unit/test_tip056_resources.py": 629,
+      "tests/unit/test_tip055b_runtime_forensics_release.py": 438,
+      "tests/unit/test_tip056_scoped.py": 390,
+      "tests/unit/test_tip021r_remediation.py": 382,
+      "tests/unit/test_tip060_historical.py": 349,
+      "tests/unit/test_tip064_writer_resolution_https.py": 317,
+      "tests/unit/test_tip056_signed_roster.py": 304,
+      "tests/unit/test_tip061b_principals.py": 265,
+      "tests/unit/test_tip026_binary_ingress.py": 255,
+      "tests/unit/test_tip065_deployment_preflight.py": 246,
+      "tests/unit/test_tip060c_node_transport.py": 234,
+      "tests/unit/test_tip027_continuity.py": 199,
+      "tests/unit/test_tip044_chart_export.py": 193,
+      "tests/unit/test_tip057r_sdk.py": 179,
+      "tests/unit/test_tip061b_absence.py": 146,
+      "tests/unit/test_tip065_windows_metadata_bindings.py": 133,
+      "tests/unit/test_tip028_idempotent_bindings.py": 116,
+      "tests/unit/test_tip026r1_widget_ingress.py": 104,
+      "tests/unit/test_tip040_live_terminal.py": 99,
+      "tests/unit/test_tip054_deep_audit_guards.py": 98,
+      "tests/unit/test_tip043_chart_delivery.py": 83,
+      "tests/unit/test_tip056_gateway_capacity.py": 73,
+      "tests/unit/test_tip023_cancel_recovery.py": 69,
+      "tests/unit/test_tip025_export_provenance.py": 64,
+      "tests/unit/test_tip016_deploy_contract.py": 42,
+      "tests/unit/test_tip014_project_sessions.py": 33,
+      "tests/unit/test_tip039_generic_powershell.py": 33,
+      "tests/unit/test_tip060_artifacts.py": 24,
+      "tests/unit/test_backend_restore_cas.py": 12,
+      "tests/unit/test_tip036_workspace_c.py": 11,
+      "tests/unit/test_fleet_source_runner.py": 9,
+      "tests/unit/test_tip013_resilience.py": 9,
+      "tests/unit/test_tip012_recovery.py": 8,
+      "tests/unit/test_tip022f_file_export.py": 8,
+      "tests/unit/test_tip047_049_backend_contracts.py": 7,
+      "tests/unit/test_tip011b_runtime_refresh.py": 3,
+      "tests/unit/test_tip033_actual_defects.py": 3,
+      "tests/unit/test_tip048_retention.py": 3,
+      "tests/unit/test_tip038_tunnel_poll_diagnostics.py": 2,
+      "tests/unit/test_tip050_market_data.py": 2,
+      "tests/unit/test_tip052_metrics.py": 1,
+      "tests/unit/test_tip059_read_broker.py": 1,
+      "tests/unit/test_tip060_authorization.py": 1,
+      "UNLITERAL": 0,
+      "tests/unit/test_tip015_provenance.py": 0,
+      "tests/unit/test_tip015c_deploy_contract.py": 0,
+      "tests/unit/test_tip017_deploy_contract.py": 0,
+      "tests/unit/test_tip018_deploy_contract.py": 0,
+      "tests/unit/test_tip019_deploy_contract.py": 0,
+      "tests/unit/test_tip053_catalog.py": 0,
+      "tests/unit/test_tip057n_windows_owned_process.py": 0
+    },
+    "segments": [
+      {
+        "ordinals": [
+          1,
+          300
+        ],
+        "finished": 300,
+        "sum_ms": 8990
+      },
+      {
+        "ordinals": [
+          301,
+          600
+        ],
+        "finished": 300,
+        "sum_ms": 21520
+      },
+      {
+        "ordinals": [
+          601,
+          900
+        ],
+        "finished": 300,
+        "sum_ms": 9519
+      },
+      {
+        "ordinals": [
+          901,
+          1000
+        ],
+        "finished": 100,
+        "sum_ms": 4562
+      },
+      {
+        "ordinals": [
+          1001,
+          1100
+        ],
+        "finished": 100,
+        "sum_ms": 6426
+      },
+      {
+        "ordinals": [
+          1101,
+          1204
+        ],
+        "finished": 104,
+        "sum_ms": 30759
+      },
+      {
+        "ordinals": [
+          1205,
+          1432
+        ],
+        "finished": 197,
+        "sum_ms": 36994
+      }
+    ]
+  },
+  "shared_case_comparison": {
+    "shared": 1204,
+    "current_sum_ms": 591396,
+    "previous_sum_ms": 363026,
+    "biggest_deltas": [
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_symlink_worktree_destination_and_source_denied",
+        "current_ms": 15390,
+        "previous_ms": 2750,
+        "delta_ms": 12640,
+        "linux_ms": 534
+      },
+      {
+        "nodeid": "tests/unit/test_tip060c_restore.py::test_transport_replay_denied_and_full_signed_bundle_reverified_on_reopen",
+        "current_ms": 9125,
+        "previous_ms": 358,
+        "delta_ms": 8767,
+        "linux_ms": 57
+      },
+      {
+        "nodeid": "tests/unit/test_tip060c_restore.py::test_reapproval_cannot_change_scope_or_trusted_key[challenge]",
+        "current_ms": 8922,
+        "previous_ms": 389,
+        "delta_ms": 8533,
+        "linux_ms": 48
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[normal]",
+        "current_ms": 12093,
+        "previous_ms": 5000,
+        "delta_ms": 7093,
+        "linux_ms": 1230
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_blocked_native_keeps_heartbeat_status_cancel_and_lost_ack_durable",
+        "current_ms": 9500,
+        "previous_ms": 2639,
+        "delta_ms": 6861,
+        "linux_ms": 828
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[5000]",
+        "current_ms": 12655,
+        "previous_ms": 6234,
+        "delta_ms": 6421,
+        "linux_ms": 2555
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_actual_tls_verified_two_slot_delivery_keeps_control_live_and_conflicting_third_queued[delayed-release-and-completion]",
+        "current_ms": 19952,
+        "previous_ms": 13594,
+        "delta_ms": 6358,
+        "linux_ms": 10180
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_control_returns_while_workers_held_past_old_aggregate",
+        "current_ms": 12859,
+        "previous_ms": 6703,
+        "delta_ms": 6156,
+        "linux_ms": 3055
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_callback_original_survives_unknown_and_armed_scope[False]",
+        "current_ms": 8375,
+        "previous_ms": 3421,
+        "delta_ms": 4954,
+        "linux_ms": 841
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[capture_failure]",
+        "current_ms": 8312,
+        "previous_ms": 3422,
+        "delta_ms": 4890,
+        "linux_ms": 765
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_repository_hooks_overridden_by_empty_directory",
+        "current_ms": 6656,
+        "previous_ms": 1875,
+        "delta_ms": 4781,
+        "linux_ms": 355
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_inventory_discovery_read_project_and_production_native_denial",
+        "current_ms": 6655,
+        "previous_ms": 1906,
+        "delta_ms": 4749,
+        "linux_ms": 732
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_scope_broken_diagnostic_and_restore_keep_original_unknown_and_armed[record]",
+        "current_ms": 8172,
+        "previous_ms": 3500,
+        "delta_ms": 4672,
+        "linux_ms": 796
+      },
+      {
+        "nodeid": "tests/unit/test_tip060c_restore.py::test_uncertain_or_changed_witness_cannot_clear_recovery[challenge]",
+        "current_ms": 4875,
+        "previous_ms": 328,
+        "delta_ms": 4547,
+        "linux_ms": 49
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack",
+        "current_ms": 6250,
+        "previous_ms": 2000,
+        "delta_ms": 4250,
+        "linux_ms": 570
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_node_startup_replacement_session_preserves_inactive_writer_and_recovers_only_history",
+        "current_ms": 5422,
+        "previous_ms": 1594,
+        "delta_ms": 3828,
+        "linux_ms": 539
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_ignored_untracked_bytes_block_retirement",
+        "current_ms": 5671,
+        "previous_ms": 2281,
+        "delta_ms": 3390,
+        "linux_ms": 353
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_malformed_or_cross_record_journal_fails_finitely[request]",
+        "current_ms": 5031,
+        "previous_ms": 2062,
+        "delta_ms": 2969,
+        "linux_ms": 430
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_primary_late_callback_and_cleanup_keep_original_union",
+        "current_ms": 6890,
+        "previous_ms": 4280,
+        "delta_ms": 2610,
+        "linux_ms": 796
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_capacity_https.py::test_capacity_positive_profile_delayed_durable_registration_has_no_retry[1000]",
+        "current_ms": 4969,
+        "previous_ms": 2437,
+        "delta_ms": 2532,
+        "linux_ms": 1517
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_malformed_or_cross_record_journal_fails_finitely[signed-request]",
+        "current_ms": 4577,
+        "previous_ms": 2093,
+        "delta_ms": 2484,
+        "linux_ms": 430
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_malformed_or_cross_record_journal_fails_finitely[receipt]",
+        "current_ms": 4547,
+        "previous_ms": 2077,
+        "delta_ms": 2470,
+        "linux_ms": 398
+      },
+      {
+        "nodeid": "tests/unit/test_tip061a_057n.py::test_terminal_closure_is_historical_bound_and_read_only_after_normal_lease_return",
+        "current_ms": 4750,
+        "previous_ms": 2281,
+        "delta_ms": 2469,
+        "linux_ms": 287
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_valid_shaped_changed_receipt_cannot_disagree_with_writer_ack",
+        "current_ms": 4500,
+        "previous_ms": 2078,
+        "delta_ms": 2422,
+        "linux_ms": 414
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_real_git_prepare_commit_retire_preserves_main_and_session",
+        "current_ms": 7187,
+        "previous_ms": 4843,
+        "delta_ms": 2344,
+        "linux_ms": 790
+      },
+      {
+        "nodeid": "tests/unit/test_tip064_integration.py::test_actual_cli_initial_pair_and_node_once_never_prints_pair_secret[lost_ack]",
+        "current_ms": 3125,
+        "previous_ms": 843,
+        "delta_ms": 2282,
+        "linux_ms": 231
+      },
+      {
+        "nodeid": "tests/unit/test_tip054_windows_health_guards.py::test_json_reader_retries_only_bounded_sharing_errors[32-1-False-False-2-7]",
+        "current_ms": 3405,
+        "previous_ms": 1141,
+        "delta_ms": 2264,
+        "linux_ms": 1445
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_malformed_or_cross_record_journal_fails_finitely[owner]",
+        "current_ms": 4172,
+        "previous_ms": 2031,
+        "delta_ms": 2141,
+        "linux_ms": 365
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_malformed_or_cross_record_journal_fails_finitely[body]",
+        "current_ms": 4171,
+        "previous_ms": 2047,
+        "delta_ms": 2124,
+        "linux_ms": 399
+      },
+      {
+        "nodeid": "tests/unit/test_tip063_worktrees.py::test_native_git_path_variants_use_canonical_filesystem_comparison",
+        "current_ms": 4108,
+        "previous_ms": 1985,
+        "delta_ms": 2123,
+        "linux_ms": 354
+      }
+    ]
+  }
+}

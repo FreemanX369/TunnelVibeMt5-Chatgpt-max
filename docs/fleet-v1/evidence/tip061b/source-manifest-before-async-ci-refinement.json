@@ -1,0 +1,50 @@
+{
+  "schema": "fleet.source-manifest/1",
+  "scope": "tip061b",
+  "source_status": "SOURCE_COMPLETE",
+  "platform": "Linux portable source tests",
+  "physical_qualification": "DEFERRED",
+  "files": [
+    {
+      "path": "app/vibemql5/fleet/principals.py",
+      "bytes": 56836,
+      "sha256": "5c58fa48871dd9b8d9b53686f41089c40596d0f74347d84336f05a3679a0e84b"
+    },
+    {
+      "path": "app/vibemql5/fleet/writers.py",
+      "bytes": 36088,
+      "sha256": "dc2f6620cb8f3d19d2fca6f250b7e9c93d57594f419cd0381328609177886987"
+    },
+    {
+      "path": "tests/unit/fleet_writer_fixture.py",
+      "bytes": 5198,
+      "sha256": "1c19d59e1c97c8fd66b282d88bbf4829ef83cae8ff6ec982989381e6f1940d5e"
+    },
+    {
+      "path": "tests/unit/test_tip061b_principals.py",
+      "bytes": 4768,
+      "sha256": "a3f42ecbe024d6929b040e3608f3e1263ebbe18401d0efc327793940e6965a5f"
+    },
+    {
+      "path": "tests/unit/test_tip061b_writers.py",
+      "bytes": 11843,
+      "sha256": "680e93d8804c63943106bee255106e330c5364025301d10ee4012c42bb545c93"
+    },
+    {
+      "path": "tests/unit/test_tip064_writer_resolution_https.py",
+      "bytes": 6715,
+      "sha256": "c71b4552f1fce6e8b73fd6832aa3e826e2d97645cef59085827626b1fb2c3ecd"
+    },
+    {
+      "path": "tests/unit/test_tip061b_absence.py",
+      "bytes": 5465,
+      "sha256": "cde5c0f5eda1f5dad1631662f151daa0669ac557c8a18f018453ed5a0493a0d5"
+    },
+    {
+      "path": "docs/fleet-v1/TIP-061B-completion.md",
+      "bytes": 5608,
+      "sha256": "e15ae495ec6ae0ddf8f7d0e6c1a04abb20dc0bf520029f579427977780d03b85"
+    }
+  ],
+  "refinement_note": "Current shared test fixture hashes after numeric IPv4/IP-SAN loopback refinement. Previous manifests and original test receipts remain retained; canonical integrated CI is pending."
+}

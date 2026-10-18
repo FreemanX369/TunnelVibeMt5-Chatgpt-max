@@ -1,0 +1,196 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/b4674f0ac496/tip072-builder
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 31 items
+
+tests/unit/test_tip072_native_denied_publication.py::test_live_owner_denial_keeps_ticket_and_owner_as_barrier 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_live_owner_denial_keeps_ticket_and_owner_as_barrier", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 100, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_live_owner_denial_keeps_ticket_and_owner_as_barrier PASSED [  3%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_live_owner_denial_keeps_ticket_and_owner_as_barrier", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 108, "test_elapsed_ms": 8}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_preserves_fifo_until_owner_releases 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_preserves_fifo_until_owner_releases", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 109, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_preserves_fifo_until_owner_releases PASSED [  6%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_preserves_fifo_until_owner_releases", "ordinal": 2, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 167, "test_elapsed_ms": 57}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_keeps_original_zero_wait_deadline 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_keeps_original_zero_wait_deadline", "ordinal": 3, "stage": "START", "suite_elapsed_ms": 170, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_qualified_denial_keeps_original_zero_wait_deadline PASSED [  9%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_qualified_denial_keeps_original_zero_wait_deadline", "ordinal": 3, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 178, "test_elapsed_ms": 7}
+
+tests/unit/test_tip072_native_denied_publication.py::test_real_existing_owner_and_successful_release_are_unchanged 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_real_existing_owner_and_successful_release_are_unchanged", "ordinal": 4, "stage": "START", "suite_elapsed_ms": 179, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_real_existing_owner_and_successful_release_are_unchanged PASSED [ 12%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_real_existing_owner_and_successful_release_are_unchanged", "ordinal": 4, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 188, "test_elapsed_ms": 9}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[missing] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 5, "stage": "START", "suite_elapsed_ms": 189, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[missing] PASSED [ 16%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 5, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 194, "test_elapsed_ms": 5}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[corrupt] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 6, "stage": "START", "suite_elapsed_ms": 194, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[corrupt] PASSED [ 19%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 6, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 199, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[foreign] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 7, "stage": "START", "suite_elapsed_ms": 199, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[foreign] PASSED [ 22%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 7, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 204, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[schema] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 8, "stage": "START", "suite_elapsed_ms": 204, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[schema] PASSED [ 25%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 8, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 209, "test_elapsed_ms": 5}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-id] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 9, "stage": "START", "suite_elapsed_ms": 210, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-id] PASSED [ 29%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 9, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 218, "test_elapsed_ms": 7}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[blank-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 10, "stage": "START", "suite_elapsed_ms": 218, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[blank-token] PASSED [ 32%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 10, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 224, "test_elapsed_ms": 5}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 11, "stage": "START", "suite_elapsed_ms": 224, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-token] PASSED [ 35%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 11, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 228, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[own-token] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 12, "stage": "START", "suite_elapsed_ms": 228, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[own-token] PASSED [ 38%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 12, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 232, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-text] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 13, "stage": "START", "suite_elapsed_ms": 232, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-text] PASSED [ 41%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 13, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 237, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-bool] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 14, "stage": "START", "suite_elapsed_ms": 237, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-bool] PASSED [ 45%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 14, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 243, "test_elapsed_ms": 6}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-zero] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 15, "stage": "START", "suite_elapsed_ms": 244, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-zero] PASSED [ 48%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 15, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 248, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-mismatch] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 16, "stage": "START", "suite_elapsed_ms": 248, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[pid-mismatch] PASSED [ 51%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 16, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 253, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-id] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 17, "stage": "START", "suite_elapsed_ms": 253, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[invalid-id] PASSED [ 54%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 17, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 257, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[read-denied] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 18, "stage": "START", "suite_elapsed_ms": 257, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[read-denied] PASSED [ 58%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 18, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 261, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[stat-denied] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 19, "stage": "START", "suite_elapsed_ms": 262, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[stat-denied] PASSED [ 61%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 19, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 265, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[unobserved] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 20, "stage": "START", "suite_elapsed_ms": 266, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[unobserved] PASSED [ 64%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 20, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 270, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[dead-owner] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 21, "stage": "START", "suite_elapsed_ms": 270, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[dead-owner] PASSED [ 67%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 21, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 350, "test_elapsed_ms": 79}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-error] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 22, "stage": "START", "suite_elapsed_ms": 351, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-error] PASSED [ 70%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 22, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 356, "test_elapsed_ms": 5}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-root] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 23, "stage": "START", "suite_elapsed_ms": 356, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[wrong-root] PASSED [ 74%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 23, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 360, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[non-native] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 24, "stage": "START", "suite_elapsed_ms": 360, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[non-native] PASSED [ 77%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 24, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 364, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[symlink-stat] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 25, "stage": "START", "suite_elapsed_ms": 364, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[symlink-stat] PASSED [ 80%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 25, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 368, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[reparse-stat] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 26, "stage": "START", "suite_elapsed_ms": 368, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[reparse-stat] PASSED [ 83%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 26, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 372, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[ancestor-alias] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 27, "stage": "START", "suite_elapsed_ms": 372, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[ancestor-alias] PASSED [ 87%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 27, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 376, "test_elapsed_ms": 3}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[other-errno] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 28, "stage": "START", "suite_elapsed_ms": 376, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_unqualified_denial_keeps_original_error_and_owner[other-errno] PASSED [ 90%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_unqualified_denial_keeps_original_error_and_owner", "ordinal": 28, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 380, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_actual_bad_path_does_not_become_owner_wait 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_actual_bad_path_does_not_become_owner_wait", "ordinal": 29, "stage": "START", "suite_elapsed_ms": 380, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_actual_bad_path_does_not_become_owner_wait PASSED [ 93%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_actual_bad_path_does_not_become_owner_wait", "ordinal": 29, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 382, "test_elapsed_ms": 1}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[active] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 30, "stage": "START", "suite_elapsed_ms": 382, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[active] PASSED [ 96%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 30, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 387, "test_elapsed_ms": 4}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[unknown] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 31, "stage": "START", "suite_elapsed_ms": 387, "test_elapsed_ms": 0}
+
+tests/unit/test_tip072_native_denied_publication.py::test_authority_blocks_before_denied_publication[unknown] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip072_native_denied_publication.py", "function": "test_authority_blocks_before_denied_publication", "ordinal": 31, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 394, "test_elapsed_ms": 6}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/fix-20261007-1439/tip072-builder/focused.junit.xml -
+============================== 31 passed in 0.38s ==============================

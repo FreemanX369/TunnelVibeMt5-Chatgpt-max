@@ -1,0 +1,192 @@
+{
+  "schema": "fleet.synthetic-abi-original-equivalence/1",
+  "scope": "SYNTHETIC_WINDOWS_ABI_NOT_PHYSICAL",
+  "original_function_sha256": "e768afad23e5d51aab2bb8a3935be6b678dc6e0aad87138f196e73d33e58f755",
+  "proposed_prototype_sha256": "051ee13bdc175668f96e3326debdbd64c5cb7c192fcc62d1e9e0ec7d62705367",
+  "product_before_sha256": "ee7eb40be9d15135aab9b02232b6c20cb978a77b017a8fe1b68ef00938b1241c",
+  "product_after_sha256": "ee7eb40be9d15135aab9b02232b6c20cb978a77b017a8fe1b68ef00938b1241c",
+  "product_unchanged": true,
+  "cases": [
+    {
+      "case": "ordinary",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "different-handle",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "changed",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "query-failure-18",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "query-failure-0",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "query-failure-1",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-0",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-1",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-2",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-3",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-4",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [
+        18,
+        0,
+        1
+      ],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "invalid-descriptor",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "query_classes": [],
+      "trace_equivalent": true,
+      "field_types_sizes_offsets_equivalent": true,
+      "last_error_behavior_equivalent": true
+    },
+    {
+      "case": "warm-sequence-0",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "trace_equivalent": true,
+      "new_binding_loads": 1
+    },
+    {
+      "case": "warm-sequence-1",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "trace_equivalent": true,
+      "new_binding_loads": 0
+    },
+    {
+      "case": "warm-sequence-2",
+      "status": "PASS",
+      "outcome": "RETURNED",
+      "trace_equivalent": true,
+      "new_binding_loads": 0
+    },
+    {
+      "case": "warm-sequence-3",
+      "status": "PASS",
+      "outcome": "RAISED",
+      "trace_equivalent": true,
+      "new_binding_loads": 0
+    }
+  ],
+  "case_count": 16,
+  "status": "PASS",
+  "timing_effect": "UNMEASURED",
+  "historical_causes": "OPEN"
+}

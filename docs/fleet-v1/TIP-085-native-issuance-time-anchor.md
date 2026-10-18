@@ -1,0 +1,16 @@
+# TIP085 native issuance time anchor
+
+The signed 1000ms authorization lifetime now begins after the gateway has acquired its journal lock and checked the current event graph, route, key, readiness and durable clock floors. Previously the request-entry timestamp could age before signing; the published TIP084 Bootstrap failure observed 1027ms before the fixture's intentional 1.2s compile-expiry hold.
+
+The controller supplies two trusted, owner-thread callbacks to the native/start domain path. The clock callback reads the current route and existing control head, observes a preliminary original wall-clock sample durably, then takes a final original wall/monotonic sample immediately before returning to the original signer. The final sample must satisfy request-entry, preliminary, durable-control and existing-receipt issuance floors, session validity and request skew. Successful NEW authorization introduces no durable commit between this final sample and signing. The existing FULL grant/effect commit still completes before delivery.
+
+The journal checks existing receipt issuance floors under its original lock and transaction using Python receipt decoding. There is no new schema, metadata, wire field or SQLite JSON1 dependency. The domain requires both trusted callbacks for native/start. Missing, noncallable or failing callbacks fail closed. Both callbacks absent remains the explicitly documented deterministic direct-Python journal API using mandatory now_ms; production native/start never uses this compatibility mode.
+
+OLD receipts refresh admission time after their binding/history checks. Valid replay returns the exact original signed receipt without signing again; expired replay refuses it. Replay and denial retain the final observation in the existing control store so reopening after clock rollback cannot resurrect an expired receipt. Signing/commit failure also retains final time. Retention is attempted once; a secondary retention failure preserves both original exceptions, including identity, cause and notes, in a bounded exception group.
+
+The 1000ms proof lifetime, fixture maximum 2000ms, production clocks, admission checks, durability, HTTP budgets and full-suite cap600 remain unchanged. Genuine delay after signing can still expire a proof. There is no renewal, retry, re-signing, new skip or TTL waiver.
+
+Qualification used frozen external parent/candidate controls with a real 1.2s pre-sign hold, a genuine 1.05s post-sign hold, original compile-expiry assertions, replay/restart rollback, late admission guards and exception controls. Builder and independent Root each passed all27 controls. Production adds26 cases; the parent-only old-code counter remains external. All1585 original case identities, ordering and skip sets must be preserved. The six staged paths are three application modules, one test module and these two documents. Workflows, dependencies and original unit files are unchanged.
+
+The local focused195 cap300 and full1611 cap600 runs use retries0, ten-second heartbeats, explicit PIDs and terminal receipts. The accompanying Builder CompletionReport records actual outcomes, exact payload hashes and tree. Publication requires independent Root verification and fresh eight-check source CI. Runtime deployment and physical qualification remain separate.
+

@@ -1,0 +1,81 @@
+{
+  "schema": "tip073.long-fixture-diagnosis-manifest/1",
+  "parent_head": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "files": [
+    {
+      "name": "baseline-command.json",
+      "bytes": 529,
+      "sha256": "6a3e80a6b4e2d9834d4f799435c91493c234bd98348aaf3ed1160760eea6536d"
+    },
+    {
+      "name": "baseline.junit.xml",
+      "bytes": 566,
+      "sha256": "df3614808bc80d91cbbe02eabea472abb9ba9a584932add6251f6fe83b162d01"
+    },
+    {
+      "name": "baseline.log",
+      "bytes": 99,
+      "sha256": "dfa67c59cb1705bb5b534229e39684fca1a6fc8ca0ee03b37ec1f97095cc1693"
+    },
+    {
+      "name": "bootstrap-unavailable-command.json",
+      "bytes": 484,
+      "sha256": "25ec942ebd09da5e5aa1a8858761e7c6e96695b8ee5500a65914f671ebe8ab97"
+    },
+    {
+      "name": "bootstrap-unavailable.log",
+      "bytes": 97,
+      "sha256": "51f5550d86043279227c92b72199d4ee1f66d30623405f70c98442058ffe76c7"
+    },
+    {
+      "name": "causal-review.md",
+      "bytes": 5684,
+      "sha256": "516edd7ef5fd219b7d8457a74ecdbbf4b8466fcadd3680e893a223db1a47958d"
+    },
+    {
+      "name": "causal_gate_plugin.py",
+      "bytes": 3719,
+      "sha256": "887172ed1d28c3f47f319e2bdf330d45ac5b7336b378a123879e8756bf689a2e"
+    },
+    {
+      "name": "modeled-causal-command.json",
+      "bytes": 764,
+      "sha256": "977498c5c4af9bf2519718e7b991418aaef2abb9f08319caf69fa63f0a66c6c5"
+    },
+    {
+      "name": "modeled-causal.json",
+      "bytes": 2029,
+      "sha256": "9849abd46e5ea7db45c64fe25e9d2231217e1e4d0c2f02e0b2be929b72a4235a"
+    },
+    {
+      "name": "modeled-causal.junit.xml",
+      "bytes": 7365,
+      "sha256": "7f3b4ab19c643e71bad29598df9c682ac2303d1a3f5d449aafffb5b371d234bc"
+    },
+    {
+      "name": "modeled-causal.log",
+      "bytes": 13533,
+      "sha256": "f1aa7abfde767a8bd939a323c1ba4714915f413405ff991c5155c434f1eb199b"
+    },
+    {
+      "name": "original-deep-excerpt.raw.log",
+      "bytes": 19246,
+      "sha256": "ed692ab4c07eded0b53d8f137bc006bde4e2fbcb157ec5e3b5c8635e006ac5a4"
+    },
+    {
+      "name": "source-after.json",
+      "bytes": 30482,
+      "sha256": "5d2106d2d803f55e6f6a3238c7baffd5d30b4776ef5fb85450793122b0455aa2"
+    },
+    {
+      "name": "source-before.json",
+      "bytes": 30482,
+      "sha256": "5d2106d2d803f55e6f6a3238c7baffd5d30b4776ef5fb85450793122b0455aa2"
+    },
+    {
+      "name": "summary.json",
+      "bytes": 458,
+      "sha256": "b1851712376afbbcc0b297a3dd52bf107c18a7d036d940c6faaa4a1ca5f0116e"
+    }
+  ]
+}

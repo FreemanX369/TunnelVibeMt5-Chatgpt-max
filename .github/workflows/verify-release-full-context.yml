@@ -1,0 +1,176 @@
+name: Research release full unit context
+
+on:
+  pull_request:
+    branches: [feat/fleet-v1-continuous-source-20261003]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-full-context:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+      TIP077_AUTHORIZATION_SCOPE_PROBE: '1'
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      PYTEST_ADDOPTS: '-o junit_logging=system-out -o junit_log_passing_tests=True'
+      PYTEST_PLUGINS: ''
+      PYTEST_CURRENT_TEST: ''
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Record isolation and prepare trusted ephemeral temp
+        shell: python
+        env:
+          RESEARCH_RUN_ID: ${{ github.run_id }}
+          RESEARCH_RUN_ATTEMPT: ${{ github.run_attempt }}
+          RESEARCH_RUNNER_OS: ${{ runner.os }}
+        run: |
+          import json, os, stat, tempfile
+          from pathlib import Path
+          packet = Path('full-context-setup')
+          packet.mkdir()
+          receipt = {
+              'schema': 'fleet.research-full-context/1',
+              'status': 'RUNNING',
+              'expected_sha': os.environ['FLEET_V1_EXPECTED_SHA'],
+              'run_id': os.environ['RESEARCH_RUN_ID'],
+              'run_attempt': os.environ['RESEARCH_RUN_ATTEMPT'],
+              'runner_os': os.environ['RESEARCH_RUNNER_OS'],
+              'scope': 'INDEPENDENT_EPHEMERAL_SOURCE_UNITS',
+              'physical_qualification': 'NOT_RUN',
+              'previous_local_attempt': 'UNKNOWN_RETAINED_NOT_REPLACED',
+              'automatic_retries': 0,
+              'unit_timeout_seconds': 900,
+              'junit_passing_output': True,
+              'basetemp_override': False
+          }
+          path = packet / 'isolation.receipt.json'
+          path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          try:
+              if os.name != 'nt':
+                  task_temp = Path(tempfile.mkdtemp(prefix='fleet-full-context-', dir='/tmp'))
+                  task_temp.chmod(0o700)
+                  for ancestor in (task_temp, *task_temp.parents):
+                      info = ancestor.lstat()
+                      if not stat.S_ISDIR(info.st_mode) or ancestor.is_symlink():
+                          raise RuntimeError('RESEARCH_TEMP_ANCESTOR_NOT_REAL_DIRECTORY')
+                      if info.st_mode & 0o022 and not info.st_mode & stat.S_ISVTX:
+                          raise RuntimeError('RESEARCH_TEMP_ANCESTOR_UNSAFE_WRITE')
+                  info = task_temp.stat()
+                  if stat.S_IMODE(info.st_mode) != 0o700 or info.st_uid != os.getuid():
+                      raise RuntimeError('RESEARCH_TEMP_NOT_PRIVATE')
+                  with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                      for key in ('TMPDIR', 'TMP', 'TEMP'):
+                          environment.write(key + '=' + str(task_temp) + '\n')
+                  receipt['temp_policy'] = 'FRESH_TMP_0700_TRUSTED_ANCESTORS'
+              else:
+                  original_temp = Path(tempfile.gettempdir())
+                  runner_temp = Path(os.environ['RUNNER_TEMP'])
+                  if runner_temp.is_symlink() or runner_temp.is_junction():
+                      raise RuntimeError('RESEARCH_WINDOWS_RUNNER_TEMP_REPARSE')
+                  if original_temp.stat().st_dev == runner_temp.stat().st_dev:
+                      raise RuntimeError('RESEARCH_WINDOWS_DISTINCT_TEMP_VOLUME_NOT_OBSERVED')
+                  task_temp = Path(tempfile.mkdtemp(prefix='fleet-full-context-', dir=runner_temp))
+                  if task_temp.is_symlink() or task_temp.is_junction():
+                      raise RuntimeError('RESEARCH_WINDOWS_TASK_TEMP_REPARSE')
+                  with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8') as environment:
+                      for key in ('TMPDIR', 'TMP', 'TEMP'):
+                          environment.write(key + '=' + str(task_temp) + '\n')
+                  receipt.update(temp_policy='FRESH_RUNNER_TEMP_ORIGINAL_INHERITED_ACL_GUARDS',
+                      temp_drive=task_temp.drive, temp_st_dev=task_temp.stat().st_dev,
+                      previous_temp_drive=original_temp.drive,
+                      previous_temp_st_dev=original_temp.stat().st_dev,
+                      windows_acl_policy='UNCHANGED_ORIGINAL_GUARD_TESTS_REQUIRED',
+                      basis='C1_D_C2_77f3b53_RUN38701330816_NOT_CAUSAL_PROOF_OF_OLD_FAILURES')
+              receipt['status'] = 'PASS'
+          except BaseException as error:
+              receipt.update(status='ERROR', error_type=type(error).__name__)
+              raise
+          finally:
+              path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+      - name: Install existing locked source test dependencies
+        run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Verify cleanup preservation and entry observation before full context
+        shell: python
+        run: |
+          import importlib.util, json, os, sys, xml.etree.ElementTree as ET
+          from pathlib import Path
+          spec = importlib.util.spec_from_file_location('focused_source_runner', 'tests/proofs/fleet_v1/run_source.py')
+          runner = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(runner)
+          packet = Path('cleanup-focus')
+          packet.mkdir()
+          head, tree = runner.git_value('HEAD'), runner.git_value('HEAD^{tree}')
+          if head != os.environ['FLEET_V1_EXPECTED_SHA']:
+              raise SystemExit('FOCUSED_CHECKOUT_MISMATCH')
+          before = runner.source_manifest()
+          summary = {'schema': 'fleet.cleanup-focus/1', 'status': 'RUNNING',
+              'head_sha': head, 'tree_sha': tree, 'source_before': before,
+              'physical_qualification': 'NOT_RUN', 'retries': 0, 'timeout_seconds': 120}
+          runner.checkpoint(packet / 'summary.json', summary)
+          environment = dict(os.environ)
+          environment['PYTHONPATH'] = os.pathsep.join((str(Path('app').resolve()), str(Path('tests/unit').resolve())))
+          environment['FLEET_SOURCE_PROGRESS_PATH'] = str((packet / 'focused.progress.json').resolve())
+          selected = [
+              'tests/unit/test_tip064_integration.py::test_guarded_source_fixture_keeps_primary_identity_and_cleanup_union',
+              'tests/unit/test_tip077_authorization_scope_probe.py',
+              'tests/unit/test_fleet_gateway_fixture.py::test_cleanup_preserves_primary_notes_and_cleanup_failure',
+              'tests/unit/test_fleet_gateway_fixture.py::test_cleanup_only_error_is_not_suppressed',
+              'tests/unit/test_fleet_gateway_fixture.py::test_proven_idle_cleanup_closes_without_new_control_call',
+              'tests/unit/test_fleet_gateway_fixture.py::test_uncertain_drain_failure_does_not_close_or_claim_idle',
+              'tests/unit/test_tip064_integration.py::test_actual_tls_client_possession_to_async_guarded_source_two_commits_and_phase_ack',
+              'tests/unit/test_tip077_capacity_entry_watchdog.py::test_positive_capacity_entry_observation_preserves_callback_union_under_finite_schedule',
+              'tests/unit/test_tip077_capacity_entry_watchdog.py::test_original_three_second_capacity_entry_observation_remains_bounded_negative',
+          ]
+          command = [sys.executable, '-m', 'pytest', '-p', 'fleet_source_progress', '-v', '--tb=short',
+              '-o', 'faulthandler_timeout=60', *selected, '--junitxml=' + str((packet / 'focused.junit.xml').resolve())]
+          try:
+              receipt = runner.run_case('focused', command, packet, environment, 120)
+              summary['case_receipt'] = receipt
+              cases = list(ET.parse(packet / 'focused.junit.xml').getroot().iter('testcase'))
+              after = runner.source_manifest()
+              passed = (receipt['exit_code'] == 0 and receipt['direct_child_closure'] == 'EXITED'
+                  and before == after and len(cases) == 14
+                  and all(case.find(tag) is None for case in cases for tag in ('failure', 'error', 'skipped')))
+              summary.update(status='PASS' if passed else 'FAIL', source_after=after,
+                  source_unchanged_during_run=before == after, case_count=len(cases), finished_utc=runner.utc_now())
+              runner.checkpoint(packet / 'summary.json', summary)
+          except BaseException as error:
+              summary.update(status='ERROR', error_type=type(error).__name__, finished_utc=runner.utc_now())
+              runner.checkpoint(packet / 'summary.json', summary)
+              raise
+          if not passed:
+              raise SystemExit('FOCUSED_QUALIFICATION_FAILED')
+      - name: Observe Linux complete original unit context
+        if: runner.os == 'Linux'
+        run: python tests/proofs/fleet_v1/run_source.py --unit-only --output full-context-source
+      - name: Observe Windows complete original unit context
+        if: runner.os == 'Windows'
+        run: python tests/proofs/fleet_v1/run_source.py --require-windows --unit-only --output full-context-source
+      - name: Preserve isolation, exact manifests, receipts, logs and JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-full-context-${{ matrix.os }}-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            full-context-setup/
+            cleanup-focus/
+            full-context-source/
+          retention-days: 14
+          if-no-files-found: error

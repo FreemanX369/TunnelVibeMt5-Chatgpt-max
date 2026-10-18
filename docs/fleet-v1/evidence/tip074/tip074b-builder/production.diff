@@ -1,0 +1,13 @@
+diff --git a/app/vibemql5/fleet/wire.py b/app/vibemql5/fleet/wire.py
+index 6c17388..7f75145 100644
+--- a/app/vibemql5/fleet/wire.py
++++ b/app/vibemql5/fleet/wire.py
+@@ -63,7 +63,7 @@ def _tree(value, depth=0):
+     if depth > 32:
+         raise WireError("WIRE_INVALID")
+     if isinstance(value, str):
+-        if any(0xD800 <= ord(char) <= 0xDFFF for char in value):
++        if not (type(value) is str and value.isascii()) and any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+             raise WireError("WIRE_INVALID")
+     elif type(value) is dict:
+         for key, child in value.items():

@@ -1,0 +1,30 @@
+{
+  "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "source_frozen": true,
+  "files": {
+    "app/vibemql5/fleet/transport.py": {
+      "size_bytes": 50342,
+      "sha256": "1d7749e31f30de4bdcddc2b9ea2ff6d7d032694bd9c90d42647f2cbd6266fcb3"
+    },
+    "tests/unit/fleet_writer_fixture.py": {
+      "size_bytes": 7798,
+      "sha256": "cc818cff398a863f1545fee26a59810a6af65235067b910a2a9176aada2118b9"
+    },
+    "tests/unit/test_tip058b_transport.py": {
+      "size_bytes": 53428,
+      "sha256": "cc490ecd62e31692dba08666291cb91df61b09623fae1667026dae6d093ca81c"
+    },
+    "tests/unit/test_tip064_capacity_https.py": {
+      "size_bytes": 37680,
+      "sha256": "179632bedb6fe13a281db97b8f73d4f58d0f923a8f6903b03200df99fb868319"
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "size_bytes": 98109,
+      "sha256": "296653ad9955d410b33a5e8274c8a8b19ca388ea8f949a5bd508fbea8896f9c6"
+    },
+    "tests/unit/test_tip074_gateway_lifecycle.py": {
+      "size_bytes": 13581,
+      "sha256": "37ea260d970860f61bd469c2fc9baff9ecff66fa1147c9943cdbc063e6c20c00"
+    }
+  }
+}

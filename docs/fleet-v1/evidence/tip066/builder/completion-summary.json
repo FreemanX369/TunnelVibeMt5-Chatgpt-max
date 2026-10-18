@@ -1,0 +1,65 @@
+{
+  "status": "DONE_SOURCE_FOCUSED",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "dependencies": {
+    "mcp": "2.1.1",
+    "mcp-types": "2.1.1",
+    "pytest": "9.1.1",
+    "cryptography": "50.0.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "httpcore2": "2.13.0",
+    "httpx2": "2.13.0",
+    "idna": "3.19",
+    "starlette": "1.6.0",
+    "sse-starlette": "3.4.11",
+    "uvicorn": "0.53.0",
+    "pyjwt": "2.14.0",
+    "opentelemetry-api": "1.44.0"
+  },
+  "files": {
+    "app/vibemql5/adapters/mcp.py": {
+      "bytes": 42895,
+      "sha256": "eb00f70d74b60d955e6eecc565b601652886366ac06009cc60ae4d659c1f4c9d"
+    },
+    "tests/unit/test_tip066_live_diagnostics.py": {
+      "bytes": 8356,
+      "sha256": "a149428d7a3c0099165fca0bb09eac3c944b94eb6a3824910d1dbb64fbd93dec"
+    }
+  },
+  "tests": {
+    "focused-v1": {
+      "testcases": 44,
+      "passed": 44,
+      "failed": [],
+      "skipped": []
+    },
+    "compatibility-v1": {
+      "testcases": 197,
+      "passed": 196,
+      "failed": [],
+      "skipped": [
+        {
+          "classname": "tests.unit.test_tip055a_runtime_forensics_identity",
+          "name": "test_ac08_windows_junction_duplicate_and_retarget",
+          "time": "0.000"
+        }
+      ]
+    },
+    "focused-v2": {
+      "testcases": 47,
+      "passed": 47,
+      "failed": [],
+      "skipped": []
+    }
+  },
+  "parent_schema": {
+    "source_parent": "fe6ef1baa359ea2acbba7e3e0f78ae872ed1c55f",
+    "adapter_path": "/workspace/scratch/b4674f0ac496/repo/app/vibemql5/adapters/mcp.py",
+    "tool_count": 85,
+    "input_output_schema_sha256": "3e17166f81acf897aa3de3c55964e117923897c5658391de37d528c40d234f06"
+  },
+  "runtime_effects": "NOT_RUN",
+  "outage_cause": "UNKNOWN",
+  "connector_INVALID_ARGUMENT_mapping": "UNKNOWN"
+}

@@ -60,11 +60,23 @@ class LiveTerminal:
         if not self.inventory.is_running(self.alias):
             raise RuntimeError("FIXED_TERMINAL_NOT_RUNNING")
 
+    def _initialize(self, mt5: Any) -> None:
+        if mt5.initialize(self.terminal.terminal_path, timeout=2000):
+            return
+        try:
+            error = mt5.last_error()
+            authorization_failed = (isinstance(error, tuple) and len(error) == 2
+                                    and type(error[0]) is int and error[0] == -6
+                                    and isinstance(error[1], str))
+        except Exception:
+            authorization_failed = False
+        raise RuntimeError("MT5_LIVE_AUTHORIZATION_FAILED" if authorization_failed
+                           else "MT5_LIVE_IPC_INITIALIZE_FAILED")
+
     def state(self) -> dict[str, Any]:
         self._running()  # initialize() can start a terminal: never call it on an idle installation.
         mt5 = self.mt5 or importlib.import_module("MetaTrader5")
-        if not mt5.initialize(self.terminal.terminal_path, timeout=2000):
-            raise RuntimeError("MT5_LIVE_IPC_INITIALIZE_FAILED")
+        self._initialize(mt5)
         try:
             info = mt5.terminal_info()
             if info is None:
@@ -124,8 +136,7 @@ class LiveTerminal:
     def _market_session(self):
         self._running()
         mt5 = self.mt5 or importlib.import_module("MetaTrader5")
-        if not mt5.initialize(self.terminal.terminal_path, timeout=2000):
-            raise RuntimeError("MT5_LIVE_IPC_INITIALIZE_FAILED")
+        self._initialize(mt5)
         try:
             info = mt5.terminal_info()
             if info is None:

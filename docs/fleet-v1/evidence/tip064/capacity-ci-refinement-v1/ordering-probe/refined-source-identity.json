@@ -1,0 +1,5 @@
+{
+  "refined_fixture_sha256": "5bf28290d7a9e203dfdbd23b6ab03781aebebd7a974ec35c8fe659d4988366da",
+  "probe_sha256": "3f026db5781842476803335f26869b2629db966f6e13e46f0b6d0a029eb08840",
+  "fault": "force5second harmless hold expiry before explicit release, expect immediateUNKNOWN diagnosis withoutclear/retry"
+}

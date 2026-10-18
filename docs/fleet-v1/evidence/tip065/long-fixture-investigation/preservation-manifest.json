@@ -1,0 +1,54 @@
+{
+  "InvestigationReport.md": {
+    "bytes": 3908,
+    "sha256": "ca0097b82cb6b67bd47c18135d2ec40e853cb40ba1cf517037566e50958e17ea"
+  },
+  "environment.json": {
+    "bytes": 153,
+    "sha256": "e24577bb4bdf190c9fc2f459d34ed5f97b71b266fc8863151ce91320810251a0"
+  },
+  "evidence-manifest.json": {
+    "bytes": 1070,
+    "sha256": "4cb30b928e5f190c71ab4069165ec192f35244e0b75938d32dcbbdbfd6c97d1a"
+  },
+  "h1.json": {
+    "bytes": 295,
+    "sha256": "11fe31783e1245b8f3b1af0ddb056be9c0a8886222be6595f266caab1f3474e3"
+  },
+  "h2.json": {
+    "bytes": 380,
+    "sha256": "b1ec549c079e70ab2d7a167927cb61fb24cff1c0c7100e7e8335ea70d34bc17c"
+  },
+  "h3-10.json": {
+    "bytes": 1825,
+    "sha256": "65657c562a821bea9f958a57627fe1b69e30980a3fea37c4b27cab0b21c099fe"
+  },
+  "h3-5.json": {
+    "bytes": 1914,
+    "sha256": "eb010da185199bb1ff9b55bf38b1f158fc1b9765aaa893817d158efb0f66bbfc"
+  },
+  "investigation.junit.xml": {
+    "bytes": 949,
+    "sha256": "fd0c5a678531b80c653645e358aa7b7c5a534506afb432fede7ce90735d6fcc4"
+  },
+  "investigation.log": {
+    "bytes": 1595,
+    "sha256": "852c398305f0d3b90a2768d6ca5a680f2c90e21d60851158945fc5291b5bc65c"
+  },
+  "receipt.json": {
+    "bytes": 718,
+    "sha256": "aa0abb710cb647caa6c31c633e17ddeb94e408d9e42b6357a447d77f2fde5cc5"
+  },
+  "source-after.json": {
+    "bytes": 23306,
+    "sha256": "f623a4df31e294a67ff3f8e2f7056aa171673b77bb43022bf3a99062305cd671"
+  },
+  "source-before.json": {
+    "bytes": 23306,
+    "sha256": "f623a4df31e294a67ff3f8e2f7056aa171673b77bb43022bf3a99062305cd671"
+  },
+  "test_investigation.py": {
+    "bytes": 8421,
+    "sha256": "fcbadd41f2e386df03d32f622e12ab10d481e299ee7bfcc6704bd30f3bf60718"
+  }
+}

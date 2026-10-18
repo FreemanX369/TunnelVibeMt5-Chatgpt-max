@@ -1,0 +1,41 @@
+{
+  "parent": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "source_count": 219,
+  "combined_delta": [
+    "app/vibemql5/fleet/transport.py",
+    "app/vibemql5/fleet/wire.py",
+    "tests/unit/fleet_writer_fixture.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip064_capacity_https.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip074_gateway_lifecycle.py",
+    "tests/unit/test_tip074_wire_unicode.py"
+  ],
+  "old_source_files_byte_identical": 211,
+  "existing_test_checks": {
+    "tests/unit/test_tip058b_transport.py": {
+      "all_old_test_bodies_byte_equal": true,
+      "AST_exact_outside_factory_and_ExitStack_import": true,
+      "old_test_count": 43
+    },
+    "tests/unit/test_tip064_integration.py": {
+      "all_old_test_bodies_byte_equal": true,
+      "AST_exact_outside_factory_and_ExitStack_import": true,
+      "old_test_count": 39
+    },
+    "tests/unit/test_tip064_capacity_https.py": {
+      "all_old_test_bodies_byte_equal": true,
+      "AST_exact_outside_factory_and_ExitStack_import": true,
+      "old_test_count": 8
+    },
+    "tests/unit/fleet_writer_fixture.py": {
+      "all_old_test_bodies_byte_equal": true,
+      "AST_exact_outside_factory_and_ExitStack_import": true,
+      "old_test_count": 0
+    }
+  },
+  "production_AST_outside_serve_gateway_equal": true,
+  "docstring_preserved": true,
+  "Builder_A_source_bytes_verified_and_copied": true,
+  "Builder_B_source_bytes_unchanged": true
+}

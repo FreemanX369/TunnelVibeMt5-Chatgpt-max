@@ -1,0 +1,54 @@
+{
+  "baseline-schema.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands.json": {
+    "bytes": 1961,
+    "sha256": "6dcabdab1e332af385c4406a13a2fdddd48fa06b0371594ebd84fdfc73b8759e"
+  },
+  "compatibility-v1.junit.xml": {
+    "bytes": 30352,
+    "sha256": "9105a48e43111c4bc0ff81b31183ac8eb8d60c823a24180173191d0c05878bfc"
+  },
+  "compatibility-v1.log": {
+    "bytes": 271,
+    "sha256": "2ae0709e9525dd1155fa3502aaee2d0f88425a120731bf5bc1e74486c2492ba0"
+  },
+  "completion-summary.json": {
+    "bytes": 1791,
+    "sha256": "d5ed37b97f7ec74ef82224812423a4754e60bf9b65402cb39305269c8d46e493"
+  },
+  "dependency-constrained-install.log": {
+    "bytes": 7143,
+    "sha256": "0d906647db92ab49dd20a60a43e7036b6f3f98c0f35bb4ece2d829adc86ba01c"
+  },
+  "dependency-install.log": {
+    "bytes": 7481,
+    "sha256": "2c56d60188cdea0fae1fb3cd0fc13456464e3b1838860bcbf3605f7d719656d9"
+  },
+  "environment-setup.json": {
+    "bytes": 965,
+    "sha256": "23340c291f6a982cadddf1c02535bb33027ad15de2ffb47744387164c67ce54d"
+  },
+  "focused-v1.junit.xml": {
+    "bytes": 7717,
+    "sha256": "85658d7ba47fc5f445bea4efabc8bf4205dd8c7370770c1709ed6826eb247f95"
+  },
+  "focused-v1.log": {
+    "bytes": 99,
+    "sha256": "61a1351bb608a0fd83d77a339691be12531cbd8a6014e0faf32419eb0e44eee4"
+  },
+  "focused-v2.junit.xml": {
+    "bytes": 8157,
+    "sha256": "c74180771faf47797f03fe710c6f4fbd77f10969af9f37e4da49eed5446f8d00"
+  },
+  "focused-v2.log": {
+    "bytes": 99,
+    "sha256": "ee8c59cf589a5d11ae8223d1f7014f0daf702cf0c9f550c62a255bec82dc8d4e"
+  },
+  "parent-schema.json": {
+    "bytes": 273,
+    "sha256": "083b602d0bb777b8838180a4169b0caa836eb47ca1456b75c70ef57e4429aa25"
+  }
+}

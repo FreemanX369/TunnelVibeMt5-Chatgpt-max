@@ -22,6 +22,7 @@ from ..core.facade import ToolFacade
 from ..core.concurrency import actor_from_mcp_context, actor_scope
 from ..core import workspace as workspace_module
 from ..core.provenance import load_bridge_provenance, sha256_file
+from ..core.deployment_preflight import deployment_preflight
 from .ex5_widget import EX5_INGRESS_WIDGET_HTML, EX5_INGRESS_WIDGET_SCHEMA_VERSION, EX5_INGRESS_WIDGET_URI
 from .live_chart_widget import LIVE_CHART_WIDGET_HTML, LIVE_CHART_WIDGET_SCHEMA_VERSION, LIVE_CHART_WIDGET_URI
 
@@ -53,6 +54,7 @@ def _runtime_provenance(root: Path | None = None) -> dict[str, Any]:
 def create_server(root: Path, transport: str = "unknown"):
     try:
         from mcp.server.mcpserver import MCPServer, Context
+        from mcp.server.mcpserver.exceptions import ToolError
         from mcp.types import CallToolResult, ResourceLink, TextContent, ToolAnnotations
     except ImportError as exc:
         raise RuntimeError('MCP SDK v2 is required. Run: pip install -e ".[mcp]"') from exc
@@ -76,7 +78,19 @@ def create_server(root: Path, transport: str = "unknown"):
         actor = actor_from_mcp_context(ctx, transport=transport)
         actor["operation"] = operation
         with actor_scope(actor):
-            return fn()
+            try:
+                return fn()
+            except RuntimeError as exc:
+                if operation in {"get_terminal_live_state", "get_account_snapshot", "inspect_terminal"} and str(exc) in {
+                    "FIXED_TERMINAL_NOT_RUNNING",
+                    "MT5_LIVE_IPC_INITIALIZE_FAILED",
+                    "MT5_LIVE_AUTHORIZATION_FAILED",
+                    "MT5_LIVE_TERMINAL_INFO_UNAVAILABLE",
+                    "MT5_LIVE_TERMINAL_BINDING_MISMATCH",
+                    "MT5_LIVE_ACCOUNT_INFO_UNAVAILABLE",
+                }:
+                    raise ToolError(str(exc)) from exc
+                raise
 
     # TUN-11 startup recovery: converge durable cancel intents after MCP/controller
     # restart. Only cancel_requested jobs are touched and process signalling remains
@@ -163,6 +177,7 @@ def create_server(root: Path, transport: str = "unknown"):
             "generic_shell_exposed": True,
             "startup_cancel_recovery": startup_cancel_recovery,
             "runtime_provenance": _runtime_provenance(root),
+            "deployment_preflight": deployment_preflight(root),
         }
 
     @server.tool(annotations=read_only_local)
@@ -171,14 +186,16 @@ def create_server(root: Path, transport: str = "unknown"):
         return facade.health()
 
     @server.tool(annotations=read_only_local)
-    def get_terminal_live_state(ctx: Context) -> dict[str, Any]:
-        """Read account, connection and ping from the running fixed MT5-2 terminal on request."""
-        return _invoke(ctx, "get_terminal_live_state", facade.get_terminal_live_state)
+    def get_terminal_live_state(ctx: Context, target: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Read fixed MT5-2; explicit local target returns validation/denial until IPC is qualified."""
+        return _invoke(ctx, "get_terminal_live_state", lambda: facade.get_terminal_live_state(target)
+                       if target is not None else facade.get_terminal_live_state())
 
     @server.tool(annotations=read_only_local)
-    def get_account_snapshot(ctx: Context) -> dict[str, Any]:
-        """Read live Balance/Equity/Free Margin/Leverage and trade state; no trading calls."""
-        return _invoke(ctx, "get_account_snapshot", facade.get_account_snapshot)
+    def get_account_snapshot(ctx: Context, target: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Read fixed MT5-2 account; explicit local target validates without enabling IPC."""
+        return _invoke(ctx, "get_account_snapshot", lambda: facade.get_account_snapshot(target)
+                       if target is not None else facade.get_account_snapshot())
 
     @server.tool(annotations=read_only_local)
     def list_live_charts(ctx: Context) -> dict[str, Any]:

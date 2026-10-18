@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/missing-required-exception-probe.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "limit_seconds": 30,
+  "exit_code": 0,
+  "wall_time_seconds": 0.22037985399992976,
+  "expected_sdk_failure_observed": true,
+  "source_unchanged": true,
+  "source_manifest_entries": 217,
+  "scope": "incomplete stub control; not real SDK qualification"
+}

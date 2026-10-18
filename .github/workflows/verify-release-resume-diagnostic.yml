@@ -1,0 +1,38 @@
+name: Verify release resume diagnostic revision
+
+on:
+  pull_request:
+    branches: [feat/fleet-v1-continuous-source-20261003]
+
+permissions:
+  contents: read
+
+jobs:
+  new-revision-windows-diagnostic:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      FLEET_V1_EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing locked source test dependencies
+        run: python -m pip install -c requirements-bootstrap.lock pytest==9.1.1 mcp==2.1.1 cryptography==50.0.1
+      - name: Run new bounded diagnostic input
+        run: python docs/fleet-v1/research/release-resume-20261014/run_diagnostic.py --require-windows --output release-resume-diagnostic
+      - name: Preserve receipts progress JUnit and exact input manifests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-resume-diagnostic-windows-${{ github.event.pull_request.head.sha }}
+          path: release-resume-diagnostic/
+          retention-days: 14
+          if-no-files-found: error

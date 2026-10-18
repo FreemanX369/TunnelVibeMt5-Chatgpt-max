@@ -1,0 +1,34 @@
+{
+  "name": "original-five-module-compatibility",
+  "argv": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "fleet_source_progress",
+    "-o",
+    "faulthandler_timeout=30",
+    "--junitxml=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/original-five-module-compatibility.junit.xml",
+    "--basetemp=/workspace/scratch/b4674f0ac496/fix-20261007-1644/tip072f-builder/original-five-module-compatibility_tmp",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_tip057rg03a_native_ownership.py",
+    "tests/unit/test_tip057r_sdk.py",
+    "tests/unit/test_tip061a_057n.py",
+    "tests/unit/test_tip071_scoped_db_setup_cleanup.py"
+  ],
+  "cwd": "/workspace/scratch/b4674f0ac496/tip072-builder",
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip072-builder/app:/workspace/scratch/b4674f0ac496/tip072-builder/tests/unit"
+  },
+  "limit_seconds": 180,
+  "exit_code": 0,
+  "wall_time_seconds": 9.103841769000041,
+  "case_count": 230,
+  "passed": 229,
+  "skipped": 1,
+  "failures": [],
+  "source_unchanged": true,
+  "source_manifest_entries": 217
+}

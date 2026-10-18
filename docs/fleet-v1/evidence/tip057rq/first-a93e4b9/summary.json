@@ -1,0 +1,24 @@
+{
+  "base_sha": "70e2112da9fe8eaa6262f2ba896b55bf3e078260",
+  "broker_sdk": "OPEN",
+  "candidate_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+  "elapsed_ms": 454.00000000000773,
+  "error": "FIXTURE_COMPILATION_FAILED:'\\\"C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Auxiliary\\Build\\vcvars64.bat\\\"' is not recognized as an internal or external command,\noperable program or batch file.\n",
+  "error_type": "RuntimeError",
+  "exact_head_verified": true,
+  "expected_head_sha": "a93e4b9b34830926e6fa3100d54c3c8852e3fe47",
+  "github_event_sha": "a6e649a6d152592654f96b5bfd53c644e19cb45e",
+  "mode": "REAL_WINDOWS_REQUIRED",
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [],
+  "schema": "tip057rq.proof/1",
+  "scope": "isolated harmless fixture paths only",
+  "sources": {
+    "authority.py": "9be6e5a1eed406045abcac8ca3b6adafb785a17c9bc67b89324babe17d0a155c",
+    "fixture_worker.c": "1fe3d0de3fa8741b7a94236b552f31422c6ca4273c482d0a3277b832d8739056",
+    "run_proof.py": "2cb8f012703cbfdb658ac51d7b7f1a83f2fc79c6cb3744e370a50248f75632a3",
+    "windows_boundary.py": "709f4f12032d2884caf59caa4babbb8a81b24870d864174758fa5ddf14b068f9"
+  },
+  "status": "BLOCKED"
+}

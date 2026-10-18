@@ -1,0 +1,16 @@
+{
+  "parent": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "decision": "LOCAL_ACCEPTED_FOR_NEW_CI",
+  "combined_cases": 182,
+  "combined_passed": 182,
+  "combined_skipped": 0,
+  "source_entries": 217,
+  "allowed_changed_source": 3,
+  "other_source_exact": 214,
+  "all_production_exact": true,
+  "manifest_verified_payloads": 113,
+  "manifest_verified_bytes": 1343495,
+  "source_gate": "PENDING_NEW_CANDIDATE",
+  "runtime": "BLOCKED_RAW_MCP_-32603",
+  "physical_qualification": "NOT_RUN"
+}

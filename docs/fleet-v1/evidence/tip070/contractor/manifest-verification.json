@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "builder_manifest_entries": 14,
+  "publication_files": 19,
+  "all_bytes_digests_match": true,
+  "prior_verifier_errors_only": [
+    "KeyError: 'function' (three intentional overlong node-ID omissions)",
+    "AttributeError: list has no items (Builder manifest is an array)"
+  ],
+  "source_or_test_changes_for_verification": false
+}

@@ -1,0 +1,16 @@
+{
+  "all_old_progress_test_functions_AST_exact": true,
+  "progress_methods_exact": {
+    "literal": true,
+    "emit": true,
+    "start": true,
+    "finish": true
+  },
+  "modified_methods_original_prefix_exact": {
+    "__init__": true,
+    "report": true
+  },
+  "combined_progress_rows": 364,
+  "combined_progress_paired": true,
+  "combined_no_failure_diagnostic": true
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "fleet.source-manifest/1",
+  "scope": "tip058a_current_shared_fixture_pointer",
+  "source_status": "FIXTURE_REFINEMENT_COMPLETE_EXACT_CANDIDATE_CI_PENDING",
+  "physical_qualification": "NOT_RUN",
+  "windows_runtime": "PRIOR_CANONICAL_RUN_COMPLETE_NEW_FIXTURE_BYTES_PENDING",
+  "frozen_tip058a_receipt": "linux-source-v4/source-manifest.json",
+  "current_control_manifest": "../tip060c/source-manifest.json",
+  "current_focused_receipt": "../tip064/startup-ci-refinement-v1/receipt.json",
+  "files": [
+    {
+      "path": "tests/unit/test_tip064_integration.py",
+      "bytes": 52326,
+      "sha256": "b47059c73a8ffb19c34278c2353a43c33da17e274471bb1662280871fbf69ba8"
+    },
+    {
+      "path": "tests/unit/fleet_writer_fixture.py",
+      "bytes": 7445,
+      "sha256": "b92647d64b17cacd54fec921e8ecb0a089c7a3878c1775da5a9824ac983eec56"
+    },
+    {
+      "path": "tests/proofs/fleet_v1/run_source.py",
+      "bytes": 5059,
+      "sha256": "507b0eaa92a5ca5ca832461b195ba88a372e3ed34e4306dfb9800632cd3f9748"
+    },
+    {
+      "path": "tests/unit/test_fleet_source_runner.py",
+      "bytes": 3047,
+      "sha256": "f1b00d64f6301430852318d6a83275b667445e2830d4c388576de095e5882a38"
+    },
+    {
+      "path": "tests/unit/test_fleet_gateway_fixture.py",
+      "bytes": 3291,
+      "sha256": "526ec67b5fa6de8cbf9ea617c6968b9da376ebb93f07783d15d8cfc51b590198"
+    }
+  ],
+  "refinement_note": "Fixture-only bounded positive admission/startup observer refinement. Prior manifest retained as current-shared-fixture-manifest-before-final-startup-refinement.json. Actual prior canonical Windows source proof passes but Deep reports two scheduling fixture failures; exact new candidate CI is separate. Product deadlines, negative budgets, authority TTLs and runtime source bytes are unchanged."
+}

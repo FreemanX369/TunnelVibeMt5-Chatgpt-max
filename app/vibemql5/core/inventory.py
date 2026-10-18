@@ -101,28 +101,8 @@ class TerminalInventory:
         """
         if os.name != "nt":
             return set()
-        script = (
-            "$p = Get-CimInstance Win32_Process -Filter \"Name='terminal64.exe'\" "
-            "| Where-Object { $_.ExecutablePath } | Select-Object -ExpandProperty ExecutablePath; "
-            "@($p) | ConvertTo-Json -Compress"
-        )
-        try:
-            cp = subprocess.run(
-                ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
-                capture_output=True, text=True, timeout=8, check=False,
-            )
-            raw = cp.stdout.strip()
-            if not raw:
-                return set()
-            data = json.loads(raw)
-            if isinstance(data, str):
-                data = [data]
-            return {self._norm(x) for x in data if x}
-        except Exception:
-            # Failure to enumerate processes must not falsely claim that every terminal is idle.
-            # Return a sentinel that causes the requested target to be treated conservatively by
-            # select_execution_terminal only when process discovery is explicitly unavailable.
-            return set()
+        from .windows_process_inventory import terminal_paths
+        return {self._norm(path) for path in terminal_paths()}
 
     def is_running(self, alias: str, running_paths: set[str] | None = None) -> bool:
         t = self.get(alias)

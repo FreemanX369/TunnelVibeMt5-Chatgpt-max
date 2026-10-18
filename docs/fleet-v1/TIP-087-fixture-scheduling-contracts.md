@@ -1,0 +1,31 @@
+# TIP087 harmless fixture scheduling and observation contracts
+
+Parent: `a9c3cb317f7ac41965c16b08aba85570fb40ee0e`, tree `19fa953739b174a94b227f3ea9f974bd704917da` (TIP086). This revision changes two existing test helpers and documents their finite scenario contracts. No application, workflow, runner, dependency, authority, wire schema, signing clock, TTL or durable-operation change is included.
+
+## Evidence and cause
+
+TIP086 fresh CI was terminal6/8. Deep showed actual scoped guard1000 failures during both admission and broadcast completion. In delayed completion, callbacks requested the same original guard at11062ms; first original EXIT11078→FINISH12735 held it1.657s, and the second waiter expired12062. Next EXIT12750→FINISH14562 held it1.812s and the first waiter expired13735. The positive TIP077 entry regression also timed out during initial admission: EXIT7140→FINISH8515 overlapped another REQUEST7250→timeout8265. Windows late-callback cleanup retained the exact primary/cleanup/late faults but added two actual guard timeouts while EXIT4406→FINISH7250 held the guard. These timeouts are genuine and remain failures; no added TimeoutError is accepted as an injected error.
+
+The separate Deep long-positive case completed its harmless callback9967ms and returned original native SUCCEEDED/RETURN_WAIT10764ms. Lawful original control steps lasted4250ms and1812ms, crossing its previous positive aggregate10 observation. Platform storage/scheduling internals are unknown; these traces identify observable fixture overlap and observation contracts, not a physical deployment diagnosis.
+
+## Capacity scenario schedule
+
+A per-fixture worker wrapper assigns the first two native bodies a cohort order before any original request or proof. Worker1 starts immediately. Worker2 waits at most10 seconds for worker1's original scope.arm to finish its durable transaction, or for worker1's original native body to terminate with its failure preserved. No mutex is held across external pre-request fixture gates. Actual two workers and scopes stay ARMED concurrently throughout the original native-capacity2, three live control steps/six HTTP posts, both pending futures, and conflicting-third QUEUED assertions.
+
+After the existing release/completion events, a per-fixture completion turn is acquired within the remaining original20-second harmless hold. It stays owned across close_zero_attempt and the entire original coordinator.execution context exit, then releases in an outer finally. Releasing it after close_zero_attempt alone would leave durable release racing. A third harmless pre-request body waits, under one10-second observation bound, for both initial original bodies to terminate; the unchanged dispatcher may admit its future when a slot opens. This explicitly schedules the harmless scenario and does not change dispatcher capacity or production lock rules.
+
+All wrapper prerequisite waits finalize cohort events on errors, and their exact failures join the existing original error collection. Pre-arm failures, callback/release faults, primary/late/cleanup unions, UNKNOWN/ARMED retention, observer restoration and normal owner drain remain observable. The original TIP077 three-second negative's FIRST_NATIVE_EXIT/FRESH_CONTROL_STEP/SECOND_NATIVE_RELEASE schedule remains intact.
+
+## Explicit positive long observation revision
+
+The existing regular case IDs and order remain unchanged. The positive `seconds10` variant now explicitly chooses the following finite, ordered observations: WORKER_START, CALLBACK_START, BEGIN_SNAPSHOT, COMPLETE_SNAPSHOT, BEGIN_COMPILE, COMPLETE_COMPILE, BEGIN_CAPTURE, COMPLETE_CAPTURE, CALLBACK_COMPLETE, RETURN_WAIT, followed by terminal ACK/normal drain. Each next unique milestone has a10-second soft observation budget, renewed at its actual original completion time, then terminal observation has10 seconds. The configured aggregate is110 seconds, replacing the historical positive total10 requirement; it is not an unchanged10-second aggregate.
+
+There is no heartbeat/arbitrary-progress renewal or retry. The six original .7-second before-intent/harmless-completion holds and all five START_AUTHORIZE requests remain. Original real proof expiration, fresh later proof, actual native SUCCEEDED, ACK-before-worker-return and final empty retained records are mandatory. Ready terminal observation runs before another unnecessary owner control cycle can consume original worker-return3. Unexpected handled native UNKNOWN rethrows the exact already-observed EXECUTE_HANDLED_ERROR before a fixture phase-order assertion; UNKNOWN is never accepted as positive success.
+
+The original `seconds5` aggregate negative and all default/handled/cleanup caller selection remain on their existing contracts. An original agent.step may finish after a soft observation deadline, as the original pump permits. The900-second source runner is the separate hard child-process bound; no110-second elapsed guarantee is claimed for an in-flight original control call.
+
+## Qualification boundaries
+
+Builder external v2:31PASS, process86.696457725s/JUnit86.211. Root independently repeated the exact frozen31:31PASS, process87.493435598s/JUnit87.126. Both used cap300, retries0, heartbeat10, terminal receipts, closed children and source230 unchanged. Paired real1.4-second original scoped exit holds reproduce parent guard failures and avoid planned candidate overlap across admission, close, whole context release and late-error cleanup. The genuine original guard1000 contention still fails; TTL/real expiry/worker3 and original injected fault identities remain.
+
+Two missing-event negatives execute the exact frozen nested wrapper in real worker futures with real10-second waits; they are not whole TLS scenarios. External proofs are not new regular cases. The1611 regular IDs/order and original skip contracts41 local/18 Linux/12 Windows remain required. All89 application files, all8 workflows, source runner and dependencies remain unchanged; source230 has only two changed entries. Whole900/proof120/workflow25 remain unchanged. Independent candidate review and all eight fresh attempt1 CI plus official artifacts are separate gates. Physical Fleet/SDK/private VM/pilot is DEFERRED OPEN/NOT_RUN.

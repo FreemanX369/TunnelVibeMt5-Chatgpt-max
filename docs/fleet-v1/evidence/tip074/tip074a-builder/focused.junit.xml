@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="11" time="2.137" timestamp="2026-10-07T21:27:06.103644+09:00" hostname="9db2018672be"><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-jobs]" time="0.271"><failure message="assert 2 == 1&#10; +  where 2 = len({140665961265488: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef58a73950&gt;, 140665948245696: &lt;vibemql5.fleet.job_journal.GatewayJobJournal object at 0x7fef57e08ec0&gt;})">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct0')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct0/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct0/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct0/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct0'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct0/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fef57e089e0&gt;
+case = 'capacity-jobs'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+&gt;           assert len(retained) == count
+E           assert 2 == 1
+E            +  where 2 = len({140665961265488: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef58a73950&gt;, 140665948245696: &lt;vibemql5.fleet.job_journal.GatewayJobJournal object at 0x7fef57e08ec0&gt;})
+
+tests/unit/test_tip074_gateway_lifecycle.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_partial_fixture_construction_closes_real_owners_with_traceback_retained[capacity-domain]" time="0.197"><failure message="assert 3 == 2&#10; +  where 3 = len({140665948174864: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df7a10&gt;, 140665948174816: &lt;vib...yJobJournal object at 0x7fef57df79e0&gt;, 140665948254288: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57e0b050&gt;})">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct1')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct1/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct1/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct1/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct1'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct1/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fef57df5880&gt;
+case = 'capacity-domain'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+&gt;           assert len(retained) == count
+E           assert 3 == 2
+E            +  where 3 = len({140665948174864: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df7a10&gt;, 140665948174816: &lt;vib...yJobJournal object at 0x7fef57df79e0&gt;, 140665948254288: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57e0b050&gt;})
+
+tests/unit/test_tip074_gateway_lifecycle.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_partial_fixture_construction_closes_real_owners_with_traceback_retained[composed-principals]" time="0.212" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_partial_fixture_construction_closes_real_owners_with_traceback_retained[writer-domain]" time="0.175"><failure message="assert 2 == 1&#10; +  where 2 = len({140665948168864: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df62a0&gt;, 140665948162192: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57df4890&gt;})">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct3')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct3/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ure_construct3/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct3/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct3'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_fixture_construct3/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fef57df7290&gt;
+case = 'writer-domain'
+
+    @pytest.mark.parametrize('case', ['capacity-jobs', 'capacity-domain', 'composed-principals', 'writer-domain'])
+    def test_partial_fixture_construction_closes_real_owners_with_traceback_retained(tmp_path, tls_files, project_node, monkeypatch, case):
+        import test_tip064_capacity_https as capacity
+        import test_tip064_integration as composed
+        import fleet_writer_fixture as writer
+        import vibemql5.fleet.principals as principals
+        module, constructor, path, count = {
+            'capacity-jobs': (capacity, 'GatewayJobJournal', 'capacity-jobs.sqlite', 1),
+            'capacity-domain': (capacity, 'DomainJournal', 'capacity-domain.sqlite', 2),
+            'composed-principals': (principals, 'GatewayPrincipalAuthority', 'composed-principals.json', 3),
+            'writer-domain': (writer, 'DomainJournal', 'gateway/domains.sqlite', 1),
+        }[case]
+        fault = tmp_path / path; fault.parent.mkdir(parents=True, exist_ok=True); fault.write_bytes(b'OWNED_EXISTING_STORE')
+        original, observations, primary = getattr(module, constructor), [], []
+        def observe_real_constructor(*args, **kwargs):
+            try: return original(*args, **kwargs)
+            except BaseException as error:
+                primary.append(error)
+                frame = sys._getframe(1)
+                observations.extend(value._db.execute('SELECT 1').fetchone()[0]
+                    for value in frame.f_locals.values() if type(value) in (GatewayControlStore, GatewayJobJournal, DomainJournal))
+                raise
+        monkeypatch.setattr(module, constructor, observe_real_constructor)
+        if case.startswith('capacity'):
+            generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        elif case.startswith('composed'):
+            generator = composed.composed_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        else:
+            generator = writer.writer_fixture.__wrapped__(project_node, tls_files, tmp_path)
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and primary[0] in errors(caught)
+            assert observations == [1] * count
+            retained = owners(caught)
+&gt;           assert len(retained) == count
+E           assert 2 == 1
+E            +  where 2 = len({140665948168864: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df62a0&gt;, 140665948162192: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57df4890&gt;})
+
+tests/unit/test_tip074_gateway_lifecycle.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors" time="0.185"><failure message="assert 3 == 2&#10; +  where 3 = len({140665948168384: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df60c0&gt;, 140665948170928: &lt;vib...yJobJournal object at 0x7fef57df6ab0&gt;, 140665948162912: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57df4b60&gt;})">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_factory_attempts_0')
+tls_files = (PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_factory_attempts_0/ca.pem'), PosixPath('/tmp/pytest-of-root/pyt...ory_attempts_0/server.pem'), PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_factory_attempts_0/server-key.pem'))
+project_node = {'root': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_factory_attempts_0'), 'terminals': [TerminalInfo(alias=...e': PosixPath('/tmp/pytest-of-root/pytest-10/test_partial_factory_attempts_0/workspaces/demo/Experts/DemoEA.mq5'), ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fef57df4ce0&gt;
+
+    def test_partial_factory_attempts_all_closes_and_retains_primary_and_cleanup_errors(tmp_path, tls_files, project_node, monkeypatch):
+        import test_tip064_capacity_https as capacity
+        fault = tmp_path / 'capacity-domain.sqlite'; fault.write_bytes(b'OWNED_EXISTING_STORE')
+        attempted, failures = [], [OSError('OWNED_JOBS_CLOSE'), RuntimeError('OWNED_CONTROL_CLOSE')]
+        for kind, name, secondary in ((GatewayJobJournal, 'jobs', failures[0]), (GatewayControlStore, 'control', failures[1])):
+            original = kind.close
+            def close(self, real=original, label=name, error=secondary):
+                attempted.append(label); real(self); raise error
+            monkeypatch.setattr(kind, 'close', close)
+        generator = capacity.capacity_service.__wrapped__(tmp_path, tls_files, SimpleNamespace())
+        caught, retained = None, {}
+        try:
+            try: next(generator)
+            except BaseException as error: caught = error
+            assert caught is not None and attempted == ['jobs', 'control']
+            graph = errors(caught)
+            assert all(any(error is secondary for error in graph) for secondary in failures)
+            assert any(getattr(error, 'code', None) == 'DOMAIN_EXISTS' for error in graph)
+            retained = owners(caught)
+&gt;           assert len(retained) == 2
+E           assert 3 == 2
+E            +  where 3 = len({140665948168384: &lt;vibemql5.fleet.gateway_control.GatewayControlStore object at 0x7fef57df60c0&gt;, 140665948170928: &lt;vib...yJobJournal object at 0x7fef57df6ab0&gt;, 140665948162912: &lt;vibemql5.fleet.domain.DomainJournal object at 0x7fef57df4b60&gt;})
+
+tests/unit/test_tip074_gateway_lifecycle.py:119: AssertionError</failure></testcase><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_started_failure_closes_real_controller_owners_and_preserves_error_truth[none]" time="0.089" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_started_failure_closes_real_controller_owners_and_preserves_error_truth[domain]" time="0.087" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_started_failure_closes_real_controller_owners_and_preserves_error_truth[store]" time="0.116" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_started_failure_closes_real_controller_owners_and_preserves_error_truth[both]" time="0.093" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_started_failure_closes_real_controller_owners_and_preserves_error_truth[before-domain]" time="0.212" /><testcase classname="tests.unit.test_tip074_gateway_lifecycle" name="test_normal_tls_request_and_stop_transfer_owners_once" time="0.120" /></testsuite></testsuites>

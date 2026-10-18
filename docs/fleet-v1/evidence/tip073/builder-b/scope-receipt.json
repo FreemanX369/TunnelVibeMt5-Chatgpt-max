@@ -1,0 +1,16 @@
+{
+  "parent": "ab8ce9891ae8fbb871d5de231a33d05dbb585f90",
+  "delta": [
+    "tests/unit/fleet_source_progress.py",
+    "tests/unit/test_fleet_source_progress.py"
+  ],
+  "source_files": 217,
+  "git_status": " M tests/unit/fleet_source_progress.py\n M tests/unit/test_fleet_source_progress.py\n",
+  "original_progress_method_AST_equal": {
+    "literal": true,
+    "emit": true,
+    "start": true,
+    "finish": true
+  },
+  "diff_check_exit": 0
+}

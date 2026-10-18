@@ -16,7 +16,7 @@ def build_parser():
     p = argparse.ArgumentParser(prog="vibemql5")
     p.add_argument("--root", default=str(default_root()))
     s = p.add_subparsers(dest="cmd", required=True)
-    for x in ["health", "diagnose", "list-workspaces", "list-terminals", "list-presets", "session-list", "iteration-list"]:
+    for x in ["health", "diagnose", "deployment-preflight", "list-workspaces", "list-terminals", "list-presets", "session-list", "iteration-list"]:
         s.add_parser(x)
     q = s.add_parser("identity-bootstrap"); q.add_argument("--expected-revision", type=int)
     q = s.add_parser("identity-show")
@@ -82,6 +82,9 @@ def wait_for_job(f: ToolFacade, job_id: str, timeout: int) -> dict:
 
 def main(argv=None):
     a = build_parser().parse_args(argv)
+    if a.cmd == "deployment-preflight":
+        from ..core.deployment_preflight import deployment_preflight
+        return emit(deployment_preflight(Path(a.root)))
     if a.cmd.startswith("identity-"):
         from ..core.inventory import TerminalInventory
         from ..fleet.identity import IdentityError, IdentityRegistry

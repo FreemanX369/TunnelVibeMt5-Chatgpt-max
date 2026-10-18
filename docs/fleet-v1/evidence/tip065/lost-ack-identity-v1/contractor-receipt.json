@@ -1,0 +1,58 @@
+{
+  "schema": "tip065.contractor-lost-ack-identity/1",
+  "status": "PASS",
+  "base_head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+  "passed": 156,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "5",
+    "tests": "161",
+    "time": "11.730",
+    "timestamp": "2026-10-05T18:56:53.315622+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "source_entries": 210,
+  "all_frozen_source_unchanged_during_run": true,
+  "app_files_exact_base": 89,
+  "only_changed_source": "tests/unit/test_tip064_integration.py",
+  "frozen_sha256": "0ffeee330c445e6c69b9124ca150c18e4cb30a94c8ce0dfb36b0ed98d399b883",
+  "files": {
+    "contractor-focused.xml": {
+      "bytes": 26297,
+      "sha256": "d2a6d7266b4bad2d9fede4904a6892f5de0d79ce01054fd3926426b0ac06fdef"
+    },
+    "contractor-focused.log": {
+      "bytes": 9922,
+      "sha256": "b275c1d5ba8a320a68b0c83c447aedd75a801fbc2657c01e64f1631252cadb30"
+    },
+    "frozen-source-manifest.json": {
+      "bytes": 49117,
+      "sha256": "02dc04367647f0a974cd32e26f69f4f3ecd9ca8f3fdf1707634bd913bf7ceda9"
+    },
+    "builder-completion-report.md": {
+      "bytes": 5366,
+      "sha256": "2474abcf236c6833b7b225a1f19b03336a493d7463627ad257500f54cfb3e130"
+    }
+  },
+  "payload_unchanged": true,
+  "command": [
+    "/workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-s",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip065_deployment_preflight.py",
+    "--junitxml=/workspace/scratch/1818a0d45fa0/tip065-lost-ack-identity-20261005/contractor-focused.xml"
+  ],
+  "env": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "physical_qualification": "NOT_RUN",
+  "historical_causes": "OPEN_UNKNOWN",
+  "candidate_gate": "PENDING_8_OF_8"
+}

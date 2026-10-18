@@ -1,0 +1,114 @@
+{
+  "actual_windows": "PENDING; no Windows PASS claimed",
+  "approved_remote_parent": "0ee42c9cdc677926e3f27d02592c1ad9fc498c8d",
+  "approved_remote_parent_tree": "1522511f8f33cdcd2269f561dc4a0f15acadaa80",
+  "freeze_utc": "2026-10-02T15:05:57.732844+00:00",
+  "local_head": "0233b1ce537d7730efc147981aa6ce0b56f1574b",
+  "local_head_basis": "SYNTHETIC; NOT AN EXACT REMOTE CANDIDATE HEAD",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "receipts": {
+    "local-before-queue-refinement-full.log": "008b0df9cee5bd3c98cb279a943187765824af2982a18d20526e3b5d5db1f52c",
+    "local-final-q1-portable-summary.json": "091033c759cfc4429dd95ca64311cfcc7fb8b0db6e917b309a01b17bb6f6f50c",
+    "local-final-q1-portable.log": "06686ae10e964c7b7a672504c8b74710827140c2094574b93cc0c340d5323914",
+    "local-final-scoped.log": "fd31ee80e1e700c032e9f6af9953f726b168b27fed38178f125a615abdd07a7c",
+    "local-final-windows-required-negative-summary.json": "617fcfbcd654bb310c119aa4e2857b9cf26ef38b270335e8eb71bf08df6a5efa",
+    "local-final-windows-required-negative.log": "2033b67760d55a100b67ec45e8daa78eb97cecbb67b5d57805f0290bd30e39be",
+    "local-interim-q1-portable-failure-summary.json": "3901d0f9bda8ae8f4183eab2f234b1138578852763b8b8c0416810ec524198aa",
+    "local-interim-q1-portable-failure.log": "edd52209425c5b0c810055477f3d86d2673341c2d98aad50fcb711b76ea80912"
+  },
+  "retained_q1_receipts_byte_identical": {
+    "docs/fleet-v1/evidence/tip057rq/ci-fifth.json": "4de3b12ae8d55469843dc10f419249b51bd7c771a444b5fed6356ffd09a7c88b",
+    "docs/fleet-v1/evidence/tip057rq/ci-first.json": "8fb8ced8ff5f93ab86c7952b4588f194dd2a754e32c6d1b742301848f4cc26b9",
+    "docs/fleet-v1/evidence/tip057rq/ci-fourth.json": "c35c15cfbd6d58cfc69aa05b91799fa062b327260ff0b34569e37d32f2bbe071",
+    "docs/fleet-v1/evidence/tip057rq/ci-second.json": "c33ba994ab8971cb0b407a8a3e27509f4e98743ecc4399033be7ca0e301025a1",
+    "docs/fleet-v1/evidence/tip057rq/ci-seventh.json": "0a3fac7c3717e434e5b3da43db274c94d8fca08ee1f330b0b9900b0a973e3e45",
+    "docs/fleet-v1/evidence/tip057rq/ci-sixth.json": "1d194c0418e37b563d865c02c0a45506658ec86219a37ffe83897e5307470540",
+    "docs/fleet-v1/evidence/tip057rq/ci-third.json": "79d025d1b2ba379d1f14518c63545ec2288bd16e450586ff5637e4646e20d88f",
+    "docs/fleet-v1/evidence/tip057rq/fifth-d156c5e/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/fifth-d156c5e/proof.log": "99011958822f31b447980ca1f48ff363ceca19fa55aad2fa481885ddcfda272c",
+    "docs/fleet-v1/evidence/tip057rq/fifth-d156c5e/summary.json": "21dfbdae5a54008e2b7048d7e044540b63a90214e06f7eabe31d36f4927ccb2d",
+    "docs/fleet-v1/evidence/tip057rq/first-a93e4b9/compiler.log": "8852da74162e3fccd6af2467cbbb328cbacb11b3b10480fb1101cbe53bf34b10",
+    "docs/fleet-v1/evidence/tip057rq/first-a93e4b9/summary.json": "aa755a995fbb79ca05bcbabf453c1dcb0b28e27b5a10a4f181408ccf5b690dcb",
+    "docs/fleet-v1/evidence/tip057rq/fourth-6b84209/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/fourth-6b84209/proof.log": "76ac6d010bf29ef87617f642e0026e74c86406dec588b588cc9ac4e9baf8fe94",
+    "docs/fleet-v1/evidence/tip057rq/fourth-6b84209/summary.json": "f68a6cf0a3e91738a2505c06e431b2d3a67ec5569bb8005bfc661d22ef18a7da",
+    "docs/fleet-v1/evidence/tip057rq/second-783f9a9/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/second-783f9a9/proof.log": "ba123a3eaa040d0ca4d266f6449595ae28aacb1f33795fe317c1457ea1bde570",
+    "docs/fleet-v1/evidence/tip057rq/second-783f9a9/summary.json": "67ac72670f48104a70524fdad9915f62bbd7e507285b4c1d7bdd397beb440b94",
+    "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/proof.log": "866babcc0afafb8ef582270016a3799b664bbf4172561f22b94dccea6572f7c7",
+    "docs/fleet-v1/evidence/tip057rq/seventh-bd3007a/summary.json": "9a7ae08b5a96bad26c34f4be228bf04ba5b60df47e8c905834c7ad979760d791",
+    "docs/fleet-v1/evidence/tip057rq/sixth-8f2a0d1/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/sixth-8f2a0d1/proof.log": "f7799aa4f164b6c0714fd35e5ac0ff24f2fff4ac05b1301c8483fc78896429cf",
+    "docs/fleet-v1/evidence/tip057rq/sixth-8f2a0d1/summary.json": "2cbf192d41c6052e7ca68dbe7e25fbae26b9aacd597e148503a880a75c6ca45f",
+    "docs/fleet-v1/evidence/tip057rq/third-07316a4/compiler.log": "b86c977ee7d9c036e84ed73f49455b66a6cf6c14fe481232bf6b466849f98def",
+    "docs/fleet-v1/evidence/tip057rq/third-07316a4/proof.log": "02891cf0fa55fac1f820aae4780642d1eba080b3f5c55ee0860772ad244bba77",
+    "docs/fleet-v1/evidence/tip057rq/third-07316a4/summary.json": "36296e1d8b4e6e515268511716b37cfe4ce2044db9d52a9ce5b096327445e4c4"
+  },
+  "schema": "tip057rg03a.local-source/1",
+  "source_hashes": {
+    ".github/workflows/verify-tip057rg03a.yml": "b4bfa874909010df37186c40a27fd0d8e443e777d5780b7cf4d7f748ed06fa25",
+    "app/vibemql5/core/concurrency.py": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+    "app/vibemql5/core/jobs.py": "096d32b968dd54cbaeb5374f17a1855d1fdd523ff54b256a3083d0bae634bcd4",
+    "app/vibemql5/core/native_ownership.py": "dded1e6f922d58575f5e79199823825fa5587ed285512cc6e63813c0d3e5c039",
+    "tests/proofs/tip057rg03a/run_windows.py": "70c293168a5db2f88f617a62063801688710bf58aac333c7b80eaa399e4e0cd3",
+    "tests/proofs/tip057rq/run_proof.py": "562225eee54566b1a843ed3b32ef4e8b6bb1023e7ec04abeaf0ffca82e7880db",
+    "tests/unit/ownership_fixture.py": "c051e73bcdb2fbd2b48efd25b603c221508745cc9a80ee7eef71536d17cb39d6",
+    "tests/unit/test_tip021r_remediation.py": "93de06be0e8a6ae9243c2ced440c7c36085ee4822497bfc69d4f96affe712100",
+    "tests/unit/test_tip024_multiclient_concurrency.py": "07f822793d3ad08d946e0dedade8f2b2ba3b0f6b07631cd7ec851d112cbfcc3c",
+    "tests/unit/test_tip026_binary_ingress.py": "cfbcc908f7c5cf016def81fd82c3c08b2351d0307db07a2da216ba12572d1958",
+    "tests/unit/test_tip026r1_widget_ingress.py": "dca5771f4806098b302edc52f4b53e44f0ece689500a41f1f668743b9a3ab51f",
+    "tests/unit/test_tip039_generic_powershell.py": "116d38bd494ed6b8cd7b8aeb89f35c07ba619c912c18a41a9db0a6e4a99bd5cc",
+    "tests/unit/test_tip055a_runtime_forensics_identity.py": "29092098a8867e4bbdd04df5e0ae90cb1a1dcea2d3e92c6f3ea2ee3cb8f82dc2",
+    "tests/unit/test_tip055b_runtime_forensics_release.py": "c229c370b327a3e8317f302d5d56bfd1c4a3dc262ab2b8aa63bdf39242a18a90",
+    "tests/unit/test_tip057rg03a_native_ownership.py": "386fd523df702f899dca1a4ed048f22ca743a62c40ae83a2e3a2c452f65a627f"
+  },
+  "status": "LOCAL_LINUX_SCOPED_PASS_WINDOWS_PENDING",
+  "unchanged_contract_sources": {
+    ".github/workflows/verify-tip057rq.yml": "cc9efd3faee7b3646bdc29c76c067ba85df6a6b9274db5f9af61d442936467ed",
+    "app/vibemql5/adapters/mcp.py": "d50d2896fb80837af113a985ddc65cbc12bffa8ffa26e57b7257726911a9de99",
+    "app/vibemql5/backend_admin/core.py": "4f5b4b9b5002279d6daa1f8ad49e3d3701be719197e648fda87864bf50348573",
+    "app/vibemql5/contracts.py": "21ae1ce103c8abd925c2097ac237298ad3263e81233d55f75c8583b86800a6df",
+    "app/vibemql5/core/facade.py": "96aeb1392bf91c61364ac7a5631cbbb201214293f28eafc59df19f9b4cb2caa2",
+    "app/vibemql5/models/types.py": "355e2124792fb94c82dd804148871ebf24d07504b36634c7a0393c031f474af9",
+    "app/vibemql5/worker.py": "cef35d9cb711ec992cafd6556f8df9695f1d58ad8573f1c2be22d434ed2033eb",
+    "pyproject.toml": "e5608d3c2b06f57282390ba141136bb7cb86a2181837b72a14349dfc82dd31f6",
+    "requirements-bootstrap.lock": "ee3749316b5b6cf67f1077d7e4df97bff467bb80b375853e8f15c062675e43cc"
+  },
+  "validation": {
+    "final_q1_portable": {
+      "errors": 0,
+      "failures": 0,
+      "qualification": "WINDOWS_UNQUALIFIED",
+      "skips": 0,
+      "tests_run": 8
+    },
+    "final_required_windows_on_linux": {
+      "exit_code": 1,
+      "qualification": "BLOCKED_REAL_WINDOWS_REQUIRED_NO_SKIP",
+      "skips": 0,
+      "tests_run": 0
+    },
+    "final_scoped": {
+      "elapsed_seconds": 6.68,
+      "errors": 0,
+      "failed": 0,
+      "passed": 121,
+      "skips": 2
+    },
+    "full_before_queue_refinement": {
+      "basis": "Before final ticket/owner no-effect cleanup refinements and native-only contention additions; final changed paths covered by scoped suite.",
+      "elapsed_seconds": 12.7,
+      "errors": 0,
+      "failed": 0,
+      "passed": 396,
+      "skips": 26
+    },
+    "initial_q1_portable": {
+      "errors": 7,
+      "qualification": "LOCAL_INTERIM_FAIL_RETAINED",
+      "tests_run": 8
+    }
+  }
+}

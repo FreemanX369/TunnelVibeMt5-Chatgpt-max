@@ -1,0 +1,15 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/b4674f0ac496/test-venv/bin/python
+rootdir: /workspace/scratch/b4674f0ac496/tip073-candidate
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 1 item
+
+tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000] 
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 498, "test_elapsed_ms": 0}
+
+tests/unit/test_tip064_integration.py::test_long_fixture_valid_finite_schedule_requires_aggregate_observation[10-1000] PASSED [100%]
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_tip064_integration.py", "function": "test_long_fixture_valid_finite_schedule_requires_aggregate_observation", "ordinal": 1, "outcome": "PASSED", "stage": "FINISH", "suite_elapsed_ms": 6591, "test_elapsed_ms": 6092}
+
+- generated xml file: /workspace/scratch/b4674f0ac496/deepfix-20261007-1903/runtime-cost-builder/actual-owned-cost.junit.xml -
+============================== 1 passed in 6.58s ===============================

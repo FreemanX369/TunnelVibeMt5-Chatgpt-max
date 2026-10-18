@@ -1,0 +1,4 @@
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_failed", "ordinal": 1, "stage": "START", "suite_elapsed_ms": 18, "test_elapsed_ms": 0}
+.ESOURCE_TEST_FAILURE {"errno": 13, "exception_type": "PermissionError", "file": "tests/unit/test_control.py", "frames": [{"file": "tests/unit/test_control.py", "function": "fixture", "line": 6}], "function": "test_failed", "ordinal": 1, "phase": "teardown"}
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_failed", "ordinal": 1, "outcome": "FAILED", "stage": "FINISH", "suite_elapsed_ms": 31, "test_elapsed_ms": 12}
+SOURCE_TEST_PROGRESS {"file": "tests/unit/test_control.py", "function": "test_later", "ordinal": 2, "stage": "START", "suite_elapsed_ms": 31, "test_elapsed_ms": 0}

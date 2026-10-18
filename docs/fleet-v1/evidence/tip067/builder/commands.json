@@ -1,0 +1,39 @@
+{
+  "diagnostics-v1": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip067-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_tip064_integration.py",
+      "tests/unit/test_tip064_capacity_https.py",
+      "-k",
+      "authorization_diagnostic or restore_failure or callback_original or primary_late",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip067-builder/diagnostics-v1.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip067-builder/app:/workspace/scratch/b4674f0ac496/tip067-builder/tests/unit"
+    }
+  },
+  "focused-v2": {
+    "cwd": "/workspace/scratch/b4674f0ac496/tip067-builder",
+    "argv": [
+      "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit/test_tip064_integration.py",
+      "tests/unit/test_tip064_capacity_https.py",
+      "tests/unit/test_tip058b_transport.py",
+      "tests/unit/test_tip060_authorization.py",
+      "tests/unit/test_fleet_gateway_fixture.py",
+      "-q",
+      "--tb=short",
+      "--junitxml=/workspace/scratch/b4674f0ac496/resume-20261006/tip067-builder/focused-v2.junit.xml"
+    ],
+    "environment": {
+      "PYTHONPATH": "/workspace/scratch/b4674f0ac496/tip067-builder/app:/workspace/scratch/b4674f0ac496/tip067-builder/tests/unit"
+    }
+  }
+}

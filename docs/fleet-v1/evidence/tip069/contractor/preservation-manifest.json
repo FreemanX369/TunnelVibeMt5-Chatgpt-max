@@ -1,0 +1,50 @@
+{
+  "v2/verification-receipt.json": {
+    "bytes": 890,
+    "sha256": "74920ad5e3e59964bda7faf34113f1bdbdd4e4c824f9ebfa4588971bff2dfbb1"
+  },
+  "v2/source-after.json": {
+    "bytes": 23645,
+    "sha256": "a10c4e73c36dcd4191e5e0508cb3e899dd16944e3827725dd7ca58410778dd23"
+  },
+  "v2/command.json": {
+    "bytes": 1165,
+    "sha256": "3ac14c0fb546271f7b68b00266a23e236b4fad49c8e8d9079a96e3ca42adc241"
+  },
+  "v2/source-before.json": {
+    "bytes": 23645,
+    "sha256": "a10c4e73c36dcd4191e5e0508cb3e899dd16944e3827725dd7ca58410778dd23"
+  },
+  "v2/focused.log": {
+    "bytes": 87779,
+    "sha256": "ee82d36dca5e7c9d2617d80a75b0a23488c68923042007c8443454d022a85849"
+  },
+  "v2/focused.junit.xml": {
+    "bytes": 18332,
+    "sha256": "e5dd3260436603c0ebd71362041414bb7ea738117fceebcc843f583bd9aaab13"
+  },
+  "v1/verification-receipt.json": {
+    "bytes": 890,
+    "sha256": "0760e32276d415f7f10ca4437d191ce3eeecbca342aa15ecffc01b0a76ab5d53"
+  },
+  "v1/source-after.json": {
+    "bytes": 23645,
+    "sha256": "a3abaea598ae71eb70164ed7010d54a3731daa6ae14319a193ad824c3c505b85"
+  },
+  "v1/command.json": {
+    "bytes": 1162,
+    "sha256": "1c145d08684d625cb0420683a45ee201bd9a3340b570fc6b40e94acda3da3e55"
+  },
+  "v1/source-before.json": {
+    "bytes": 23645,
+    "sha256": "a3abaea598ae71eb70164ed7010d54a3731daa6ae14319a193ad824c3c505b85"
+  },
+  "v1/focused.log": {
+    "bytes": 90413,
+    "sha256": "94d0402ab36adeb617cc308278bbf4a32fc492e3d5124a20149be5a6f3595655"
+  },
+  "v1/focused.junit.xml": {
+    "bytes": 18749,
+    "sha256": "e205304738a7451a2dabb2fe9236986252f5cf41c0cd63d0af5183fc6e4742e4"
+  }
+}

@@ -1,0 +1,12 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /workspace/scratch/1818a0d45fa0/deploy-20261005/source-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/1818a0d45fa0/repo
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 1 item
+
+tests/unit/test_tip061a_057n.py::test_scoped_future_collection_retains_parent_barrier_and_original_worker_failure PASSED [100%]
+
+- generated xml file: /workspace/scratch/1818a0d45fa0/tip065-failure-preservation-20261005/control-final.xml -
+============================== 1 passed in 0.16s ===============================

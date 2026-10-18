@@ -1,0 +1,15 @@
+test_w01_matched_unrestricted_control_writes_protocol_and_native_token (__main__.WindowsStubCases.test_w01_matched_unrestricted_control_writes_protocol_and_native_token) ... ok
+test_w02_restricted_roundtrip_binds_before_execution_and_fixture_only_closes (__main__.WindowsStubCases.test_w02_restricted_roundtrip_binds_before_execution_and_fixture_only_closes) ... ok
+test_w03_timeout_exact_termination_keeps_shared_authority_active (__main__.WindowsStubCases.test_w03_timeout_exact_termination_keeps_shared_authority_active) ... ok
+test_w04_missing_or_wrong_nonce_result_is_no_success_and_retains_active (__main__.WindowsStubCases.test_w04_missing_or_wrong_nonce_result_is_no_success_and_retains_active) ... ok
+test_w05_bind_publication_fault_before_after_never_executes_and_retains_active (__main__.WindowsStubCases.test_w05_bind_publication_fault_before_after_never_executes_and_retains_active) ... ok
+test_w06_restriction_readback_failure_terminates_owned_creation_handle (__main__.WindowsStubCases.test_w06_restriction_readback_failure_terminates_owned_creation_handle) ... ok
+test_w07_wrong_creation_identity_cannot_bind_or_resume (__main__.WindowsStubCases.test_w07_wrong_creation_identity_cannot_bind_or_resume) ... ok
+test_w08_stub_bytes_changed_cannot_receive_leaf_closure (__main__.WindowsStubCases.test_w08_stub_bytes_changed_cannot_receive_leaf_closure) ... ok
+test_w09_actual_parent_crash_keeps_restarted_controller_blocked (__main__.WindowsStubCases.test_w09_actual_parent_crash_keeps_restarted_controller_blocked) ... ok
+test_w10_resume_failure_before_and_after_effect_keeps_active (__main__.WindowsStubCases.test_w10_resume_failure_before_and_after_effect_keeps_active) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 3.580s
+
+OK

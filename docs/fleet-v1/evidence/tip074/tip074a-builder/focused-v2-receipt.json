@@ -1,0 +1,18 @@
+{
+  "head": "ef31be719b090c14effa96e69c08d405ac0ceceb",
+  "cwd": "/workspace/scratch/b4674f0ac496/tip074a-builder",
+  "command": [
+    "/workspace/scratch/b4674f0ac496/test-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip074_gateway_lifecycle.py",
+    "--junitxml=/workspace/scratch/b4674f0ac496/deepfix-20261007-1903/tip074a-builder/focused-v2.junit.xml",
+    "--durations=5"
+  ],
+  "timeout_seconds": 60,
+  "exit_code": 0,
+  "wall_seconds": 2.184590334000859,
+  "source_count": 218,
+  "source_equal": true
+}

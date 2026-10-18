@@ -1,0 +1,10 @@
+{
+  "source_head": "e9f668a049288eb899c580a6b8147e5caedae585",
+  "production_sha256": "af7fb5cc3817a460491d8710d77deacae66d0ba2c93e249d738b602fe1a264da",
+  "new_test_sha256": "c40bd1b76a5657088a300ffaa718c33e9f8f2df062ee1f1999caaf4605ca06eb",
+  "tests": 31,
+  "failed": 4,
+  "passed": 27,
+  "source_manifest_entries": 217,
+  "test_authoring_failure": "dead-owner child parent observation refused PROCESS_NAMESPACE_UNQUALIFIED; original test bytes preserved"
+}

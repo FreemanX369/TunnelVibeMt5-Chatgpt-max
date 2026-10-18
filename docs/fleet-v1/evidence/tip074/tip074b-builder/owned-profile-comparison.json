@@ -1,0 +1,1210 @@
+{
+  "schema": "owned-profile-parent-fixed-comparison/1",
+  "all_native_authority_and_per_request_validation_multiplicities_preserved": true,
+  "scheduling_counts_not_forced": true,
+  "inclusive_measurements_overlap": true,
+  "parent_command_wall_seconds": 6.892319024999779,
+  "fixed_command_wall_seconds": 7.187073067000711,
+  "profile_aggregates": [
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_HEARTBEAT",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.4185280330120804,
+        "maximum_seconds": 0.008372471999791742
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.7034793539996826,
+        "maximum_seconds": 0.019800987000053283
+      },
+      "parent_average_ms": 3.6080002845869,
+      "fixed_average_ms": 4.7532388783762345
+    },
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.022629749001680466,
+        "maximum_seconds": 0.008923512000365008
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.025838783000835974,
+        "maximum_seconds": 0.01192480300051102
+      },
+      "parent_average_ms": 4.525949800336093,
+      "fixed_average_ms": 5.167756600167195
+    },
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_OTHER",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_OTHER",
+        "calls": 120,
+        "inclusive_seconds": 0.01989954700184171,
+        "maximum_seconds": 0.0022158589999889955
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_OTHER",
+        "calls": 152,
+        "inclusive_seconds": 0.024123475000124017,
+        "maximum_seconds": 0.0016357639997295337
+      },
+      "parent_average_ms": 0.16582955834868093,
+      "fixed_average_ms": 0.15870707236923695
+    },
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_PAIR",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.001303213000028336,
+        "maximum_seconds": 0.001303213000028336
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.001547550999930536,
+        "maximum_seconds": 0.001547550999930536
+      },
+      "parent_average_ms": 1.303213000028336,
+      "fixed_average_ms": 1.547550999930536
+    },
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_POLL",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_POLL",
+        "calls": 116,
+        "inclusive_seconds": 0.694767738000337,
+        "maximum_seconds": 0.028880102999210067
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_POLL",
+        "calls": 148,
+        "inclusive_seconds": 0.9640233930049362,
+        "maximum_seconds": 0.027353683000001183
+      },
+      "parent_average_ms": 5.989377051727043,
+      "fixed_average_ms": 6.513671574357677
+    },
+    {
+      "kind": "GATEWAY_HANDLE",
+      "route": "GW_RESULT",
+      "parent": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.045986410999830696,
+        "maximum_seconds": 0.009400449999702687
+      },
+      "fixed": {
+        "kind": "GATEWAY_HANDLE",
+        "route": "GW_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.05878698200103827,
+        "maximum_seconds": 0.011369356000614061
+      },
+      "parent_average_ms": 5.109601222203411,
+      "fixed_average_ms": 5.878698200103827
+    },
+    {
+      "kind": "GW_CONTROL_HEAD",
+      "route": "GW_HEARTBEAT",
+      "parent": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.15265806100069312,
+        "maximum_seconds": 0.0038085969999883673
+      },
+      "fixed": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.2703670959917872,
+        "maximum_seconds": 0.01050292099989747
+      },
+      "parent_average_ms": 1.3160177672473545,
+      "fixed_average_ms": 1.826804702647211
+    },
+    {
+      "kind": "GW_CONTROL_HEAD",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.005184278999877279,
+        "maximum_seconds": 0.002027143999839609
+      },
+      "fixed": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.006638398999712081,
+        "maximum_seconds": 0.003673933999380097
+      },
+      "parent_average_ms": 1.0368557999754557,
+      "fixed_average_ms": 1.3276797999424161
+    },
+    {
+      "kind": "GW_CONTROL_HEAD",
+      "route": "GW_PAIR",
+      "parent": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.00031408299946633633,
+        "maximum_seconds": 0.00031408299946633633
+      },
+      "fixed": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.0003043789993171231,
+        "maximum_seconds": 0.0003043789993171231
+      },
+      "parent_average_ms": 0.31408299946633633,
+      "fixed_average_ms": 0.3043789993171231
+    },
+    {
+      "kind": "GW_CONTROL_HEAD",
+      "route": "GW_POLL",
+      "parent": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_POLL",
+        "calls": 116,
+        "inclusive_seconds": 0.1597491360062122,
+        "maximum_seconds": 0.009029401000589132
+      },
+      "fixed": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_POLL",
+        "calls": 148,
+        "inclusive_seconds": 0.2614736930017898,
+        "maximum_seconds": 0.0097016440004154
+      },
+      "parent_average_ms": 1.3771477241914847,
+      "fixed_average_ms": 1.7667141419039851
+    },
+    {
+      "kind": "GW_CONTROL_HEAD",
+      "route": "GW_RESULT",
+      "parent": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.011247821999859298,
+        "maximum_seconds": 0.0026973929998348467
+      },
+      "fixed": {
+        "kind": "GW_CONTROL_HEAD",
+        "route": "GW_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.01773305199913011,
+        "maximum_seconds": 0.0036745249999512453
+      },
+      "parent_average_ms": 1.2497579999843664,
+      "fixed_average_ms": 1.7733051999130112
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_HEARTBEAT",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_HEARTBEAT",
+        "calls": 348,
+        "inclusive_seconds": 0.26938625700040575,
+        "maximum_seconds": 0.003565631000128633
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_HEARTBEAT",
+        "calls": 444,
+        "inclusive_seconds": 0.4674856310020914,
+        "maximum_seconds": 0.0066060409999408876
+      },
+      "parent_average_ms": 0.7740984396563384,
+      "fixed_average_ms": 1.0528955653200256
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_NATIVE_START",
+        "calls": 20,
+        "inclusive_seconds": 0.011769020999963686,
+        "maximum_seconds": 0.0012915950001115561
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_NATIVE_START",
+        "calls": 20,
+        "inclusive_seconds": 0.01556425599846989,
+        "maximum_seconds": 0.00220089599952189
+      },
+      "parent_average_ms": 0.5884510499981843,
+      "fixed_average_ms": 0.7782127999234945
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_OTHER",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_OTHER",
+        "calls": 3,
+        "inclusive_seconds": 0.0006052010003259056,
+        "maximum_seconds": 0.00023390200021822238
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_OTHER",
+        "calls": 3,
+        "inclusive_seconds": 0.0007594150001750677,
+        "maximum_seconds": 0.00028959599967492977
+      },
+      "parent_average_ms": 0.20173366677530188,
+      "fixed_average_ms": 0.25313833339168923
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_PAIR",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.0003561670000635786,
+        "maximum_seconds": 0.000191078000170819
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.00037228000019240426,
+        "maximum_seconds": 0.00019078700006502913
+      },
+      "parent_average_ms": 0.1780835000317893,
+      "fixed_average_ms": 0.18614000009620213
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_POLL",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_POLL",
+        "calls": 464,
+        "inclusive_seconds": 0.36390808798478247,
+        "maximum_seconds": 0.0058474679999562795
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_POLL",
+        "calls": 592,
+        "inclusive_seconds": 0.5911402319970875,
+        "maximum_seconds": 0.007631816999492003
+      },
+      "parent_average_ms": 0.7842846723809968,
+      "fixed_average_ms": 0.9985476891842695
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "GW_RESULT",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_RESULT",
+        "calls": 36,
+        "inclusive_seconds": 0.02611558199805586,
+        "maximum_seconds": 0.001834282999880088
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "GW_RESULT",
+        "calls": 40,
+        "inclusive_seconds": 0.03802357699714776,
+        "maximum_seconds": 0.0022409650000554393
+      },
+      "parent_average_ms": 0.7254328332793294,
+      "fixed_average_ms": 0.9505894249286939
+    },
+    {
+      "kind": "GW_FULL_VALIDATE",
+      "route": "OTHER",
+      "parent": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "OTHER",
+        "calls": 2,
+        "inclusive_seconds": 0.0005427370006145793,
+        "maximum_seconds": 0.0003615140003603301
+      },
+      "fixed": {
+        "kind": "GW_FULL_VALIDATE",
+        "route": "OTHER",
+        "calls": 2,
+        "inclusive_seconds": 0.0008274470010292134,
+        "maximum_seconds": 0.0006486870006483514
+      },
+      "parent_average_ms": 0.27136850030728965,
+      "fixed_average_ms": 0.4137235005146067
+    },
+    {
+      "kind": "GW_GET_ROUTE",
+      "route": "GW_HEARTBEAT",
+      "parent": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.08881890499833389,
+        "maximum_seconds": 0.0016290639996441314
+      },
+      "fixed": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.15688591700291,
+        "maximum_seconds": 0.005492272999617853
+      },
+      "parent_average_ms": 0.7656802155028783,
+      "fixed_average_ms": 1.0600399797493918
+    },
+    {
+      "kind": "GW_GET_ROUTE",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.005970073001662968,
+        "maximum_seconds": 0.0012051560006511863
+      },
+      "fixed": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.007750153997221787,
+        "maximum_seconds": 0.002169087999391195
+      },
+      "parent_average_ms": 0.5970073001662968,
+      "fixed_average_ms": 0.7750153997221787
+    },
+    {
+      "kind": "GW_GET_ROUTE",
+      "route": "GW_OTHER",
+      "parent": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_OTHER",
+        "calls": 2,
+        "inclusive_seconds": 0.0004903899998680572,
+        "maximum_seconds": 0.00025261100017814897
+      },
+      "fixed": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_OTHER",
+        "calls": 2,
+        "inclusive_seconds": 0.0006080969997128705,
+        "maximum_seconds": 0.0003122509997410816
+      },
+      "parent_average_ms": 0.2451949999340286,
+      "fixed_average_ms": 0.30404849985643523
+    },
+    {
+      "kind": "GW_GET_ROUTE",
+      "route": "GW_POLL",
+      "parent": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_POLL",
+        "calls": 232,
+        "inclusive_seconds": 0.18159169400496467,
+        "maximum_seconds": 0.004655362999983481
+      },
+      "fixed": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_POLL",
+        "calls": 296,
+        "inclusive_seconds": 0.2966719030009699,
+        "maximum_seconds": 0.003380021000339184
+      },
+      "parent_average_ms": 0.7827228189869166,
+      "fixed_average_ms": 1.0022699425708443
+    },
+    {
+      "kind": "GW_GET_ROUTE",
+      "route": "GW_RESULT",
+      "parent": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_RESULT",
+        "calls": 18,
+        "inclusive_seconds": 0.013218671001595794,
+        "maximum_seconds": 0.001855775000876747
+      },
+      "fixed": {
+        "kind": "GW_GET_ROUTE",
+        "route": "GW_RESULT",
+        "calls": 20,
+        "inclusive_seconds": 0.018441710998558847,
+        "maximum_seconds": 0.0020767289997820626
+      },
+      "parent_average_ms": 0.7343706111997663,
+      "fixed_average_ms": 0.9220855499279423
+    },
+    {
+      "kind": "NATIVE_SIGN",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "NATIVE_SIGN",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.0006200949992489768,
+        "maximum_seconds": 0.00017581499923835509
+      },
+      "fixed": {
+        "kind": "NATIVE_SIGN",
+        "route": "GW_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.0006946159983272082,
+        "maximum_seconds": 0.00020297599985497072
+      },
+      "parent_average_ms": 0.12401899984979536,
+      "fixed_average_ms": 0.13892319966544164
+    },
+    {
+      "kind": "NATIVE_VERIFY",
+      "route": "OTHER",
+      "parent": {
+        "kind": "NATIVE_VERIFY",
+        "route": "OTHER",
+        "calls": 5,
+        "inclusive_seconds": 0.0029209620006440673,
+        "maximum_seconds": 0.0010120750002897694
+      },
+      "fixed": {
+        "kind": "NATIVE_VERIFY",
+        "route": "OTHER",
+        "calls": 5,
+        "inclusive_seconds": 0.0023302910003621946,
+        "maximum_seconds": 0.0007256529997903272
+      },
+      "parent_average_ms": 0.5841924001288135,
+      "fixed_average_ms": 0.4660582000724389
+    },
+    {
+      "kind": "NODE_ACK",
+      "route": "NODE_HEARTBEAT",
+      "parent": {
+        "kind": "NODE_ACK",
+        "route": "NODE_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.6918528239903026,
+        "maximum_seconds": 0.012888815000223985
+      },
+      "fixed": {
+        "kind": "NODE_ACK",
+        "route": "NODE_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.4488969240064762,
+        "maximum_seconds": 0.0075850660005016834
+      },
+      "parent_average_ms": 5.964248482675022,
+      "fixed_average_ms": 3.0330873243680823
+    },
+    {
+      "kind": "NODE_ACK",
+      "route": "NODE_NATIVE_START",
+      "parent": {
+        "kind": "NODE_ACK",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.02356225100083975,
+        "maximum_seconds": 0.011606423000557697
+      },
+      "fixed": {
+        "kind": "NODE_ACK",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.011872533998939616,
+        "maximum_seconds": 0.005879405999621667
+      },
+      "parent_average_ms": 4.71245020016795,
+      "fixed_average_ms": 2.3745067997879232
+    },
+    {
+      "kind": "NODE_ACK",
+      "route": "NODE_PAIR",
+      "parent": {
+        "kind": "NODE_ACK",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.00032350699984817766,
+        "maximum_seconds": 0.00032350699984817766
+      },
+      "fixed": {
+        "kind": "NODE_ACK",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.00031610699988959823,
+        "maximum_seconds": 0.00031610699988959823
+      },
+      "parent_average_ms": 0.32350699984817766,
+      "fixed_average_ms": 0.31610699988959823
+    },
+    {
+      "kind": "NODE_ACK",
+      "route": "NODE_POLL",
+      "parent": {
+        "kind": "NODE_ACK",
+        "route": "NODE_POLL",
+        "calls": 116,
+        "inclusive_seconds": 0.7176041769935182,
+        "maximum_seconds": 0.015660279999792692
+      },
+      "fixed": {
+        "kind": "NODE_ACK",
+        "route": "NODE_POLL",
+        "calls": 148,
+        "inclusive_seconds": 0.4556403640026474,
+        "maximum_seconds": 0.009459590000005846
+      },
+      "parent_average_ms": 6.186242905116536,
+      "fixed_average_ms": 3.078651108125996
+    },
+    {
+      "kind": "NODE_ACK",
+      "route": "NODE_RESULT",
+      "parent": {
+        "kind": "NODE_ACK",
+        "route": "NODE_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.05349035000108415,
+        "maximum_seconds": 0.013747183000305085
+      },
+      "fixed": {
+        "kind": "NODE_ACK",
+        "route": "NODE_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.02907039999990957,
+        "maximum_seconds": 0.006020848999469308
+      },
+      "parent_average_ms": 5.943372222342684,
+      "fixed_average_ms": 2.907039999990957
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "NODE_HEARTBEAT",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_HEARTBEAT",
+        "calls": 232,
+        "inclusive_seconds": 1.404161755005589,
+        "maximum_seconds": 0.02186649200029933
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_HEARTBEAT",
+        "calls": 296,
+        "inclusive_seconds": 0.8593565760083948,
+        "maximum_seconds": 0.007746899999801826
+      },
+      "parent_average_ms": 6.052421357782711,
+      "fixed_average_ms": 2.903231675704036
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "NODE_NATIVE_START",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.043633425001644355,
+        "maximum_seconds": 0.011212009000701073
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.021540658999583684,
+        "maximum_seconds": 0.005646806000186189
+      },
+      "parent_average_ms": 4.3633425001644355,
+      "fixed_average_ms": 2.1540658999583684
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "NODE_PAIR",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.0002099960001942236,
+        "maximum_seconds": 0.00011813800028903643
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.00029322200043679914,
+        "maximum_seconds": 0.00020784299977094634
+      },
+      "parent_average_ms": 0.1049980000971118,
+      "fixed_average_ms": 0.14661100021839957
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "NODE_POLL",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_POLL",
+        "calls": 232,
+        "inclusive_seconds": 1.3877508000077796,
+        "maximum_seconds": 0.01551826600007189
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_POLL",
+        "calls": 296,
+        "inclusive_seconds": 0.8823112960144499,
+        "maximum_seconds": 0.010535925999647588
+      },
+      "parent_average_ms": 5.981684482792153,
+      "fixed_average_ms": 2.9807814054542225
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "NODE_RESULT",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_RESULT",
+        "calls": 18,
+        "inclusive_seconds": 0.09871265600395418,
+        "maximum_seconds": 0.013318367000465514
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "NODE_RESULT",
+        "calls": 20,
+        "inclusive_seconds": 0.0625725850031813,
+        "maximum_seconds": 0.011201983999853837
+      },
+      "parent_average_ms": 5.484036444664121,
+      "fixed_average_ms": 3.128629250159065
+    },
+    {
+      "kind": "NODE_FULL_VALIDATE",
+      "route": "OTHER",
+      "parent": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "OTHER",
+        "calls": 1,
+        "inclusive_seconds": 7.826799992471933e-05,
+        "maximum_seconds": 7.826799992471933e-05
+      },
+      "fixed": {
+        "kind": "NODE_FULL_VALIDATE",
+        "route": "OTHER",
+        "calls": 1,
+        "inclusive_seconds": 8.759200045460602e-05,
+        "maximum_seconds": 8.759200045460602e-05
+      },
+      "parent_average_ms": 0.07826799992471933,
+      "fixed_average_ms": 0.08759200045460602
+    },
+    {
+      "kind": "NODE_INTENT",
+      "route": "NODE_HEARTBEAT",
+      "parent": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.7551366819952818,
+        "maximum_seconds": 0.022052522999729263
+      },
+      "fixed": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.44734160999905725,
+        "maximum_seconds": 0.007864156000323419
+      },
+      "parent_average_ms": 6.509798982717947,
+      "fixed_average_ms": 3.022578445939576
+    },
+    {
+      "kind": "NODE_INTENT",
+      "route": "NODE_NATIVE_START",
+      "parent": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.022168362999764213,
+        "maximum_seconds": 0.009739500999785378
+      },
+      "fixed": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.011300884000775113,
+        "maximum_seconds": 0.005766046000644565
+      },
+      "parent_average_ms": 4.433672599952843,
+      "fixed_average_ms": 2.2601768001550226
+    },
+    {
+      "kind": "NODE_INTENT",
+      "route": "NODE_PAIR",
+      "parent": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.00023655699988012202,
+        "maximum_seconds": 0.00023655699988012202
+      },
+      "fixed": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.00018279500000062399,
+        "maximum_seconds": 0.00018279500000062399
+      },
+      "parent_average_ms": 0.23655699988012202,
+      "fixed_average_ms": 0.182795000000624
+    },
+    {
+      "kind": "NODE_INTENT",
+      "route": "NODE_POLL",
+      "parent": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_POLL",
+        "calls": 116,
+        "inclusive_seconds": 0.7128280500019173,
+        "maximum_seconds": 0.012941103999764891
+      },
+      "fixed": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_POLL",
+        "calls": 148,
+        "inclusive_seconds": 0.46077204100402014,
+        "maximum_seconds": 0.010666723000213096
+      },
+      "parent_average_ms": 6.145069396568252,
+      "fixed_average_ms": 3.1133246013785145
+    },
+    {
+      "kind": "NODE_INTENT",
+      "route": "NODE_RESULT",
+      "parent": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.050607792001756025,
+        "maximum_seconds": 0.011560584000108065
+      },
+      "fixed": {
+        "kind": "NODE_INTENT",
+        "route": "NODE_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.03614474599908135,
+        "maximum_seconds": 0.011415545999625465
+      },
+      "parent_average_ms": 5.623088000195114,
+      "fixed_average_ms": 3.614474599908135
+    },
+    {
+      "kind": "NODE_POST",
+      "route": "NODE_HEARTBEAT",
+      "parent": {
+        "kind": "NODE_POST",
+        "route": "NODE_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 2.192402626999865,
+        "maximum_seconds": 0.04003804600051808
+      },
+      "fixed": {
+        "kind": "NODE_POST",
+        "route": "NODE_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 2.05594338199262,
+        "maximum_seconds": 0.032813568000165105
+      },
+      "parent_average_ms": 18.90002264655056,
+      "fixed_average_ms": 13.891509337787971
+    },
+    {
+      "kind": "NODE_POST",
+      "route": "NODE_NATIVE_START",
+      "parent": {
+        "kind": "NODE_POST",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.08450072499908856,
+        "maximum_seconds": 0.03411713700006658
+      },
+      "fixed": {
+        "kind": "NODE_POST",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.0633234259994424,
+        "maximum_seconds": 0.02706822399977682
+      },
+      "parent_average_ms": 16.900144999817712,
+      "fixed_average_ms": 12.664685199888481
+    },
+    {
+      "kind": "NODE_POST",
+      "route": "NODE_PAIR",
+      "parent": {
+        "kind": "NODE_POST",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.0046617719999630935,
+        "maximum_seconds": 0.0046617719999630935
+      },
+      "fixed": {
+        "kind": "NODE_POST",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.004860121000092477,
+        "maximum_seconds": 0.004860121000092477
+      },
+      "parent_average_ms": 4.6617719999630935,
+      "fixed_average_ms": 4.860121000092477
+    },
+    {
+      "kind": "NODE_POST",
+      "route": "NODE_POLL",
+      "parent": {
+        "kind": "NODE_POST",
+        "route": "NODE_POLL",
+        "calls": 116,
+        "inclusive_seconds": 2.460375271000885,
+        "maximum_seconds": 0.05664981300014915
+      },
+      "fixed": {
+        "kind": "NODE_POST",
+        "route": "NODE_POLL",
+        "calls": 148,
+        "inclusive_seconds": 2.326370405991838,
+        "maximum_seconds": 0.041234942999835766
+      },
+      "parent_average_ms": 21.21013164655935,
+      "fixed_average_ms": 15.718718959404312
+    },
+    {
+      "kind": "NODE_POST",
+      "route": "NODE_RESULT",
+      "parent": {
+        "kind": "NODE_POST",
+        "route": "NODE_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.1846971160002795,
+        "maximum_seconds": 0.039900849999867205
+      },
+      "fixed": {
+        "kind": "NODE_POST",
+        "route": "NODE_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.15569379099997604,
+        "maximum_seconds": 0.029606808000607998
+      },
+      "parent_average_ms": 20.521901777808832,
+      "fixed_average_ms": 15.569379099997604
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "GW_HEARTBEAT",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_HEARTBEAT",
+        "calls": 232,
+        "inclusive_seconds": 0.05117958399478084,
+        "maximum_seconds": 0.0014216409999789903
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_HEARTBEAT",
+        "calls": 296,
+        "inclusive_seconds": 0.0753393609993509,
+        "maximum_seconds": 0.0063351130002047285
+      },
+      "parent_average_ms": 0.22060165514991742,
+      "fixed_average_ms": 0.25452486824105036
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "GW_NATIVE_START",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.0029699670003537904,
+        "maximum_seconds": 0.00040204600009019487
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_NATIVE_START",
+        "calls": 10,
+        "inclusive_seconds": 0.0024396339995291783,
+        "maximum_seconds": 0.0003327710001030937
+      },
+      "parent_average_ms": 0.29699670003537904,
+      "fixed_average_ms": 0.24396339995291783
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "GW_PAIR",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.000467804999971122,
+        "maximum_seconds": 0.00025263099996664096
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_PAIR",
+        "calls": 2,
+        "inclusive_seconds": 0.0003835179995803628,
+        "maximum_seconds": 0.00020047199996042764
+      },
+      "parent_average_ms": 0.233902499985561,
+      "fixed_average_ms": 0.1917589997901814
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "GW_POLL",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_POLL",
+        "calls": 232,
+        "inclusive_seconds": 0.0534404929876473,
+        "maximum_seconds": 0.0011740390000340994
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_POLL",
+        "calls": 296,
+        "inclusive_seconds": 0.06776426299711602,
+        "maximum_seconds": 0.0008274860001620254
+      },
+      "parent_average_ms": 0.2303469525329625,
+      "fixed_average_ms": 0.22893332093620278
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "GW_RESULT",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_RESULT",
+        "calls": 18,
+        "inclusive_seconds": 0.005834857000991178,
+        "maximum_seconds": 0.0005789529996036435
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "GW_RESULT",
+        "calls": 20,
+        "inclusive_seconds": 0.005119085001751955,
+        "maximum_seconds": 0.00044302799960860284
+      },
+      "parent_average_ms": 0.3241587222772877,
+      "fixed_average_ms": 0.25595425008759776
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "NODE_HEARTBEAT",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_HEARTBEAT",
+        "calls": 116,
+        "inclusive_seconds": 0.023869056001785793,
+        "maximum_seconds": 0.00109627200072282
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_HEARTBEAT",
+        "calls": 148,
+        "inclusive_seconds": 0.03117700400252943,
+        "maximum_seconds": 0.0007659189996047644
+      },
+      "parent_average_ms": 0.2057677241533258,
+      "fixed_average_ms": 0.21065543244952317
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "NODE_NATIVE_START",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.0014648569995188154,
+        "maximum_seconds": 0.0003579800004445133
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_NATIVE_START",
+        "calls": 5,
+        "inclusive_seconds": 0.0011462069996923674,
+        "maximum_seconds": 0.00031068799944478087
+      },
+      "parent_average_ms": 0.2929713999037631,
+      "fixed_average_ms": 0.22924139993847348
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "NODE_PAIR",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.0003029269992111949,
+        "maximum_seconds": 0.0003029269992111949
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_PAIR",
+        "calls": 1,
+        "inclusive_seconds": 0.0003316390002510161,
+        "maximum_seconds": 0.0003316390002510161
+      },
+      "parent_average_ms": 0.3029269992111949,
+      "fixed_average_ms": 0.3316390002510161
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "NODE_POLL",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_POLL",
+        "calls": 116,
+        "inclusive_seconds": 0.023333254001045134,
+        "maximum_seconds": 0.0011620699997365591
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_POLL",
+        "calls": 148,
+        "inclusive_seconds": 0.028177126999253232,
+        "maximum_seconds": 0.000513543999659305
+      },
+      "parent_average_ms": 0.20114874138832012,
+      "fixed_average_ms": 0.19038599323819752
+    },
+    {
+      "kind": "SIGNED_REQUEST_VERIFY",
+      "route": "NODE_RESULT",
+      "parent": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_RESULT",
+        "calls": 9,
+        "inclusive_seconds": 0.0029513269964809297,
+        "maximum_seconds": 0.0005803039994134451
+      },
+      "fixed": {
+        "kind": "SIGNED_REQUEST_VERIFY",
+        "route": "NODE_RESULT",
+        "calls": 10,
+        "inclusive_seconds": 0.0022773009968659608,
+        "maximum_seconds": 0.00028841399944212753
+      },
+      "parent_average_ms": 0.3279252218312144,
+      "fixed_average_ms": 0.22773009968659608
+    },
+    {
+      "kind": "WORKER_RPC_WAIT",
+      "route": "OTHER",
+      "parent": {
+        "kind": "WORKER_RPC_WAIT",
+        "route": "OTHER",
+        "calls": 5,
+        "inclusive_seconds": 0.20251187200028653,
+        "maximum_seconds": 0.08281316500051616
+      },
+      "fixed": {
+        "kind": "WORKER_RPC_WAIT",
+        "route": "OTHER",
+        "calls": 5,
+        "inclusive_seconds": 0.13242057400020713,
+        "maximum_seconds": 0.036019723000208614
+      },
+      "parent_average_ms": 40.502374400057306,
+      "fixed_average_ms": 26.484114800041425
+    }
+  ],
+  "parent_RPC_rows": [
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "phase_admission",
+      "elapsed_ms": 34.19117300018115
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "phase_admission",
+      "elapsed_ms": 15.145263999329472
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "snapshot_prepare:0001",
+      "elapsed_ms": 33.52882600029261
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "compile_run_prepare:0001",
+      "elapsed_ms": 36.83344399996713
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "compile_log_capture:0001",
+      "elapsed_ms": 82.81316500051616
+    }
+  ],
+  "fixed_RPC_rows": [
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "phase_admission",
+      "elapsed_ms": 28.9292369998293
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "phase_admission",
+      "elapsed_ms": 15.709694000179297
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "snapshot_prepare:0001",
+      "elapsed_ms": 26.752476999718056
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "compile_run_prepare:0001",
+      "elapsed_ms": 25.009443000271858
+    },
+    {
+      "kind": "START_AUTHORIZE",
+      "event": "compile_log_capture:0001",
+      "elapsed_ms": 36.019723000208614
+    }
+  ],
+  "limitations": [
+    "Total wall time did not improve in this single finite actual fixture run.",
+    "Counts/history differ naturally because the unchanged control pump can complete more polls.",
+    "Per-call timings are observational, not matched-history end-to-end causal estimates.",
+    "Historical physical Windows expiry/setup/gate cause remains UNKNOWN; physical Windows NOT_RUN."
+  ]
+}

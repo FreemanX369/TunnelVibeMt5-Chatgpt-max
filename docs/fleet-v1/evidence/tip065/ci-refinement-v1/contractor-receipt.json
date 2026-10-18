@@ -1,0 +1,49 @@
+{
+  "schema": "tip065.contractor-ci-refinement/1",
+  "base_head": "ec9180e15e840a7d4a3af18f78ce9bee1f4db582",
+  "status": "PASS",
+  "scope": "TEST_FIXTURE_ONLY",
+  "physical_qualification": "NOT_RUN",
+  "app_files_exact_base_bytes": 89,
+  "frozen_tip065_unchanged": true,
+  "overlay_payload_unchanged": true,
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "5",
+    "tests": "168",
+    "time": "12.348",
+    "timestamp": "2026-10-05T17:15:04.175445+09:00",
+    "hostname": "18d749e848f4"
+  },
+  "passed": 163,
+  "command": [
+    "source-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_tip056_resources.py",
+    "tests/unit/test_tip064_integration.py",
+    "tests/unit/test_tip024_multiclient_concurrency.py",
+    "tests/unit/test_fleet_gateway_fixture.py",
+    "tests/unit/test_tip058b_transport.py",
+    "tests/unit/test_tip065_deployment_preflight.py"
+  ],
+  "env": {
+    "PYTHONPATH": "app:tests/unit"
+  },
+  "files": {
+    "contractor-focused.xml": {
+      "sha256": "ea85baaf9f6c9eee6f8b8df32452f6af70583e13ec19b9055879c7418fcf9696",
+      "bytes": 27213
+    },
+    "contractor-focused.log": {
+      "sha256": "4abf6d27934077400d664879d7358fe370c5e2b1fac58135159ebb0acb5b950e",
+      "bytes": 272
+    }
+  },
+  "original_result_timeout_cause": "OPEN",
+  "original_owner_grant_cause": "OPEN_UNKNOWN",
+  "candidate_gate": "PENDING_8_OF_8"
+}

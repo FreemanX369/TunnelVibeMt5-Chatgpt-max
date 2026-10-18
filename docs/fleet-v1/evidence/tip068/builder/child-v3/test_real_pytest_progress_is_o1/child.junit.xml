@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.021" timestamp="2026-10-07T00:26:46.690360+09:00" hostname="e54ea59580aa"><testcase classname="tests.unit.test_control" name="test_control[PRIVATE_PARAMETER_TOKEN]" time="0.001"><failure message="RuntimeError: CONTROLLED_FAILURE">value = 'PRIVATE_PARAMETER_TOKEN'
+
+    @pytest.mark.parametrize('value', ['PRIVATE_PARAMETER_TOKEN'])
+    def test_control(value):
+&gt;       raise RuntimeError('CONTROLLED_FAILURE')
+E       RuntimeError: CONTROLLED_FAILURE
+
+tests/unit/test_control.py:4: RuntimeError</failure></testcase></testsuite></testsuites>

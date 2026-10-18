@@ -1,0 +1,287 @@
+{
+  "schema": "fleet.artifacts-independent-verification/1",
+  "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+  "tree": "fd3edac1de610b821ca64044acd4fdfa1cc03192",
+  "scope": "SOURCE_AND_HARMLESS_FIXTURES",
+  "physical_qualification": "NOT_RUN",
+  "artifacts": [
+    {
+      "artifact_id": 11336283614,
+      "archive": "artifact-11336283614.zip",
+      "bytes": 63372,
+      "sha256": "fd597738f809dc3476ab3aeefbdc7c1ce3b41905b7246fc1be7363eb44e7a77f",
+      "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "run_id": 37291278964,
+      "proofs": [
+        {
+          "proof": "b1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 15
+        }
+      ],
+      "tree": "fd3edac1de610b821ca64044acd4fdfa1cc03192",
+      "source_entries": 210,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "16",
+        "tests": "1214",
+        "time": "103.527",
+        "timestamp": "2026-10-05T09:37:45.507370+00:00",
+        "hostname": "runnervm8df0l"
+      },
+      "passed": 1198,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "-m",
+            "pytest",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/unit.junit.xml"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 104.777
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "/home/runner/work/TunnelVibeMt5-Chatgpt-max/TunnelVibeMt5-Chatgpt-max/fleet-v1-source/b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 0.615
+        }
+      ]
+    },
+    {
+      "artifact_id": 11336551118,
+      "archive": "artifact-11336551118.zip",
+      "bytes": 2314,
+      "sha256": "aaf6f4310be9be3cde9ffd561bc7d464e793c0872591ac633b6e5de94daf5e3e",
+      "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "run_id": 37291278987,
+      "proofs": [
+        {
+          "proof": "summary.json",
+          "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+          "executed": 8,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 8
+        }
+      ]
+    },
+    {
+      "artifact_id": 11336800608,
+      "archive": "artifact-11336800608.zip",
+      "bytes": 8887,
+      "sha256": "1d81c9ce8fb9ca77b9396ad408193caa575825a47e304e5aa1500c32bfe29b6d",
+      "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "run_id": 37291279031,
+      "proofs": [
+        {
+          "proof": "summary.json",
+          "status": "FIXTURE_PASS_Q03_OPEN",
+          "executed": 16,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 4
+        }
+      ]
+    },
+    {
+      "artifact_id": 11336870975,
+      "archive": "artifact-11336870975.zip",
+      "bytes": 8055,
+      "sha256": "f5e91ba081dbe17809cb5d99b1b3137b186013af085919a24eac626252359511",
+      "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "run_id": 37291278960,
+      "proofs": [
+        {
+          "proof": "tip057rb1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 15
+        },
+        {
+          "proof": "tip057rb1-windows/summary.json",
+          "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+          "executed": 10,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 15
+        }
+      ]
+    },
+    {
+      "artifact_id": 11337212077,
+      "archive": "artifact-11337212077.zip",
+      "bytes": 262285,
+      "sha256": "d06c02fad350fa636196be2aea583d67c96609f6cb07eee9326878abeb82a2aa",
+      "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+      "run_id": 37291278964,
+      "proofs": [
+        {
+          "proof": "b1-harmless/summary.json",
+          "status": "PASS_HARMLESS_WINDOWS_STUB_ONLY",
+          "executed": 10,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 15
+        },
+        {
+          "proof": "b1-portable/summary.json",
+          "status": "PASS_SYNTHETIC_PORTABLE_ONLY",
+          "executed": 39,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 15
+        },
+        {
+          "proof": "g03a-harmless/summary.json",
+          "status": "G03A_WINDOWS_FOUNDATION_PASS_PRODUCER_OPEN",
+          "executed": 8,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 8
+        },
+        {
+          "proof": "q1-harmless/summary.json",
+          "status": "FIXTURE_PASS_Q03_OPEN",
+          "executed": 16,
+          "errors": 0,
+          "failures": 0,
+          "skips": 0,
+          "head": "d9adc57904c57c7446028e1d7d9b97eb5d2f84cf",
+          "verified_sources": 4
+        }
+      ],
+      "tree": "fd3edac1de610b821ca64044acd4fdfa1cc03192",
+      "source_entries": 210,
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "12",
+        "tests": "1214",
+        "time": "281.082",
+        "timestamp": "2026-10-05T09:38:00.137726+00:00",
+        "hostname": "runnervmfi6oq"
+      },
+      "passed": 1202,
+      "cases": [
+        {
+          "case": "full-unit",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "-m",
+            "pytest",
+            "tests/unit",
+            "-v",
+            "--tb=short",
+            "--durations=20",
+            "-o",
+            "faulthandler_timeout=90",
+            "--junitxml=D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\unit.junit.xml"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 600,
+          "timed_out": false,
+          "elapsed_seconds": 282.141
+        },
+        {
+          "case": "b1-portable",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--portable",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-portable"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.812
+        },
+        {
+          "case": "q1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rq/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\q1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 10.032
+        },
+        {
+          "case": "g03a-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rg03a/run_windows.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\g03a-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 1.265
+        },
+        {
+          "case": "b1-harmless",
+          "command": [
+            "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+            "tests/proofs/tip057rb1/run_proof.py",
+            "--require-windows",
+            "--output",
+            "D:\\a\\TunnelVibeMt5-Chatgpt-max\\TunnelVibeMt5-Chatgpt-max\\fleet-v1-source\\b1-harmless"
+          ],
+          "exit_code": 0,
+          "timeout_seconds": 120,
+          "timed_out": false,
+          "elapsed_seconds": 4.953
+        }
+      ]
+    }
+  ]
+}

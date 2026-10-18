@@ -1,0 +1,6 @@
+{
+  "elapsed_seconds": 0.1010656450002898,
+  "diagnostic": "CAPACITY_HTTPS_FIXTURE {\"callback_count\": 2, \"completion_set\": true, \"gateway_jobs\": [{\"reason_code\": \"EXECUTION_OUTCOME_UNKNOWN\", \"sequence\": 5, \"state\": \"UNKNOWN\"}, {\"reason_code\": null, \"sequence\": 5, \"state\": \"SUCCEEDED\"}, {\"reason_code\": null, \"sequence\": 1, \"state\": \"QUEUED\"}], \"node_jobs\": [{\"reason_code\": \"EXECUTION_OUTCOME_UNKNOWN\", \"sequence\": 4, \"state\": \"UNKNOWN\"}, {\"reason_code\": null, \"sequence\": 4, \"state\": \"SUCCEEDED\"}, {\"lookup_error_type\": \"JournalError\"}], \"pending_futures\": 0, \"pending_native_records\": 0, \"release_set\": true, \"scopes\": [{\"phase\": \"ARMED\", \"status\": \"UNKNOWN\"}, {\"phase\": \"CLOSED\", \"status\": \"RELEASED\"}]}",
+  "callback_count": 2,
+  "expired_callback_count": 1
+}

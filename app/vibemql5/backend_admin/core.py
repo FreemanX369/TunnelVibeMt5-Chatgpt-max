@@ -5,6 +5,7 @@ import hashlib
 import io
 import http.client
 import json
+import math
 import os
 import re
 import shutil
@@ -1341,7 +1342,126 @@ class BackendAdmin:
                     self._write_test_run(path, record)
             return record
 
+    def _begin_sync_test_invocation(self, suite: str) -> tuple[Path, dict[str, Any]]:
+        """Publish bounded RECENT discovery before work; never an active-process guard."""
+        index_path = self.test_run_root / "sync-invocations.json"
+        lock = self.test_run_root / ".sync-invocations.lock"
+        with _exclusive_file_lock(lock, timeout_seconds=10.0):
+            if (self.test_run_root.is_symlink()
+                    or getattr(self.test_run_root, "is_junction", lambda: False)()
+                    or index_path.is_symlink()):
+                raise BackendAdminError("SYNC_TEST_INDEX_UNSAFE_PATH")
+            index = {"schema_version": "1.0", "scope": "RECENT_DISCOVERY_ONLY",
+                     "limit": 32, "total_invocations": 0, "evicted_descriptors": 0,
+                     "entries": []}
+            seen = set()
+            if index_path.exists():
+                if not index_path.is_file():
+                    raise BackendAdminError("SYNC_TEST_INDEX_INVALID")
+                with index_path.open("rb") as stream:
+                    raw = stream.read(65_537)
+                if len(raw) > 65_536:
+                    raise BackendAdminError("SYNC_TEST_INDEX_TOO_LARGE")
+                try:
+                    index = json.loads(raw)
+                except (ValueError, UnicodeError, RecursionError) as error:
+                    raise BackendAdminError("SYNC_TEST_INDEX_INVALID") from error
+                if (type(index) is not dict or set(index) != {
+                        "schema_version", "scope", "limit", "total_invocations",
+                        "evicted_descriptors", "entries"}
+                        or index["schema_version"] != "1.0"
+                        or index["scope"] != "RECENT_DISCOVERY_ONLY"
+                        or type(index["limit"]) is not int or index["limit"] != 32
+                        or type(index["total_invocations"]) is not int
+                        or not 0 <= index["total_invocations"] < 2**63 - 1
+                        or type(index["evicted_descriptors"]) is not int
+                        or type(index["entries"]) is not list
+                        or len(index["entries"]) != min(index["total_invocations"], 32)
+                        or index["evicted_descriptors"] != index["total_invocations"] - len(index["entries"])):
+                    raise BackendAdminError("SYNC_TEST_INDEX_INVALID")
+                for entry in index["entries"]:
+                    if (type(entry) is not dict or set(entry) != {
+                            "invocation_id", "suite", "started_at_utc", "evidence_relative_path"}
+                            or type(entry["invocation_id"]) is not str
+                            or not re.fullmatch(r"BTSYNC-[0-9]{8}-[0-9]{6}-[A-F0-9]{8}", entry["invocation_id"])
+                            or entry["invocation_id"] in seen
+                            or type(entry["suite"]) is not str or entry["suite"] not in self.TEST_SUITES
+                            or type(entry["started_at_utc"]) is not str
+                            or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}\+00:00", entry["started_at_utc"])
+                            or entry["evidence_relative_path"] != f"backend-admin/test-runs/{entry['invocation_id']}.json"):
+                        raise BackendAdminError("SYNC_TEST_INDEX_INVALID")
+                    try:
+                        datetime.fromisoformat(entry["started_at_utc"])
+                    except ValueError as error:
+                        raise BackendAdminError("SYNC_TEST_INDEX_INVALID") from error
+                    seen.add(entry["invocation_id"])
+            invocation_id = new_id("BTSYNC")
+            if not re.fullmatch(r"BTSYNC-[0-9]{8}-[0-9]{6}-[A-F0-9]{8}", invocation_id):
+                raise BackendAdminError("SYNC_TEST_INVOCATION_ID_INVALID")
+            path = self.test_run_root / f"{invocation_id}.json"
+            if invocation_id in seen or path.exists() or path.is_symlink():
+                raise BackendAdminError("SYNC_TEST_INVOCATION_ALREADY_EXISTS")
+            started = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+            record = {"schema_version": "1.0", "invocation_id": invocation_id,
+                      "suite": suite, "started_at_utc": started,
+                      "state": "INVOCATION_STARTED", "scope": "METHOD_CALL_ONLY",
+                      "result": None, "descendant_outcome": "UNKNOWN"}
+            write_json_atomic(path, record)
+            entries = [*index["entries"], {
+                "invocation_id": invocation_id, "suite": suite,
+                "started_at_utc": started,
+                "evidence_relative_path": f"backend-admin/test-runs/{invocation_id}.json",
+            }][-32:]
+            total = index["total_invocations"] + 1
+            write_json_atomic(index_path, {**index, "total_invocations": total,
+                                          "evicted_descriptors": total - len(entries), "entries": entries})
+            return path, record
+
+    def _finish_sync_test_invocation(self, path: Path, record: dict[str, Any],
+                                     state: str, result: dict[str, Any] | None,
+                                     exception_type: str | None = None) -> None:
+        write_json_atomic(path, {**record, "state": state, "result": result,
+                                 "exception_type": exception_type,
+                                 "finished_at_utc": datetime.now(timezone.utc).isoformat(timespec="milliseconds")})
+
     def run_tests(self, suite: str) -> dict[str, Any]:
+        if suite not in self.TEST_SUITES:
+            return {
+                "status": "BLOCKED",
+                "reason_code": "TEST_SUITE_NOT_ALLOWED",
+                "suite": suite,
+                "allowed_suites": sorted(self.TEST_SUITES),
+            }
+        path, record = self._begin_sync_test_invocation(suite)
+        try:
+            result = self._run_test_suite(suite)
+        except subprocess.TimeoutExpired as original:
+            def tail(value: Any) -> str:
+                if isinstance(value, bytes):
+                    return value[-16_384:].decode("utf-8", errors="replace")[-4096:]
+                return value[-4096:] if isinstance(value, str) else ""
+
+            timeout = original.timeout
+            result = {"status": "FAIL", "suite": suite, "reason_code": "TEST_RUN_TIMEOUT",
+                      "returncode": None,
+                      "timeout_seconds": timeout if type(timeout) in (int, float) and 0 <= timeout <= 300 and math.isfinite(timeout) else None,
+                      "stdout_tail": tail(original.stdout), "stderr_tail": tail(original.stderr),
+                      "descendant_outcome": "UNKNOWN"}
+            try:
+                self._finish_sync_test_invocation(path, record, "INVOCATION_TIMEOUT", result, "TimeoutExpired")
+            except Exception as publication_error:
+                raise original from publication_error
+            return result
+        except Exception as original:
+            try:
+                self._finish_sync_test_invocation(path, record, "INVOCATION_EXCEPTION", None, type(original).__name__)
+            except Exception as publication_error:
+                raise original from publication_error
+            raise
+        self._finish_sync_test_invocation(path, record, "INVOCATION_RETURNED", result)
+        return result
+
+    def _run_test_suite(self, suite: str) -> dict[str, Any]:
         if suite not in self.TEST_SUITES:
             return {
                 "status": "BLOCKED",
